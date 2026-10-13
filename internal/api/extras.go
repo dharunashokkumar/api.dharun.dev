@@ -1,14 +1,20 @@
 package api
 
 import (
+	"net/http"
 	"strconv"
 	"sync/atomic"
+	"time"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/textkit"
 )
 
 // extras holds state that belongs to single APIs rather than to the server as a whole:
 // things loaded on first use and dropped when a dataset changes.
 type extras struct {
-	ip atomic.Pointer[ipReaders]
+	ip     atomic.Pointer[ipReaders]
+	tokens *textkit.Tokenizer
+	stop   chan struct{}
 	// dns answers DNS queries; nil means the real network. Tests set it.
 	dns dnsExchanger
 }
@@ -16,7 +22,29 @@ type extras struct {
 // datasetChanged drops whatever was derived from a dataset that was just replaced.
 func (e *extras) datasetChanged(name string) {}
 
+// start sets up what the extra APIs need and the housekeeping they do in the background.
+func (e *extras) start() {
+	e.tokens = textkit.NewTokenizer()
+	e.stop = make(chan struct{})
+	go func() {
+		ticker := time.NewTicker(time.Minute)
+		defer ticker.Stop()
+		for {
+			select {
+			case <-ticker.C:
+				// A tokenizer vocabulary is 4 to 8 MB; keep it only while it is being used.
+				e.tokens.DropIdle(10 * time.Minute)
+			case <-e.stop:
+				return
+			}
+		}
+	}()
+}
+
 func (e *extras) close() {
+	if e.stop != nil {
+		close(e.stop)
+	}
 	if readers := e.ip.Swap(nil); readers != nil {
 		readers.close()
 	}
@@ -46,6 +74,18 @@ func (s *Server) registerMore() {
 	s.handle("ip", costLight, "GET /v1/ip", s.handleMyIP)
 	s.handle("email", costHeavy, "GET /v1/email/{address}", s.handleEmail)
 	s.handle("dns", costHeavy, "GET /v1/dns/{name}", s.handleDNS)
+	for _, tool := range []struct {
+		route, path string
+		handler     http.HandlerFunc
+	}{
+		{"text_chunk", "/v1/text/chunk", s.handleChunk},
+		{"text_redact", "/v1/text/redact", s.handleRedact},
+		{"text_tokens", "/v1/text/tokens", s.handleTokens},
+		{"text_language", "/v1/text/language", s.handleLanguage},
+	} {
+		s.handle(tool.route, costHeavy, "GET "+tool.path, tool.handler)
+		s.handle(tool.route, costHeavy, "POST "+tool.path, tool.handler)
+	}
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

@@ -65,3 +65,16 @@ func TestIFSC(t *testing.T) {
 		}
 	}
 }
+
+func TestChecksums(t *testing.T) {
+	// 2341 2341 2346 is the widely published Verhoeff sample; UIDAI's sample numbers follow the same rule.
+	if !VerhoeffValid("234123412346") || VerhoeffValid("234123412347") || VerhoeffValid("23412341234a") {
+		t.Error("Verhoeff check wrong")
+	}
+	if !VerhoeffValid("2363") || VerhoeffValid("2364") { // the textbook example: 236 has check digit 3
+		t.Error("Verhoeff textbook example wrong")
+	}
+	if !LuhnValid("4111111111111111") || !LuhnValid("79927398713") || LuhnValid("4111111111111112") || LuhnValid("0") {
+		t.Error("Luhn check wrong")
+	}
+}

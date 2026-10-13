@@ -84,6 +84,7 @@ func New(cfg Config) (*Server, error) {
 		routes:  map[string]bool{},
 		heavy:   make(chan struct{}, cfg.HeavyConcurrency),
 	}
+	s.extras.start()
 	s.store.changed = s.datasetChanged
 	for _, name := range s.store.reload() {
 		s.datasetChanged(name)
@@ -160,9 +161,10 @@ type requestInfo struct {
 	route   string
 	subject string // what was looked up, for the log (never for metric labels)
 	private bool   // the request may carry a personal identifier: keep it out of the log
-	// internal marks a request the server made to itself (an MCP tool call), which has
-	// already been rate limited.
+	// internal marks a request the server made to itself (an MCP tool call). The /mcp
+	// request already paid for one lookup; client is who to charge for the rest.
 	internal bool
+	client   string
 }
 
 type infoKey struct{}
@@ -298,7 +300,13 @@ func (s *Server) handle(route string, cost int, pattern string, handler http.Han
 	s.mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 		details := info(r)
 		details.route = route
-		if cost > 0 && !details.internal && !s.limiter.allow(s.clientKey(r), cost) {
+		charge, client := cost, ""
+		if details.internal {
+			charge, client = cost-costLight, details.client
+		} else if cost > 0 {
+			client = s.clientKey(r)
+		}
+		if charge > 0 && !s.limiter.allow(client, charge) {
 			details.route = "rate_limited"
 			s.metrics.rateLimited()
 			w.Header().Set("Retry-After", "60")

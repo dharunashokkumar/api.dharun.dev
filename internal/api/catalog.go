@@ -1,6 +1,20 @@
 package api
 
-import "strconv"
+import (
+	"net/url"
+	"strconv"
+	"strings"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/textkit"
+)
+
+// Example inputs for the text tools, shared by the GET and POST examples.
+const (
+	chunkExample    = "# Setup\n\nInstall Go. Clone the repository.\n\n# Deploy\n\nPush to main."
+	redactExample   = "Call 98765 43210, PAN ABCPK1234F"
+	tokensExample   = "வணக்கம், how many tokens is this?"
+	languageExample = "அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு"
+)
 
 // The catalog describes every public endpoint once. The documentation site, the
 // OpenAPI document, llms.txt and the sitemap are all generated from it, so they
@@ -402,6 +416,58 @@ var catalog = []apiGroup{
 				Path: "/v1/thirukkural/chapters/{number}", Summary: "One chapter",
 				Example: "/v1/thirukkural/chapters/2",
 				Params:  []param{{Name: "number", In: "path", Type: "integer", Required: true, Doc: "1 to 133."}},
+			},
+		},
+	},
+	{
+		ID:      "text",
+		Title:   "Text tools",
+		Tagline: "Chunk documents, redact Indian identifiers, count tokens, detect language.",
+		Intro:   "Tools for working with text, especially in AI and retrieval pipelines. Send short text as ?text=, or POST it as text/plain, or as JSON {\"text\": ...} with the options beside it. Nothing you send is logged or kept. Each request counts as 10 against the rate limit.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/text/chunk", Summary: "Split a document into chunks", Post: true, Private: true,
+				Doc:         "Splits at headings, paragraphs, sentences and words, in that order of preference, so chunks stay readable. Markdown chunks never cross a heading and carry their heading path. Each chunk is an exact slice of the input with its character offsets.",
+				Body:        "The document, plain text or Markdown.",
+				Example:     "/v1/text/chunk?size=200&overlap=20&text=" + url.QueryEscape(chunkExample),
+				ExampleBody: chunkExample,
+				Params: []param{
+					{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it)."},
+					{Name: "size", In: "query", Type: "integer", Doc: "Largest chunk in characters, overlap included, 100 to 20000. Default 1000."},
+					{Name: "overlap", In: "query", Type: "integer", Doc: "Characters repeated from the previous chunk, up to half the size. Default a tenth of the size."},
+					{Name: "format", In: "query", Type: "string", Enum: []string{"auto", "markdown", "text"}, Doc: "Default auto: Markdown if the text has headings or code fences."},
+				},
+			},
+			{
+				Path: "/v1/text/redact", Summary: "Redact Indian personal identifiers", Post: true, Private: true,
+				Doc:         "Masks Aadhaar numbers (Verhoeff-checked), PAN, GSTIN (checksum-checked), card numbers (Luhn-checked), Indian mobile numbers, email addresses, UPI IDs, vehicle numbers, voter IDs, passport numbers and IP addresses. Returns where each was found, never the values. Names and addresses are not detected.",
+				Body:        "The text to redact.",
+				Example:     "/v1/text/redact?text=" + url.QueryEscape(redactExample),
+				ExampleBody: redactExample,
+				Params: []param{
+					{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it)."},
+					{Name: "types", In: "query", Type: "string", Doc: "Comma-separated kinds to redact; default all. Kinds: " + strings.Join(textkit.KindIDs(), ", ") + "."},
+					{Name: "style", In: "query", Type: "string", Enum: []string{"label", "partial"}, Doc: "label replaces with [PAN]; partial keeps the last digits, as on a bank statement. Default label."},
+				},
+			},
+			{
+				Path: "/v1/text/tokens", Summary: "Count tokens", Post: true, Private: true,
+				Doc:         "Exact token counts with OpenAI tokenizers, by encoding or model name. Other vendors do not publish their tokenizers, so their counts are not offered.",
+				Body:        "The text to count.",
+				Example:     "/v1/text/tokens?model=gpt-4o&text=" + url.QueryEscape(tokensExample),
+				ExampleBody: tokensExample,
+				Params: []param{
+					{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it)."},
+					{Name: "model", In: "query", Type: "string", Doc: "Model name, such as gpt-4o or gpt-4, or an encoding: " + strings.Join(textkit.EncodingNames(), ", ") + ". Default o200k_base."},
+				},
+			},
+			{
+				Path: "/v1/text/language", Summary: "Detect the language", Post: true, Private: true,
+				Doc:         "Language and script, with a confidence. Covers about 80 languages including Hindi, Bengali, Marathi, Gujarati, Punjabi, Tamil, Telugu, Kannada, Malayalam, Odia and Urdu. Romanised Indian text (Hinglish, Tanglish) is flagged as such.",
+				Body:        "The text.",
+				Example:     "/v1/text/language?text=" + url.QueryEscape(languageExample),
+				ExampleBody: languageExample,
+				Params:      []param{{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it)."}},
 			},
 		},
 	},

@@ -61,6 +61,8 @@ check "/v1/upi-qr?pa=shop@okaxis&am=250&format=json" application/json 'upi://pay
 check "/v1/barcode/code128?text=AWB1234" image/svg+xml
 check /v1/thirukkural/1 application/json '"The Praise of God"'
 check /v1/airports/MAA application/json '"VOMM"'
+check "/v1/text/tokens?text=hello%20world" application/json '"tokens":2'
+check "/v1/text/redact?text=PAN%20ABCPK1234F" application/json '[PAN]'
 
 # Every dataset the repository holds must be in the bundle and served from its seed.
 health="$(curl -fsS "$base/healthz")"

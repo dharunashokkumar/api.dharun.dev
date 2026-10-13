@@ -343,7 +343,7 @@ func (s *Server) callTool(r *http.Request, tool *mcpTool, args map[string]any) m
 	}
 	// The inner request gets its own info record: the outer one already passed the rate
 	// limiter and is what the log and metrics should describe.
-	ctx := context.WithValue(r.Context(), infoKey{}, &requestInfo{internal: true})
+	ctx := context.WithValue(r.Context(), infoKey{}, &requestInfo{internal: true, client: s.clientKey(r)})
 	inner, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return failure("Could not build the request from those arguments.")
