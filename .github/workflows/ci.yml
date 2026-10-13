@@ -34,6 +34,12 @@ jobs:
 
       - run: go vet ./...
 
+      # With the pinned renderer at hand, PNG output of generated images is tested too.
+      - name: Fetch the image renderer
+        run: |
+          bash tools/fetch-resvg.sh "$RUNNER_TEMP/tools"
+          echo "RESVG=$RUNNER_TEMP/tools/resvg" >> "$GITHUB_ENV"
+
       - name: Unit, API, refresh and updater tests
         run: go test ./...
 

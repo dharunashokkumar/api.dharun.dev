@@ -53,7 +53,7 @@ func run() error {
 		MaxBodyBytes:       envInt("MAX_BODY_KB", 256) << 10,
 		HeavyConcurrency:   envInt("HEAVY_CONCURRENCY", 0),
 		Resvg:              os.Getenv("RESVG"),
-		FontsDir:           os.Getenv("FONTS_DIR"),
+		RenderConcurrency:  envInt("RENDER_CONCURRENCY", 2),
 		PublicOrigin:       strings.TrimRight(os.Getenv("PUBLIC_ORIGIN"), "/"),
 		TrustProxy:         envBool("TRUST_PROXY", false),
 		RateLimitPerMinute: envInt("RATE_LIMIT_PER_MIN", 600),

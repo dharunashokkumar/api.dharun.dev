@@ -49,7 +49,9 @@ func TestMain(m *testing.M) {
 	// Datasets that only ever exist as a server's own copy are built into a live directory.
 	testLive = filepath.Join(dir, "live")
 	buildIPDataset(panicker{}, testLive)
-	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true})
+	// PNG output of generated images is tested where the renderer is installed.
+	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true,
+		Resvg: os.Getenv("RESVG")})
 	testServer.extras.dns = fakeDNS{} // tests never touch the network
 	testHTTP = httptest.NewServer(testServer)
 
@@ -142,6 +144,12 @@ func expectStatus(t *testing.T, path string, want int) result {
 // their tools' calls in init.
 var mcpTestCalls = map[string]string{}
 
+// noRenderer reports an image example that could not be drawn only because this machine
+// has no resvg; images_test.go covers those endpoints as SVG everywhere.
+func noRenderer(e endpoint, got result) bool {
+	return e.Image && got.status == http.StatusNotImplemented && !testServer.extras.render.available()
+}
+
 func TestEveryDocumentedExampleWorks(t *testing.T) {
 	documented := map[string]bool{}
 	for _, group := range catalog {
@@ -151,12 +159,15 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 				documented["POST "+e.Path] = true
 				if e.ExampleBody == "" || e.Body == "" {
 					t.Errorf("%s takes POST but documents no body or example body", e.Path)
-				} else if posted := request(t, http.MethodPost, e.Example, e.ExampleBody, "Content-Type", "text/plain"); posted.status != http.StatusOK {
+				} else if posted := request(t, http.MethodPost, e.Example, e.ExampleBody, "Content-Type", "text/plain"); posted.status != http.StatusOK && !noRenderer(e, posted) {
 					t.Errorf("POST %s = %d: %s", e.Example, posted.status, clip(string(posted.body), 200))
 				}
 			}
 			// Examples about the caller's own address need a public one, as through the proxy.
 			got := request(t, http.MethodGet, e.Example, "", "CF-Connecting-IP", "49.204.0.1")
+			if noRenderer(e, got) {
+				continue
+			}
 			if got.status != http.StatusOK {
 				t.Errorf("GET %s = %d: %s", e.Example, got.status, clip(string(got.body), 200))
 				continue

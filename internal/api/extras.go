@@ -14,6 +14,7 @@ import (
 type extras struct {
 	ip     atomic.Pointer[ipReaders]
 	tokens *textkit.Tokenizer
+	render *renderer
 	stop   chan struct{}
 	// dns answers DNS queries; nil means the real network. Tests set it.
 	dns dnsExchanger
@@ -23,8 +24,9 @@ type extras struct {
 func (e *extras) datasetChanged(name string) {}
 
 // start sets up what the extra APIs need and the housekeeping they do in the background.
-func (e *extras) start() {
+func (e *extras) start(cfg Config) {
 	e.tokens = textkit.NewTokenizer()
+	e.render = newRenderer(cfg)
 	e.stop = make(chan struct{})
 	go func() {
 		ticker := time.NewTicker(time.Minute)
@@ -88,6 +90,9 @@ func (s *Server) registerMore() {
 	s.handle("constituency", costLight, "GET /v1/constituency", s.handleConstituency)
 	s.handle("phone", costLight, "GET /v1/phone/{number}", s.handlePhone)
 	s.handle("fake", costLight, "GET /v1/fake/{kind}", s.handleFake)
+	s.handle("og_image", costHeavy, "GET /v1/og-image", s.handleOGImage)
+	s.handle("code_image", costHeavy, "GET /v1/code-image", s.handleCodeImage)
+	s.handle("code_image", costHeavy, "POST /v1/code-image", s.handleCodeImage)
 	for _, tool := range []struct {
 		route, path string
 		handler     http.HandlerFunc

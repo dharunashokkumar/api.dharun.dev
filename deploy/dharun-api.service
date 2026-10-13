@@ -17,6 +17,7 @@ Environment=DATA_DIR=/var/lib/dharun-api/data
 # Lifetime request totals. systemd creates /var/lib/dharun-api for the service user.
 StateDirectory=dharun-api
 Environment=STATE_DIR=/var/lib/dharun-api
+# Generated images are rendered by resvg, one short-lived process per image.
 Environment=RESVG=/opt/dharun-api/current/resvg
 ExecStart=/opt/dharun-api/current/api
 Restart=always

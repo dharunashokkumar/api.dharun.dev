@@ -48,8 +48,9 @@ type Config struct {
 	HeavyConcurrency int
 	// Resvg is the renderer for generated images; empty looks next to the binary and on PATH.
 	Resvg string
-	// FontsDir holds the fonts for generated images.
-	FontsDir string
+	// RenderConcurrency is how many generated images are rendered to PNG at once. Each is
+	// a resvg process of a few tens of megabytes while it runs. Zero means two.
+	RenderConcurrency int
 }
 
 // Server holds everything a request needs. It is safe for concurrent use.
@@ -72,6 +73,9 @@ func New(cfg Config) (*Server, error) {
 	if cfg.MaxBodyBytes <= 0 {
 		cfg.MaxBodyBytes = 256 << 10
 	}
+	if cfg.RenderConcurrency <= 0 {
+		cfg.RenderConcurrency = 2
+	}
 	if cfg.HeavyConcurrency <= 0 {
 		cfg.HeavyConcurrency = runtime.NumCPU()
 	}
@@ -84,7 +88,7 @@ func New(cfg Config) (*Server, error) {
 		routes:  map[string]bool{},
 		heavy:   make(chan struct{}, cfg.HeavyConcurrency),
 	}
-	s.extras.start()
+	s.extras.start(cfg)
 	s.store.changed = s.datasetChanged
 	for _, name := range s.store.reload() {
 		s.datasetChanged(name)

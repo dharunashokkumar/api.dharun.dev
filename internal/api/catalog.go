@@ -15,6 +15,7 @@ const (
 	tokensExample        = "வணக்கம், how many tokens is this?"
 	languageExample      = "அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு"
 	transliterateExample = "नमस्ते भारत"
+	codeExample          = "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"வணக்கம்\")\n}"
 )
 
 // The catalog describes every public endpoint once. The documentation site, the
@@ -641,6 +642,45 @@ var catalog = []apiGroup{
 					{Name: "count", In: "query", Type: "integer", Doc: "How many, 1 to 100. Default 10."},
 					stateFilter,
 					{Name: "seed", In: "query", Type: "integer", Doc: "The same seed gives the same records. Without one, each request differs."},
+				},
+			},
+		},
+	},
+	{
+		ID:      "images",
+		Title:   "Generated images",
+		Tagline: "Social preview images and code screenshots from a URL.",
+		Intro:   "Pictures made from text, with no browser involved: link-preview (Open Graph) cards and syntax-coloured code images. Latin, Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam are shaped properly (conjuncts, vowel signs) and can be mixed in one line; other scripts come out as empty boxes. PNG by default; format=svg gives the same picture as an SVG whose text is drawn as outlines, so it needs no fonts where it is shown. Text and colours only: no images are fetched from anywhere. Each request counts as 10 against the rate limit.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/og-image", Summary: "Social preview image", Image: true,
+				Doc:     "A 1200 by 630 card for og:image and twitter:image: a title (set as large as fits in three lines, cut with an ellipsis beyond that), an optional subtitle of up to two lines, and a site name and tag along the bottom. The same URL always gives the same picture, so it can be used directly in a meta tag.",
+				Example: "/v1/og-image?title=Free%20APIs%20for%20Indian%20developers&subtitle=Pincodes%2C%20IFSC%2C%20holidays%20and%20more&site=api.dharun.dev",
+				Params: []param{
+					{Name: "title", In: "query", Type: "string", Required: true, Doc: "Up to 200 characters, in any script."},
+					{Name: "subtitle", In: "query", Type: "string", Doc: "Up to 300 characters; two lines are shown."},
+					{Name: "site", In: "query", Type: "string", Doc: "Site name, bottom left."},
+					{Name: "tag", In: "query", Type: "string", Doc: "Short label, bottom right."},
+					{Name: "theme", In: "query", Type: "string", Enum: []string{"dark", "light"}, Doc: "Default dark."},
+					{Name: "bg", In: "query", Type: "string", Doc: "Background colour, hex."},
+					{Name: "fg", In: "query", Type: "string", Doc: "Title colour, hex."},
+					{Name: "accent", In: "query", Type: "string", Doc: "Accent colour, hex."},
+					{Name: "format", In: "query", Type: "string", Enum: []string{"png", "svg"}, Doc: "Default png."},
+				},
+			},
+			{
+				Path: "/v1/code-image", Summary: "Code as an image", Image: true, Post: true, Private: true,
+				Doc:         "A code snippet as a window with syntax colouring. Up to 150 lines of 140 characters. PNGs are drawn at twice the pixel density for sharp text (very large ones at single). The language is guessed from the title's file extension or the code when not given, and reported in the X-Code-Language header.",
+				Body:        "The code.",
+				Example:     "/v1/code-image?language=go&title=main.go&code=" + url.QueryEscape(codeExample),
+				ExampleBody: codeExample,
+				Params: []param{
+					{Name: "code", In: "query", Type: "string", Doc: "The code (or POST it)."},
+					{Name: "language", In: "query", Type: "string", Doc: "Language name or file extension, such as go, python, js, sql."},
+					{Name: "title", In: "query", Type: "string", Doc: "File name shown in the title bar."},
+					{Name: "theme", In: "query", Type: "string", Enum: []string{"dark", "light"}, Doc: "Default dark."},
+					{Name: "lineNumbers", In: "query", Type: "string", Enum: []string{"true"}, Doc: "Show line numbers."},
+					{Name: "format", In: "query", Type: "string", Enum: []string{"png", "svg"}, Doc: "Default png."},
 				},
 			},
 		},

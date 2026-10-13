@@ -70,6 +70,9 @@ check /v1/phone/9500112345 application/json '"mobile"'
 check "/v1/fake/companies?count=2&state=TN&seed=1" application/json '"gstin":"33'
 check "/v1/text/tokens?text=hello%20world" application/json '"tokens":2'
 check "/v1/text/redact?text=PAN%20ABCPK1234F" application/json '[PAN]'
+check "/v1/og-image?title=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D&site=api.dharun.dev" image/png
+check "/v1/og-image?title=Hello&format=svg" image/svg+xml '<use '
+check "/v1/code-image?language=go&code=package%20main" image/png
 check "/v1/transliterate?to=ascii&text=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D" application/json '"tamizh"'
 
 # Every dataset the repository holds must be in the bundle and served from its seed.
