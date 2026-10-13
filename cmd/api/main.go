@@ -14,6 +14,8 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	// Time zones are built in, so the panchang works on a server without tzdata.
+	_ "time/tzdata"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/api"
 )

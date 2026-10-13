@@ -574,6 +574,26 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:      "panchang",
+		Title:   "Panchang",
+		Tagline: "Hindu almanac for any date and place: tithi, nakshatra, Rahu kalam and more.",
+		Intro:   "Computed, not looked up, from the positions of the Sun and the Moon (within seconds of NASA JPL Horizons), with the Lahiri ayanamsa. Gives the five elements with the moments they change, sunrise, sunset, moonrise and moonset, Rahu kalam, Yamagandam, Gulika kalam and Abhijit muhurta, the Tamil month and day, the lunar month both ways it is reckoned, and the Shaka and Vikram years. Names come in English transliteration and, where the Tamil calendar has its own, in Tamil. Festival dates are not given. Counts as 10 requests against the rate limit.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/panchang/{date}", Summary: "Panchang for a date",
+				Doc:     "For a pincode, a latitude and longitude, or (by default) New Delhi. Times are in the time zone asked for.",
+				Example: "/v1/panchang/2026-01-14?pincode=600001",
+				Params: []param{
+					{Name: "date", In: "path", Type: "string", Required: true, Doc: "YYYY-MM-DD, 1900 to 2100, or today."},
+					{Name: "pincode", In: "query", Type: "string", Doc: "Indian pincode of the place."},
+					{Name: "lat", In: "query", Type: "number", Doc: "Latitude, if no pincode."},
+					{Name: "lng", In: "query", Type: "number", Doc: "Longitude, if no pincode."},
+					{Name: "tz", In: "query", Type: "string", Doc: "IANA time zone for the times. Default Asia/Kolkata."},
+				},
+			},
+		},
+	},
+	{
 		ID:      "words",
 		Title:   "Number to words",
 		Tagline: "Numbers and rupee amounts in words, the Indian way.",
