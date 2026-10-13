@@ -48,7 +48,7 @@ type sourceRef struct {
 }
 
 func (s *Server) source(key string) *sourceRef {
-	source, ok := s.sources[key]
+	source, ok := s.sourceOf(key)
 	if !ok {
 		return nil
 	}

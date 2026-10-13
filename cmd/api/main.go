@@ -16,7 +16,6 @@ import (
 	"time"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/api"
-	"github.com/dharunashokkumar/api.dharun.dev/internal/dataset"
 )
 
 // version is set at build time with -ldflags "-X main.version=1.2.3".
@@ -36,12 +35,6 @@ func run() error {
 	metricsHost := env("METRICS_HOST", "127.0.0.1")
 	metricsPort := env("METRICS_PORT", "9464")
 
-	db, err := dataset.Open(env("DB_PATH", "api.db"))
-	if err != nil {
-		return fmt.Errorf("opening the database (build it with: apidata build): %w", err)
-	}
-	defer db.Close()
-
 	stateDir := os.Getenv("STATE_DIR")
 	if stateDir != "" {
 		if err := os.MkdirAll(stateDir, 0o755); err != nil {
@@ -49,14 +42,23 @@ func run() error {
 		}
 	}
 	server, err := api.New(api.Config{
-		Version:            version,
+		Version: version,
+		// SEED_DIR holds the datasets that came with the release (build them with: apidata
+		// build). DATA_DIR holds the copies this server fetched itself; the newer one is served.
+		SeedDir:            env("SEED_DIR", "seed"),
+		DataDir:            os.Getenv("DATA_DIR"),
+		ReloadEvery:        time.Duration(envInt("RELOAD_SECONDS", 15)) * time.Second,
+		MaxBodyBytes:       envInt("MAX_BODY_KB", 256) << 10,
+		HeavyConcurrency:   envInt("HEAVY_CONCURRENCY", 0),
+		Resvg:              os.Getenv("RESVG"),
+		FontsDir:           os.Getenv("FONTS_DIR"),
 		PublicOrigin:       strings.TrimRight(os.Getenv("PUBLIC_ORIGIN"), "/"),
 		TrustProxy:         envBool("TRUST_PROXY", false),
 		RateLimitPerMinute: envInt("RATE_LIMIT_PER_MIN", 600),
 		LogRequests:        envBool("LOG_REQUESTS", true),
 		PNGCacheBytes:      envInt("PNG_CACHE_MB", 8) * 1024 * 1024,
 		StateDir:           stateDir,
-	}, db)
+	})
 	if err != nil {
 		return err
 	}
@@ -68,7 +70,7 @@ func run() error {
 		Handler:           server,
 		ReadHeaderTimeout: 10 * time.Second,
 		ReadTimeout:       15 * time.Second,
-		WriteTimeout:      30 * time.Second,
+		WriteTimeout:      45 * time.Second,
 		IdleTimeout:       65 * time.Second,
 	}
 	failed := make(chan error, 2)

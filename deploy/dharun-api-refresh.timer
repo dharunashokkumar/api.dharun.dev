@@ -1,0 +1,10 @@
+[Unit]
+Description=Check every hour whether an api.dharun.dev dataset is due for a refresh
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

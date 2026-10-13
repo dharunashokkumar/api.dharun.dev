@@ -1,19 +1,20 @@
-// Package api is the HTTP service: one process, one read-only database, every
+// Package api is the HTTP service: one process, a read-only file per dataset, every
 // endpoint under /v1 with the same response envelope, errors and limits.
 package api
 
 import (
 	"context"
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/dataset"
@@ -22,6 +23,13 @@ import (
 // Config is read from the environment by cmd/api.
 type Config struct {
 	Version string
+	// SeedDir holds the dataset files that came with the release. DataDir, when set, holds
+	// the copies this server fetched itself; the more recent of the two is served.
+	SeedDir string
+	DataDir string
+	// ReloadEvery is how often the directories are checked for a new copy. Zero means
+	// never: the datasets found at start are served until the process ends.
+	ReloadEvery time.Duration
 	// PublicOrigin is the origin used in links, the sitemap and the OpenAPI document.
 	// Empty means "derive it from the request", which suits local development.
 	PublicOrigin string
@@ -33,95 +41,98 @@ type Config struct {
 	PNGCacheBytes      int
 	// StateDir holds the lifetime request totals. Empty keeps them in memory only.
 	StateDir string
+	// MaxBodyBytes caps the body of a POST request. Zero means 256 KB.
+	MaxBodyBytes int
+	// HeavyConcurrency is how many CPU-heavy requests run at once; the rest wait in
+	// line. Zero means one per CPU.
+	HeavyConcurrency int
+	// Resvg is the renderer for generated images; empty looks next to the binary and on PATH.
+	Resvg string
+	// FontsDir holds the fonts for generated images.
+	FontsDir string
 }
 
 // Server holds everything a request needs. It is safe for concurrent use.
 type Server struct {
 	cfg       Config
-	db        *sql.DB
-	sources   map[string]dataset.Source
-	companies *companyIndex
-	counts    datasetCounts
-	years     []int
+	store     *store
+	companies atomic.Pointer[companyIndex]
 	metrics   *metrics
 	limiter   *rateLimiter
 	png       *pngCache
 	mux       *http.ServeMux
 	routes    map[string]bool
 	documents sync.Map // rendered docs, keyed by name and origin
-	stmts     statements
+	heavy     chan struct{}
+	extras    extras
 }
 
-type datasetCounts struct {
-	Logos, Pincodes, PostOffices, Banks, Branches, RTOs, Holidays int
-}
-
-// New prepares a server over an opened database.
-func New(cfg Config, db *sql.DB) (*Server, error) {
-	sources, err := dataset.Sources(db)
-	if err != nil {
-		return nil, err
+// New opens the datasets and prepares a server.
+func New(cfg Config) (*Server, error) {
+	if cfg.MaxBodyBytes <= 0 {
+		cfg.MaxBodyBytes = 256 << 10
+	}
+	if cfg.HeavyConcurrency <= 0 {
+		cfg.HeavyConcurrency = runtime.NumCPU()
 	}
 	s := &Server{
 		cfg:     cfg,
-		db:      db,
-		sources: sources,
+		store:   newStore(cfg.SeedDir, cfg.DataDir),
 		limiter: newRateLimiter(cfg.RateLimitPerMinute),
 		png:     newPNGCache(cfg.PNGCacheBytes),
 		mux:     http.NewServeMux(),
 		routes:  map[string]bool{},
+		heavy:   make(chan struct{}, cfg.HeavyConcurrency),
 	}
-	if s.companies, err = loadCompanies(db); err != nil {
-		return nil, fmt.Errorf("loading companies: %w", err)
+	s.store.changed = s.datasetChanged
+	for _, name := range s.store.reload() {
+		s.datasetChanged(name)
 	}
-	if err := s.loadCounts(); err != nil {
-		return nil, err
+	if s.companies.Load() == nil {
+		s.companies.Store(newCompanyIndex())
 	}
-	if err := s.prepare(); err != nil {
-		return nil, err
-	}
-	s.metrics = newMetrics(cfg.Version, cfg.StateDir, s.counts)
+	s.metrics = newMetrics(cfg.Version, cfg.StateDir, s.store.states)
 	s.registerRoutes()
+	if cfg.ReloadEvery > 0 {
+		s.store.watch(cfg.ReloadEvery)
+	}
 	return s, nil
 }
 
-func (s *Server) loadCounts() error {
-	queries := []struct {
-		into  *int
-		query string
-	}{
-		{&s.counts.Logos, `SELECT COUNT(*) FROM logos`},
-		{&s.counts.Pincodes, `SELECT COUNT(DISTINCT pincode) FROM pincodes`},
-		{&s.counts.PostOffices, `SELECT COUNT(*) FROM pincodes`},
-		{&s.counts.Banks, `SELECT COUNT(*) FROM banks`},
-		{&s.counts.Branches, `SELECT COUNT(*) FROM ifsc`},
-		{&s.counts.RTOs, `SELECT COUNT(*) FROM rto`},
-		{&s.counts.Holidays, `SELECT COUNT(*) FROM holidays`},
-	}
-	for _, q := range queries {
-		if err := s.db.QueryRow(q.query).Scan(q.into); err != nil {
-			return err
+// datasetChanged rebuilds whatever is derived from a dataset that was just swapped.
+func (s *Server) datasetChanged(name string) {
+	if name == "logos" {
+		if index, err := loadCompanies(s.store.get("logos")); err == nil {
+			s.companies.Store(index)
+		} else {
+			fmt.Fprintf(os.Stderr, `{"msg":"error","error":"loading companies: %s"}`+"\n", err)
 		}
 	}
-	rows, err := s.db.Query(`SELECT DISTINCT year FROM holidays ORDER BY year`)
-	if err != nil {
-		return err
+	// Rendered pages quote record counts and source versions.
+	s.documents.Clear()
+	s.extras.datasetChanged(name)
+}
+
+// data returns the copy in use of a dataset, or nil.
+func (s *Server) data(name string) *handle { return s.store.get(name) }
+
+// need returns a dataset, or answers 503 and returns nil when this server has no copy.
+func (s *Server) need(w http.ResponseWriter, r *http.Request, name string) *handle {
+	if current := s.store.get(name); current != nil {
+		return current
 	}
-	defer rows.Close()
-	for rows.Next() {
-		var year int
-		if err := rows.Scan(&year); err != nil {
-			return err
-		}
-		s.years = append(s.years, year)
-	}
-	return rows.Err()
+	w.Header().Set("Retry-After", "600")
+	s.fail(w, r, http.StatusServiceUnavailable, "dataset_unavailable",
+		"This server does not hold the "+name+" dataset yet. Try again later.")
+	return nil
 }
 
 // Close flushes the lifetime totals and stops background work.
 func (s *Server) Close() {
 	s.limiter.close()
 	s.metrics.close()
+	s.extras.close()
+	s.store.close()
 }
 
 // MetricsHandler serves /metrics and /stats. It belongs on a private listener.
@@ -145,7 +156,7 @@ func (s *Server) MetricsHandler() http.Handler {
 type requestInfo struct {
 	route   string
 	subject string // what was looked up, for the log (never for metric labels)
-	private bool   // the path may carry a personal identifier: keep it out of the log
+	private bool   // the request may carry a personal identifier: keep it out of the log
 	// internal marks a request the server made to itself (an MCP tool call), which has
 	// already been rate limited.
 	internal bool
@@ -180,8 +191,8 @@ func (w *statusWriter) Write(body []byte) (int, error) {
 	return n, err
 }
 
-// ServeHTTP is the single entry point: common headers, method rules, then the router,
-// with one log line and one metrics observation per request.
+// ServeHTTP is the single entry point: common headers, then the router, with one log
+// line and one metrics observation per request.
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	started := time.Now()
 	details := &requestInfo{route: "other"}
@@ -190,7 +201,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	defer func() {
 		if recovered := recover(); recovered != nil {
-			log.Printf(`{"msg":"panic","path":%q,"error":%q}`, r.URL.Path, fmt.Sprint(recovered))
+			log.Printf(`{"msg":"panic","route":%q,"error":%q}`, details.route, fmt.Sprint(recovered))
 			if writer.status == 0 {
 				s.fail(writer, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 			}
@@ -209,18 +220,35 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	header.Set("X-Content-Type-Options", "nosniff")
 	header.Set("Referrer-Policy", "strict-origin-when-cross-origin")
 
-	switch {
-	case r.Method == http.MethodOptions:
+	switch r.Method {
+	case http.MethodOptions:
 		details.route = "preflight"
 		header.Set("Access-Control-Allow-Methods", "GET, HEAD, POST, OPTIONS")
 		header.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Mcp-Session-Id, Mcp-Protocol-Version")
 		header.Set("Access-Control-Max-Age", "86400")
 		writer.WriteHeader(http.StatusNoContent)
-	case r.Method != http.MethodGet && r.Method != http.MethodHead && r.URL.Path != "/mcp":
-		s.fail(writer, r, http.StatusMethodNotAllowed, "method_not_allowed", "Use GET.")
-	default:
+	case http.MethodGet, http.MethodHead, http.MethodPost:
 		s.mux.ServeHTTP(writer, r)
+	default:
+		s.fail(writer, r, http.StatusMethodNotAllowed, "method_not_allowed", "Use GET, or POST where the documentation says so.")
 	}
+}
+
+// handleUnmatched answers a request no route took: 405 when the path exists under the
+// other method, otherwise 404.
+func (s *Server) handleUnmatched(w http.ResponseWriter, r *http.Request) {
+	other := http.MethodPost
+	if r.Method == http.MethodPost {
+		other = http.MethodGet
+	}
+	probe := r.Clone(r.Context())
+	probe.Method = other
+	if _, pattern := s.mux.Handler(probe); pattern != "/" && pattern != "" {
+		w.Header().Set("Allow", other)
+		s.fail(w, r, http.StatusMethodNotAllowed, "method_not_allowed", "This endpoint takes "+other+".")
+		return
+	}
+	s.notFound(w, r, "Not found. The API index is at /v1 and the documentation at /.")
 }
 
 func (s *Server) logRequest(r *http.Request, details *requestInfo, status int, elapsed time.Duration) {
@@ -248,20 +276,47 @@ func (s *Server) logRequest(r *http.Request, details *requestInfo, status int, e
 	fmt.Fprintln(os.Stdout, string(encoded))
 }
 
-// handle registers a route under a short name used for metrics and logs. Limited
-// routes count against the per-client rate limit.
-func (s *Server) handle(route string, limited bool, pattern string, handler http.HandlerFunc) {
+// A route's cost is how many units of the per-minute allowance one request uses.
+const (
+	costFree  = 0  // documentation and health checks
+	costLight = 1  // a lookup
+	costHeavy = 10 // real CPU work: rendering, astronomy, live network queries
+)
+
+// heavyWait is how long a CPU-heavy request waits for a free slot before it is refused.
+const heavyWait = 10 * time.Second
+
+// handle registers a route under a short name used for metrics and logs. cost is what
+// a request charges against the per-client rate limit. A route with costHeavy also
+// takes one of a fixed number of slots, so a burst waits in line instead of running all
+// at once: more load means more waiting, not more memory.
+func (s *Server) handle(route string, cost int, pattern string, handler http.HandlerFunc) {
 	s.routes[pattern] = true
 	s.mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 		details := info(r)
 		details.route = route
-		if limited && !details.internal && !s.limiter.allow(s.clientKey(r)) {
+		if cost > 0 && !details.internal && !s.limiter.allow(s.clientKey(r), cost) {
 			details.route = "rate_limited"
 			s.metrics.rateLimited()
 			w.Header().Set("Retry-After", "60")
 			s.fail(w, r, http.StatusTooManyRequests, "rate_limited",
-				fmt.Sprintf("Rate limit is %d requests per minute.", s.cfg.RateLimitPerMinute))
+				fmt.Sprintf("Rate limit is %d requests per minute; this endpoint counts as %d.", s.cfg.RateLimitPerMinute, cost))
 			return
+		}
+		if cost >= costHeavy {
+			timer := time.NewTimer(heavyWait)
+			defer timer.Stop()
+			select {
+			case s.heavy <- struct{}{}:
+				defer func() { <-s.heavy }()
+			case <-r.Context().Done():
+				return
+			case <-timer.C:
+				s.metrics.busy()
+				w.Header().Set("Retry-After", "5")
+				s.fail(w, r, http.StatusServiceUnavailable, "busy", "The server is busy. Try again in a few seconds.")
+				return
+			}
 		}
 		handler(w, r)
 	})
@@ -291,7 +346,7 @@ func (s *Server) origin(r *http.Request) string {
 	return "http://" + r.Host
 }
 
-// rateLimiter counts requests per client in fixed one-minute windows. Coarse, but it
+// rateLimiter counts cost per client in fixed one-minute windows. Coarse, but it
 // costs one map entry per active client and nothing else.
 type rateLimiter struct {
 	perMinute int
@@ -321,13 +376,13 @@ func newRateLimiter(perMinute int) *rateLimiter {
 	return limiter
 }
 
-func (l *rateLimiter) allow(key string) bool {
+func (l *rateLimiter) allow(key string, cost int) bool {
 	if l.perMinute <= 0 {
 		return true
 	}
 	l.mu.Lock()
 	defer l.mu.Unlock()
-	l.counts[key]++
+	l.counts[key] += cost
 	return l.counts[key] <= l.perMinute
 }
 
@@ -351,4 +406,13 @@ func intParam(r *http.Request, name string, fallback, min, max int) (int, error)
 		return 0, fmt.Errorf("%s must be an integer from %d to %d.", name, min, max)
 	}
 	return value, nil
+}
+
+// sourceOf is the credit for a dataset's copy in use.
+func (s *Server) sourceOf(name string) (dataset.Source, bool) {
+	current := s.store.get(name)
+	if current == nil {
+		return dataset.Source{}, false
+	}
+	return current.meta.Source, true
 }

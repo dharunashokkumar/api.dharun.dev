@@ -1,0 +1,25 @@
+{
+  "year": 2026,
+  "holidays": [
+    {"date":"2026-01-15","name":"Municipal Corporation Election - Maharashtra","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-01-26","name":"Republic Day","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-02-15","name":"Mahashivratri","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-03-03","name":"Holi","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-03-21","name":"Id-Ul-Fitr (Ramadan Eid)","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-03-26","name":"Shri Ram Navami","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-03-31","name":"Shri Mahavir Jayanti","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-04-03","name":"Good Friday","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-04-14","name":"Dr. Baba Saheb Ambedkar Jayanti","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-05-01","name":"Maharashtra Day","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-05-28","name":"Bakri Id","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-06-26","name":"Muharram","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-08-15","name":"Independence Day","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-09-14","name":"Ganesh Chaturthi","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-10-02","name":"Mahatma Gandhi Jayanti","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-10-20","name":"Dussehra","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-11-08","name":"Diwali Laxmi Pujan","type":"market","region":"NSE equities","states":["*"],"notes":"A special Muhurat trading session is held on this day; the exchange announces its timings separately."},
+    {"date":"2026-11-10","name":"Diwali-Balipratipada","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-11-24","name":"Prakash Gurpurb Sri Guru Nanak Dev","type":"market","region":"NSE equities","states":["*"]},
+    {"date":"2026-12-25","name":"Christmas","type":"market","region":"NSE equities","states":["*"]}
+  ]
+}

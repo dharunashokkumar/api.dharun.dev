@@ -51,14 +51,21 @@ var (
 	tokenSplit     = regexp.MustCompile(`[^a-z0-9&.]+`)
 )
 
-func loadCompanies(db *sql.DB) (*companyIndex, error) {
-	rows, err := db.Query(`SELECT id, exchange, ticker, company, sector, industry, one_line, isin, currency, market_cap, is_index_constituent, indexes FROM logos`)
+func newCompanyIndex() *companyIndex {
+	return &companyIndex{byExact: map[string][]*company{}, byLoose: map[string][]*company{}, byISIN: map[string][]*company{}}
+}
+
+func loadCompanies(logos *handle) (*companyIndex, error) {
+	if logos == nil {
+		return newCompanyIndex(), nil
+	}
+	rows, err := logos.db.Query(`SELECT id, exchange, ticker, company, sector, industry, one_line, isin, currency, market_cap, is_index_constituent, indexes FROM logos`)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	index := &companyIndex{byExact: map[string][]*company{}, byLoose: map[string][]*company{}, byISIN: map[string][]*company{}}
+	index := newCompanyIndex()
 	sectors, indexNames := map[string]bool{}, map[string]bool{}
 	for rows.Next() {
 		var c company
@@ -314,7 +321,7 @@ func (s *Server) companyView(r *http.Request, c *company) companyView {
 func (s *Server) handleCompany(w http.ResponseWriter, r *http.Request) {
 	symbol := r.PathValue("symbol")
 	info(r).subject = symbol
-	c, err := s.companies.resolve(symbol, r.URL.Query().Get("exchange"))
+	c, err := s.companies.Load().resolve(symbol, r.URL.Query().Get("exchange"))
 	if err != nil {
 		s.badRequest(w, r, err.Error())
 		return
@@ -345,7 +352,7 @@ func (s *Server) handleCompanySearch(w http.ResponseWriter, r *http.Request) {
 	}
 	info(r).subject = query.Get("q")
 
-	total, found := s.companies.searchCompanies(companyQuery{
+	total, found := s.companies.Load().searchCompanies(companyQuery{
 		text: query.Get("q"), exchange: exchange, sector: query.Get("sector"), index: query.Get("index"),
 		limit: limit, offset: offset,
 	})

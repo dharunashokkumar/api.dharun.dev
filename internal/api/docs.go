@@ -22,38 +22,37 @@ var aiCrawlers = []string{
 
 func (s *Server) registerRoutes() {
 	// Data endpoints: counted against the per-client rate limit.
-	s.handle("logo", true, "GET /v1/logos/{symbol}", s.handleLogo)
-	s.handle("company", true, "GET /v1/companies/{symbol}", s.handleCompany)
-	s.handle("company_search", true, "GET /v1/companies", s.handleCompanySearch)
-	s.handle("pincode", true, "GET /v1/pincode/{pincode}", s.handlePincode)
-	s.handle("pincode_search", true, "GET /v1/pincode", s.handlePincodeSearch)
-	s.handle("ifsc", true, "GET /v1/ifsc/{code}", s.handleIFSC)
-	s.handle("ifsc_search", true, "GET /v1/ifsc", s.handleIFSCSearch)
-	s.handle("bank", true, "GET /v1/banks/{code}", s.handleBank)
-	s.handle("bank_search", true, "GET /v1/banks", s.handleBankSearch)
-	s.handle("rto", true, "GET /v1/rto/{code}", s.handleRTO)
-	s.handle("rto_search", true, "GET /v1/rto", s.handleRTOSearch)
-	s.handle("holidays", true, "GET /v1/holidays/{year}", s.handleHolidays)
-	s.handle("words", true, "GET /v1/words/{number}", s.handleWords)
-	s.handle("validate", true, "GET /v1/validate/{kind}/{value}", s.handleValidate)
-	s.handle("states", true, "GET /v1/states", s.handleStates)
-	s.handle("states", true, "GET /v1/states/{code}", s.handleState)
-	s.handle("mcp", true, "/mcp", s.handleMCP)
+	s.handle("logo", costLight, "GET /v1/logos/{symbol}", s.handleLogo)
+	s.handle("company", costLight, "GET /v1/companies/{symbol}", s.handleCompany)
+	s.handle("company_search", costLight, "GET /v1/companies", s.handleCompanySearch)
+	s.handle("pincode", costLight, "GET /v1/pincode/{pincode}", s.handlePincode)
+	s.handle("pincode_search", costLight, "GET /v1/pincode", s.handlePincodeSearch)
+	s.handle("ifsc", costLight, "GET /v1/ifsc/{code}", s.handleIFSC)
+	s.handle("ifsc_search", costLight, "GET /v1/ifsc", s.handleIFSCSearch)
+	s.handle("bank", costLight, "GET /v1/banks/{code}", s.handleBank)
+	s.handle("bank_search", costLight, "GET /v1/banks", s.handleBankSearch)
+	s.handle("rto", costLight, "GET /v1/rto/{code}", s.handleRTO)
+	s.handle("rto_search", costLight, "GET /v1/rto", s.handleRTOSearch)
+	s.handle("holidays", costLight, "GET /v1/holidays/{year}", s.handleHolidays)
+	s.handle("words", costLight, "GET /v1/words/{number}", s.handleWords)
+	s.handle("validate", costLight, "GET /v1/validate/{kind}/{value}", s.handleValidate)
+	s.handle("states", costLight, "GET /v1/states", s.handleStates)
+	s.handle("states", costLight, "GET /v1/states/{code}", s.handleState)
+	s.handle("mcp", costLight, "/mcp", s.handleMCP)
 
 	// Documentation and plumbing.
-	s.handle("docs", false, "GET /v1", s.handleIndex)
-	s.handle("docs", false, "GET /{$}", s.handleHome)
-	s.handle("docs", false, "GET /docs/{group}", s.handleGroupPage)
-	s.handle("docs", false, "GET /openapi.json", s.handleOpenAPI)
-	s.handle("docs", false, "GET /llms.txt", s.handleLLMs)
-	s.handle("docs", false, "GET /robots.txt", s.handleRobots)
-	s.handle("docs", false, "GET /sitemap.xml", s.handleSitemap)
-	s.handle("docs", false, "GET /favicon.svg", s.handleFavicon)
-	s.handle("health", false, "GET /healthz", s.handleHealth)
+	s.handle("docs", costFree, "GET /v1", s.handleIndex)
+	s.handle("docs", costFree, "GET /{$}", s.handleHome)
+	s.handle("docs", costFree, "GET /docs/{group}", s.handleGroupPage)
+	s.handle("docs", costFree, "GET /openapi.json", s.handleOpenAPI)
+	s.handle("docs", costFree, "GET /llms.txt", s.handleLLMs)
+	s.handle("docs", costFree, "GET /robots.txt", s.handleRobots)
+	s.handle("docs", costFree, "GET /sitemap.xml", s.handleSitemap)
+	s.handle("docs", costFree, "GET /favicon.svg", s.handleFavicon)
+	s.handle("health", costFree, "GET /healthz", s.handleHealth)
 
-	s.mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		s.notFound(w, r, "Not found. The API index is at /v1 and the documentation at /.")
-	})
+	s.registerMore()
+	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 
 // cached renders a document once per public origin.
@@ -97,15 +96,16 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 		}
 		groups = append(groups, view)
 	}
+	states := map[string]datasetState{}
+	for _, state := range s.store.states() {
+		states[state.Name] = state
+	}
 	data := map[string]any{
-		"name":    siteName,
-		"summary": siteTagline,
-		"version": s.cfg.Version,
-		"records": map[string]int{
-			"logos": s.counts.Logos, "pincodes": s.counts.Pincodes, "postOffices": s.counts.PostOffices,
-			"banks": s.counts.Banks, "bankBranches": s.counts.Branches, "rtoCodes": s.counts.RTOs, "holidays": s.counts.Holidays,
-		},
-		"holidayYears": s.years,
+		"name":         siteName,
+		"summary":      siteTagline,
+		"version":      s.cfg.Version,
+		"datasets":     states,
+		"holidayYears": s.holidayYears(),
 		"apis":         groups,
 		"links": map[string]string{
 			"docs": origin + "/", "openapi": origin + "/openapi.json", "llms": origin + "/llms.txt", "mcp": origin + "/mcp",
@@ -139,14 +139,33 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 					success["content"] = map[string]any{"image/svg+xml": map[string]any{}, "image/png": map[string]any{}}
 				}
 				errorResponse := map[string]any{"$ref": "#/components/responses/Error"}
-				paths[e.Path] = map[string]any{"get": map[string]any{
-					"operationId": operationID(e.Path),
-					"tags":        []string{group.Title},
-					"summary":     e.Summary,
-					"description": e.Doc,
-					"parameters":  parameters,
-					"responses":   map[string]any{"200": success, "400": errorResponse, "404": errorResponse, "429": errorResponse},
-				}}
+				operation := func(method string) map[string]any {
+					return map[string]any{
+						"operationId": operationID(e.Path) + method,
+						"tags":        []string{group.Title},
+						"summary":     e.Summary,
+						"description": e.Doc,
+						"parameters":  parameters,
+						"responses":   map[string]any{"200": success, "400": errorResponse, "404": errorResponse, "429": errorResponse},
+					}
+				}
+				item := map[string]any{"get": operation("")}
+				if e.Post {
+					post := operation("_post")
+					post["requestBody"] = map[string]any{
+						"description": e.Body,
+						"required":    true,
+						"content": map[string]any{
+							"text/plain": map[string]any{"schema": map[string]any{"type": "string"}},
+							"application/json": map[string]any{"schema": map[string]any{
+								"type": "object", "required": []string{"text"},
+								"properties": map[string]any{"text": map[string]any{"type": "string"}},
+							}},
+						},
+					}
+					item["post"] = post
+				}
+				paths[e.Path] = item
 			}
 		}
 		document := map[string]any{
@@ -216,7 +235,7 @@ func (s *Server) handleLLMs(w http.ResponseWriter, r *http.Request) {
 	body := s.cached(r, "llms", func(origin string) []byte {
 		var out strings.Builder
 		fmt.Fprintf(&out, "# %s\n\n> %s\n\n", siteName, siteSummary)
-		out.WriteString("Every endpoint is a plain GET under `/v1`. JSON responses share one shape: `{ \"data\": ..., \"meta\": { ... } }`, where `meta.source` credits the dataset. Errors are `{ \"error\": { \"code\", \"message\" } }` with a matching HTTP status. Limit: " +
+		out.WriteString("Every endpoint is a plain GET under `/v1`; endpoints that take text also accept it as a POST body. JSON responses share one shape: `{ \"data\": ..., \"meta\": { ... } }`, where `meta.source` credits the dataset. Errors are `{ \"error\": { \"code\", \"message\" } }` with a matching HTTP status. Limit: " +
 			fmt.Sprint(s.cfg.RateLimitPerMinute) + " requests per minute per client.\n\n")
 		for _, group := range catalog {
 			fmt.Fprintf(&out, "## %s\n\n%s\n\n", group.Title, group.Intro)
@@ -234,6 +253,9 @@ func (s *Server) handleLLMs(w http.ResponseWriter, r *http.Request) {
 				}
 				if len(options) > 0 {
 					out.WriteString(". Query: " + strings.Join(options, ", "))
+				}
+				if e.Post {
+					out.WriteString(". Also `POST` with the text as the body (text/plain, or JSON `{\"text\": ...}`)")
 				}
 				out.WriteString(".\n")
 			}
@@ -287,12 +309,13 @@ type pageData struct {
 	Groups      []pageGroup
 	Single      bool
 	Limit       int
-	Counts      datasetCounts
+	BodyLimit   string
+	Counts      map[string]int
 }
 
 type pageGroup struct {
 	apiGroup
-	Source *sourceRef
+	Sources []*sourceRef
 }
 
 var pageTemplate = template.Must(template.New("page").Funcs(template.FuncMap{
@@ -361,16 +384,19 @@ Errors are <code>{ "error": { "code", "message" } }</code> with a matching statu
 <p>{{.Intro}}</p>
 {{range .Endpoints}}
 <h3>{{.Summary}}</h3>
-<pre>GET {{.Path}}</pre>
+<pre>GET {{.Path}}{{if .Post}}
+POST {{.Path}}{{end}}</pre>
 {{if .Doc}}<p>{{.Doc}}</p>{{end}}
+{{if .Post}}<p>POST body: {{.Body}} Send it as <code>text/plain</code>, or as JSON <code>{"text": "..."}</code> with the options beside it. Up to {{$.BodyLimit}}.</p>{{end}}
+{{if .Private}}<p>The input is never written to the request log and the response is not cacheable.</p>{{end}}
 {{with queryParams .}}<table>{{range .}}<tr><th><code>{{.Name}}</code></th><td>{{.Doc}}{{if .Enum}} One of: {{join .Enum ", "}}.{{end}}{{if .Required}} Required.{{end}}</td></tr>{{end}}</table>{{end}}
 <p>Try it: <a href="{{$.Origin}}{{.Example}}">{{$.Origin}}{{.Example}}</a></p>
 {{end}}
-{{with .Source}}<p class="source">Data: <a href="{{.URL}}">{{.Name}}</a>{{if .Version}} ({{.Version}}){{end}}, retrieved {{.Retrieved}}. Licence: {{.Licence}}.{{if .Attribution}} {{.Attribution}}{{end}}</p>{{end}}
+{{range .Sources}}<p class="source">Data: <a href="{{.URL}}">{{.Name}}</a>{{if .Version}} ({{.Version}}){{end}}, retrieved {{.Retrieved}}. Licence: {{.Licence}}.{{if .Attribution}} {{.Attribution}}{{end}}</p>{{end}}
 </section>
 {{end}}
 <footer>
-<p>{{.Counts.Logos}} logos, {{.Counts.PostOffices}} post offices, {{.Counts.Branches}} bank branches, {{.Counts.RTOs}} RTO codes.
+<p>{{index .Counts "logos"}} logos, {{index .Counts "post_offices"}} post offices, {{index .Counts "branches"}} bank branches, {{index .Counts "rto_codes"}} RTO codes.
 Company logos and trademarks belong to their respective owners.</p>
 <p>Built by <a href="https://dharun.dev">Dharun Ashokkumar</a>. Source on <a href="https://github.com/dharunashokkumar/api.dharun.dev">GitHub</a>.</p>
 </footer>
@@ -387,10 +413,17 @@ func (s *Server) renderPage(origin string, groups []apiGroup, single bool) []byt
 		Canonical:   origin + "/",
 		Single:      single,
 		Limit:       s.cfg.RateLimitPerMinute,
-		Counts:      s.counts,
+		BodyLimit:   byteSize(s.cfg.MaxBodyBytes),
+		Counts:      s.recordCounts(),
 	}
 	for _, group := range groups {
-		data.Groups = append(data.Groups, pageGroup{apiGroup: group, Source: s.source(group.SourceKey)})
+		view := pageGroup{apiGroup: group}
+		for _, key := range append([]string{group.SourceKey}, group.MoreSources...) {
+			if source := s.source(key); source != nil {
+				view.Sources = append(view.Sources, source)
+			}
+		}
+		data.Groups = append(data.Groups, view)
 	}
 	if single {
 		data.Title = groups[0].Title + " API for India, free and open | " + siteName
@@ -419,4 +452,17 @@ func (s *Server) handleGroupPage(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	s.notFound(w, r, "No such documentation page.")
+}
+
+// recordCounts adds up the record counts of every dataset in use, by kind.
+func (s *Server) recordCounts() map[string]int {
+	counts := map[string]int{}
+	for _, state := range s.store.states() {
+		for kind, count := range state.Records {
+			if !strings.Contains(kind, ":") {
+				counts[kind] += count
+			}
+		}
+	}
+	return counts
 }

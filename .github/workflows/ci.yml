@@ -1,5 +1,9 @@
 name: CI
 
+# Every pull request and push is tested. A push to main that passes is also published as
+# a release; servers running deploy/dharun-api-update.sh install it within ten minutes.
+# Nothing in this workflow connects to a server, and no data is fetched here: servers
+# refresh their own datasets.
 on:
   push:
     branches: [main]
@@ -10,11 +14,14 @@ permissions:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Never cancel a run on main halfway through publishing.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
     steps:
       - uses: actions/checkout@v7
 
@@ -27,7 +34,7 @@ jobs:
 
       - run: go vet ./...
 
-      - name: Unit, API and updater tests
+      - name: Unit, API, refresh and updater tests
         run: go test ./...
 
       - name: Lint shell scripts
@@ -36,7 +43,57 @@ jobs:
       - name: Check the logo scraper compiles
         run: python3 -m py_compile tools/scrape_logo_metadata.py
 
+      # Releases from main are numbered 1.1.<run>; anything else builds as a test version.
+      - id: version
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF" = refs/heads/main ]; then
+            echo "version=1.1.$GITHUB_RUN_NUMBER" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=0.0.0-ci.$GITHUB_RUN_NUMBER" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Build the release bundle from the full datasets and smoke-test it
         run: |
-          bash tools/build-release.sh 0.0.0-ci
+          bash tools/build-release.sh "${{ steps.version.outputs.version }}"
           bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: bundle
+          path: dist/
+          retention-days: 3
+
+  publish:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: publish
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: bundle
+          path: dist
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.test.outputs.version }}
+        run: |
+          gh release create "v$VERSION" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --latest \
+            dist/dharun-api-linux-amd64.tar.gz dist/dharun-api-linux-amd64.tar.gz.sha256 dist/VERSION \
+            --title "v$VERSION" --generate-notes
+
+      # Servers only ever need the latest release and the few before it for a rollback.
+      - name: Remove automatic releases beyond the newest 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release list --repo "$GITHUB_REPOSITORY" --limit 200 --json tagName,createdAt \
+            --jq '[.[] | select(.tagName | test("^v1\.1\.[0-9]+$"))] | sort_by(.createdAt) | reverse | .[15:] | .[].tagName' |
+            while read -r tag; do
+              gh release delete "$tag" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes
+            done

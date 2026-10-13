@@ -1,0 +1,26 @@
+[Unit]
+Description=Refresh the api.dharun.dev datasets that are due
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/dharun-api/current/apidata
+
+[Service]
+Type=oneshot
+User=dharun-api
+Group=dharun-api
+WorkingDirectory=/opt/dharun-api/current
+StateDirectory=dharun-api
+Environment=SEED_DIR=/opt/dharun-api/current/seed
+Environment=DATA_DIR=/var/lib/dharun-api/data
+# Each dataset decides whether it is due (weekly for IFSC, monthly for RTO codes and
+# holidays). The running API notices a new copy within seconds; no restart is needed.
+ExecStart=/opt/dharun-api/current/apidata refresh
+# Short-lived: peak measured at 200 MB (the weekly IFSC refresh), released when it exits. It never
+# shares a limit with the API, so a large refresh cannot push the API out.
+MemoryMax=512M
+CPUSchedulingPolicy=batch
+Nice=10
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes

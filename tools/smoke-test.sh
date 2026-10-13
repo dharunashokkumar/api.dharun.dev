@@ -10,7 +10,7 @@ base="http://127.0.0.1:$port"
 dir="$(mktemp -d)"
 
 tar -xzf "$bundle" -C "$dir" --strip-components=1
-(cd "$dir" && PORT="$port" METRICS_PORT=0 LOG_REQUESTS=0 exec ./api) &
+(cd "$dir" && PORT="$port" METRICS_PORT=0 LOG_REQUESTS=0 SEED_DIR=seed DATA_DIR="$dir/live" exec ./api) &
 pid=$!
 trap 'kill "$pid" 2>/dev/null || true; rm -rf "$dir"' EXIT
 
@@ -52,6 +52,23 @@ check "/v1/holidays/2026?type=market" application/json 'Republic Day'
 check /v1/words/100000 application/json '"one lakh"'
 check /v1/validate/gstin/27AAPFU0939F1ZV application/json '"valid":true'
 check /v1/states/TN application/json '"Tamil Nadu"'
+
+# Every dataset the repository holds must be in the bundle and served from its seed.
+health="$(curl -fsS "$base/healthz")"
+for dataset in holidays-bank holidays-central holidays-market ifsc logos pincode rto; do
+  case "$health" in
+    *"\"$dataset\":{\"copy\":\"seed\""*) ;;
+    *) echo "FAIL: /healthz does not serve $dataset from the seed: $health" >&2; exit 1 ;;
+  esac
+done
+echo "ok   /healthz lists every dataset"
+
+# The data tool in the bundle runs and reads the same seeds.
+(cd "$dir" && ./apidata status -seed seed -live "$dir/live") | grep -q '^rto  *seed' ||
+  { echo "FAIL: apidata status does not see the seeds" >&2; exit 1; }
+echo "ok   apidata status"
+"$dir/resvg" --version >/dev/null || { echo "FAIL: the bundled resvg does not run" >&2; exit 1; }
+echo "ok   resvg"
 
 version="$(cat "$dir/VERSION")"
 curl -fsS "$base/healthz" | grep -q "\"version\":\"$version\"" || { echo "FAIL: /healthz does not report $version" >&2; exit 1; }

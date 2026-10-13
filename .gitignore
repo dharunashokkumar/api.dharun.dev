@@ -1,7 +1,8 @@
 .cache/
 .metadata_cache/
 dist/
-/api.db
+/seed/
+/live/
 *.exe
 __pycache__/
 .DS_Store

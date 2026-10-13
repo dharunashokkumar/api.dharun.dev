@@ -172,10 +172,10 @@ var mcpTools = []mcpTool{
 	},
 	{
 		Name:        "list_holidays",
-		Description: "List Indian holidays for a year: bank holidays, central government holidays, stock market holidays and state holidays. Filter by type, state or month.",
+		Description: "List Indian holidays for a year: bank holidays, central government holidays, and stock market trading and clearing holidays. Filter by type, state or month.",
 		InputSchema: schema([]string{"year"}, map[string]any{
 			"year":  map[string]any{"type": "integer", "description": "Four-digit year."},
-			"type":  oneOf("Kind of holiday.", holidayTypes...),
+			"type":  oneOf("Kind of holiday.", holidayTypeNames()...),
 			"state": stateArg,
 			"month": map[string]any{"type": "integer", "minimum": 1, "maximum": 12},
 		}),

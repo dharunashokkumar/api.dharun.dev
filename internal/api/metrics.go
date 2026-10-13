@@ -26,7 +26,7 @@ type histogram struct {
 
 type metrics struct {
 	version   string
-	counts    datasetCounts
+	datasets  func() []datasetState
 	startedAt time.Time
 
 	mu          sync.Mutex
@@ -34,6 +34,7 @@ type metrics struct {
 	durations   map[string]*histogram
 	logos       map[string]uint64 // format|result
 	rateLimits  uint64
+	busyCount   uint64
 	totals      lifetimeTotals
 	totalsDirty bool
 
@@ -50,10 +51,10 @@ type lifetimeTotals struct {
 	Requests map[string]uint64 `json:"requests"`
 }
 
-func newMetrics(version, stateDir string, counts datasetCounts) *metrics {
+func newMetrics(version, stateDir string, datasets func() []datasetState) *metrics {
 	m := &metrics{
 		version:   version,
-		counts:    counts,
+		datasets:  datasets,
 		startedAt: time.Now(),
 		requests:  map[string]uint64{},
 		durations: map[string]*histogram{},
@@ -167,6 +168,12 @@ func (m *metrics) rateLimited() {
 	m.mu.Unlock()
 }
 
+func (m *metrics) busy() {
+	m.mu.Lock()
+	m.busyCount++
+	m.mu.Unlock()
+}
+
 func (m *metrics) lifetime() lifetimeTotals {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -178,6 +185,9 @@ func (m *metrics) lifetime() lifetimeTotals {
 }
 
 func (m *metrics) render() string {
+	// Read before taking the lock: the store has its own.
+	states := m.datasets()
+
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
@@ -189,15 +199,43 @@ func (m *metrics) render() string {
 	family("api_build_info", "gauge", "Running version of the API.")
 	fmt.Fprintf(&out, "api_build_info{version=%q} 1\n", m.version)
 
-	family("api_dataset_records", "gauge", "Records loaded, by dataset.")
-	for _, d := range []struct {
-		name  string
-		count int
-	}{
-		{"logos", m.counts.Logos}, {"pincodes", m.counts.Pincodes}, {"post_offices", m.counts.PostOffices},
-		{"banks", m.counts.Banks}, {"bank_branches", m.counts.Branches}, {"rto_codes", m.counts.RTOs}, {"holidays", m.counts.Holidays},
-	} {
-		fmt.Fprintf(&out, "api_dataset_records{dataset=%q} %d\n", d.name, d.count)
+	family("api_dataset_records", "gauge", "Records in the copy in use, by dataset and kind.")
+	for _, state := range states {
+		for _, kind := range sortedCountKeys(state.Records) {
+			if !strings.Contains(kind, ":") {
+				fmt.Fprintf(&out, "api_dataset_records{dataset=%q,kind=%q} %d\n", state.Name, kind, state.Records[kind])
+			}
+		}
+	}
+	family("api_dataset_available", "gauge", "1 when the server holds a copy of the dataset. copy is seed (came with the release) or server (fetched here).")
+	for _, state := range states {
+		available := 1
+		if state.Copy == "none" {
+			available = 0
+		}
+		fmt.Fprintf(&out, "api_dataset_available{dataset=%q,copy=%q} %d\n", state.Name, state.Copy, available)
+	}
+	family("api_dataset_fetched_timestamp_seconds", "gauge", "When the source of the copy in use was fetched.")
+	for _, state := range states {
+		if at := unixOf(state.Fetched); at > 0 {
+			fmt.Fprintf(&out, "api_dataset_fetched_timestamp_seconds{dataset=%q} %d\n", state.Name, at)
+		}
+	}
+	family("api_dataset_refresh_ok", "gauge", "1 when the last refresh attempt of a dataset this server refreshes worked, 0 when it failed or was held back.")
+	for _, state := range states {
+		if state.scheduled && state.Refresh != "" {
+			ok := 0
+			if state.Refresh == "updated" {
+				ok = 1
+			}
+			fmt.Fprintf(&out, "api_dataset_refresh_ok{dataset=%q} %d\n", state.Name, ok)
+		}
+	}
+	family("api_dataset_refresh_success_timestamp_seconds", "gauge", "When a refresh of the dataset last worked on this server.")
+	for _, state := range states {
+		if at := unixOf(state.LastSuccess); at > 0 {
+			fmt.Fprintf(&out, "api_dataset_refresh_success_timestamp_seconds{dataset=%q} %d\n", state.Name, at)
+		}
 	}
 
 	family("api_http_requests_total", "counter", "HTTP requests since start, by route, method and status.")
@@ -230,6 +268,9 @@ func (m *metrics) render() string {
 
 	family("api_rate_limited_total", "counter", "Requests rejected by the rate limiter.")
 	fmt.Fprintf(&out, "api_rate_limited_total %d\n", m.rateLimits)
+
+	family("api_busy_total", "counter", "CPU-heavy requests refused because every slot stayed taken.")
+	fmt.Fprintf(&out, "api_busy_total %d\n", m.busyCount)
 
 	family("api_lifetime_requests_total", "counter", "Requests served since the service first ran, kept across restarts, by route.")
 	for _, route := range sortedKeys(m.totals.Requests) {
@@ -271,4 +312,23 @@ func sortedKeys(counts map[string]uint64) []string {
 	}
 	sort.Strings(keys)
 	return keys
+}
+
+func sortedCountKeys(counts map[string]int) []string {
+	keys := make([]string, 0, len(counts))
+	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
+// unixOf turns a date or timestamp as stored with a dataset into Unix seconds, 0 if empty.
+func unixOf(value string) int64 {
+	for _, layout := range []string{time.RFC3339, "2006-01-02"} {
+		if parsed, err := time.Parse(layout, value); err == nil {
+			return parsed.Unix()
+		}
+	}
+	return 0
 }

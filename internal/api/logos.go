@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"container/list"
 	"crypto/sha1"
-	"database/sql"
 	"errors"
 	"fmt"
 	"image"
@@ -78,7 +77,7 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	info(r).subject = symbol
-	c, err := s.companies.resolve(symbol, query.Get("exchange"))
+	c, err := s.companies.Load().resolve(symbol, query.Get("exchange"))
 	if err != nil {
 		s.badRequest(w, r, err.Error())
 		return
@@ -109,10 +108,14 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	logos := s.need(w, r, "logos")
+	if logos == nil {
+		return
+	}
 	s.metrics.observeLogo(format, "found")
 	if format == "svg" {
 		var svg []byte
-		if err := s.stmts.logoSVG.QueryRow(c.ID).Scan(&svg); err != nil {
+		if err := logos.row(`SELECT svg FROM logos WHERE id = ?`, c.ID).Scan(&svg); err != nil {
 			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Could not read the logo.")
 			return
 		}
@@ -121,9 +124,9 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	image, err := s.png.get(c.ID+"|"+strconv.Itoa(size), func() ([]byte, error) {
+	image, err := s.png.get(logos.fingerprint+"|"+c.ID+"|"+strconv.Itoa(size), func() ([]byte, error) {
 		var master []byte
-		if err := s.stmts.logoPNG.QueryRow(c.ID).Scan(&master); err != nil {
+		if err := logos.row(`SELECT png FROM logos WHERE id = ?`, c.ID).Scan(&master); err != nil {
 			return nil, err
 		}
 		if master == nil {
@@ -275,33 +278,4 @@ func (c *pngCache) get(key string, render func() ([]byte, error)) ([]byte, error
 		}
 	}
 	return data, nil
-}
-
-// statements are prepared once; every lookup endpoint reuses them.
-type statements struct {
-	logoSVG, logoPNG                      *sql.Stmt
-	pincode, ifsc, bank, rto, rtoByPrefix *sql.Stmt
-}
-
-func (s *Server) prepare() error {
-	queries := []struct {
-		into  **sql.Stmt
-		query string
-	}{
-		{&s.stmts.logoSVG, `SELECT svg FROM logos WHERE id = ?`},
-		{&s.stmts.logoPNG, `SELECT png FROM logos WHERE id = ?`},
-		{&s.stmts.pincode, `SELECT office, office_type, delivery, division, region, circle, district, state_code, state, lat, lng FROM pincodes WHERE pincode = ? ORDER BY office_type = 'Head Office' DESC, office_type = 'Post Office' DESC, office`},
-		{&s.stmts.ifsc, `SELECT i.code, i.bank_code, b.name, i.branch, i.centre, i.district, i.state_code, i.state, i.city, i.address, i.contact, i.micr, i.swift, i.imps, i.neft, i.rtgs, i.upi FROM ifsc i JOIN banks b ON b.code = i.bank_code WHERE i.code = ?`},
-		{&s.stmts.bank, `SELECT code, name, type, micr, upi, branches FROM banks WHERE code = ?`},
-		{&s.stmts.rto, `SELECT code, prefix, state_code, state, office, jurisdiction, notes FROM rto WHERE code = ?`},
-		{&s.stmts.rtoByPrefix, `SELECT code, prefix, state_code, state, office, jurisdiction, notes FROM rto WHERE prefix = ? ORDER BY code`},
-	}
-	for _, q := range queries {
-		statement, err := s.db.Prepare(q.query)
-		if err != nil {
-			return fmt.Errorf("preparing %q: %w", q.query, err)
-		}
-		*q.into = statement
-	}
-	return nil
 }

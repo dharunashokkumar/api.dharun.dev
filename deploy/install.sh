@@ -4,7 +4,8 @@
 #
 #   tar -C deploy -cz . | ssh <host> 'mkdir -p /root/api-deploy && tar -xz -C /root/api-deploy && sh /root/api-deploy/install.sh'
 #
-# After this, new GitHub releases are installed automatically by dharun-api-update.timer.
+# After this, new GitHub releases are installed automatically by dharun-api-update.timer,
+# and datasets are refreshed from their sources by dharun-api-refresh.timer.
 # The server is one static binary: nothing else needs installing.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
@@ -24,12 +25,12 @@ if [ ! -f /etc/dharun-api/env ]; then
 fi
 
 install -m 755 "$here/dharun-api-update.sh" /usr/local/bin/dharun-api-update
-install -m 644 "$here/dharun-api.service" "$here/dharun-api-update.service" "$here/dharun-api-update.timer" /etc/systemd/system/
+install -m 644 "$here/dharun-api.service" "$here/dharun-api-update.service" "$here/dharun-api-update.timer"   "$here/dharun-api-refresh.service" "$here/dharun-api-refresh.timer" /etc/systemd/system/
 systemctl daemon-reload
-systemctl enable dharun-api.service dharun-api-update.timer
+systemctl enable dharun-api.service dharun-api-update.timer dharun-api-refresh.timer
 
 # First release: fetched by the same updater the timer runs. It starts the service itself.
 systemctl start dharun-api-update.service || { journalctl -u dharun-api-update.service --no-pager -n 20; exit 1; }
-systemctl start dharun-api-update.timer
+systemctl start dharun-api-update.timer dharun-api-refresh.timer
 
 echo "INSTALL OK: dharun-api $(cat /opt/dharun-api/current/VERSION), $(systemctl is-active dharun-api.service)"

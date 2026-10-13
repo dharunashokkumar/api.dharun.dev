@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 # Builds the deployable bundle into dist/: dharun-api-linux-amd64.tar.gz, its .sha256
-# and VERSION. The bundle holds the server binary and the database it reads.
+# and VERSION. The bundle holds:
+#
+#   api        the server
+#   apidata    the data tool; on the server it refreshes datasets (apidata refresh)
+#   resvg      the SVG renderer, for PNG output at request time
+#   seed/      every dataset as built from this repository's data/
+#   VERSION
 #
 #   bash tools/build-release.sh 1.2.3
 #
-# PNG logos need the resvg renderer. It is downloaded (pinned version and checksum)
-# unless RESVG points at one already installed.
+# resvg is downloaded (pinned version and checksum) unless RESVG points at one already
+# installed for linux/amd64.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -28,9 +34,12 @@ if [ -z "$resvg" ]; then
   resvg="$PWD/dist/tools/resvg"
 fi
 
-# The data tool runs on the build machine; the server is built for the deploy target.
-go run ./cmd/apidata build -strict -resvg "$resvg" -out "$stage/api.db"
-CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "-s -w -X main.version=$version" -o "$stage/api" ./cmd/api
+# The data tool runs here to build the seeds; both binaries are built for the server.
+go run ./cmd/apidata build -strict -resvg "$resvg" -out "$stage/seed"
+ldflags="-s -w -X main.version=$version"
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/api" ./cmd/api
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/apidata" ./cmd/apidata
+install -m 755 "$resvg" "$stage/resvg"
 printf '%s\n' "$version" > "$stage/VERSION"
 
 tar -C dist -czf "dist/$name-linux-amd64.tar.gz" "$name"

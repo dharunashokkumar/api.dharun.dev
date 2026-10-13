@@ -1,12 +1,32 @@
 {
-  "holidays": {
-    "name": "Indian holiday lists",
-    "publisher": "Reserve Bank of India; Department of Personnel and Training; National Stock Exchange of India",
+  "holidays-bank": {
+    "name": "Bank holidays in India",
+    "publisher": "Reserve Bank of India",
     "url": "https://www.rbi.org.in/Scripts/HolidayMatrixDisplay.aspx",
-    "licence": "Official notifications, compiled into one list",
+    "licence": "Official publication",
+    "version": "2026",
     "retrieved": "2026-10-13",
-    "attribution": "Bank holidays from the Reserve Bank of India holiday matrix, central government holidays from Department of Personnel and Training memoranda, trading holidays from the National Stock Exchange of India.",
-    "notes": "Central government lists are typed in by hand each year. State government holiday lists are not included."
+    "attribution": "Bank holidays from the Reserve Bank of India holiday matrix, by regional office.",
+    "notes": "Holidays under the Negotiable Instruments Act and the banks' closing of accounts. An office's holidays are attributed to the states it covers; union territories without an office are not guessed."
+  },
+  "holidays-central": {
+    "name": "Central government holidays",
+    "publisher": "Department of Personnel and Training, Government of India",
+    "url": "https://dopt.gov.in/",
+    "licence": "Official publication",
+    "version": "2026, 2027",
+    "retrieved": "2026-10-13",
+    "attribution": "Gazetted and restricted holidays for central government offices, from the yearly Department of Personnel and Training memorandum.",
+    "notes": "Typed in by hand each year from the memorandum, usually published in July for the following year. State government holiday lists are not included."
+  },
+  "holidays-market": {
+    "name": "Trading and clearing holidays, NSE equities",
+    "publisher": "National Stock Exchange of India",
+    "url": "https://www.nseindia.com/resources/exchange-communication-holidays",
+    "licence": "Official publication",
+    "version": "2026",
+    "retrieved": "2026-10-13",
+    "attribution": "Trading and clearing holidays from the National Stock Exchange of India, capital market segment."
   },
   "ifsc": {
     "name": "IFSC dataset",

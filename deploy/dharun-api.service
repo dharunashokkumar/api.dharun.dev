@@ -9,10 +9,15 @@ User=dharun-api
 Group=dharun-api
 WorkingDirectory=/opt/dharun-api/current
 EnvironmentFile=/etc/dharun-api/env
-Environment=DB_PATH=/opt/dharun-api/current/api.db
-# Lifetime request totals live here; systemd creates /var/lib/dharun-api for the service user.
+# Datasets that came with the release. A deploy replaces them.
+Environment=SEED_DIR=/opt/dharun-api/current/seed
+# Datasets this server fetched itself (dharun-api-refresh). A deploy never touches them;
+# for each dataset the more recent of the two copies is served.
+Environment=DATA_DIR=/var/lib/dharun-api/data
+# Lifetime request totals. systemd creates /var/lib/dharun-api for the service user.
 StateDirectory=dharun-api
 Environment=STATE_DIR=/var/lib/dharun-api
+Environment=RESVG=/opt/dharun-api/current/resvg
 ExecStart=/opt/dharun-api/current/api
 Restart=always
 RestartSec=3

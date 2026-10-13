@@ -86,7 +86,13 @@ type pincodeView struct {
 
 var sixDigits = regexp.MustCompile(`^[1-9][0-9]{5}$`)
 
+const pincodeQuery = `SELECT office, office_type, delivery, division, region, circle, district, state_code, state, lat, lng FROM pincodes WHERE pincode = ? ORDER BY office_type = 'Head Office' DESC, office_type = 'Post Office' DESC, office`
+
 func (s *Server) handlePincode(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "pincode")
+	if set == nil {
+		return
+	}
 	pincode := strings.Join(strings.Fields(r.PathValue("pincode")), "")
 	info(r).subject = pincode
 	if !sixDigits.MatchString(pincode) {
@@ -94,7 +100,7 @@ func (s *Server) handlePincode(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	rows, err := s.stmts.pincode.Query(pincode)
+	rows, err := set.rows(pincodeQuery, pincode)
 	if err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return
@@ -125,6 +131,10 @@ func (s *Server) handlePincode(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handlePincodeSearch(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "pincode")
+	if set == nil {
+		return
+	}
 	query := r.URL.Query()
 	text := strings.TrimSpace(query.Get("q"))
 	district := strings.TrimSpace(query.Get("district"))
@@ -166,11 +176,11 @@ func (s *Server) handlePincodeSearch(w http.ResponseWriter, r *http.Request) {
 	condition := strings.Join(where, " AND ")
 
 	var total int
-	if err := s.db.QueryRow(`SELECT COUNT(*) FROM pincodes WHERE `+condition, args...).Scan(&total); err != nil {
+	if err := set.db.QueryRow(`SELECT COUNT(*) FROM pincodes WHERE `+condition, args...).Scan(&total); err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return
 	}
-	rows, err := s.db.Query(`SELECT pincode, office, office_type, delivery, division, region, circle, district, state_code, state, lat, lng
+	rows, err := set.db.Query(`SELECT pincode, office, office_type, delivery, division, region, circle, district, state_code, state, lat, lng
 		FROM pincodes WHERE `+condition+` ORDER BY office COLLATE NOCASE, pincode LIMIT ? OFFSET ?`, append(args, limit, offset)...)
 	if err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
@@ -244,13 +254,17 @@ func scanBranch(scan func(...any) error) (branchView, error) {
 }
 
 func (s *Server) handleIFSC(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "ifsc")
+	if set == nil {
+		return
+	}
 	code := strings.ToUpper(strings.Join(strings.Fields(r.PathValue("code")), ""))
 	info(r).subject = code
 	if !ifscShape.MatchString(code) {
 		s.badRequest(w, r, "An IFSC is 11 characters: four letters, the digit 0, then six letters or digits.")
 		return
 	}
-	view, err := scanBranch(s.stmts.ifsc.QueryRow(code).Scan)
+	view, err := scanBranch(set.row(`SELECT `+branchColumns+` FROM ifsc i JOIN banks b ON b.code = i.bank_code WHERE i.code = ?`, code).Scan)
 	if err == sql.ErrNoRows {
 		s.notFound(w, r, "No branch found for IFSC "+code+".")
 		return
@@ -263,6 +277,10 @@ func (s *Server) handleIFSC(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleIFSCSearch(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "ifsc")
+	if set == nil {
+		return
+	}
 	query := r.URL.Query()
 	bank := strings.ToUpper(strings.TrimSpace(query.Get("bank")))
 	text := strings.TrimSpace(query.Get("q"))
@@ -300,11 +318,11 @@ func (s *Server) handleIFSCSearch(w http.ResponseWriter, r *http.Request) {
 	condition := strings.Join(where, " AND ")
 
 	var total int
-	if err := s.db.QueryRow(`SELECT COUNT(*) FROM ifsc i WHERE `+condition, args...).Scan(&total); err != nil {
+	if err := set.db.QueryRow(`SELECT COUNT(*) FROM ifsc i WHERE `+condition, args...).Scan(&total); err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return
 	}
-	rows, err := s.db.Query(`SELECT `+branchColumns+` FROM ifsc i JOIN banks b ON b.code = i.bank_code WHERE `+condition+
+	rows, err := set.db.Query(`SELECT `+branchColumns+` FROM ifsc i JOIN banks b ON b.code = i.bank_code WHERE `+condition+
 		` ORDER BY i.state, i.city, i.branch LIMIT ? OFFSET ?`, append(args, limit, offset)...)
 	if err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
@@ -337,13 +355,17 @@ func scanBank(scan func(...any) error) (bankView, error) {
 }
 
 func (s *Server) handleBank(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "ifsc")
+	if set == nil {
+		return
+	}
 	code := strings.ToUpper(strings.TrimSpace(r.PathValue("code")))
 	info(r).subject = code
 	if !bankShape.MatchString(code) {
 		s.badRequest(w, r, "A bank code is four letters, for example SBIN.")
 		return
 	}
-	view, err := scanBank(s.stmts.bank.QueryRow(code).Scan)
+	view, err := scanBank(set.row(`SELECT code, name, type, micr, upi, branches FROM banks WHERE code = ?`, code).Scan)
 	if err == sql.ErrNoRows {
 		s.notFound(w, r, "No bank found for code "+code+".")
 		return
@@ -356,6 +378,10 @@ func (s *Server) handleBank(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleBankSearch(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "ifsc")
+	if set == nil {
+		return
+	}
 	text := strings.TrimSpace(r.URL.Query().Get("q"))
 	limit, offset, ok := s.listParams(w, r, 50)
 	if !ok {
@@ -365,11 +391,11 @@ func (s *Server) handleBankSearch(w http.ResponseWriter, r *http.Request) {
 
 	pattern := likePattern(text, true)
 	var total int
-	if err := s.db.QueryRow(`SELECT COUNT(*) FROM banks WHERE name LIKE ? ESCAPE '\' OR code LIKE ? ESCAPE '\'`, pattern, pattern).Scan(&total); err != nil {
+	if err := set.db.QueryRow(`SELECT COUNT(*) FROM banks WHERE name LIKE ? ESCAPE '\' OR code LIKE ? ESCAPE '\'`, pattern, pattern).Scan(&total); err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return
 	}
-	rows, err := s.db.Query(`SELECT code, name, type, micr, upi, branches FROM banks
+	rows, err := set.db.Query(`SELECT code, name, type, micr, upi, branches FROM banks
 		WHERE name LIKE ? ESCAPE '\' OR code LIKE ? ESCAPE '\' ORDER BY branches DESC, name LIMIT ? OFFSET ?`, pattern, pattern, limit, offset)
 	if err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
@@ -415,6 +441,10 @@ func scanRTO(scan func(...any) error) (rtoView, error) {
 }
 
 func (s *Server) handleRTO(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "rto")
+	if set == nil {
+		return
+	}
 	input := strings.ToUpper(strings.TrimSpace(r.PathValue("code")))
 	info(r).subject = input
 	match := rtoInput.FindStringSubmatch(input)
@@ -431,7 +461,7 @@ func (s *Server) handleRTO(w http.ResponseWriter, r *http.Request) {
 		candidates = []string{base + match[3], base + match[3][:1], base}
 	}
 	for _, code := range candidates {
-		view, err := scanRTO(s.stmts.rto.QueryRow(code).Scan)
+		view, err := scanRTO(set.row(`SELECT code, prefix, state_code, state, office, jurisdiction, notes FROM rto WHERE code = ?`, code).Scan)
 		if err == sql.ErrNoRows {
 			continue
 		}
@@ -446,6 +476,10 @@ func (s *Server) handleRTO(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleRTOSearch(w http.ResponseWriter, r *http.Request) {
+	set := s.need(w, r, "rto")
+	if set == nil {
+		return
+	}
 	text := strings.TrimSpace(r.URL.Query().Get("q"))
 	stateCode, stateOK := stateParam(r)
 	limit, offset, ok := s.listParams(w, r, 50)
@@ -476,11 +510,11 @@ func (s *Server) handleRTOSearch(w http.ResponseWriter, r *http.Request) {
 	condition := strings.Join(where, " AND ")
 
 	var total int
-	if err := s.db.QueryRow(`SELECT COUNT(*) FROM rto WHERE `+condition, args...).Scan(&total); err != nil {
+	if err := set.db.QueryRow(`SELECT COUNT(*) FROM rto WHERE `+condition, args...).Scan(&total); err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return
 	}
-	rows, err := s.db.Query(`SELECT code, prefix, state_code, state, office, jurisdiction, notes FROM rto WHERE `+condition+
+	rows, err := set.db.Query(`SELECT code, prefix, state_code, state, office, jurisdiction, notes FROM rto WHERE `+condition+
 		` ORDER BY code LIMIT ? OFFSET ?`, append(args, limit, offset)...)
 	if err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
@@ -500,108 +534,4 @@ func (s *Server) handleRTOSearch(w http.ResponseWriter, r *http.Request) {
 	m := paging(total, limit, offset)
 	m.Source = s.source("rto")
 	s.ok(w, r, offices, m, cacheAPI)
-}
-
-// ---- holidays ----
-
-type holidayView struct {
-	Date    string   `json:"date"`
-	Weekday string   `json:"weekday"`
-	Name    string   `json:"name"`
-	Type    string   `json:"type"`
-	Region  string   `json:"region"`
-	States  []string `json:"states"`
-	Notes   *string  `json:"notes,omitempty"`
-}
-
-var holidayTypes = []string{"bank", "central_gazetted", "central_restricted", "market", "state"}
-
-func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	year, err := strconv.Atoi(r.PathValue("year"))
-	if err != nil || year < 1900 || year > 2200 {
-		s.badRequest(w, r, "The year must be four digits, for example /v1/holidays/2026.")
-		return
-	}
-	info(r).subject = strconv.Itoa(year)
-
-	available := false
-	for _, y := range s.years {
-		available = available || y == year
-	}
-	if !available {
-		s.notFound(w, r, fmt.Sprintf("No holiday data for %d. Years available: %s.", year, joinInts(s.years)))
-		return
-	}
-
-	where := []string{`year = ?`}
-	args := []any{year}
-
-	if kind := strings.ToLower(strings.TrimSpace(query.Get("type"))); kind != "" {
-		valid := false
-		for _, known := range holidayTypes {
-			valid = valid || known == kind
-		}
-		if !valid {
-			s.badRequest(w, r, "type must be one of: "+strings.Join(holidayTypes, ", ")+".")
-			return
-		}
-		where = append(where, `type = ?`)
-		args = append(args, kind)
-	}
-	stateCode, stateOK := stateParam(r)
-	if !stateOK {
-		s.badRequest(w, r, "state is not a known state name or code. See /v1/states.")
-		return
-	}
-	if stateCode != "" {
-		where = append(where, `(states = ',*,' OR states LIKE ?)`)
-		args = append(args, "%,"+stateCode+",%")
-	}
-	if raw := query.Get("month"); raw != "" {
-		month, err := intParam(r, "month", 0, 1, 12)
-		if err != nil {
-			s.badRequest(w, r, err.Error())
-			return
-		}
-		where = append(where, `substr(date, 6, 2) = ?`)
-		args = append(args, fmt.Sprintf("%02d", month))
-	}
-
-	rows, err := s.db.Query(`SELECT date, name, type, region, states, notes FROM holidays WHERE `+strings.Join(where, " AND ")+
-		` ORDER BY date, type, region`, args...)
-	if err != nil {
-		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-		return
-	}
-	defer rows.Close()
-
-	holidays := []holidayView{}
-	for rows.Next() {
-		var view holidayView
-		var states string
-		var notes sql.NullString
-		if err := rows.Scan(&view.Date, &view.Name, &view.Type, &view.Region, &states, &notes); err != nil {
-			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-			return
-		}
-		view.States = strings.Split(strings.Trim(states, ","), ",")
-		view.Weekday = weekday(view.Date)
-		view.Notes = str(notes)
-		holidays = append(holidays, view)
-	}
-	total := len(holidays)
-	s.ok(w, r, holidays, meta{Total: &total, Source: s.source("holidays"),
-		Note: "Holiday lists are compiled by hand from official notifications. Dates of festivals fixed by moon sighting can change; check the issuing authority before relying on a date."}, cacheAPI)
-}
-
-func joinInts(values []int) string {
-	if len(values) == 0 {
-		return "none yet"
-	}
-	parts := make([]string, len(values))
-	for i, value := range values {
-		parts[i] = strconv.Itoa(value)
-	}
-	return strings.Join(parts, ", ")
 }

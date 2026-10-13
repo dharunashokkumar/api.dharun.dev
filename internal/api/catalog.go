@@ -22,6 +22,13 @@ type endpoint struct {
 	Params  []param
 	Example string // a real request path that returns 200
 	Image   bool   // returns an image, not the JSON envelope
+	// Post marks an endpoint that also takes its text as a POST body. Body says what the
+	// body holds, and ExampleBody is a body that returns 200 when posted to Example.
+	Post        bool
+	Body        string
+	ExampleBody string
+	// Private marks an endpoint whose input may be personal: never logged, never cached.
+	Private bool
 }
 
 type apiGroup struct {
@@ -29,8 +36,10 @@ type apiGroup struct {
 	Title     string
 	Tagline   string
 	Intro     string
-	SourceKey string // key into the dataset sources, "" for pure logic
-	Endpoints []endpoint
+	SourceKey string // the dataset whose source is credited, "" for pure logic
+	// MoreSources lists further datasets the group draws on.
+	MoreSources []string
+	Endpoints   []endpoint
 }
 
 var (
@@ -176,14 +185,14 @@ var catalog = []apiGroup{
 		Title:     "Holidays",
 		Tagline:   "Bank, government and stock market holidays.",
 		Intro:     "Holidays for a year, filterable by kind and state. Each entry says who observes it.",
-		SourceKey: "holidays",
+		SourceKey: "holidays-bank", MoreSources: []string{"holidays-central", "holidays-market"},
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/holidays/{year}", Summary: "Holidays in a year",
 				Example: "/v1/holidays/2026?type=market",
 				Params: []param{
 					{Name: "year", In: "path", Type: "integer", Required: true, Doc: "Four-digit year."},
-					{Name: "type", In: "query", Type: "string", Enum: holidayTypes, Doc: "Kind of holiday."},
+					{Name: "type", In: "query", Type: "string", Enum: holidayTypeNames(), Doc: "Kind of holiday. clearing days are ones on which the market trades but nothing settles."},
 					stateFilter,
 					{Name: "month", In: "query", Type: "integer", Doc: "Month number, 1 to 12."},
 				},

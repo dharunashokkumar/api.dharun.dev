@@ -23,18 +23,18 @@ const testOrigin = "https://api.example.test"
 var (
 	testServer *Server
 	testHTTP   *httptest.Server
-	testDBPath string
+	testSeed   string
 )
 
-// TestMain builds a database from the small real-data fixtures in testdata and serves it.
+// TestMain builds every dataset from the small real-data fixtures in testdata and serves them.
 func TestMain(m *testing.M) {
 	dir, err := os.MkdirTemp("", "api-test-")
 	if err != nil {
 		panic(err)
 	}
-	testDBPath = filepath.Join(dir, "api.db")
-	if _, err := dataset.Build(dataset.BuildOptions{
-		DataDir: filepath.Join("testdata", "data"), LogosDir: filepath.Join("testdata", "logos"), Out: testDBPath, Strict: true,
+	testSeed = filepath.Join(dir, "seed")
+	if _, _, err := dataset.BuildSeeds(dataset.SeedOptions{
+		DataDir: filepath.Join("testdata", "data"), LogosDir: filepath.Join("testdata", "logos"), OutDir: testSeed, Strict: true,
 	}); err != nil {
 		panic(err)
 	}
@@ -44,20 +44,18 @@ func TestMain(m *testing.M) {
 	code := m.Run()
 	testHTTP.Close()
 	testServer.Close()
-	testServer.db.Close()
 	os.RemoveAll(dir)
 	os.Exit(code)
 }
 
 func newTestServer(cfg Config) *Server {
-	db, err := dataset.Open(testDBPath)
-	if err != nil {
-		panic(err)
+	if cfg.SeedDir == "" {
+		cfg.SeedDir = testSeed
 	}
 	if cfg.PNGCacheBytes == 0 {
 		cfg.PNGCacheBytes = 1 << 20
 	}
-	server, err := New(cfg, db)
+	server, err := New(cfg)
 	if err != nil {
 		panic(err)
 	}
@@ -541,12 +539,14 @@ func TestDocuments(t *testing.T) {
 	}
 
 	index := expectStatus(t, "/v1", http.StatusOK).data(t)
-	if len(index["apis"].([]any)) != len(catalog) || index["records"].(map[string]any)["logos"].(float64) < 10 {
-		t.Errorf("unexpected index: %v", index["records"])
+	logos, _ := index["datasets"].(map[string]any)["logos"].(map[string]any)
+	if len(index["apis"].([]any)) != len(catalog) || logos["copy"] != "seed" || logos["records"].(map[string]any)["logos"].(float64) < 10 {
+		t.Errorf("unexpected index: %v", index["datasets"])
 	}
 	health := expectStatus(t, "/healthz", http.StatusOK)
-	if !strings.Contains(string(health.body), `"version":"1.2.3"`) {
-		t.Errorf("health check does not report the version: %s", health.body)
+	// The updater looks for the version in exactly this form.
+	if !strings.HasPrefix(string(health.body), `{"status":"ok","version":"1.2.3",`) || !strings.Contains(string(health.body), `"pincode":{"copy":"seed"`) {
+		t.Errorf("health check does not report the version and the datasets: %s", health.body)
 	}
 
 	gz := request(t, http.MethodGet, "/openapi.json", "", "Accept-Encoding", "gzip")
@@ -685,7 +685,9 @@ func TestMetricsAndLifetimeTotals(t *testing.T) {
 		`api_logo_requests_total{format="svg",result="not_found"} 1`,
 		`api_http_request_duration_seconds_bucket{route="pincode",le="+Inf"} 1`,
 		`api_lifetime_requests_total{route="logo"} 2`,
-		`api_dataset_records{dataset="rto_codes"}`,
+		`api_dataset_records{dataset="rto",kind="rto_codes"} 150`,
+		`api_dataset_available{dataset="pincode",copy="seed"} 1`,
+		`api_dataset_fetched_timestamp_seconds{dataset="ifsc"}`,
 	} {
 		if !strings.Contains(text, want) {
 			t.Errorf("metrics are missing %q", want)
@@ -698,9 +700,8 @@ func TestMetricsAndLifetimeTotals(t *testing.T) {
 
 	// Totals are written on shutdown and picked up by the next start; health checks do not count.
 	server.Close()
-	server.db.Close()
 	restarted := newTestServer(Config{Version: "9.9.9", StateDir: stateDir})
-	defer func() { restarted.Close(); restarted.db.Close() }()
+	defer restarted.Close()
 	totals := restarted.metrics.lifetime()
 	if totals.Total != 3 || totals.Requests["logo"] != 2 || totals.Requests["pincode"] != 1 || totals.Requests["health"] != 0 {
 		t.Errorf("totals did not survive a restart: %+v", totals)
@@ -719,7 +720,7 @@ func TestMetricsAndLifetimeTotals(t *testing.T) {
 
 func TestRateLimit(t *testing.T) {
 	server := newTestServer(Config{Version: "t", RateLimitPerMinute: 3})
-	defer func() { server.Close(); server.db.Close() }()
+	defer server.Close()
 	hit := func(path, remote string) int {
 		req := httptest.NewRequest(http.MethodGet, path, nil)
 		req.RemoteAddr = remote

@@ -1,4 +1,4 @@
-package main
+package dataset
 
 import (
 	"fmt"
@@ -6,8 +6,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/dharunashokkumar/api.dharun.dev/internal/dataset"
 )
 
 // The RTO list is read from the wikitext of Wikipedia's "List of Regional Transport
@@ -28,7 +26,7 @@ var (
 	rowspanAttr  = regexp.MustCompile(`rowspan\s*=\s*"?(\d+)`)
 )
 
-func parseRTO(wikitext string) ([]dataset.RTO, error) {
+func parseRTO(wikitext string) ([]RTO, error) {
 	wikitext = wikiComment.ReplaceAllString(wikitext, "")
 	headings := sectionHeading.FindAllStringSubmatchIndex(wikitext, -1)
 	if len(headings) < 30 {
@@ -36,7 +34,7 @@ func parseRTO(wikitext string) ([]dataset.RTO, error) {
 	}
 
 	seen := map[string]bool{}
-	var offices []dataset.RTO
+	var offices []RTO
 	for i, heading := range headings {
 		prefix := wikitext[heading[2]:heading[3]]
 		end := len(wikitext)
@@ -74,7 +72,7 @@ func splitTables(section string) []string {
 	}
 }
 
-func parseRTOTable(table, prefix string) []dataset.RTO {
+func parseRTOTable(table, prefix string) []RTO {
 	rows := tableRows(table)
 	if len(rows) == 0 {
 		return nil
@@ -121,7 +119,7 @@ func parseRTOTable(table, prefix string) []dataset.RTO {
 		return row[col]
 	}
 
-	var offices []dataset.RTO
+	var offices []RTO
 	position := map[string]int{}
 	for _, row := range rows[headerRow+1:] {
 		// One cell can name several codes that share an office: "CH-01; CH-02" or "AP-39, AP-40".
@@ -131,7 +129,7 @@ func parseRTOTable(table, prefix string) []dataset.RTO {
 				continue
 			}
 			number, _ := strconv.Atoi(match[2])
-			office := dataset.RTO{
+			office := RTO{
 				Code:         fmt.Sprintf("%s-%02d%s", match[1], number, match[3]),
 				Prefix:       match[1],
 				Office:       cell(row, officeCol),

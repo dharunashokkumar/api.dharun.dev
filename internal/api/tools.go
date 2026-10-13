@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"regexp"
@@ -111,9 +112,9 @@ func (s *Server) handleValidate(w http.ResponseWriter, r *http.Request) {
 		view.Result = validate.PAN(value)
 	case "ifsc":
 		view.Result = validate.IFSC(value)
-		if view.Valid {
+		if branches := s.data("ifsc"); view.Valid && branches != nil {
 			var one int
-			exists := s.db.QueryRow(`SELECT 1 FROM ifsc WHERE code = ?`, view.Normalized).Scan(&one) == nil
+			exists := branches.row(`SELECT 1 FROM ifsc WHERE code = ?`, view.Normalized).Scan(&one) == nil
 			view.Exists = &exists
 		}
 	default:
@@ -148,7 +149,13 @@ func (s *Server) handleState(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) handleHealth(w http.ResponseWriter, r *http.Request) {
 	info(r).route = "health"
-	body := `{"status":"ok","version":"` + s.cfg.Version + `","logos":` + strconv.Itoa(s.counts.Logos) + "}\n"
+	states := map[string]datasetState{}
+	for _, state := range s.store.states() {
+		states[state.Name] = state
+	}
+	// The version comes first and in this exact form: the updater looks for it.
+	datasets, _ := json.Marshal(states)
+	body := `{"status":"ok","version":"` + s.cfg.Version + `","datasets":` + string(datasets) + "}\n"
 	writeBody(w, r, http.StatusOK, []byte(body), typeJSON, cacheNone, false)
 }
 
