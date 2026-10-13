@@ -12,8 +12,7 @@ import (
 )
 
 var (
-	fixtureData  = filepath.Join("..", "api", "testdata", "data")
-	fixtureLogos = filepath.Join("..", "api", "testdata", "logos")
+	fixtureData = filepath.Join("..", "api", "testdata", "data")
 )
 
 func mustSpec(t *testing.T, name string) *Spec {
@@ -27,7 +26,7 @@ func mustSpec(t *testing.T, name string) *Spec {
 
 func TestBuildSeedsFromFixtures(t *testing.T) {
 	out := t.TempDir()
-	built, warnings, err := BuildSeeds(SeedOptions{DataDir: fixtureData, LogosDir: fixtureLogos, OutDir: out, Strict: true, Only: FixtureNames()})
+	built, warnings, err := BuildSeeds(SeedOptions{DataDir: fixtureData, OutDir: out, Strict: true, Only: FixtureNames()})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,10 +100,10 @@ func TestBuildSeedsFromFixtures(t *testing.T) {
 
 func TestBuildSeedsStrictness(t *testing.T) {
 	empty, out := t.TempDir(), t.TempDir()
-	if _, _, err := BuildSeeds(SeedOptions{DataDir: empty, LogosDir: empty, OutDir: out, Strict: true}); err == nil {
+	if _, _, err := BuildSeeds(SeedOptions{DataDir: empty, OutDir: out, Strict: true}); err == nil {
 		t.Error("a strict build with no data should fail")
 	}
-	built, warnings, err := BuildSeeds(SeedOptions{DataDir: empty, LogosDir: empty, OutDir: out})
+	built, warnings, err := BuildSeeds(SeedOptions{DataDir: empty, OutDir: out})
 	if err != nil {
 		t.Fatalf("a lenient build should skip what is missing: %v", err)
 	}
@@ -251,7 +250,7 @@ func (f *fakeRTOSource) install(t *testing.T) {
 		if f.fail != nil {
 			return Source{}, f.fail
 		}
-		raw, err := os.ReadFile(filepath.Join(fixtureData, "rto.json"))
+		raw, err := os.ReadFile(filepath.Join(fixtureData, "rto", "rto.json"))
 		if err != nil {
 			return Source{}, err
 		}
@@ -264,7 +263,7 @@ func (f *fakeRTOSource) install(t *testing.T) {
 			offices[i].Office = "Renamed " + offices[i].Office
 		}
 		encoded, _ := json.Marshal(offices)
-		return Source{Name: "fake RTO list", Licence: "CC BY-SA 4.0", Version: fmt.Sprintf("call %d", f.calls)}, im.Write("rto.json", encoded)
+		return Source{Name: "fake RTO list", Licence: "CC BY-SA 4.0", Version: fmt.Sprintf("call %d", f.calls)}, im.Write("rto/rto.json", encoded)
 	}
 }
 
@@ -374,7 +373,7 @@ func TestRefresh(t *testing.T) {
 
 func TestRefreshOnlyTouchesWhatIsScheduled(t *testing.T) {
 	seed, live := t.TempDir(), t.TempDir()
-	if _, _, err := BuildSeeds(SeedOptions{DataDir: fixtureData, LogosDir: fixtureLogos, OutDir: seed, Only: []string{"rto", "pincode"}}); err != nil {
+	if _, _, err := BuildSeeds(SeedOptions{DataDir: fixtureData, OutDir: seed, Only: []string{"rto", "pincode"}}); err != nil {
 		t.Fatal(err)
 	}
 	source := &fakeRTOSource{}
@@ -406,7 +405,7 @@ func TestRefreshOnlyTouchesWhatIsScheduled(t *testing.T) {
 func TestHolidayRefreshKeepsEarlierYears(t *testing.T) {
 	spec := mustSpec(t, "holidays-market")
 	seed, live := t.TempDir(), t.TempDir()
-	if _, _, err := BuildSeeds(SeedOptions{DataDir: fixtureData, LogosDir: fixtureLogos, OutDir: seed, Only: []string{spec.Name}}); err != nil {
+	if _, _, err := BuildSeeds(SeedOptions{DataDir: fixtureData, OutDir: seed, Only: []string{spec.Name}}); err != nil {
 		t.Fatal(err)
 	}
 	original := spec.Import

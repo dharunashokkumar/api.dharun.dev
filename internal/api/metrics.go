@@ -231,6 +231,12 @@ func (m *metrics) render() string {
 			fmt.Fprintf(&out, "api_dataset_refresh_ok{dataset=%q} %d\n", state.Name, ok)
 		}
 	}
+	family("api_dataset_refresh_interval_seconds", "gauge", "How often this server refreshes the dataset. Absent for datasets that only change with a release.")
+	for _, state := range states {
+		if state.scheduled {
+			fmt.Fprintf(&out, "api_dataset_refresh_interval_seconds{dataset=%q} %d\n", state.Name, int(state.every.Seconds()))
+		}
+	}
 	family("api_dataset_refresh_success_timestamp_seconds", "gauge", "When a refresh of the dataset last worked on this server.")
 	for _, state := range states {
 		if at := unixOf(state.LastSuccess); at > 0 {

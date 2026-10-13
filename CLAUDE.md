@@ -45,6 +45,7 @@ bash tools/fetch-resvg.sh ~/.cache/tools   # Linux only: the pinned SVG renderer
 RESVG=~/.cache/tools/resvg go test ./...   # with RESVG set, PNG output is tested too
 bash tools/build-release.sh 0.0.0-ci       # Linux only: renders PNG logos with resvg
 bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz
+bash tools/install-test.sh dist            # needs Docker: installs on a fresh Debian 13 with systemd
 ```
 
 resvg has no Windows build. Without `RESVG` the PNG tests skip themselves and the image
@@ -70,7 +71,8 @@ sanity limits a refresh must pass (`Main`/`MaxShrink`, optional `Check`).
 
 There are two copies of a dataset, built by the same code:
 
-- **Seed**: built from the repository's `data/` by `apidata build` and shipped inside
+- **Seed**: built from the repository's `data/` (one folder per dataset, logos included)
+  by `apidata build` and shipped inside
   every release under `seed/`. A deploy replaces it.
 - **Server copy**: fetched and built on the server by `apidata refresh` into `DATA_DIR`
   (`/var/lib/dharun-api/data`), named `<dataset>.<UTC stamp>.db`. A deploy never touches
@@ -151,7 +153,8 @@ PNG is that SVG piped through the `resvg` program, one short-lived process per i
 (`RENDER_CONCURRENCY`, default 4). A large picture (resvg needs 40 to 75 MB for one)
 counts as half the slots. Parsed fonts are kept once used (16 MB for all twenty-two);
 drawing and bitmap resizing go through `renderer.work`, one per CPU.
-`tools/fetch-fonts.sh` re-downloads the fonts and checks them against `tools/fonts.sha256`.
+The fonts are committed in `internal/typeset/fonts` with their licence; a test checks
+each file against `SHA256SUMS` there, which also records where they came from.
 
 ### Logic packages
 

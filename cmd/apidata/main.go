@@ -56,7 +56,7 @@ func usage() {
 		}
 	}
 	fmt.Fprintln(os.Stderr, `usage:
-  apidata build   [-data data] [-logos logos] [-out seed] [-resvg path|none] [-strict] [dataset ...]
+  apidata build   [-data data] [-out seed] [-resvg path|none] [-strict] [dataset ...]
   apidata import  <dataset> [-data data] [-file F] [-version V] [-year Y] [-note text]
   apidata refresh [-seed seed] [-live dir] [-force] [dataset ...]
   apidata status  [-seed seed] [-live dir]
@@ -71,7 +71,6 @@ func runBuild(args []string) error {
 	flags := flag.NewFlagSet("build", flag.ExitOnError)
 	opts := dataset.SeedOptions{Log: logf}
 	flags.StringVar(&opts.DataDir, "data", "data", "directory holding the source files")
-	flags.StringVar(&opts.LogosDir, "logos", "logos", "directory holding the nse/ and bse/ SVG folders")
 	flags.StringVar(&opts.OutDir, "out", "seed", "directory to write the dataset files into")
 	flags.StringVar(&opts.Resvg, "resvg", "", "resvg executable for PNG logos (default: look on PATH; \"none\" to skip)")
 	flags.BoolVar(&opts.Strict, "strict", false, "fail if any dataset or the PNG renderer is missing")

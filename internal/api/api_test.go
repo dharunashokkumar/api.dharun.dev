@@ -35,7 +35,7 @@ func TestMain(m *testing.M) {
 	}
 	testSeed = filepath.Join(dir, "seed")
 	if _, _, err := dataset.BuildSeeds(dataset.SeedOptions{
-		DataDir: filepath.Join("testdata", "data"), LogosDir: filepath.Join("testdata", "logos"), OutDir: testSeed, Strict: true,
+		DataDir: filepath.Join("testdata", "data"), OutDir: testSeed, Strict: true,
 		Only: dataset.FixtureNames(),
 	}); err != nil {
 		panic(err)

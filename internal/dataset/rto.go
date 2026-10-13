@@ -37,7 +37,7 @@ CREATE TABLE rto (
 }
 
 func buildRTO(b *Builder) error {
-	raw, err := os.ReadFile(b.Path("rto.json"))
+	raw, err := os.ReadFile(b.Path("rto", "rto.json"))
 	if err != nil {
 		return err
 	}
@@ -127,7 +127,7 @@ func importRTO(im *Importer) (Source, error) {
 	if err != nil {
 		return Source{}, err
 	}
-	if err := im.Write("rto.json", append(encoded, '\n')); err != nil {
+	if err := im.Write("rto/rto.json", append(encoded, '\n')); err != nil {
 		return Source{}, err
 	}
 	return Source{

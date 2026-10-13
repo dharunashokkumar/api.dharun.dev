@@ -148,10 +148,9 @@ internal/fake      test data
 internal/words     number to words
 internal/validate  GSTIN, PAN, IFSC and checksum rules
 internal/india     states and their codes
-data/              dataset snapshots and sources.json
-logos/             SVG logo files
+data/              one folder per dataset (logos included), and sources.json
 deploy/            systemd units, installer, self-updater, monitoring
-tools/             release build, smoke test, resvg and font downloads, logo scraper
+tools/             release build, smoke test, install test, resvg download, logo scraper
 ```
 
 ## How data stays fresh
@@ -179,8 +178,8 @@ yearly memorandum, usually published in July for the following year.
 
 Deployment is pull-based: the server fetches releases, nothing connects in to it.
 
-1. Every push to `main` runs CI: tests, shell lint, a full release build and a smoke test
-   of the bundle against the full datasets.
+1. Every push to `main` runs CI: tests, shell lint, a full release build, a smoke test of
+   the bundle against the full datasets, and an install of it on a fresh Debian 13.
 2. When it passes, the bundle is published as release `v1.1.<run number>`.
 3. On the server, `dharun-api-update.timer` checks every 10 minutes. It downloads the new
    release, verifies the checksum, switches to it, and checks `/healthz`. If the new
@@ -205,8 +204,8 @@ proxy and port `9464` to Prometheus with a firewall.
   use, how old it is and whether its last refresh worked.
 - `:9464/stats` serves the all-time totals as JSON. They are saved to disk and survive
   restarts.
-- [`deploy/monitoring/`](deploy/monitoring/) has the Prometheus scrape job and a Grafana
-  dashboard.
+- [`deploy/monitoring/`](deploy/monitoring/) has the Prometheus scrape job, alert rules
+  (API down, a refresh that keeps failing, stale data) and a Grafana dashboard.
 - Every request is one JSON line on stdout: route, status, duration, what was looked up,
   country and user agent. Client IP addresses are not logged, and format checks log
   nothing about the value checked.

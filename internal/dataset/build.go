@@ -20,8 +20,6 @@ type Builder struct {
 	Tx *sql.Tx
 	// Dir holds the dataset's source files, laid out as in the repository's data/.
 	Dir string
-	// LogosDir holds the nse/ and bse/ SVG folders. Only the logos dataset reads it.
-	LogosDir string
 	// Resvg is the resvg executable for PNG logos; empty means no PNG output.
 	Resvg string
 	// Out is the database file being written, for datasets that keep a file beside it.
@@ -85,9 +83,8 @@ func copyFile(from, to string) error {
 
 // BuildOptions says what to build and from where.
 type BuildOptions struct {
-	Dir      string
-	LogosDir string
-	Resvg    string
+	Dir   string
+	Resvg string
 	// Out is the database file to write.
 	Out string
 	// Source is recorded in the file and repeated in API responses.
@@ -132,7 +129,7 @@ func Build(spec *Spec, opts BuildOptions) (Meta, []string, error) {
 		return meta, nil, err
 	}
 	builder := &Builder{
-		Tx: tx, Dir: opts.Dir, LogosDir: opts.LogosDir, Resvg: opts.Resvg, Out: opts.Out, counts: meta.Counts,
+		Tx: tx, Dir: opts.Dir, Resvg: opts.Resvg, Out: opts.Out, counts: meta.Counts,
 		log: opts.Log,
 		warn: func(format string, args ...any) {
 			message := fmt.Sprintf(format, args...)
@@ -173,10 +170,9 @@ func Build(spec *Spec, opts BuildOptions) (Meta, []string, error) {
 
 // SeedOptions says how to build the repository's copies.
 type SeedOptions struct {
-	DataDir  string // holds sources.json and every dataset's source files
-	LogosDir string
-	OutDir   string
-	Resvg    string
+	DataDir string // holds sources.json and every dataset's source files
+	OutDir  string
+	Resvg   string
 	// Strict makes a missing dataset an error instead of a warning.
 	Strict bool
 	// Only limits the build to these datasets; empty builds all.
@@ -213,7 +209,7 @@ func BuildSeeds(opts SeedOptions) ([]Meta, []string, error) {
 			source.Retrieved = "1970-01-01"
 		}
 		meta, notes, err := Build(spec, BuildOptions{
-			Dir: opts.DataDir, LogosDir: opts.LogosDir, Resvg: opts.Resvg,
+			Dir: opts.DataDir, Resvg: opts.Resvg,
 			Out: SeedPath(opts.OutDir, spec.Name), Source: source, Log: opts.Log,
 		})
 		for _, note := range notes {

@@ -2,8 +2,8 @@ name: CI
 
 # Every pull request and push is tested. A push to main that passes is also published as
 # a release; servers running deploy/dharun-api-update.sh install it within ten minutes.
-# Nothing in this workflow connects to a server, and no data is fetched here: servers
-# refresh their own datasets.
+# Nothing in this workflow connects to a server, and no dataset is fetched for a release:
+# servers refresh their own. The install test fetches one small list to prove a server can.
 on:
   push:
     branches: [main]
@@ -62,6 +62,11 @@ jobs:
         run: |
           bash tools/build-release.sh "${{ steps.version.outputs.version }}"
           bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz
+
+      # The real server cannot be tried from here, so a fresh Debian 13 with systemd stands
+      # in for it: installer, updater, sandboxed service, refresh job.
+      - name: Install the bundle on a fresh Debian 13
+        run: bash tools/install-test.sh dist
 
       - uses: actions/upload-artifact@v7
         with:

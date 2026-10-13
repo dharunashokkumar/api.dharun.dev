@@ -1,6 +1,8 @@
 package typeset
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"strings"
 	"testing"
 )
@@ -8,6 +10,33 @@ import (
 func TestEveryFontLoads(t *testing.T) {
 	if err := check(); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// The fonts in the repository are the ones recorded: nobody swapped a file by accident.
+func TestFontsMatchTheirChecksums(t *testing.T) {
+	list, err := files.ReadFile("fonts/SHA256SUMS")
+	if err != nil {
+		t.Fatal(err)
+	}
+	checked := 0
+	for _, line := range strings.Split(string(list), "\n") {
+		fields := strings.Fields(line)
+		if len(fields) != 2 || strings.HasPrefix(line, "#") {
+			continue
+		}
+		raw, err := files.ReadFile("fonts/" + fields[1])
+		if err != nil {
+			t.Errorf("%s is listed but missing", fields[1])
+			continue
+		}
+		if sum := sha256.Sum256(raw); hex.EncodeToString(sum[:]) != fields[0] {
+			t.Errorf("%s does not match its checksum", fields[1])
+		}
+		checked++
+	}
+	if checked != len(families)*2+1 {
+		t.Errorf("%d files checked, want every font and the licence", checked)
 	}
 }
 

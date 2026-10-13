@@ -54,11 +54,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--root",
         default=".",
-        help="Repository root containing logos/nse/ and logos/bse/. Defaults to current directory.",
+        help="Repository root containing data/logos/nse/ and data/logos/bse/. Defaults to current directory.",
     )
     parser.add_argument(
         "--output",
-        default="data/logo_metadata.full.json",
+        default="data/logos/metadata.json",
         help="Output JSON path, relative to --root unless absolute.",
     )
     parser.add_argument(
@@ -88,7 +88,7 @@ def resolve_path(root: Path, value: str) -> Path:
 def discover_logos(root: Path) -> list[LogoFile]:
     logos: list[LogoFile] = []
     for folder, exchange in (("nse", "NSE"), ("bse", "BSE")):
-        directory = root / "logos" / folder
+        directory = root / "data" / "logos" / folder
         if not directory.exists():
             continue
 
@@ -210,7 +210,7 @@ def make_one_liner(company_name: str | None, sector: str | None, industry: str |
 
 
 def build_record(root: Path, logo: LogoFile, scanner_row: dict[str, Any] | None) -> dict[str, Any]:
-    relative_path = logo.path.relative_to(root / "logos").as_posix()
+    relative_path = logo.path.relative_to(root / "data" / "logos").as_posix()
     if not scanner_row:
         return {
             "id": logo.source_symbol,

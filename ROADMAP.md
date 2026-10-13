@@ -15,7 +15,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 |---|---|
 | Released version | `v1.0.0` (2026-10-13), 9 API groups |
 | Production | Not deployed yet. The server is offline; first deploy follows when it is back |
-| Current round | Round 1 is built: the platform changes (section 2, two items left) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
+| Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Next rounds | Round 2 uploads, round 3 AI models, round 4 network tools. One round per session |
 
 ## 2. Platform work in round 1
@@ -25,7 +25,7 @@ the new APIs depend on them.
 
 - [x] **Split data from the server.** A release carries the program and a *seed* copy of
       each dataset. On the server, datasets live in their own directory that a deploy
-      never overwrites. See section 8.
+      never overwrites. See section 9.
 - [x] **The server refreshes its own data.** `dharun-api-refresh.timer` runs
       `apidata refresh` hourly; each dataset decides whether it is due, is fetched,
       checked and built into a new file. The API picks it up without a restart. No GitHub
@@ -33,15 +33,19 @@ the new APIs depend on them.
 - [x] **One database file per dataset** instead of one `api.db`.
 - [x] **Refresh metrics**: per dataset, which copy is in use, when its source was fetched,
       whether the last refresh worked, when it last worked, record counts.
-- [ ] Grafana panels and a stale-data alert for those metrics.
+- [x] **Grafana panels and alerts for those metrics.** The dashboard has a Data row
+      (failing refreshes, missing datasets, time since each refresh against its interval,
+      age of the data, copy in use); `deploy/monitoring/prometheus-alerts.yml` alerts when
+      the API is down, a refresh keeps failing, or a dataset misses three intervals.
 - [x] **Deploy on every push to `main`.** CI passes, a release `v1.1.<run>` is published,
       the server installs it within 10 minutes and rolls back if the health check fails.
       Automatic releases beyond the newest 15 are deleted.
 - [x] **Text input by POST**, with a size limit (`MAX_BODY_KB`, default 256).
 - [x] **Per-route cost and a queue for CPU-heavy routes**, so a burst waits instead of
       using more memory.
-- [ ] **Install test in CI.** Run `deploy/install.sh` inside a Debian 13 container with
-      systemd, since the real server cannot be tested until it is back.
+- [x] **Install test in CI.** `tools/install-test.sh` runs `deploy/install.sh` inside a
+      Debian 13 container with systemd on every push: installer, updater, sandboxed
+      service, PNG rendering, the refresh job and the API picking up the new copy.
 - [x] Memory measured after the split: API 22 MB idle, 40 MB peak under a burst; refresh
       job 200 MB peak during the IFSC refresh.
 - [x] Memory measured again after group A (Linux, release bundle, all datasets): the API
@@ -96,7 +100,7 @@ All of these run inside the existing server. "Memory" is what the API adds while
 | Thirukkural | `/v1/thirukkural/{number}`, search, random | 1,330 couplets, public domain, from `tk120404/thirukkural` (Apache-2.0): text, transliteration, and the translations of G.U. Pope (1886) and Drew and Lazarus. Eight couplets with broken characters in that compilation are repaired on import | None; the text does not change | Disk only | Live. The modern commentaries (Mu. Varadarajan, Kalaignar, Solomon Pappaiah) and the Shuddhananda Bharati translation are left out until a release into the public domain is confirmed; Parimelazhagar needs another source |
 | Phone numbers | `/v1/phone/{number}` | Format rules from the national numbering plan; mobile series to operator and circle from Wikipedia "Mobile telephone numbering in India" (CC BY-SA) | Manual, yearly | Disk only | Live. Circle and operator are the *original* allocation; number portability means the current operator can differ, and the response says so |
 | Constituency | `/v1/constituency?lat=&lng=`, `?pincode=` | DataMeet community maps (CC BY 4.0): assembly constituencies and 2019 parliamentary constituencies | Manual; changes only on delimitation | Disk only | Live. Assembly boundaries pre-date the redrawing in six states, and the response says so. No member names |
-| Boundaries | `/v1/geojson/states`, `/districts` | DataMeet (CC BY 4.0) | Manual | Disk only | Not building (section 7) |
+| Boundaries | `/v1/geojson/states`, `/districts` | DataMeet (CC BY 4.0) | Manual | Disk only | Not building (section 8) |
 | IP lookup | `/v1/ip/{address}`, `/v1/ip` | DB-IP Lite (CC BY 4.0, requires a credit link): country, city and network | Automatic, weekly check; a new file each month. Never in a release: only ever a server's own copy | Files are memory-mapped; about 140 MB on disk | Live |
 | Email check | `/v1/email/{address}` | Syntax rules; disposable-domain list from `disposable-email-domains` (CC0); mail-server lookup through public DNS. No mailbox probing | List: automatic, weekly | Small | Live. Treated as private: not logged, not cached |
 | DNS check | `/v1/dns/{name}` | Live queries to a fixed set of public resolvers; compares their answers | None | None | Live |
@@ -122,11 +126,11 @@ All of these run inside the existing server. "Memory" is what the API adds while
 
 ## 5. Data that changes daily
 
-Decided 2026-10-13: the server fetches this itself (section 8).
+Decided 2026-10-13: the server fetches this itself (section 9).
 
 | API | Data from | Refresh | Status |
 |---|---|---|---|
-| Mutual fund NAV | `NAVAll.txt` published by AMFI, about 1.5 MB. AMFI's site terms do not allow republishing; built anyway by decision (section 11), credited to AMFI | Automatic, every four hours | Live |
+| Mutual fund NAV | `NAVAll.txt` published by AMFI, about 1.5 MB. AMFI's site terms do not allow republishing; built anyway by decision (section 12), credited to AMFI | Automatic, every four hours | Live |
 | INR reference rates | FBIL publishes the official rates; RBI republishes them | Automatic, daily on Mumbai working days | **Open**: FBIL's reuse terms are not confirmed. Not built until they are read |
 
 ## 6. Later rounds
@@ -141,9 +145,18 @@ queue, and what happens to uploaded files (processed in memory, never stored).
 
 ### Round 3: AI models (group C)
 
-Embeddings, reranking, model-based transliteration, moderation, translation, speech to
-text. One model process beside the Go server in the same container, with its own memory
-limit, started on demand and stopped when idle.
+Embeddings (`bge-small` or `e5-small`), reranking (a cross-encoder), model-based
+transliteration (AI4Bharat IndicXlit: "type English, get Tamil"), moderation including
+Hinglish and Tanglish, translation (IndicTrans2), speech to text (Whisper), and name
+detection for PII redaction. One model process beside the Go server in the same
+container, with its own memory limit, started on demand and stopped when idle.
+
+Notes carried over from the first brainstorm: use quantised (int8, ONNX) models, about a
+quarter of the memory for more CPU; a fixed number of workers behind a queue, so more
+traffic means a longer wait and not more memory; long jobs (speech, translation) answer
+with a job ID that the client polls instead of holding a connection open. Rough sizes
+once loaded: embeddings 300 to 500 MB, reranker 300 MB, IndicXlit 0.5 to 1 GB, Whisper
+small 1 GB, IndicTrans2 distilled 1.5 to 2 GB. Measure before believing them.
 
 ### Round 4: network tools (group D)
 
@@ -154,7 +167,36 @@ outgoing requests leave from the server's own connection.
 Screenshot and HTML to PDF need a headless browser (200 to 500 MB each) and are the last
 candidates; Typst covers most of the PDF need.
 
-## 7. Not building
+### Ideas not scheduled yet
+
+From the first brainstorm, kept so they are not lost. None has a source or a decision yet.
+
+| Idea | What it would need |
+|---|---|
+| Index constituents with weights (Nifty 50, Bank Nifty, Sensex) | A source that may be republished; companies already list their index memberships |
+| Corporate actions (splits, bonus issues, dividends, record dates) | Same: exchange filings are public, redistribution terms are not clear |
+| Festival dates (Tamil, Hindu, Islamic calendars) | Hindu and Tamil festivals follow from the panchang, planned as its next step; Islamic dates depend on moon sighting |
+| State government holidays | Each state's own notification, typed in by hand like the central list |
+| Colleges and universities (AISHE), school boards | Check the AISHE portal's reuse terms |
+| Placeholder images | Pure logic; the drawing code for preview images would do it |
+| Symbol, ISIN, BSE code and company name cross-reference | Mostly served by `/v1/companies` already; a search across all four would finish it |
+
+## 7. Getting it used
+
+Building it is half the work. From the first brainstorm, none of it done yet:
+
+- [ ] List it: `public-apis/public-apis`, free-for.dev, the MCP registries, RapidAPI's free tier
+- [ ] Thin client packages on PyPI and npm, which also show up in code search
+- [ ] A public status page (Uptime Kuma in its own container)
+- [ ] Launch posts with a three-line example: r/developersIndia, r/TamilnaduFoss, Show HN, LinkedIn
+- [ ] Answer real questions (Reddit, Stack Overflow) with a working `curl` line
+- [ ] Put the tunnel's cache in front: almost every answer carries a long `Cache-Control`,
+      so cached answers keep working through a short outage
+
+Already in place for AI tools: `/openapi.json`, `/llms.txt`, the MCP server at `/mcp`.
+Never break `/v1`.
+
+## 8. Not building
 
 | Idea | Reason |
 |---|---|
@@ -165,7 +207,7 @@ candidates; Typst covers most of the PDF need.
 | Open web search or scraping | Uses the server's connection to scrape third parties; search engines block it |
 | State and district boundary files | Publishing a map of India whose boundary differs from the Survey of India's is an offence; DataMeet already offers the files free |
 
-## 8. How data reaches the server
+## 9. How data reaches the server
 
 Decided 2026-10-13: GitHub carries the program, the server keeps its own data fresh.
 
@@ -205,7 +247,7 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 | Logos and company details | TradingView scraper | When Dharun runs it | Repository seed |
 | Thirukkural, phone series, constituencies | See section 4 | Rarely | Repository seed |
 
-## 9. Questions settled on 2026-10-13
+## 10. Questions settled on 2026-10-13
 
 1. Seed against server copy: **the newer one wins**, compared by when its source was fetched.
 2. Thirukkural: **public domain plus confirmed releases.** Couplets, transliteration and
@@ -222,18 +264,29 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 7. Extras in round 1: **mutual fund NAV, airport codes, railway station codes.**
 8. Memory cap: **measured per round and reported**; Dharun sets the limit.
 
-## 10. First production deploy
+## 11. First production deploy
 
 Waiting for the server. Steps, done in a session on the private homelab repository:
 
 - [ ] Create the container; run `deploy/install.sh`
 - [ ] Tunnel route for `api.dharun.dev` to the service port
-- [ ] Prometheus scrape job and Grafana dashboard from `deploy/monitoring/`
+- [ ] Prometheus scrape job, alert rules and Grafana dashboard from `deploy/monitoring/`
+- [ ] **Count what Cloudflare serves from its cache.** The server only sees requests that
+      reach it, so once a Cache Rule is added the dashboard undercounts. Asked for on
+      2026-10-14: show the full picture in Grafana. Plan: the API asks Cloudflare's
+      analytics API once a minute for requests to `api.dharun.dev` by cache status and
+      publishes them on its own metrics port, then the dashboard gets panels for requests
+      at the edge, cached against passed to the server, and the hit ratio. No extra
+      container. Dharun made a separate read-only token for this (Zone, Analytics, Read)
+      and put it with the zone ID in `.cache/cloudflare.env`, which git ignores; on the
+      server both go in `/etc/dharun-api/env`. To check first: whether the plan allows
+      statistics per hostname and cache status. Not started. Without a Cache Rule
+      nothing is cached and the numbers already match.
 - [ ] Ship logs; add an uptime monitor on `/healthz`
 - [ ] Firewall: service port from the tunnel only, metrics port from Prometheus only
 - [ ] Check the first automatic refresh run and the first push-triggered deploy
 
-## 11. Decisions
+## 12. Decisions
 
 | Date | Decision |
 |---|---|

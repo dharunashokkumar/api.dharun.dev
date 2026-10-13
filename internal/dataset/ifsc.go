@@ -41,7 +41,7 @@ type bankRecord struct {
 }
 
 func buildIFSC(b *Builder) error {
-	raw, err := os.ReadFile(b.Path("banks.json"))
+	raw, err := os.ReadFile(b.Path("ifsc", "banks.json"))
 	if err != nil {
 		return err
 	}
@@ -50,7 +50,7 @@ func buildIFSC(b *Builder) error {
 		return fmt.Errorf("banks.json: %w", err)
 	}
 
-	records, malformed, err := readGzipCSV(b.Path("ifsc.csv.gz"))
+	records, malformed, err := readGzipCSV(b.Path("ifsc", "ifsc.csv.gz"))
 	if err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func buildIFSC(b *Builder) error {
 	}
 
 	// Names live in their own file and cover more bank codes than banks.json does.
-	rawNames, err := os.ReadFile(b.Path("banknames.json"))
+	rawNames, err := os.ReadFile(b.Path("ifsc", "banknames.json"))
 	if err != nil {
 		return err
 	}
@@ -188,13 +188,13 @@ func importIFSC(im *Importer) (Source, error) {
 	if !json.Valid(banks) || !json.Valid(names) {
 		return Source{}, errors.New("banks.json or banknames.json is not valid JSON")
 	}
-	if err := im.WriteGzip("ifsc.csv.gz", branches); err != nil {
+	if err := im.WriteGzip("ifsc/ifsc.csv.gz", branches); err != nil {
 		return Source{}, err
 	}
-	if err := im.Write("banks.json", banks); err != nil {
+	if err := im.Write("ifsc/banks.json", banks); err != nil {
 		return Source{}, err
 	}
-	if err := im.Write("banknames.json", names); err != nil {
+	if err := im.Write("ifsc/banknames.json", names); err != nil {
 		return Source{}, err
 	}
 	return Source{

@@ -33,7 +33,7 @@ CREATE INDEX pincodes_place ON pincodes(lat, lng) WHERE lat IS NOT NULL;`,
 }
 
 func buildPincodes(b *Builder) error {
-	records, malformed, err := readGzipCSV(b.Path("pincode.csv.gz"))
+	records, malformed, err := readGzipCSV(b.Path("pincode", "pincode.csv.gz"))
 	if err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func importPincode(im *Importer) (Source, error) {
 	if !bytes.Contains(bytes.ToLower(raw[:min(len(raw), 400)]), []byte("pincode")) {
 		return Source{}, errors.New("this does not look like the pincode directory: no Pincode column in the header")
 	}
-	if err := im.WriteGzip("pincode.csv.gz", raw); err != nil {
+	if err := im.WriteGzip("pincode/pincode.csv.gz", raw); err != nil {
 		return Source{}, err
 	}
 	return Source{

@@ -41,7 +41,8 @@ func writeRTO(t *testing.T, liveDir string, at time.Time, office string, schema 
 	t.Helper()
 	source := t.TempDir()
 	encoded, _ := json.Marshal([]dataset.RTO{{Code: "TN-28", Prefix: "TN", Office: office}})
-	os.WriteFile(filepath.Join(source, "rto.json"), encoded, 0o644)
+	os.MkdirAll(filepath.Join(source, "rto"), 0o755)
+	os.WriteFile(filepath.Join(source, "rto", "rto.json"), encoded, 0o644)
 	spec, _ := dataset.Lookup("rto")
 	altered := *spec
 	altered.Schema = schema
@@ -124,6 +125,7 @@ func TestRefreshStatusReachesTheMetrics(t *testing.T) {
 	server.MetricsHandler().ServeHTTP(metrics, httptest.NewRequest(http.MethodGet, "/metrics", nil))
 	for _, want := range []string{
 		`api_dataset_refresh_ok{dataset="rto"} 0`,
+		`api_dataset_refresh_interval_seconds{dataset="rto"} 2592000`,
 		`api_dataset_refresh_success_timestamp_seconds{dataset="rto"} 1789279200`,
 	} {
 		if !strings.Contains(metrics.Body.String(), want) {

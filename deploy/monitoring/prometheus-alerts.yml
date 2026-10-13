@@ -1,0 +1,73 @@
+# Alert rules for the API. Load it from prometheus.yml:
+#
+#   rule_files:
+#     - dharun-api-alerts.yml
+#
+# Stale or failing data never takes the API down: the copy in use keeps being served.
+# These tell you it has stopped getting newer.
+groups:
+  - name: dharun-api
+    rules:
+      - alert: DharunApiDown
+        expr: up{job="dharun-api"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: api.dharun.dev is not answering its metrics port
+          description: Prometheus has not been able to scrape the API for five minutes.
+
+      - alert: DharunApiErrors
+        expr: |
+          sum(rate(api_http_requests_total{job="dharun-api",status=~"5.."}[10m]))
+            / sum(rate(api_http_requests_total{job="dharun-api"}[10m])) > 0.05
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: More than 5% of API responses are server errors
+
+      # A failed source is retried after six hours, so this is two failures in a row.
+      - alert: DharunApiRefreshFailing
+        expr: api_dataset_refresh_ok{job="dharun-api"} == 0
+        for: 12h
+        labels:
+          severity: warning
+        annotations:
+          summary: 'Refresh of {{ $labels.dataset }} keeps failing'
+          description: >-
+            The last refresh attempts failed or were held back by a sanity check. See
+            `journalctl -u dharun-api-refresh` and /var/lib/dharun-api/data/refresh.json.
+
+      # Three refresh intervals without one that worked: 12 hours for mutual fund NAV,
+      # three weeks for IFSC, three months for the monthly datasets.
+      - alert: DharunApiDataStale
+        expr: |
+          (time() - api_dataset_refresh_success_timestamp_seconds{job="dharun-api"})
+            > 3 * on (dataset, instance) api_dataset_refresh_interval_seconds{job="dharun-api"}
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: '{{ $labels.dataset }} has not been refreshed for three intervals'
+          description: Check that dharun-api-refresh.timer is active and that the source is reachable.
+
+      # A dataset the server refreshes, and no refresh has ever worked here.
+      - alert: DharunApiNeverRefreshed
+        expr: |
+          api_dataset_refresh_interval_seconds{job="dharun-api"}
+            unless on (dataset, instance) api_dataset_refresh_success_timestamp_seconds{job="dharun-api"}
+        for: 2d
+        labels:
+          severity: warning
+        annotations:
+          summary: '{{ $labels.dataset }} has never been refreshed on this server'
+
+      - alert: DharunApiDatasetMissing
+        expr: api_dataset_available{job="dharun-api"} == 0
+        for: 3h
+        labels:
+          severity: warning
+        annotations:
+          summary: 'The server has no copy of {{ $labels.dataset }}'
+          description: Its endpoints answer 503 until a refresh fetches it.

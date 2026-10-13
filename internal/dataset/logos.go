@@ -73,7 +73,7 @@ type logoMetadata struct {
 }
 
 func buildLogos(b *Builder) error {
-	raw, err := os.ReadFile(b.Path("logo_metadata.full.json"))
+	raw, err := os.ReadFile(b.Path("logos", "metadata.json"))
 	if err != nil {
 		return err
 	}
@@ -84,7 +84,7 @@ func buildLogos(b *Builder) error {
 
 	svgs := make([][]byte, len(metadata.Logos))
 	for i, logo := range metadata.Logos {
-		svg, err := os.ReadFile(filepath.Join(b.LogosDir, filepath.FromSlash(logo.File)))
+		svg, err := os.ReadFile(b.Path("logos", filepath.FromSlash(logo.File)))
 		if err != nil {
 			return err
 		}

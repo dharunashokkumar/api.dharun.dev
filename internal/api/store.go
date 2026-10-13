@@ -269,6 +269,7 @@ type datasetState struct {
 	Refresh     string `json:"refresh,omitempty"`
 	LastSuccess string `json:"lastRefresh,omitempty"`
 	scheduled   bool
+	every       time.Duration // how often a server refreshes it; zero when it does not
 }
 
 func (st *store) states() []datasetState {
@@ -278,7 +279,7 @@ func (st *store) states() []datasetState {
 
 	var states []datasetState
 	for _, spec := range dataset.Specs() {
-		state := datasetState{Name: spec.Name, Copy: "none", scheduled: spec.Every > 0}
+		state := datasetState{Name: spec.Name, Copy: "none", scheduled: spec.Every > 0, every: spec.Every}
 		if current := st.get(spec.Name); current != nil {
 			state.Copy, state.Fetched, state.Records = "seed", current.meta.Fetched(), current.meta.Counts
 			if current.live {

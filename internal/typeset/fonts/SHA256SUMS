@@ -1,3 +1,6 @@
+# Noto fonts from github.com/notofonts/notofonts.github.io at commit
+# 4e15001b9fb484cc871d7b2ad930cd2226edf260: fonts/<Family>/hinted/ttf/<file>, and fonts/LICENSE.
+# To change a font, replace the file and its line here; the tests check every file against this list.
 478c558ea716033cd60c03438f628dfa75694dcf6b5f6d505a2f05fd2b4f3823 NotoSans-Regular.ttf
 1df075a380fc7cb898acf64c1f7b3b4dd780de3caa860178bf929de35817a913 NotoSans-Bold.ttf
 3c0a186feb3c63c7f6d63e1511dcdc144e745ae09b98e217c83f3e317974f6f9 NotoSansTamil-Regular.ttf

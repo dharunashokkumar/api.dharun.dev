@@ -16,7 +16,8 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update -q
 apt-get install -y -q curl ca-certificates
 
-id dharun-api >/dev/null 2>&1 || adduser --system --group --home /opt/dharun-api --no-create-home --shell /usr/sbin/nologin dharun-api
+# useradd, not adduser: a minimal Debian 13 does not come with adduser.
+id dharun-api >/dev/null 2>&1 || useradd --system --user-group --home-dir /opt/dharun-api --no-create-home --shell /usr/sbin/nologin dharun-api
 install -d -m 755 /opt/dharun-api /opt/dharun-api/releases /opt/dharun-api/failed /etc/dharun-api
 
 if [ ! -f /etc/dharun-api/env ]; then

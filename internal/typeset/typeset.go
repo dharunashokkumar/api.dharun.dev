@@ -27,7 +27,7 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
-//go:embed fonts/*.ttf
+//go:embed fonts/*.ttf fonts/LICENSE fonts/SHA256SUMS
 var files embed.FS
 
 // Em is the number of layout units in one em.
