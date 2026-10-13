@@ -62,13 +62,14 @@ check "/v1/barcode/code128?text=AWB1234" image/svg+xml
 check /v1/thirukkural/1 application/json '"The Praise of God"'
 check /v1/airports/MAA application/json '"VOMM"'
 check /v1/mutual-funds/122639 application/json '"PPFAS Mutual Fund"'
+check /v1/hsn/0902 application/json '"chapter"'
 check "/v1/text/tokens?text=hello%20world" application/json '"tokens":2'
 check "/v1/text/redact?text=PAN%20ABCPK1234F" application/json '[PAN]'
 check "/v1/transliterate?to=ascii&text=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D" application/json '"tamizh"'
 
 # Every dataset the repository holds must be in the bundle and served from its seed.
 health="$(curl -fsS "$base/healthz")"
-for dataset in holidays-bank holidays-central holidays-market ifsc logos pincode rto thirukkural airports disposable-email mutual-funds; do
+for dataset in holidays-bank holidays-central holidays-market ifsc logos pincode rto thirukkural airports disposable-email mutual-funds hsn; do
   case "$health" in
     *"\"$dataset\":{\"copy\":\"seed\""*) ;;
     *) echo "FAIL: /healthz does not serve $dataset from the seed: $health" >&2; exit 1 ;;

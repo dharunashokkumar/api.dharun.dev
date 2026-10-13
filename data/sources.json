@@ -50,6 +50,16 @@
     "retrieved": "2026-10-13",
     "attribution": "Trading and clearing holidays from the National Stock Exchange of India, capital market segment."
   },
+  "hsn": {
+    "name": "HSN and SAC codes",
+    "publisher": "Customs Tariff Act, 1975 (First Schedule) and GST notification 11/2017-Central Tax (Rate), as published on the GST portal",
+    "url": "https://tutorial.gst.gov.in/downloads/HSN_SAC.xlsx",
+    "licence": "Statute and gazette notification; reproduction permitted by section 52(1)(q) of the Copyright Act, 1957",
+    "version": "051108e31063",
+    "retrieved": "2026-10-13",
+    "sha256": "051108e31063f1ef0d6dfb005a622bcc848878fa2d94fae51a73e67f8916871e",
+    "attribution": "HSN codes from the First Schedule to the Customs Tariff Act, 1975, and SAC codes from the annexure to notification 11/2017-Central Tax (Rate), in the copy published on the GST portal."
+  },
   "ifsc": {
     "name": "IFSC dataset",
     "publisher": "Razorpay, compiled from Reserve Bank of India and NPCI lists",

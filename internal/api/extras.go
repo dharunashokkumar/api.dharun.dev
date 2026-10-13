@@ -79,6 +79,8 @@ func (s *Server) registerMore() {
 	s.handle("mutual_fund", costLight, "GET /v1/mutual-funds/{code}", s.handleScheme)
 	s.handle("mutual_fund_search", costLight, "GET /v1/mutual-funds", s.handleSchemeSearch)
 	s.handle("mutual_fund", costLight, "GET /v1/mutual-funds/fund-houses", s.handleFundHouses)
+	s.handle("hsn", costLight, "GET /v1/hsn/{code}", s.handleHSN)
+	s.handle("hsn_search", costLight, "GET /v1/hsn", s.handleHSNSearch)
 	for _, tool := range []struct {
 		route, path string
 		handler     http.HandlerFunc

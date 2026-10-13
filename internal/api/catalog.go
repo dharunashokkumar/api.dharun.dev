@@ -312,6 +312,30 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "hsn",
+		Title:     "HSN and SAC codes",
+		Tagline:   "GST classification codes for goods and services.",
+		Intro:     "Every HSN code for goods (from the Customs Tariff Act) and SAC code for services (from the GST services classification) with its description, the codes above it and the codes below it. GST rates are not included.",
+		SourceKey: "hsn",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/hsn/{code}", Summary: "A code, its parents and children",
+				Example: "/v1/hsn/0902",
+				Params:  []param{{Name: "code", In: "path", Type: "string", Required: true, Doc: "2 to 8 digits; spaces and dots are ignored. SAC codes start with 99."}},
+			},
+			{
+				Path: "/v1/hsn", Summary: "Search codes",
+				Doc:     "Every word of q must appear in the description; digits search by code prefix. Broader codes come first.",
+				Example: "/v1/hsn?q=green%20tea",
+				Params: []param{
+					{Name: "q", In: "query", Type: "string", Required: true, Doc: "Words of the description, or the start of a code."},
+					{Name: "kind", In: "query", Type: "string", Enum: []string{"hsn", "sac"}, Doc: "hsn for goods, sac for services."},
+					limitParam, offsetParam,
+				},
+			},
+		},
+	},
+	{
 		ID:        "mutual-funds",
 		Title:     "Mutual fund NAVs",
 		Tagline:   "Latest net asset value of every Indian mutual fund scheme.",
