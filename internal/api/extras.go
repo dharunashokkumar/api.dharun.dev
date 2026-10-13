@@ -29,6 +29,8 @@ func (s *Server) registerMore() {
 	s.handle("thirukkural_search", costLight, "GET /v1/thirukkural", s.handleKuralSearch)
 	s.handle("thirukkural", costLight, "GET /v1/thirukkural/chapters", s.handleKuralChapters)
 	s.handle("thirukkural", costLight, "GET /v1/thirukkural/chapters/{number}", s.handleKuralChapter)
+	s.handle("airport", costLight, "GET /v1/airports/{code}", s.handleAirport)
+	s.handle("airport_search", costLight, "GET /v1/airports", s.handleAirportSearch)
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

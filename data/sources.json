@@ -1,4 +1,15 @@
 {
+  "airports": {
+    "name": "OurAirports",
+    "publisher": "OurAirports (ourairports.com), data mirrored at github.com/davidmegginson/ourairports-data",
+    "url": "https://ourairports.com/data/",
+    "licence": "Public domain",
+    "licenceUrl": "https://ourairports.com/data/",
+    "version": "9509 airports kept",
+    "retrieved": "2026-10-13",
+    "sha256": "61c82a74de991e138dc57e1fbc72b6f47da30db9954be4e414452e896f7d40d8",
+    "attribution": "Airport data from OurAirports, released into the public domain."
+  },
   "holidays-bank": {
     "name": "Bank holidays in India",
     "publisher": "Reserve Bank of India",

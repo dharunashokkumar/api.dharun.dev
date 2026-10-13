@@ -49,6 +49,7 @@ func TestBuildSeedsFromFixtures(t *testing.T) {
 		"holidays-market":  {"holidays": 10},
 		"holidays-central": {"holidays": 10},
 		"thirukkural":      {"kurals": 1330, "chapters": 133},
+		"airports":         {"airports": 10, "airports_in_india": 8},
 	} {
 		for kind, want := range minimum {
 			if got := counts[dataset][kind]; got < want {

@@ -297,6 +297,32 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "airports",
+		Title:     "Airports",
+		Tagline:   "Airport codes to airports, and airports by city.",
+		Intro:     "Every airport in the world with an IATA code, plus every Indian airfield and heliport, from OurAirports. Indian airports carry their state code.",
+		SourceKey: "airports",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/airports/{code}", Summary: "Airport for a code",
+				Example: "/v1/airports/MAA",
+				Params:  []param{{Name: "code", In: "path", Type: "string", Required: true, Doc: "IATA code (MAA) or ICAO code (VOMM)."}},
+			},
+			{
+				Path: "/v1/airports", Summary: "Search airports",
+				Doc:     "By name, city or code; airports with scheduled flights and larger airports first.",
+				Example: "/v1/airports?q=chennai",
+				Params: []param{
+					{Name: "q", In: "query", Type: "string", Doc: "Name, city or code, 2 or more characters."},
+					{Name: "country", In: "query", Type: "string", Doc: "Two-letter ISO country code, such as IN."},
+					stateFilter,
+					{Name: "type", In: "query", Type: "string", Enum: airportTypes, Doc: "Kind of airfield."},
+					limitParam, offsetParam,
+				},
+			},
+		},
+	},
+	{
 		ID:        "thirukkural",
 		Title:     "Thirukkural",
 		Tagline:   "All 1,330 kurals in Tamil with English translations.",

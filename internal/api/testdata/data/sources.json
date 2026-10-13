@@ -1,4 +1,15 @@
 {
+  "airports": {
+    "name": "OurAirports",
+    "publisher": "OurAirports (ourairports.com), data mirrored at github.com/davidmegginson/ourairports-data",
+    "url": "https://ourairports.com/data/",
+    "licence": "Public domain",
+    "licenceUrl": "https://ourairports.com/data/",
+    "version": "9509 airports kept",
+    "retrieved": "2026-10-13",
+    "sha256": "61c82a74de991e138dc57e1fbc72b6f47da30db9954be4e414452e896f7d40d8",
+    "attribution": "Airport data from OurAirports, released into the public domain."
+  },
   "holidays-bank": {
     "name": "Bank holidays in India",
     "publisher": "Reserve Bank of India",
@@ -70,5 +81,16 @@
     "retrieved": "2026-10-13",
     "sha256": "8b53c0453054067f237763ad32887bda9f069bfb966a81f40721ed0c0d4f9f86",
     "attribution": "RTO codes adapted from the Wikipedia article \"List of Regional Transport Office districts in India\", licensed CC BY-SA 4.0. This dataset is shared under the same licence."
+  },
+  "thirukkural": {
+    "name": "Thirukkural",
+    "publisher": "Thiruvalluvar; compiled as JSON by github.com/tk120404/thirukkural",
+    "url": "https://github.com/tk120404/thirukkural/tree/cf3ff6c5a73c23b4092913156830457caab65fd4",
+    "licence": "Public domain text and translations; the compilation is Apache-2.0",
+    "licenceUrl": "https://www.apache.org/licenses/LICENSE-2.0",
+    "version": "commit cf3ff6c5a73c",
+    "retrieved": "2026-10-13",
+    "sha256": "e793099d6f300787329cf22bc0a144292d4af11b9dc3ca9595f1928692f4caee",
+    "attribution": "Thirukkural text with English translations by G.U. Pope (1886) and by W.H. Drew and John Lazarus (1840, 1885), from the tk120404/thirukkural compilation (Apache-2.0)."
   }
 }
