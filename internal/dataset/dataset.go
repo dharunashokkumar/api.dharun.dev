@@ -43,8 +43,8 @@ type Meta struct {
 	Built   string         `json:"built"`
 	Source  Source         `json:"source"`
 	Counts  map[string]int `json:"counts"`
-	// File names an extra file that belongs to the dataset, next to the database.
-	File string `json:"file,omitempty"`
+	// Files names extra files that belong to the dataset, next to the database.
+	Files []string `json:"files,omitempty"`
 }
 
 // Fetched is the moment the dataset's source was retrieved, in a form that sorts.

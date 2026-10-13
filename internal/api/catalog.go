@@ -297,6 +297,21 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "ip",
+		Title:     "IP address location",
+		Tagline:   "IP address to country, state, city and network.",
+		Intro:     "Country, region (the state, for Indian addresses), city and network operator of a public IPv4 or IPv6 address, from DB-IP's free databases, refreshed monthly. Addresses are never written to the request log.",
+		SourceKey: "ip",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/ip/{address}", Summary: "Location of an IP address", Private: true,
+				Example: "/v1/ip/49.204.0.1",
+				Params:  []param{{Name: "address", In: "path", Type: "string", Required: true, Doc: "IPv4 or IPv6 address."}},
+			},
+			{Path: "/v1/ip", Summary: "Location of your own address", Private: true, Example: "/v1/ip"},
+		},
+	},
+	{
 		ID:        "airports",
 		Title:     "Airports",
 		Tagline:   "Airport codes to airports, and airports by city.",

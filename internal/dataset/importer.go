@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -114,6 +115,60 @@ func (im *Importer) fetch(method, address string, form url.Values, agent string)
 		return nil, fmt.Errorf("%s %s: response is larger than %d MB", method, address, maxDownload>>20)
 	}
 	return raw, nil
+}
+
+// ErrNotChanged is returned by an importer that found the source still at the version
+// the copy in use was built from. Nothing is downloaded or rebuilt, and the dataset is
+// not checked again until it is next due.
+var ErrNotChanged = errors.New("the source has not changed")
+
+// Download streams a URL into a file under the import directory, for sources too large
+// to hold in memory. It returns the file's path.
+func (im *Importer) Download(address, name string) (string, error) {
+	request, err := http.NewRequest(http.MethodGet, address, nil)
+	if err != nil {
+		return "", err
+	}
+	request.Header.Set("User-Agent", userAgent)
+	response, err := im.http().Do(request)
+	if err != nil {
+		return "", err
+	}
+	defer response.Body.Close()
+	if response.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("GET %s: %s", address, response.Status)
+	}
+	path := im.Path(filepath.FromSlash(name))
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		return "", err
+	}
+	file, err := os.Create(path)
+	if err != nil {
+		return "", err
+	}
+	written, err := io.Copy(file, io.LimitReader(response.Body, maxDownload+1))
+	if closeErr := file.Close(); err == nil {
+		err = closeErr
+	}
+	if err != nil {
+		return "", fmt.Errorf("GET %s: %w", address, err)
+	}
+	if written > maxDownload {
+		return "", fmt.Errorf("GET %s: larger than %d MB", address, maxDownload>>20)
+	}
+	return path, nil
+}
+
+// CurrentVersion is the source version of the copy in use, or "" when there is none.
+func (im *Importer) CurrentVersion() string {
+	if im.Current == nil {
+		return ""
+	}
+	meta, err := ReadMeta(im.Current)
+	if err != nil {
+		return ""
+	}
+	return meta.Source.Version
 }
 
 // Write saves a source file under the import directory, creating folders as needed.

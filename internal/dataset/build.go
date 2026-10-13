@@ -28,7 +28,7 @@ type Builder struct {
 	Out string
 
 	counts map[string]int
-	file   string
+	files  []string
 	log    func(format string, args ...any)
 	warn   func(format string, args ...any)
 }
@@ -50,8 +50,38 @@ func (b *Builder) Path(parts ...string) string {
 	return filepath.Join(append([]string{b.Dir}, parts...)...)
 }
 
-// Attach names a file that travels with the database, written next to it by Build.
-func (b *Builder) Attach(name string) { b.file = name }
+// Attach moves a file into place next to the database, as part of the dataset. kind
+// names it ("city" gives <dataset file>.city.<ext>). A file is attached for datasets
+// whose data is better read in its own format than copied into tables.
+func (b *Builder) Attach(path, kind string) error {
+	name := strings.TrimSuffix(filepath.Base(b.Out), ".db") + "." + kind + filepath.Ext(path)
+	target := filepath.Join(filepath.Dir(b.Out), name)
+	if err := os.Rename(path, target); err != nil {
+		// Across file systems a rename fails; copy instead.
+		if err := copyFile(path, target); err != nil {
+			return err
+		}
+	}
+	b.files = append(b.files, name)
+	return nil
+}
+
+func copyFile(from, to string) error {
+	in, err := os.Open(from)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	out, err := os.Create(to)
+	if err != nil {
+		return err
+	}
+	if _, err := io.Copy(out, in); err != nil {
+		out.Close()
+		return err
+	}
+	return out.Close()
+}
 
 // BuildOptions says what to build and from where.
 type BuildOptions struct {
@@ -110,11 +140,17 @@ func Build(spec *Spec, opts BuildOptions) (Meta, []string, error) {
 			opts.Log("warning: %s: %s", spec.Name, message)
 		},
 	}
+	removeFiles := func() {
+		for _, name := range builder.files {
+			os.Remove(filepath.Join(filepath.Dir(opts.Out), name))
+		}
+	}
 	if err := spec.Build(builder); err != nil {
 		tx.Rollback()
+		removeFiles()
 		return meta, warnings, fmt.Errorf("%s: %w", spec.Name, err)
 	}
-	meta.File = builder.file
+	meta.Files = builder.files
 	encoded, _ := json.Marshal(meta)
 	if _, err := tx.Exec(`INSERT INTO meta (key, value) VALUES ('dataset', ?)`, string(encoded)); err != nil {
 		tx.Rollback()

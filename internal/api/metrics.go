@@ -221,11 +221,11 @@ func (m *metrics) render() string {
 			fmt.Fprintf(&out, "api_dataset_fetched_timestamp_seconds{dataset=%q} %d\n", state.Name, at)
 		}
 	}
-	family("api_dataset_refresh_ok", "gauge", "1 when the last refresh attempt of a dataset this server refreshes worked, 0 when it failed or was held back.")
+	family("api_dataset_refresh_ok", "gauge", "1 when the last refresh attempt of a dataset this server refreshes worked (updated, or found the source unchanged), 0 when it failed or was held back.")
 	for _, state := range states {
 		if state.scheduled && state.Refresh != "" {
 			ok := 0
-			if state.Refresh == "updated" {
+			if state.Refresh == "updated" || state.Refresh == "unchanged" {
 				ok = 1
 			}
 			fmt.Fprintf(&out, "api_dataset_refresh_ok{dataset=%q} %d\n", state.Name, ok)

@@ -24,6 +24,7 @@ var (
 	testServer *Server
 	testHTTP   *httptest.Server
 	testSeed   string
+	testLive   string
 )
 
 // TestMain builds every dataset from the small real-data fixtures in testdata and serves them.
@@ -45,7 +46,10 @@ func TestMain(m *testing.M) {
 	}); err != nil {
 		panic(err)
 	}
-	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin})
+	// Datasets that only ever exist as a server's own copy are built into a live directory.
+	testLive = filepath.Join(dir, "live")
+	buildIPDataset(panicker{}, testLive)
+	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true})
 	testHTTP = httptest.NewServer(testServer)
 
 	code := m.Run()
@@ -150,7 +154,12 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 					t.Errorf("POST %s = %d: %s", e.Example, posted.status, clip(string(posted.body), 200))
 				}
 			}
-			got := expectStatus(t, e.Example, http.StatusOK)
+			// Examples about the caller's own address need a public one, as through the proxy.
+			got := request(t, http.MethodGet, e.Example, "", "CF-Connecting-IP", "49.204.0.1")
+			if got.status != http.StatusOK {
+				t.Errorf("GET %s = %d: %s", e.Example, got.status, clip(string(got.body), 200))
+				continue
+			}
 			if e.Image {
 				if !strings.HasPrefix(got.header.Get("Content-Type"), "image/") {
 					t.Errorf("%s: content type %q", e.Example, got.header.Get("Content-Type"))

@@ -471,3 +471,50 @@ func TestRefreshRebuildsCopiesMadeObsoleteByARelease(t *testing.T) {
 		t.Errorf("the obsolete copy should be pruned: %v", copies)
 	}
 }
+
+func TestRefreshOfAnUnchangedSource(t *testing.T) {
+	spec := mustSpec(t, "rto")
+	seed, live := t.TempDir(), t.TempDir()
+	buildRTOCopy(t, SeedPath(seed, "rto"), "2026-01-01", spec.Schema)
+	source := &fakeRTOSource{}
+	source.install(t)
+	now := time.Date(2026, 10, 13, 6, 0, 0, 0, time.UTC)
+	run := func() RefreshResult {
+		t.Helper()
+		results, err := Refresh(RefreshOptions{SeedDir: seed, LiveDir: live, Only: []string{"rto"}, Now: now})
+		if err != nil {
+			t.Fatal(err)
+		}
+		return results[0]
+	}
+	if result := run(); result.Outcome != "updated" {
+		t.Fatalf("first run: %s %v", result.Outcome, result.Err)
+	}
+
+	// Past the interval the source is asked again, and says nothing changed.
+	original := spec.Import
+	spec.Import = func(im *Importer) (Source, error) {
+		source.calls++
+		if im.CurrentVersion() != "call 1" {
+			t.Errorf("the importer should see the version in use, got %q", im.CurrentVersion())
+		}
+		return Source{}, ErrNotChanged
+	}
+	defer func() { spec.Import = original }()
+	now = now.Add(spec.Every + time.Hour)
+	if result := run(); result.Outcome != "unchanged" {
+		t.Fatalf("unchanged source: %s %v", result.Outcome, result.Err)
+	}
+	if status := ReadStatus(live).Datasets["rto"]; status.Result != "unchanged" || status.LastSuccess != now.Format(time.RFC3339) {
+		t.Errorf("status: %+v", status)
+	}
+	if copies := LiveFiles(live, "rto"); len(copies) != 1 {
+		t.Errorf("an unchanged source must not produce a new copy: %v", copies)
+	}
+	// Having just checked, the dataset is not due again for a full interval.
+	calls := source.calls
+	now = now.Add(time.Hour)
+	if result := run(); result.Outcome != "fresh" || source.calls != calls {
+		t.Errorf("checked an hour ago, so not due: %s, %d calls", result.Outcome, source.calls-calls)
+	}
+}

@@ -1,15 +1,24 @@
 package api
 
-import "strconv"
+import (
+	"strconv"
+	"sync/atomic"
+)
 
 // extras holds state that belongs to single APIs rather than to the server as a whole:
 // things loaded on first use and dropped when a dataset changes.
-type extras struct{}
+type extras struct {
+	ip atomic.Pointer[ipReaders]
+}
 
 // datasetChanged drops whatever was derived from a dataset that was just replaced.
 func (e *extras) datasetChanged(name string) {}
 
-func (e *extras) close() {}
+func (e *extras) close() {
+	if readers := e.ip.Swap(nil); readers != nil {
+		readers.close()
+	}
+}
 
 // registerMore registers the routes of the APIs added after the first release. Each
 // lives in its own file.
@@ -31,6 +40,8 @@ func (s *Server) registerMore() {
 	s.handle("thirukkural", costLight, "GET /v1/thirukkural/chapters/{number}", s.handleKuralChapter)
 	s.handle("airport", costLight, "GET /v1/airports/{code}", s.handleAirport)
 	s.handle("airport_search", costLight, "GET /v1/airports", s.handleAirportSearch)
+	s.handle("ip", costLight, "GET /v1/ip/{address}", s.handleIP)
+	s.handle("ip", costLight, "GET /v1/ip", s.handleMyIP)
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

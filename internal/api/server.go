@@ -101,6 +101,9 @@ func New(cfg Config) (*Server, error) {
 
 // datasetChanged rebuilds whatever is derived from a dataset that was just swapped.
 func (s *Server) datasetChanged(name string) {
+	if name == "ip" {
+		s.openIP()
+	}
 	if name == "logos" {
 		if index, err := loadCompanies(s.store.get("logos")); err == nil {
 			s.companies.Store(index)

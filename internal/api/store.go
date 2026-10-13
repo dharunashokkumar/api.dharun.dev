@@ -71,12 +71,15 @@ func (h *handle) count(name string) int {
 	return h.meta.Counts[name]
 }
 
-// attachment is the path of the extra file that belongs to the dataset, if it has one.
-func (h *handle) attachment() string {
-	if h.meta.File == "" {
-		return ""
+// attachment is the path of the dataset's extra file of a kind ("city"), or "".
+func (h *handle) attachment(kind string) string {
+	for _, name := range h.meta.Files {
+		base := strings.TrimSuffix(name, filepath.Ext(name))
+		if strings.HasSuffix(base, "."+kind) {
+			return filepath.Join(h.dir, name)
+		}
 	}
-	return filepath.Join(h.dir, h.meta.File)
+	return ""
 }
 
 // close may be called more than once: by the timer after a swap and again at shutdown.

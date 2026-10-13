@@ -3,6 +3,7 @@ package dataset
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -79,7 +80,8 @@ type RefreshOptions struct {
 // RefreshResult reports what happened to one dataset in a run.
 type RefreshResult struct {
 	Dataset string
-	// Outcome is "updated", "fresh" (not due), "waiting" (failed recently), "failed" or "held".
+	// Outcome is "updated", "unchanged" (checked, source not changed), "fresh" (not due),
+	// "waiting" (failed recently), "failed" or "held".
 	Outcome string
 	Err     error
 	Meta    Meta
@@ -104,10 +106,8 @@ func Current(spec *Spec, seedDir, liveDir string) (path string, meta Meta, live,
 			if err != nil || found.Dataset != spec.Name || found.Schema != spec.Schema {
 				continue
 			}
-			if found.File != "" {
-				if _, err := os.Stat(filepath.Join(liveDir, found.File)); err != nil {
-					continue
-				}
+			if !filesPresent(liveDir, found) {
+				continue
 			}
 			if seedPath != "" && Newer(seedMeta.Fetched(), found.Fetched()) {
 				break // the release brought something more recent than anything fetched here
@@ -175,6 +175,9 @@ func Refresh(opts RefreshOptions) ([]RefreshResult, error) {
 		case "failed", "held":
 			entry.LastAttempt, entry.Result, entry.Error = now, result.Outcome, result.Err.Error()
 			opts.Log("%s: %s: %v", spec.Name, result.Outcome, result.Err)
+		case "unchanged":
+			entry = DatasetStatus{LastAttempt: now, LastSuccess: now, Result: "unchanged"}
+			opts.Log("%s: source unchanged since %s", spec.Name, result.Meta.Fetched())
 		case "waiting":
 			opts.Log("%s: not retried yet, the last attempt at %s failed", spec.Name, entry.LastAttempt)
 			continue
@@ -198,11 +201,16 @@ func refreshOne(spec *Spec, opts RefreshOptions, last DatasetStatus) RefreshResu
 		// After a release changed a dataset's tables, the server's own copies no longer
 		// fit and the seed is served. Rebuild at once rather than when the seed falls due.
 		outdated := !live && len(LiveFiles(opts.LiveDir, spec.Name)) > 0
-		if have && !outdated && Age(currentMeta, opts.Now) < spec.Every {
+		// A source found unchanged at the last check counts as fetched then.
+		age := Age(currentMeta, opts.Now)
+		if last.Result == "unchanged" && last.LastSuccess != "" {
+			age = min(age, opts.Now.Sub(stamp(last.LastSuccess)))
+		}
+		if have && !outdated && age < spec.Every {
 			result.Outcome = "fresh"
 			return result
 		}
-		if last.Result != "updated" && last.LastAttempt != "" && opts.Now.Sub(stamp(last.LastAttempt)) < retryAfter {
+		if (last.Result == "failed" || last.Result == "held") && opts.Now.Sub(stamp(last.LastAttempt)) < retryAfter {
 			result.Outcome = "waiting"
 			return result
 		}
@@ -229,6 +237,10 @@ func refreshOne(spec *Spec, opts RefreshOptions, last DatasetStatus) RefreshResu
 	defer os.RemoveAll(work)
 
 	source, err := spec.Import(&Importer{Dir: work, Current: current, Now: opts.Now, Log: opts.Log})
+	if errors.Is(err, ErrNotChanged) {
+		result.Outcome = "unchanged"
+		return result
+	}
 	if err != nil {
 		return fail("failed", fmt.Errorf("fetching: %w", err))
 	}
@@ -275,9 +287,18 @@ func plausible(spec *Spec, current *sql.DB, currentMeta Meta, freshPath string, 
 }
 
 func removeAttachment(liveDir string, meta Meta) {
-	if meta.File != "" {
-		os.Remove(filepath.Join(liveDir, meta.File))
+	for _, name := range meta.Files {
+		os.Remove(filepath.Join(liveDir, name))
 	}
+}
+
+func filesPresent(dir string, meta Meta) bool {
+	for _, name := range meta.Files {
+		if _, err := os.Stat(filepath.Join(dir, name)); err != nil {
+			return false
+		}
+	}
+	return true
 }
 
 // prune deletes copies a server no longer needs: all but the newest few, and any built
