@@ -113,6 +113,17 @@
     "sha256": "8b53c0453054067f237763ad32887bda9f069bfb966a81f40721ed0c0d4f9f86",
     "attribution": "RTO codes adapted from the Wikipedia article \"List of Regional Transport Office districts in India\", licensed CC BY-SA 4.0. This dataset is shared under the same licence."
   },
+  "stations": {
+    "name": "List of railway stations in India",
+    "publisher": "Wikipedia contributors",
+    "url": "https://en.wikipedia.org/w/index.php?title=List_of_railway_stations_in_India&oldid=1371613797",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "version": "revision 1371613797",
+    "retrieved": "2026-10-13",
+    "sha256": "bd6de46936732d42217ffa64d91af5f872449ae85f401521baf492e3a21162d8",
+    "attribution": "Station codes adapted from the Wikipedia article \"List of railway stations in India\", licensed CC BY-SA 4.0. This dataset is shared under the same licence."
+  },
   "thirukkural": {
     "name": "Thirukkural",
     "publisher": "Thiruvalluvar; compiled as JSON by github.com/tk120404/thirukkural",

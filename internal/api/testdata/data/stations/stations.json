@@ -1,0 +1,133 @@
+[
+ {
+  "code": "BCT",
+  "name": "Mumbai Central",
+  "state": "MH",
+  "zone": "WR"
+ },
+ {
+  "code": "CBE",
+  "name": "Coimbatore Junction",
+  "state": "TN"
+ },
+ {
+  "code": "CSTM",
+  "name": "Chhatrapati Shivaji Terminus",
+  "state": "MH",
+  "zone": "CR"
+ },
+ {
+  "code": "DLI",
+  "name": "Delhi",
+  "state": "DL",
+  "zone": "NR",
+  "elevationM": 219,
+  "otherNames": [
+   "Delhi Junction"
+  ]
+ },
+ {
+  "code": "ED",
+  "name": "Erode Junction",
+  "state": "TN"
+ },
+ {
+  "code": "HWH",
+  "name": "Howrah Junction",
+  "state": "WB",
+  "zone": "ER",
+  "elevationM": 10
+ },
+ {
+  "code": "MAS",
+  "name": "Puratchi Thalaivar Dr. M.G. Ramachandran Central Railway Station",
+  "state": "TN",
+  "zone": "SR",
+  "elevationM": 3
+ },
+ {
+  "code": "MDU",
+  "name": "Madurai Junction",
+  "state": "TN"
+ },
+ {
+  "code": "MS",
+  "name": "Chennai Egmore",
+  "state": "TN"
+ },
+ {
+  "code": "MSB",
+  "name": "Chennai Beach",
+  "state": "TN"
+ },
+ {
+  "code": "NDLS",
+  "name": "New Delhi",
+  "state": "DL",
+  "zone": "NR",
+  "elevationM": 215
+ },
+ {
+  "code": "NMKL",
+  "name": "Namakkal",
+  "state": "TN",
+  "zone": "SR"
+ },
+ {
+  "code": "SA",
+  "name": "Salem Junction",
+  "state": "TN",
+  "zone": "SR",
+  "elevationM": 283
+ },
+ {
+  "code": "SBC",
+  "name": "Bangalore City",
+  "state": "KA",
+  "zone": "SWR"
+ },
+ {
+  "code": "TBM",
+  "name": "Tambaram",
+  "state": "TN"
+ },
+ {
+  "code": "TPJ",
+  "name": "Tiruchirapalli Junction",
+  "state": "TN",
+  "zone": "SR",
+  "elevationM": 85
+ },
+ {
+  "code": "VS",
+  "name": "Vishvamitri",
+  "state": "GJ",
+  "zone": "WR"
+ },
+ {
+  "code": "VSI",
+  "name": "Vishvamitri",
+  "state": "GJ",
+  "zone": "WR"
+ },
+ {
+  "code": "AGC",
+  "name": "Agra Cantonment",
+  "state": "UP",
+  "zone": "NCR",
+  "elevationM": 174,
+  "otherNames": [
+   "Agra Cantt."
+  ]
+ },
+ {
+  "code": "AIT",
+  "name": "Ait",
+  "state": "UP",
+  "zone": "NCR",
+  "elevationM": 154,
+  "otherNames": [
+   "Ait Junction"
+  ]
+ }
+]

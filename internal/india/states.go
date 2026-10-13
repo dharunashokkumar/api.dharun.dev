@@ -25,7 +25,7 @@ var States = []State{
 	{Code: "CH", Name: "Chandigarh", Type: "union_territory", GSTCode: "04", VehicleCodes: []string{"CH"}},
 	{Code: "CG", Name: "Chhattisgarh", Type: "state", GSTCode: "22", VehicleCodes: []string{"CG"}, aliases: []string{"chattisgarh", "chhatisgarh"}},
 	{Code: "DH", Name: "Dadra and Nagar Haveli and Daman and Diu", Type: "union_territory", GSTCode: "26", VehicleCodes: []string{"DD", "DN"}, aliases: []string{"the dadra and nagar haveli and daman and diu", "dadra and nagar haveli", "dadar and nagar haveli", "dadra & nagar haveli", "daman and diu", "daman & diu", "dadra and nagar haveli and daman & diu", "dadra & nagar haveli and daman & diu"}},
-	{Code: "DL", Name: "Delhi", Type: "union_territory", GSTCode: "07", VehicleCodes: []string{"DL"}, aliases: []string{"nct of delhi", "new delhi", "national capital territory of delhi"}},
+	{Code: "DL", Name: "Delhi", Type: "union_territory", GSTCode: "07", VehicleCodes: []string{"DL"}, aliases: []string{"nct of delhi", "new delhi", "national capital territory of delhi", "delhi nct", "nct delhi"}},
 	{Code: "GA", Name: "Goa", Type: "state", GSTCode: "30", VehicleCodes: []string{"GA"}},
 	{Code: "GJ", Name: "Gujarat", Type: "state", GSTCode: "24", VehicleCodes: []string{"GJ"}},
 	{Code: "HR", Name: "Haryana", Type: "state", GSTCode: "06", VehicleCodes: []string{"HR"}},

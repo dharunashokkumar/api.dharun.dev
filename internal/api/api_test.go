@@ -174,7 +174,7 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 			if _, ok := envelope["meta"].(map[string]any); !ok {
 				t.Errorf("%s: no meta in envelope", e.Example)
 			}
-			if group.SourceKey != "" && envelope["meta"].(map[string]any)["source"] == nil {
+			if group.SourceKey != "" && !e.Reference && envelope["meta"].(map[string]any)["source"] == nil {
 				t.Errorf("%s: response does not credit its source", e.Example)
 			}
 		}

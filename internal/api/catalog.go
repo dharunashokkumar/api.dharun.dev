@@ -44,6 +44,9 @@ type endpoint struct {
 	ExampleBody string
 	// Private marks an endpoint whose input may be personal: never logged, never cached.
 	Private bool
+	// Reference marks an endpoint that answers from a fixed list kept in this code (such
+	// as the railway zones) rather than from the group's dataset, so it credits none.
+	Reference bool
 }
 
 type apiGroup struct {
@@ -407,6 +410,32 @@ var catalog = []apiGroup{
 					{Name: "type", In: "query", Type: "string", Enum: dnsTypeNames(), Doc: "Record type. Default A."},
 				},
 			},
+		},
+	},
+	{
+		ID:        "stations",
+		Title:     "Railway stations",
+		Tagline:   "Indian Railways station codes to stations, and back.",
+		Intro:     "About 4,000 stations with their code, state, railway zone and elevation, from Wikipedia's list of railway stations in India. No official open list exists; this one is kept by volunteers, so some codes are out of date and many entries lack a state or zone.",
+		SourceKey: "stations",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/stations/{code}", Summary: "Station for a code",
+				Example: "/v1/stations/MAS",
+				Params:  []param{{Name: "code", In: "path", Type: "string", Required: true, Doc: "Station code, such as MAS or NDLS."}},
+			},
+			{
+				Path: "/v1/stations", Summary: "Search stations",
+				Doc:     "By name (an exact code comes first, then names starting with the text), state or zone.",
+				Example: "/v1/stations?q=chennai",
+				Params: []param{
+					{Name: "q", In: "query", Type: "string", Doc: "Part of a station name, or a code."},
+					stateFilter,
+					{Name: "zone", In: "query", Type: "string", Doc: "Zone code, such as SR. See /v1/stations/zones."},
+					limitParam, offsetParam,
+				},
+			},
+			{Path: "/v1/stations/zones", Summary: "Railway zones", Example: "/v1/stations/zones", Reference: true},
 		},
 	},
 	{

@@ -518,3 +518,16 @@ func TestRefreshOfAnUnchangedSource(t *testing.T) {
 		t.Errorf("checked an hour ago, so not due: %s, %d calls", result.Outcome, source.calls-calls)
 	}
 }
+
+func TestZoneOf(t *testing.T) {
+	cases := map[string]string{
+		"SR/Southern": "SR", "Southern": "SR", "South East Central": "SECR", "NFR/Northeast Frontier Railway": "NFR",
+		"Harbour (CR)": "CR", "WR/Western/Harbour (CR)": "WR", "[[Konkan Railway|KRCL]]": "KR", "ECoR/East Coast": "ECoR",
+		"Eastern": "ER", "SWR": "SWR", "": "",
+	}
+	for text, want := range cases {
+		if got := zoneOf(text); got != want {
+			t.Errorf("zoneOf(%q) = %q, want %q", text, got, want)
+		}
+	}
+}

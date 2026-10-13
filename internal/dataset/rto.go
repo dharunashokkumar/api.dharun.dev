@@ -3,7 +3,6 @@ package dataset
 import (
 	"database/sql"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -109,46 +108,12 @@ func checkRTO(current, fresh *sql.DB) error {
 const rtoPage = "List_of_Regional_Transport_Office_districts_in_India"
 
 func importRTO(im *Importer) (Source, error) {
-	revision := im.Version
-	var wikitext []byte
-	var err error
-	switch {
-	case im.File != "":
-		if revision == "" {
-			return Source{}, errors.New("-file needs -version <revision id> so the source can be credited exactly")
-		}
-		wikitext, err = os.ReadFile(im.File)
-	default:
-		if revision == "" {
-			raw, err := im.Get("https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=ids&format=json&titles=" + rtoPage)
-			if err != nil {
-				return Source{}, err
-			}
-			var result struct {
-				Query struct {
-					Pages map[string]struct {
-						Revisions []struct {
-							ID int64 `json:"revid"`
-						} `json:"revisions"`
-					} `json:"pages"`
-				} `json:"query"`
-			}
-			if err := json.Unmarshal(raw, &result); err != nil {
-				return Source{}, err
-			}
-			for _, page := range result.Query.Pages {
-				if len(page.Revisions) > 0 {
-					revision = fmt.Sprint(page.Revisions[0].ID)
-				}
-			}
-			if revision == "" {
-				return Source{}, errors.New("could not find the latest revision of the Wikipedia page")
-			}
-		}
-		wikitext, err = im.Get("https://en.wikipedia.org/w/index.php?action=raw&title=" + rtoPage + "&oldid=" + revision)
-	}
+	wikitext, revision, err := im.wikipedia(rtoPage)
 	if err != nil {
 		return Source{}, err
+	}
+	if im.CurrentVersion() == "revision "+revision {
+		return Source{}, ErrNotChanged
 	}
 
 	offices, err := parseRTO(string(wikitext))
@@ -168,7 +133,7 @@ func importRTO(im *Importer) (Source, error) {
 	return Source{
 		Name:        "List of Regional Transport Office districts in India",
 		Publisher:   "Wikipedia contributors",
-		URL:         "https://en.wikipedia.org/w/index.php?title=" + rtoPage + "&oldid=" + revision,
+		URL:         wikipediaURL(rtoPage, revision),
 		Licence:     "CC BY-SA 4.0",
 		LicenceURL:  "https://creativecommons.org/licenses/by-sa/4.0/",
 		Version:     "revision " + revision,
