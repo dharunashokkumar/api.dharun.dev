@@ -70,6 +70,16 @@
     "attribution": "Company logos and trademarks belong to their respective owners.",
     "notes": "Compiled dataset; the README records where the files and company details were collected from."
   },
+  "mutual-funds": {
+    "name": "Net asset values of mutual fund schemes",
+    "publisher": "Association of Mutual Funds in India (AMFI)",
+    "url": "https://www.amfiindia.com/net-asset-value",
+    "licence": "Published by AMFI under SEBI's disclosure rules",
+    "version": "cdba3e189504",
+    "retrieved": "2026-10-13",
+    "sha256": "cdba3e18950496b6b0b474287ee701703aa1c70a9332eb4eeb620860b6b6c22a",
+    "attribution": "Net asset values as published by the Association of Mutual Funds in India."
+  },
   "pincode": {
     "name": "All India Pincode Directory",
     "publisher": "Department of Posts, Ministry of Communications, Government of India",

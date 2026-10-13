@@ -312,6 +312,35 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "mutual-funds",
+		Title:     "Mutual fund NAVs",
+		Tagline:   "Latest net asset value of every Indian mutual fund scheme.",
+		Intro:     "Every scheme in AMFI's daily NAV file: fund house, category, plan (direct or regular), option (growth, IDCW or bonus), ISINs and the latest NAV with its date. Refreshed by the server several times a day; AMFI publishes each evening.",
+		SourceKey: "mutual-funds",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/mutual-funds/{code}", Summary: "A scheme and its NAV",
+				Example: "/v1/mutual-funds/122639",
+				Params:  []param{{Name: "code", In: "path", Type: "string", Required: true, Doc: "AMFI scheme code, or the scheme's growth or reinvestment ISIN."}},
+			},
+			{
+				Path: "/v1/mutual-funds", Summary: "Search schemes",
+				Doc:     "Every word of q must appear in the scheme name, in any order. Only active schemes unless all=true.",
+				Example: "/v1/mutual-funds?q=flexi%20cap&plan=direct&option=growth",
+				Params: []param{
+					{Name: "q", In: "query", Type: "string", Doc: "Words of the scheme name."},
+					{Name: "fundHouse", In: "query", Type: "string", Doc: "Part of the fund house name, such as hdfc."},
+					{Name: "category", In: "query", Type: "string", Doc: "Part of the SEBI category, such as Small Cap."},
+					{Name: "plan", In: "query", Type: "string", Enum: []string{"direct", "regular"}, Doc: "Plan."},
+					{Name: "option", In: "query", Type: "string", Enum: []string{"growth", "idcw", "bonus"}, Doc: "Option."},
+					{Name: "all", In: "query", Type: "string", Enum: []string{"true"}, Doc: "Include wound-up and matured schemes."},
+					limitParam, offsetParam,
+				},
+			},
+			{Path: "/v1/mutual-funds/fund-houses", Summary: "Fund houses", Example: "/v1/mutual-funds/fund-houses"},
+		},
+	},
+	{
 		ID:        "ip",
 		Title:     "IP address location",
 		Tagline:   "IP address to country, state, city and network.",
