@@ -1,0 +1,10 @@
+[Unit]
+Description=Install the newest api.dharun.dev release if one is available
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# PORT comes from the service's own settings, so the health check follows it.
+EnvironmentFile=-/etc/dharun-api/env
+ExecStart=/usr/local/bin/dharun-api-update

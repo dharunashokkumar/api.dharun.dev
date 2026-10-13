@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# Starts a built bundle and checks the routes a deploy must not break.
-#   bash tools/smoke-test.sh dist/logos-api.tar.gz
+# Starts a built bundle and checks the routes a deploy must not break, against the
+# full datasets.
+#   bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz
 set -euo pipefail
 
-bundle="${1:?usage: smoke-test.sh <logos-api.tar.gz>}"
+bundle="${1:?usage: smoke-test.sh <bundle.tar.gz>}"
 port="${SMOKE_PORT:-18080}"
 base="http://127.0.0.1:$port"
 dir="$(mktemp -d)"
 
 tar -xzf "$bundle" -C "$dir" --strip-components=1
-(cd "$dir" && PORT="$port" METRICS_PORT=0 LOG_REQUESTS=0 exec node server/index.mjs) &
+(cd "$dir" && PORT="$port" METRICS_PORT=0 LOG_REQUESTS=0 exec ./api) &
 pid=$!
 trap 'kill "$pid" 2>/dev/null || true; rm -rf "$dir"' EXIT
 
@@ -18,26 +19,39 @@ for _ in $(seq 1 40); do
   sleep 0.25
 done
 
-# <path> <expected content-type prefix>
+# <path> <expected content-type prefix> [text the body must contain]
 check() {
-  local type
-  type="$(curl -fsS -o /dev/null -w '%{content_type}' "$base$1")"
+  local type body
+  body="$(mktemp)"
+  type="$(curl -fsS -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL $1: request failed" >&2; exit 1; }
   case "$type" in
-    "$2"*) echo "ok   $1" ;;
+    "$2"*) ;;
     *) echo "FAIL $1: got '$type', want '$2'" >&2; exit 1 ;;
   esac
+  if [ -n "${3:-}" ] && ! grep -q -- "$3" "$body"; then
+    echo "FAIL $1: body does not contain '$3'" >&2
+    exit 1
+  fi
+  rm -f "$body"
+  echo "ok   $1"
 }
 
 check /healthz application/json
-check /logos/ text/html
-check /logos/v1/logo/TCS image/svg+xml
-check "/logos/v1/logo/TCS?format=png&size=64" image/png
-check "/logos/v1/logo/UNKNOWN?fallback=monogram&format=png" image/png
-check /logos/v1/companies/RELIANCE application/json
-check "/logos/v1/search?q=tata" application/json
-check /logos/company/NSE:TCS text/html
-check /logos/openapi.json application/json
-check /logos/llms.txt text/plain
+check / text/html "open APIs for Indian developers"
+check /v1 application/json
+check /openapi.json application/json
+check /llms.txt text/plain
+check /v1/logos/TCS image/svg+xml
+check "/v1/logos/TCS?format=png&size=64" image/png
+check "/v1/logos/UNKNOWN?fallback=monogram&format=png" image/png
+check /v1/companies/RELIANCE application/json '"NSE:RELIANCE"'
+check /v1/pincode/637001 application/json '"Namakkal"'
+check /v1/ifsc/SBIN0000001 application/json '"State Bank of India"'
+check /v1/rto/TN-28 application/json 'Namakkal'
+check "/v1/holidays/2026?type=market" application/json 'Republic Day'
+check /v1/words/100000 application/json '"one lakh"'
+check /v1/validate/gstin/27AAPFU0939F1ZV application/json '"valid":true'
+check /v1/states/TN application/json '"Tamil Nadu"'
 
 version="$(cat "$dir/VERSION")"
 curl -fsS "$base/healthz" | grep -q "\"version\":\"$version\"" || { echo "FAIL: /healthz does not report $version" >&2; exit 1; }

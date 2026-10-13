@@ -1,6 +1,8 @@
+.cache/
 .metadata_cache/
-node_modules/
 dist/
+/api.db
+*.exe
 __pycache__/
 .DS_Store
 *.log

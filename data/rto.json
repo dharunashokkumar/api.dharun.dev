@@ -1,0 +1,8223 @@
+[
+ {
+  "code": "AP-02",
+  "prefix": "AP",
+  "office": "Ananthapuramu District",
+  "jurisdiction": "Ananthapuramu District"
+ },
+ {
+  "code": "AP-03",
+  "prefix": "AP",
+  "office": "Chittoor District",
+  "jurisdiction": "Chittoor District"
+ },
+ {
+  "code": "AP-04",
+  "prefix": "AP",
+  "office": "YSR Kadapa District",
+  "jurisdiction": "YSR Kadapa District"
+ },
+ {
+  "code": "AP-05",
+  "prefix": "AP",
+  "office": "East Godavari District",
+  "jurisdiction": "East Godavari District",
+  "notes": "RTO was located in Kakinada, former district headquarters of undivided East Godavari District"
+ },
+ {
+  "code": "AP-07",
+  "prefix": "AP",
+  "office": "Guntur district",
+  "jurisdiction": "Guntur district"
+ },
+ {
+  "code": "AP-16",
+  "prefix": "AP",
+  "office": "Krishna District",
+  "jurisdiction": "Krishna District",
+  "notes": "RTO was located in Vijayawada, former district headquarters of undivided Krishna District"
+ },
+ {
+  "code": "AP-18P",
+  "prefix": "AP",
+  "office": "Andhra Pradesh Police",
+  "jurisdiction": "Andhra Pradesh Police"
+ },
+ {
+  "code": "AP-21",
+  "prefix": "AP",
+  "office": "Kurnool District",
+  "jurisdiction": "Kurnool District"
+ },
+ {
+  "code": "AP-26",
+  "prefix": "AP",
+  "office": "Nellore District",
+  "jurisdiction": "Nellore District"
+ },
+ {
+  "code": "AP-27",
+  "prefix": "AP",
+  "office": "Prakasam District",
+  "jurisdiction": "Prakasam District"
+ },
+ {
+  "code": "AP-30",
+  "prefix": "AP",
+  "office": "Srikakulam District",
+  "jurisdiction": "Srikakulam District"
+ },
+ {
+  "code": "AP-31",
+  "prefix": "AP",
+  "office": "Vishakhapatnam District",
+  "jurisdiction": "Vishakhapatnam District",
+  "notes": "AP 32, AP 33, and AP 34 were also reserved for Vishakhapatnam, with only few vehicles getting these registrations."
+ },
+ {
+  "code": "AP-35",
+  "prefix": "AP",
+  "office": "Vizianagaram District",
+  "jurisdiction": "Vizianagaram District"
+ },
+ {
+  "code": "AP-37",
+  "prefix": "AP",
+  "office": "West Godavari District",
+  "jurisdiction": "West Godavari District",
+  "notes": "RTO was located in Eluru, former district headquarters of undivided West Godavari District"
+ },
+ {
+  "code": "AP-39",
+  "prefix": "AP",
+  "office": "RTA",
+  "jurisdiction": "Tirupati district, Krishna district, NTR district, Vizianagaram district, Visakhapatnam district, Alluri Sitharama Raju district, Anakapalli district, Kakinada district, East Godavari, Konaseema district, Eluru district, West Godavari district, Palnadu district, Guntur district, Bapatla district, Polavaram district, Prakasam district, Sri Potti Sriramulu Nellore district, Kurnool district, Nandyal district, Anantapur district, Sri Sathya Sai district, YSR district, Annamayya district, Parvathipuram Manyam district, Srikakulam district, Chittoor district"
+ },
+ {
+  "code": "AP-40",
+  "prefix": "AP",
+  "office": "RTA",
+  "jurisdiction": "Tirupati district, Krishna district, NTR district, Vizianagaram district, Visakhapatnam district, Alluri Sitharama Raju district, Anakapalli district, Kakinada district, East Godavari, Konaseema district, Eluru district, West Godavari district, Palnadu district, Guntur district, Bapatla district, Polavaram district, Prakasam district, Sri Potti Sriramulu Nellore district, Kurnool district, Nandyal district, Anantapur district, Sri Sathya Sai district, YSR district, Annamayya district, Parvathipuram Manyam district, Srikakulam district, Chittoor district"
+ },
+ {
+  "code": "AR-01",
+  "prefix": "AR",
+  "office": "Itanagar",
+  "jurisdiction": "Papum Pare district"
+ },
+ {
+  "code": "AR-02",
+  "prefix": "AR",
+  "office": "Itanagar",
+  "jurisdiction": "Papum Pare district"
+ },
+ {
+  "code": "AR-03",
+  "prefix": "AR",
+  "office": "Tawang",
+  "jurisdiction": "Tawang district"
+ },
+ {
+  "code": "AR-04",
+  "prefix": "AR",
+  "office": "Bomdila",
+  "jurisdiction": "West Kameng district"
+ },
+ {
+  "code": "AR-05",
+  "prefix": "AR",
+  "office": "Seppa",
+  "jurisdiction": "East Kameng district"
+ },
+ {
+  "code": "AR-06",
+  "prefix": "AR",
+  "office": "Ziro",
+  "jurisdiction": "Lower Subansiri district"
+ },
+ {
+  "code": "AR-07",
+  "prefix": "AR",
+  "office": "Daporijo",
+  "jurisdiction": "Upper Subansiri district"
+ },
+ {
+  "code": "AR-08",
+  "prefix": "AR",
+  "office": "Along",
+  "jurisdiction": "West Siang district"
+ },
+ {
+  "code": "AR-09",
+  "prefix": "AR",
+  "office": "Pasighat",
+  "jurisdiction": "East Siang district"
+ },
+ {
+  "code": "AR-10",
+  "prefix": "AR",
+  "office": "Anini",
+  "jurisdiction": "Dibang Valley district"
+ },
+ {
+  "code": "AR-11",
+  "prefix": "AR",
+  "office": "Tezu",
+  "jurisdiction": "Lohit district"
+ },
+ {
+  "code": "AR-12",
+  "prefix": "AR",
+  "office": "Changlang",
+  "jurisdiction": "Changlang district"
+ },
+ {
+  "code": "AR-13",
+  "prefix": "AR",
+  "office": "Khonsa",
+  "jurisdiction": "Tirap district"
+ },
+ {
+  "code": "AR-14",
+  "prefix": "AR",
+  "office": "Yingkiong",
+  "jurisdiction": "Upper Siang district"
+ },
+ {
+  "code": "AR-15",
+  "prefix": "AR",
+  "office": "Koloriang",
+  "jurisdiction": "Kurung Kumey district"
+ },
+ {
+  "code": "AR-16",
+  "prefix": "AR",
+  "office": "Roing",
+  "jurisdiction": "Dibang Valley district"
+ },
+ {
+  "code": "AR-17",
+  "prefix": "AR",
+  "office": "Hawai",
+  "jurisdiction": "Anjaw district"
+ },
+ {
+  "code": "AR-19",
+  "prefix": "AR",
+  "office": "Palin",
+  "jurisdiction": "Kra Daadi district"
+ },
+ {
+  "code": "AR-20",
+  "prefix": "AR",
+  "office": "Namsai",
+  "jurisdiction": "Namsai district",
+  "notes": "On November 17, 2014, Namsai district was carved out from the erstwhile Lohit district."
+ },
+ {
+  "code": "AR-22",
+  "prefix": "AR",
+  "office": "Siji",
+  "jurisdiction": "Lower Siang district",
+  "notes": "On November 24, 2018, Lower Siang district was carved out from the erstwhile West Siang district."
+ },
+ {
+  "code": "AS-01",
+  "prefix": "AS",
+  "office": "Guwahati",
+  "jurisdiction": "Kamrup district"
+ },
+ {
+  "code": "AS-02",
+  "prefix": "AS",
+  "office": "Nagaon",
+  "jurisdiction": "Nagaon district"
+ },
+ {
+  "code": "AS-03",
+  "prefix": "AS",
+  "office": "Jorhat",
+  "jurisdiction": "Jorhat district"
+ },
+ {
+  "code": "AS-04",
+  "prefix": "AS",
+  "office": "Sivasagar",
+  "jurisdiction": "Sivasagar district"
+ },
+ {
+  "code": "AS-05",
+  "prefix": "AS",
+  "office": "Golaghat",
+  "jurisdiction": "Golaghat district"
+ },
+ {
+  "code": "AS-06",
+  "prefix": "AS",
+  "office": "Dibrugarh",
+  "jurisdiction": "Dibrugarh district"
+ },
+ {
+  "code": "AS-07",
+  "prefix": "AS",
+  "office": "Lakhimpur",
+  "jurisdiction": "Lakhimpur district"
+ },
+ {
+  "code": "AS-08",
+  "prefix": "AS",
+  "office": "Haflong",
+  "jurisdiction": "Dima Hasao district"
+ },
+ {
+  "code": "AS-09",
+  "prefix": "AS",
+  "office": "Karbi Anglong",
+  "jurisdiction": "Karbi Anglong district"
+ },
+ {
+  "code": "AS-10",
+  "prefix": "AS",
+  "office": "Karimganj",
+  "jurisdiction": "Karimganj district"
+ },
+ {
+  "code": "AS-11",
+  "prefix": "AS",
+  "office": "Silchar",
+  "jurisdiction": "Cachar district"
+ },
+ {
+  "code": "AS-12",
+  "prefix": "AS",
+  "office": "Tezpur",
+  "jurisdiction": "Sonitpur district"
+ },
+ {
+  "code": "AS-13",
+  "prefix": "AS",
+  "office": "Darrang",
+  "jurisdiction": "Darrang district"
+ },
+ {
+  "code": "AS-14",
+  "prefix": "AS",
+  "office": "Nalbari",
+  "jurisdiction": "Nalbari district"
+ },
+ {
+  "code": "AS-15",
+  "prefix": "AS",
+  "office": "Barpeta",
+  "jurisdiction": "Barpeta district"
+ },
+ {
+  "code": "AS-16",
+  "prefix": "AS",
+  "office": "Kokrajhar",
+  "jurisdiction": "Kokrajhar district"
+ },
+ {
+  "code": "AS-17",
+  "prefix": "AS",
+  "office": "Dhubri",
+  "jurisdiction": "Dhubri district"
+ },
+ {
+  "code": "AS-18",
+  "prefix": "AS",
+  "office": "Goalpara",
+  "jurisdiction": "Goalpara district"
+ },
+ {
+  "code": "AS-19",
+  "prefix": "AS",
+  "office": "Bongaigaon",
+  "jurisdiction": "Bongaigaon district"
+ },
+ {
+  "code": "AS-20",
+  "prefix": "AS",
+  "office": "entire Assam State",
+  "jurisdiction": "entire Assam State",
+  "notes": "vehicles of Assam State Transport Corporation"
+ },
+ {
+  "code": "AS-21",
+  "prefix": "AS",
+  "office": "Morigaon",
+  "jurisdiction": "Morigaon district"
+ },
+ {
+  "code": "AS-22",
+  "prefix": "AS",
+  "office": "Dhemaji",
+  "jurisdiction": "Dhemaji district"
+ },
+ {
+  "code": "AS-23",
+  "prefix": "AS",
+  "office": "Tinsukia",
+  "jurisdiction": "Tinsukia district"
+ },
+ {
+  "code": "AS-24",
+  "prefix": "AS",
+  "office": "Hailakandi",
+  "jurisdiction": "Hailakandi district"
+ },
+ {
+  "code": "AS-25",
+  "prefix": "AS",
+  "office": "Kamrup",
+  "jurisdiction": "Kamrup district"
+ },
+ {
+  "code": "AS-26",
+  "prefix": "AS",
+  "office": "Kajalgaon",
+  "jurisdiction": "Chirang district"
+ },
+ {
+  "code": "AS-27",
+  "prefix": "AS",
+  "office": "Udalguri",
+  "jurisdiction": "Udalguri district"
+ },
+ {
+  "code": "AS-29",
+  "prefix": "AS",
+  "office": "Majuli",
+  "jurisdiction": "Majuli district"
+ },
+ {
+  "code": "AS-30",
+  "prefix": "AS",
+  "office": "Assam Police",
+  "jurisdiction": "Assam Police"
+ },
+ {
+  "code": "AS-31",
+  "prefix": "AS",
+  "office": "Hojai",
+  "jurisdiction": "Hojai district"
+ },
+ {
+  "code": "AS-32",
+  "prefix": "AS",
+  "office": "Biswanath Chariali",
+  "jurisdiction": "Biswanath district"
+ },
+ {
+  "code": "AS-33",
+  "prefix": "AS",
+  "office": "Charaideo",
+  "jurisdiction": "Charaideo district"
+ },
+ {
+  "code": "AS-34",
+  "prefix": "AS",
+  "office": "Hatsingimari",
+  "jurisdiction": "South Salmara-Mankachar district"
+ },
+ {
+  "code": "BR-01",
+  "prefix": "BR",
+  "office": "Patna",
+  "jurisdiction": "Patna district"
+ },
+ {
+  "code": "BR-02",
+  "prefix": "BR",
+  "office": "Gaya",
+  "jurisdiction": "Gaya district"
+ },
+ {
+  "code": "BR-03",
+  "prefix": "BR",
+  "office": "Arrah",
+  "jurisdiction": "Bhojpur district"
+ },
+ {
+  "code": "BR-04",
+  "prefix": "BR",
+  "office": "Chhapra",
+  "jurisdiction": "Saran district"
+ },
+ {
+  "code": "BR-05",
+  "prefix": "BR",
+  "office": "Motihari",
+  "jurisdiction": "East Champaran district"
+ },
+ {
+  "code": "BR-06",
+  "prefix": "BR",
+  "office": "Muzaffarpur",
+  "jurisdiction": "Muzaffarpur district"
+ },
+ {
+  "code": "BR-07",
+  "prefix": "BR",
+  "office": "Darbhanga",
+  "jurisdiction": "Darbhanga district"
+ },
+ {
+  "code": "BR-08",
+  "prefix": "BR",
+  "office": "Munger",
+  "jurisdiction": "Munger district"
+ },
+ {
+  "code": "BR-09",
+  "prefix": "BR",
+  "office": "Begusarai",
+  "jurisdiction": "Begusarai district"
+ },
+ {
+  "code": "BR-10",
+  "prefix": "BR",
+  "office": "Bhagalpur",
+  "jurisdiction": "Bhagalpur district"
+ },
+ {
+  "code": "BR-11",
+  "prefix": "BR",
+  "office": "Purnia",
+  "jurisdiction": "Purnia district"
+ },
+ {
+  "code": "BR-19",
+  "prefix": "BR",
+  "office": "Saharsa",
+  "jurisdiction": "Saharsa district"
+ },
+ {
+  "code": "BR-21",
+  "prefix": "BR",
+  "office": "Bihar Sharif",
+  "jurisdiction": "Nalanda district"
+ },
+ {
+  "code": "BR-22",
+  "prefix": "BR",
+  "office": "Bettiah",
+  "jurisdiction": "West Champaran district"
+ },
+ {
+  "code": "BR-24",
+  "prefix": "BR",
+  "office": "Dehri",
+  "jurisdiction": "Rohtas district"
+ },
+ {
+  "code": "BR-25",
+  "prefix": "BR",
+  "office": "Jehanabad",
+  "jurisdiction": "Jehanabad district"
+ },
+ {
+  "code": "BR-26",
+  "prefix": "BR",
+  "office": "Aurangabad",
+  "jurisdiction": "Aurangabad district"
+ },
+ {
+  "code": "BR-27",
+  "prefix": "BR",
+  "office": "Nawada",
+  "jurisdiction": "Nawada district"
+ },
+ {
+  "code": "BR-28",
+  "prefix": "BR",
+  "office": "Gopalganj",
+  "jurisdiction": "Gopalganj district"
+ },
+ {
+  "code": "BR-29",
+  "prefix": "BR",
+  "office": "Siwan",
+  "jurisdiction": "Siwan district"
+ },
+ {
+  "code": "BR-30",
+  "prefix": "BR",
+  "office": "Sitamarhi",
+  "jurisdiction": "Sitamarhi district"
+ },
+ {
+  "code": "BR-31",
+  "prefix": "BR",
+  "office": "Hajipur",
+  "jurisdiction": "Vaishali district"
+ },
+ {
+  "code": "BR-32",
+  "prefix": "BR",
+  "office": "Madhubani",
+  "jurisdiction": "Madhubani district"
+ },
+ {
+  "code": "BR-33",
+  "prefix": "BR",
+  "office": "Samastipur",
+  "jurisdiction": "Samastipur district"
+ },
+ {
+  "code": "BR-34",
+  "prefix": "BR",
+  "office": "Khagaria",
+  "jurisdiction": "Khagaria district"
+ },
+ {
+  "code": "BR-37",
+  "prefix": "BR",
+  "office": "Kishanganj",
+  "jurisdiction": "Kishanganj district"
+ },
+ {
+  "code": "BR-38",
+  "prefix": "BR",
+  "office": "Araria",
+  "jurisdiction": "Araria district"
+ },
+ {
+  "code": "BR-39",
+  "prefix": "BR",
+  "office": "Katihar",
+  "jurisdiction": "Katihar district"
+ },
+ {
+  "code": "BR-43",
+  "prefix": "BR",
+  "office": "Madhepura",
+  "jurisdiction": "Madhepura district"
+ },
+ {
+  "code": "BR-44",
+  "prefix": "BR",
+  "office": "Buxar",
+  "jurisdiction": "Buxar district"
+ },
+ {
+  "code": "BR-45",
+  "prefix": "BR",
+  "office": "Bhabua",
+  "jurisdiction": "Kaimur district"
+ },
+ {
+  "code": "BR-46",
+  "prefix": "BR",
+  "office": "Jamui",
+  "jurisdiction": "Jamui district"
+ },
+ {
+  "code": "BR-50",
+  "prefix": "BR",
+  "office": "Supaul",
+  "jurisdiction": "Supaul district"
+ },
+ {
+  "code": "BR-51",
+  "prefix": "BR",
+  "office": "Banka",
+  "jurisdiction": "Banka district"
+ },
+ {
+  "code": "BR-52",
+  "prefix": "BR",
+  "office": "Sheikhpura",
+  "jurisdiction": "Sheikhpura district"
+ },
+ {
+  "code": "BR-53",
+  "prefix": "BR",
+  "office": "Lakhisarai",
+  "jurisdiction": "Lakhisarai district"
+ },
+ {
+  "code": "BR-55",
+  "prefix": "BR",
+  "office": "Sheohar",
+  "jurisdiction": "Sheohar district"
+ },
+ {
+  "code": "BR-56",
+  "prefix": "BR",
+  "office": "Arwal",
+  "jurisdiction": "Arwal district"
+ },
+ {
+  "code": "CG-01",
+  "prefix": "CG",
+  "office": "entire Chhattisgarh",
+  "jurisdiction": "entire Chhattisgarh",
+  "notes": "Governor of Chhattisgarh vehicles"
+ },
+ {
+  "code": "CG-02",
+  "prefix": "CG",
+  "office": "entire Chhattisgarh",
+  "jurisdiction": "entire Chhattisgarh",
+  "notes": "Chhattisgarh Government vehicles"
+ },
+ {
+  "code": "CG-03",
+  "prefix": "CG",
+  "office": "entire Chhattisgarh",
+  "jurisdiction": "entire Chhattisgarh",
+  "notes": "Chhattisgarh Police vehicles"
+ },
+ {
+  "code": "CG-04",
+  "prefix": "CG",
+  "office": "Raipur",
+  "jurisdiction": "Raipur district"
+ },
+ {
+  "code": "CG-05",
+  "prefix": "CG",
+  "office": "Dhamtari",
+  "jurisdiction": "Dhamtari district"
+ },
+ {
+  "code": "CG-06",
+  "prefix": "CG",
+  "office": "Mahasamund",
+  "jurisdiction": "Mahasamund district"
+ },
+ {
+  "code": "CG-07",
+  "prefix": "CG",
+  "office": "Durg",
+  "jurisdiction": "Durg district"
+ },
+ {
+  "code": "CG-08",
+  "prefix": "CG",
+  "office": "Rajnandgaon",
+  "jurisdiction": "Rajnandgaon district"
+ },
+ {
+  "code": "CG-09",
+  "prefix": "CG",
+  "office": "Kawardha",
+  "jurisdiction": "Kabirdham district"
+ },
+ {
+  "code": "CG-10",
+  "prefix": "CG",
+  "office": "Bilaspur",
+  "jurisdiction": "Bilaspur district"
+ },
+ {
+  "code": "CG-11",
+  "prefix": "CG",
+  "office": "Janjgir",
+  "jurisdiction": "Janjgir–Champa district"
+ },
+ {
+  "code": "CG-12",
+  "prefix": "CG",
+  "office": "Korba",
+  "jurisdiction": "Korba district"
+ },
+ {
+  "code": "CG-13",
+  "prefix": "CG",
+  "office": "Raigarh",
+  "jurisdiction": "Raigarh district"
+ },
+ {
+  "code": "CG-14",
+  "prefix": "CG",
+  "office": "Jashpur Nagar",
+  "jurisdiction": "Jashpur district"
+ },
+ {
+  "code": "CG-15",
+  "prefix": "CG",
+  "office": "Ambikapur",
+  "jurisdiction": "Surguja district"
+ },
+ {
+  "code": "CG-16",
+  "prefix": "CG",
+  "office": "Baikunthpur",
+  "jurisdiction": "Koriya district"
+ },
+ {
+  "code": "CG-17",
+  "prefix": "CG",
+  "office": "Jagdalpur",
+  "jurisdiction": "Bastar district"
+ },
+ {
+  "code": "CG-18",
+  "prefix": "CG",
+  "office": "Dantewada",
+  "jurisdiction": "Dantewada district"
+ },
+ {
+  "code": "CG-19",
+  "prefix": "CG",
+  "office": "Kanker",
+  "jurisdiction": "Kanker district"
+ },
+ {
+  "code": "CG-20",
+  "prefix": "CG",
+  "office": "Bijapur",
+  "jurisdiction": "Bijapur district"
+ },
+ {
+  "code": "CG-21",
+  "prefix": "CG",
+  "office": "Narayanpur",
+  "jurisdiction": "Narayanpur district"
+ },
+ {
+  "code": "CG-22",
+  "prefix": "CG",
+  "office": "Baloda Bazar",
+  "jurisdiction": "Baloda Bazar district"
+ },
+ {
+  "code": "CG-23",
+  "prefix": "CG",
+  "office": "Gariaband",
+  "jurisdiction": "Gariaband district"
+ },
+ {
+  "code": "CG-24",
+  "prefix": "CG",
+  "office": "Balod",
+  "jurisdiction": "Balod district"
+ },
+ {
+  "code": "CG-25",
+  "prefix": "CG",
+  "office": "Bemetara",
+  "jurisdiction": "Bemetara district"
+ },
+ {
+  "code": "CG-26",
+  "prefix": "CG",
+  "office": "Sukma",
+  "jurisdiction": "Sukma district"
+ },
+ {
+  "code": "CG-27",
+  "prefix": "CG",
+  "office": "Kondagaon",
+  "jurisdiction": "Kondagaon district"
+ },
+ {
+  "code": "CG-28",
+  "prefix": "CG",
+  "office": "Mungeli",
+  "jurisdiction": "Mungeli district"
+ },
+ {
+  "code": "CG-29",
+  "prefix": "CG",
+  "office": "Surajpur",
+  "jurisdiction": "Surajpur district"
+ },
+ {
+  "code": "CG-30",
+  "prefix": "CG",
+  "office": "Balrampur",
+  "jurisdiction": "Balrampur district"
+ },
+ {
+  "code": "CH-01",
+  "prefix": "CH",
+  "office": "Chandigarh",
+  "jurisdiction": "Chandigarh district"
+ },
+ {
+  "code": "CH-02",
+  "prefix": "CH",
+  "office": "Chandigarh",
+  "jurisdiction": "Chandigarh district"
+ },
+ {
+  "code": "CH-03",
+  "prefix": "CH",
+  "office": "Chandigarh",
+  "jurisdiction": "Chandigarh district"
+ },
+ {
+  "code": "CH-04",
+  "prefix": "CH",
+  "office": "Chandigarh",
+  "jurisdiction": "Chandigarh district"
+ },
+ {
+  "code": "DD-01",
+  "prefix": "DD",
+  "office": "Silvassa",
+  "jurisdiction": "Dadra and Nagar Haveli district",
+  "notes": "Previously DN-09, before the merger of UT of Daman \u0026 Diu and UT of Dadra \u0026 Nagar Haveli"
+ },
+ {
+  "code": "DD-02",
+  "prefix": "DD",
+  "office": "Diu",
+  "jurisdiction": "Diu district"
+ },
+ {
+  "code": "DD-03",
+  "prefix": "DD",
+  "office": "Daman",
+  "jurisdiction": "Daman district"
+ },
+ {
+  "code": "DL-01",
+  "prefix": "DL",
+  "office": "Mall Road, Vishwavidyalaya",
+  "jurisdiction": "North Delhi District: Civil Lines, Pratap Bagh, Kotwali, Bela Road, Andha Mugal, Mori Gate, Majnu Ka Tila, Gulabi Bagh, Red Fort, Sant Nagar, Sarai Rohilla, Yamuna Bazar, Roop Nagar, Inder Lok, Lahori Gate, Maurice Nagar, Sadar Bazar, Church Mission, Shakti Nagar, Ahata Kedara, Town Hall, Subzi Mandi, Bara Hindu Rao, Nai Sarak, Tis Hazari, Kashmere Gate, Chandni Chowk"
+ },
+ {
+  "code": "DL-02",
+  "prefix": "DL",
+  "office": "Indraprastha Depot",
+  "jurisdiction": "New Delhi District: Tilak Marg, R.M.L.Hospital, Chanakya Puri, Parliament St., Sucheta Kriplani Hospital, Tughlaq Road, Boat Club, Mandi House, North Avenue Panchkuian Road, Kali Bari Marg, South Avenue, Gole Market, Rabinder Nagar, Malcha Marg, Connaught Place, Kaka Nagar"
+ },
+ {
+  "code": "DL-03",
+  "prefix": "DL",
+  "office": "DDA Market, Sheikh Sarai",
+  "jurisdiction": "South Delhi District: Hauz Khas, Amar Colony, C.R Park, Malviya Nagar, Garhi, Ambedkar Nagar, Saket, Okhla, Madangir, Pushp Vihar, Sunlight Colony, Sainik Farm, Mehrauli, New Friends Colony, Kalkaji, Defence Colony, Nehru Place, Gulmohar Park, Sukhdev Vihar, Badarpur, AIIMS, Bharat Nagar, Sarita Vihar, Lodhi Colony, Hz.Nizammudin, Sangam Vihar, Pragati Vihar, Jangpura, East Kidwai Nagar, Khan Pur, Sarai Kale Khan, Lajpat Nagar, Greater Kailash, Panchsheel"
+ },
+ {
+  "code": "DL-04",
+  "prefix": "DL",
+  "office": "Janakpuri",
+  "jurisdiction": "West Delhi District I: Janakpuri, Vikaspuri, Keshopur, TilakNagar, Uttam Nagar, Mohan Garden, Nawada, Kakrola, Paschim Vihar, Meera Bagh, New Multan Nagar, Nangloi, Tikri Border, Nilothi, Nangloi Jat, Mundka, Baprola, Hari Nagar, Ashok Nagar, Prem Nagar, Subhash Nagar"
+ },
+ {
+  "code": "DL-05",
+  "prefix": "DL",
+  "office": "Loni Road, Shahdara",
+  "jurisdiction": "North East Delhi District: Seelampur, Gamri, Nand Nagari, Gokalpuri, Shahdara, Ashok Nagar, Khazuri Khas, Welcome Colony, Sunder Nagar, Karawal Nagar, Mansarover Park, Harsh Vihar, Bhajanpura, Seemapuri, Yamuna Vihar, G.T.B. Nagar"
+ },
+ {
+  "code": "DL-06",
+  "prefix": "DL",
+  "office": "ISBT Sarai Kale Khan",
+  "jurisdiction": "Central Delhi District: Daryaganj, Lalkuan, Prasha Nagar, Chandni Mahal, I.P. Estate, Rajender Nagar, Turkmangate, LNJP Hospital, Pusa Road, Jama Masjid, Pahar Ganj, Sita Ram Bazar, Kamla Market, DBG Road, Sangtrashan, Shahganj, Shidipura, Nabi Karim, Hauz Qazi, Govt. Qr. Devnagar, Ballimaran, Karol Bagh"
+ },
+ {
+  "code": "DL-07",
+  "prefix": "DL",
+  "office": "DTC Depot, Mayur Vihar",
+  "jurisdiction": "East Delhi District-I: KalyanPuri, Laxmi Nagar, PreetVihar, New Ashok Nagar, Patparganj, Shakarpur, Trilokpuri, Mayur Vihar-I\u0026II, Karkardooma"
+ },
+ {
+  "code": "DL-08",
+  "prefix": "DL",
+  "office": "DTC Depot, Wazirpur",
+  "jurisdiction": "North West Delhi District-I: Model Town, Jahangirpuri, Sangam Park, Adarsh Nagar, Vijay Nagar, Keshav Puram, Ashok Vihar, Shalimar Bagh, Wazirpur, Saraswati Vihar, Kingsway Camp, Pitampura, Mukherjee Nagar, Rani Bagh, Azadpur, Rampura, Tri Nagar, Gujrawalan"
+ },
+ {
+  "code": "DL-09",
+  "prefix": "DL",
+  "office": "Sector-10, Dwarka",
+  "jurisdiction": "South West Delhi District-I: Inderpuri, Naraina, Mayapuri, Najafgarh, Kapashera, Jafarpur Kalan, Dwarka, Palam, Matiala, Mahavir Enclave, Bijwasan, Qutub Vihar, Chhawla, Dabri, Sagarpur"
+ },
+ {
+  "code": "DL-10",
+  "prefix": "DL",
+  "office": "Raja Garden",
+  "jurisdiction": "West Delhi District-II: Anand Parbat, Moti Nagar, Patel Nagar, Punjabi Bagh, Kirti Nagar Rajouri Garden",
+  "notes": "also DL-4CC to DL-4CM, DL4-CNA and onwards, DL-4SL, DL-4SN, DL-4SP, DL-4SR, DL-4SNA"
+ },
+ {
+  "code": "DL-11",
+  "prefix": "DL",
+  "office": "DTC Depot, Rohini",
+  "jurisdiction": "North West Delhi District-II: Sultanpuri, Mangolpuri, Samaypur Badli, Prasant Vihar, Auchandi Border, Bawana, Alipur, Rohini, Kanjhavala, Narela, Kirari, Aman Vihar, Mubarakpur, Qutab Garh, Jonti, Mungeshpur, Mukandpur, Khera Kalan",
+  "notes": "also DL-8CE to DL-8CX, DL-8SAA to DL-8SAY"
+ },
+ {
+  "code": "DL-12",
+  "prefix": "DL",
+  "office": "DTC Depot, Vasant Vihar",
+  "jurisdiction": "South West Delhi District-II: Vasant Vihar, Vasant Kunj, Delhi Cantt., Moti Bagh, RK Puram, Munirka, Sarojini Nagar, Safdarjung Enclave, Green Park, Ghitorni, Mahipalpur, Rajokri, Mehrauli, Sultanpur, Chhatarpur"
+ },
+ {
+  "code": "DL-13",
+  "prefix": "DL",
+  "office": "CBD Ground, Surajmal Vihar",
+  "jurisdiction": "East Delhi District-II: Gazipur, GandhiNagar, Krishna Nagar, Anand Vihar, Old Seelampur, Mandawali, New Shahdara, Geeta Colony, VivekVihar, Jheel",
+  "notes": "also DL-7C (up to 8705), DL-7CH (0632 onwards), DL-7CG, DL-7CF (3543 onwards), DL-7S to DL-7SQ, DL-7SY (up to 7773), DL-7SAF (up to 5122), DL-7SAG, DL-7SAY (up to 1494)"
+ },
+ {
+  "code": "GA-01",
+  "prefix": "GA",
+  "office": "Panaji",
+  "jurisdiction": "North Goa district",
+  "notes": "Not in use"
+ },
+ {
+  "code": "GA-02",
+  "prefix": "GA",
+  "office": "Margao",
+  "jurisdiction": "South Goa district",
+  "notes": "Not in use"
+ },
+ {
+  "code": "GA-03",
+  "prefix": "GA",
+  "office": "Mapusa",
+  "jurisdiction": "Bardez taluka"
+ },
+ {
+  "code": "GA-04",
+  "prefix": "GA",
+  "office": "Bicholim",
+  "jurisdiction": "Bicholim taluka, Sattari taluka"
+ },
+ {
+  "code": "GA-05",
+  "prefix": "GA",
+  "office": "Ponda",
+  "jurisdiction": "Ponda taluka"
+ },
+ {
+  "code": "GA-06",
+  "prefix": "GA",
+  "office": "Vasco da Gama",
+  "jurisdiction": "Mormugao taluka"
+ },
+ {
+  "code": "GA-07",
+  "prefix": "GA",
+  "office": "Panaji",
+  "jurisdiction": "Tiswadi taluka"
+ },
+ {
+  "code": "GA-08",
+  "prefix": "GA",
+  "office": "Margao",
+  "jurisdiction": "Salcette taluka"
+ },
+ {
+  "code": "GA-09",
+  "prefix": "GA",
+  "office": "Quepem",
+  "jurisdiction": "Quepem taluka, Sanguem taluka"
+ },
+ {
+  "code": "GA-10",
+  "prefix": "GA",
+  "office": "Canacona",
+  "jurisdiction": "Canacona taluka"
+ },
+ {
+  "code": "GA-11",
+  "prefix": "GA",
+  "office": "Pernem",
+  "jurisdiction": "Pernem taluka"
+ },
+ {
+  "code": "GA-12",
+  "prefix": "GA",
+  "office": "Dharbandora",
+  "jurisdiction": "Dharbandora taluka"
+ },
+ {
+  "code": "GJ-01",
+  "prefix": "GJ",
+  "office": "Ahmedabad (West), Subhash Bridge",
+  "jurisdiction": "Covers parts of Ahmedabad City on the western bank of the Sabarmati River, over Vejalpur, Sabarmati, Ghatlodiya and parts of Daskroi Taluks of Western Ahmedabad District"
+ },
+ {
+  "code": "GJ-02",
+  "prefix": "GJ",
+  "office": "Mehsana",
+  "jurisdiction": "Covers entire Mehsana District"
+ },
+ {
+  "code": "GJ-03",
+  "prefix": "GJ",
+  "office": "Rajkot",
+  "jurisdiction": "Covers entire Rajkot District"
+ },
+ {
+  "code": "GJ-04",
+  "prefix": "GJ",
+  "office": "Bhavnagar",
+  "jurisdiction": "Covers entire Bhavnagar District"
+ },
+ {
+  "code": "GJ-05",
+  "prefix": "GJ",
+  "office": "Surat",
+  "jurisdiction": "Covers Surat City, Olpad, Chorasi, Kamrej and Palsana Taluks of Western Surat District"
+ },
+ {
+  "code": "GJ-06",
+  "prefix": "GJ",
+  "office": "Vadodara",
+  "jurisdiction": "Covers entire Vadodara District"
+ },
+ {
+  "code": "GJ-07",
+  "prefix": "GJ",
+  "office": "Nadiad, Kheda District",
+  "jurisdiction": "Covers entire Kheda District"
+ },
+ {
+  "code": "GJ-08",
+  "prefix": "GJ",
+  "office": "Palanpur, Banaskantha District",
+  "jurisdiction": "Covers Banaskantha District and Vav-Tharad District"
+ },
+ {
+  "code": "GJ-09",
+  "prefix": "GJ",
+  "office": "Himmatnagar, Sabarkantha District",
+  "jurisdiction": "Covers entire Sabarkantha District"
+ },
+ {
+  "code": "GJ-10",
+  "prefix": "GJ",
+  "office": "Jamnagar",
+  "jurisdiction": "Covers entire Jamnagar District"
+ },
+ {
+  "code": "GJ-11",
+  "prefix": "GJ",
+  "office": "Junagadh",
+  "jurisdiction": "Covers entire Junagadh District"
+ },
+ {
+  "code": "GJ-12",
+  "prefix": "GJ",
+  "office": "Bhuj, Kutch District (West)",
+  "jurisdiction": "Covers Bhuj, Mundra, Mandvi, Nakhtarana, Abdasa and Lakhpat Taluks of Western Kutch District"
+ },
+ {
+  "code": "GJ-13",
+  "prefix": "GJ",
+  "office": "Surendranagar",
+  "jurisdiction": "Covers entire Surendranagar District"
+ },
+ {
+  "code": "GJ-14",
+  "prefix": "GJ",
+  "office": "Amreli",
+  "jurisdiction": "Covers entire Amreli District"
+ },
+ {
+  "code": "GJ-15",
+  "prefix": "GJ",
+  "office": "Valsad",
+  "jurisdiction": "Covers entire Valsad District"
+ },
+ {
+  "code": "GJ-16",
+  "prefix": "GJ",
+  "office": "Bharuch",
+  "jurisdiction": "Covers entire Bharuch District"
+ },
+ {
+  "code": "GJ-17",
+  "prefix": "GJ",
+  "office": "Godhra, Panchmahal District",
+  "jurisdiction": "Covers entire Panchmahal District"
+ },
+ {
+  "code": "GJ-18",
+  "prefix": "GJ",
+  "office": "Gandhinagar",
+  "jurisdiction": "Covers entire Gandhinagar District"
+ },
+ {
+  "code": "GJ-19",
+  "prefix": "GJ",
+  "office": "Bardoli, Surat District (East)",
+  "jurisdiction": "Covers Bardoli, Mahuva, Mandvi, Mangrol, Ambika, Areth and Umarpada Taluks of Eastern Surat District"
+ },
+ {
+  "code": "GJ-20",
+  "prefix": "GJ",
+  "office": "Dahod",
+  "jurisdiction": "Covers entire Dahod District"
+ },
+ {
+  "code": "GJ-21",
+  "prefix": "GJ",
+  "office": "Navsari",
+  "jurisdiction": "Covers entire Navsari District"
+ },
+ {
+  "code": "GJ-22",
+  "prefix": "GJ",
+  "office": "Rajpipla, Narmada District",
+  "jurisdiction": "Covers entire Narmada District"
+ },
+ {
+  "code": "GJ-23",
+  "prefix": "GJ",
+  "office": "Anand",
+  "jurisdiction": "Covers entire Anand District"
+ },
+ {
+  "code": "GJ-24",
+  "prefix": "GJ",
+  "office": "Patan",
+  "jurisdiction": "Covers entire Patan District"
+ },
+ {
+  "code": "GJ-25",
+  "prefix": "GJ",
+  "office": "Porbandar",
+  "jurisdiction": "Covers entire Porbandar District"
+ },
+ {
+  "code": "GJ-26",
+  "prefix": "GJ",
+  "office": "Vyara, Tapi District",
+  "jurisdiction": "Covers entire Tapi District"
+ },
+ {
+  "code": "GJ-27",
+  "prefix": "GJ",
+  "office": "Ahmedabad (East), Vastral",
+  "jurisdiction": "Covers parts of Ahmedabad City on the eastern bank of the Sabarmati River, over Maninagar, Asarwa, Vatva and parts of Daskroi Taluks of Eastern Ahmedabad District"
+ },
+ {
+  "code": "GJ-28",
+  "prefix": "GJ",
+  "office": "Not Allocated",
+  "jurisdiction": "Reserved for Surat"
+ },
+ {
+  "code": "GJ-29",
+  "prefix": "GJ",
+  "office": "Not Allocated",
+  "jurisdiction": "Reserved for Vadodara"
+ },
+ {
+  "code": "GJ-30",
+  "prefix": "GJ",
+  "office": "Ahwa, Dang District",
+  "jurisdiction": "Covers entire Dang District"
+ },
+ {
+  "code": "GJ-31",
+  "prefix": "GJ",
+  "office": "Modasa, Aravalli District",
+  "jurisdiction": "Covers entire Aravalli District"
+ },
+ {
+  "code": "GJ-32",
+  "prefix": "GJ",
+  "office": "Veraval, Gir Somnath District",
+  "jurisdiction": "Covers entire Gir Somnath District"
+ },
+ {
+  "code": "GJ-33",
+  "prefix": "GJ",
+  "office": "Botad",
+  "jurisdiction": "Covers entire Botad District"
+ },
+ {
+  "code": "GJ-34",
+  "prefix": "GJ",
+  "office": "Chhota Udaipur",
+  "jurisdiction": "Covers entire Chhota Udaipur District"
+ },
+ {
+  "code": "GJ-35",
+  "prefix": "GJ",
+  "office": "Lunawada, Mahisagar District",
+  "jurisdiction": "Covers entire Mahisagar District"
+ },
+ {
+  "code": "GJ-36",
+  "prefix": "GJ",
+  "office": "Morbi",
+  "jurisdiction": "Covers entire Morbi District"
+ },
+ {
+  "code": "GJ-37",
+  "prefix": "GJ",
+  "office": "Khambhaliya, Devbhoomi Dwarka District",
+  "jurisdiction": "Covers entire Devbhoomi Dwarka District"
+ },
+ {
+  "code": "GJ-38",
+  "prefix": "GJ",
+  "office": "Bavla, Ahmedabad District (Rural)",
+  "jurisdiction": "Covers Bavla, Sanand, Viramgam, Detroj-Rampura, Mandal, Dholka, Dhandhuka, Dholera and parts of Daskroi Taluks of Rural Ahmedabad District"
+ },
+ {
+  "code": "GJ-39",
+  "prefix": "GJ",
+  "office": "Anjar, Kutch District (East)",
+  "jurisdiction": "Covers Anjar, Gandhidham, Bhachau and Rapar Taluks of Eastern Kutch District"
+ },
+ {
+  "code": "GJ-40",
+  "prefix": "GJ",
+  "office": "Tharad",
+  "jurisdiction": "Covers Vav-Tharad District, reviously under GJ-08 (Palanpur)"
+ },
+ {
+  "code": "HP-03",
+  "prefix": "HP",
+  "office": "Shimla (Urban)"
+ },
+ {
+  "code": "HP-04",
+  "prefix": "HP",
+  "office": "Kangra, Dharamsala"
+ },
+ {
+  "code": "HP-05",
+  "prefix": "HP",
+  "office": "Mandi"
+ },
+ {
+  "code": "HP-06",
+  "prefix": "HP",
+  "office": "Rampur Bushahr"
+ },
+ {
+  "code": "HP-07",
+  "prefix": "HP",
+  "office": "Shimla (Urban)"
+ },
+ {
+  "code": "HP-08",
+  "prefix": "HP",
+  "office": "Chaupal"
+ },
+ {
+  "code": "HP-08AA",
+  "prefix": "HP",
+  "office": "Kupvi"
+ },
+ {
+  "code": "HP-09",
+  "prefix": "HP",
+  "office": "Theog"
+ },
+ {
+  "code": "HP-10",
+  "prefix": "HP",
+  "office": "Rohru"
+ },
+ {
+  "code": "HP-11",
+  "prefix": "HP",
+  "office": "Arki"
+ },
+ {
+  "code": "HP-12",
+  "prefix": "HP",
+  "office": "Nalagarh"
+ },
+ {
+  "code": "HP-12AA",
+  "prefix": "HP",
+  "office": "Baddi"
+ },
+ {
+  "code": "HP-13",
+  "prefix": "HP",
+  "office": "Kandaghat"
+ },
+ {
+  "code": "HP-14",
+  "prefix": "HP",
+  "office": "Solan"
+ },
+ {
+  "code": "HP-15",
+  "prefix": "HP",
+  "office": "Parwanoo"
+ },
+ {
+  "code": "HP-16",
+  "prefix": "HP",
+  "office": "Rajgarh"
+ },
+ {
+  "code": "HP-16AA",
+  "prefix": "HP",
+  "office": "Pachhad, Sirmaur"
+ },
+ {
+  "code": "HP-17",
+  "prefix": "HP",
+  "office": "Paonta Sahib"
+ },
+ {
+  "code": "HP-18",
+  "prefix": "HP",
+  "office": "Nahan"
+ },
+ {
+  "code": "HP-19",
+  "prefix": "HP",
+  "office": "Amb"
+ },
+ {
+  "code": "HP-19AA",
+  "prefix": "HP",
+  "office": "Gagret, Una"
+ },
+ {
+  "code": "HP-20",
+  "prefix": "HP",
+  "office": "Una"
+ },
+ {
+  "code": "HP-21",
+  "prefix": "HP",
+  "office": "Barsar, Hamirpur"
+ },
+ {
+  "code": "HP-22",
+  "prefix": "HP",
+  "office": "Hamirpur"
+ },
+ {
+  "code": "HP-23",
+  "prefix": "HP",
+  "office": "Ghumarwin"
+ },
+ {
+  "code": "HP-24",
+  "prefix": "HP",
+  "office": "Bilaspur"
+ },
+ {
+  "code": "HP-25",
+  "prefix": "HP",
+  "office": "Kalpa"
+ },
+ {
+  "code": "HP-26",
+  "prefix": "HP",
+  "office": "Nichar, Bhaba Nagar"
+ },
+ {
+  "code": "HP-27",
+  "prefix": "HP",
+  "office": "Pooh"
+ },
+ {
+  "code": "HP-28",
+  "prefix": "HP",
+  "office": "Sarkaghat"
+ },
+ {
+  "code": "HP-29",
+  "prefix": "HP",
+  "office": "Jogindernagar"
+ },
+ {
+  "code": "HP-30",
+  "prefix": "HP",
+  "office": "Karsog"
+ },
+ {
+  "code": "HP-31",
+  "prefix": "HP",
+  "office": "Sundernagar"
+ },
+ {
+  "code": "HP-32",
+  "prefix": "HP",
+  "office": "Gohar, Mandi"
+ },
+ {
+  "code": "HP-33",
+  "prefix": "HP",
+  "office": "Mandi"
+ },
+ {
+  "code": "HP-33AA",
+  "prefix": "HP",
+  "office": "Kotli"
+ },
+ {
+  "code": "HP-34",
+  "prefix": "HP",
+  "office": "Kullu"
+ },
+ {
+  "code": "HP-35",
+  "prefix": "HP",
+  "office": "Anni, Kullu"
+ },
+ {
+  "code": "HP-35AA",
+  "prefix": "HP",
+  "office": "Nirmand"
+ },
+ {
+  "code": "HP-36",
+  "prefix": "HP",
+  "office": "Dehra"
+ },
+ {
+  "code": "HP-37",
+  "prefix": "HP",
+  "office": "Palampur"
+ },
+ {
+  "code": "HP-38",
+  "prefix": "HP",
+  "office": "Nurpur"
+ },
+ {
+  "code": "HP-39",
+  "prefix": "HP",
+  "office": "Dharamshala"
+ },
+ {
+  "code": "HP-40",
+  "prefix": "HP",
+  "office": "Kangra"
+ },
+ {
+  "code": "HP-41",
+  "prefix": "HP",
+  "office": "Kaza"
+ },
+ {
+  "code": "HP-42",
+  "prefix": "HP",
+  "office": "Keylong"
+ },
+ {
+  "code": "HP-43",
+  "prefix": "HP",
+  "office": "Udaipur, Lahaul and Spiti"
+ },
+ {
+  "code": "HP-44",
+  "prefix": "HP",
+  "office": "Churah, Chamba"
+ },
+ {
+  "code": "HP-45",
+  "prefix": "HP",
+  "office": "Pangi"
+ },
+ {
+  "code": "HP-46",
+  "prefix": "HP",
+  "office": "Bharmour"
+ },
+ {
+  "code": "HP-47",
+  "prefix": "HP",
+  "office": "Dalhousie"
+ },
+ {
+  "code": "HP-48",
+  "prefix": "HP",
+  "office": "Chamba"
+ },
+ {
+  "code": "HP-49",
+  "prefix": "HP",
+  "office": "Banjar"
+ },
+ {
+  "code": "HP-50",
+  "prefix": "HP",
+  "office": "Shimla",
+  "jurisdiction": "Auto-rickshaws"
+ },
+ {
+  "code": "HP-52AA",
+  "prefix": "HP",
+  "office": "Sunni Shimla"
+ },
+ {
+  "code": "HP-53",
+  "prefix": "HP",
+  "office": "Baijnath"
+ },
+ {
+  "code": "HP-54",
+  "prefix": "HP",
+  "office": "Jawali"
+ },
+ {
+  "code": "HP-55",
+  "prefix": "HP",
+  "office": "Nadaun"
+ },
+ {
+  "code": "HP-56",
+  "prefix": "HP",
+  "office": "Jaisinghpur"
+ },
+ {
+  "code": "HP-57",
+  "prefix": "HP",
+  "office": "Chowari"
+ },
+ {
+  "code": "HP-58",
+  "prefix": "HP",
+  "office": "Manali"
+ },
+ {
+  "code": "HP-59",
+  "prefix": "HP",
+  "office": "Solan"
+ },
+ {
+  "code": "HP-60",
+  "prefix": "HP",
+  "office": "Hamirpur"
+ },
+ {
+  "code": "HP-61",
+  "prefix": "HP",
+  "office": "Kullu"
+ },
+ {
+  "code": "HP-62",
+  "prefix": "HP",
+  "office": "Shimla"
+ },
+ {
+  "code": "HP-63",
+  "prefix": "HP",
+  "office": "Shimla"
+ },
+ {
+  "code": "HP-64",
+  "prefix": "HP",
+  "office": "Solan"
+ },
+ {
+  "code": "HP-65",
+  "prefix": "HP",
+  "office": "Mandi"
+ },
+ {
+  "code": "HP-66",
+  "prefix": "HP",
+  "office": "Kullu"
+ },
+ {
+  "code": "HP-67",
+  "prefix": "HP",
+  "office": "Hamirpur"
+ },
+ {
+  "code": "HP-68",
+  "prefix": "HP",
+  "office": "Kangra, Dharmsala"
+ },
+ {
+  "code": "HP-71",
+  "prefix": "HP",
+  "office": "Nahan"
+ },
+ {
+  "code": "HP-72",
+  "prefix": "HP",
+  "office": "Una"
+ },
+ {
+  "code": "HP-73",
+  "prefix": "HP",
+  "office": "Chamba"
+ },
+ {
+  "code": "HP-74",
+  "prefix": "HP",
+  "office": "Bhoranj, Hamirpur"
+ },
+ {
+  "code": "HP-75",
+  "prefix": "HP",
+  "office": "Jubbal"
+ },
+ {
+  "code": "HP-76",
+  "prefix": "HP",
+  "office": "Paddhar, Mandi"
+ },
+ {
+  "code": "HP-77",
+  "prefix": "HP",
+  "office": "Dodra Kawar, Shimla"
+ },
+ {
+  "code": "HP-78",
+  "prefix": "HP",
+  "office": "Bangana, Una"
+ },
+ {
+  "code": "HP-79",
+  "prefix": "HP",
+  "office": "Sangrah, Sirmaur"
+ },
+ {
+  "code": "HP-80",
+  "prefix": "HP",
+  "office": "Haroli, Una"
+ },
+ {
+  "code": "HP-81",
+  "prefix": "HP",
+  "office": "Salooni"
+ },
+ {
+  "code": "HP-82",
+  "prefix": "HP",
+  "office": "Balh, Mandi"
+ },
+ {
+  "code": "HP-83",
+  "prefix": "HP",
+  "office": "Jawalaji, Kangra"
+ },
+ {
+  "code": "HP-84",
+  "prefix": "HP",
+  "office": "Sujanpur Tihra, Hamirpur"
+ },
+ {
+  "code": "HP-85",
+  "prefix": "HP",
+  "office": "Shillai, Sirmaur"
+ },
+ {
+  "code": "HP-85AA",
+  "prefix": "HP",
+  "office": "Kaffota, Sirmaur"
+ },
+ {
+  "code": "HP-86",
+  "prefix": "HP",
+  "office": "Dharampur, Mandi"
+ },
+ {
+  "code": "HP-87",
+  "prefix": "HP",
+  "office": "Janjehli, Mandi"
+ },
+ {
+  "code": "HP-87AA",
+  "prefix": "HP",
+  "office": "Bali Chowki, Mandi"
+ },
+ {
+  "code": "HP-88",
+  "prefix": "HP",
+  "office": "Fatehpur, Kangra"
+ },
+ {
+  "code": "HP-89",
+  "prefix": "HP",
+  "office": "Jhandutta, Bilaspur"
+ },
+ {
+  "code": "HP-90",
+  "prefix": "HP",
+  "office": "Shahpur, Kangra"
+ },
+ {
+  "code": "HP-91",
+  "prefix": "HP",
+  "office": "Naina Devi, Swarghat, Bilaspur"
+ },
+ {
+  "code": "HP-92",
+  "prefix": "HP",
+  "office": "Rampur Bushahr"
+ },
+ {
+  "code": "HP-93",
+  "prefix": "HP",
+  "office": "Nalagarh"
+ },
+ {
+  "code": "HP-94",
+  "prefix": "HP",
+  "office": "Nagrota Bagwan"
+ },
+ {
+  "code": "HP-95",
+  "prefix": "HP",
+  "office": "Kumarsain"
+ },
+ {
+  "code": "HP-96",
+  "prefix": "HP",
+  "office": "Dheera, Kangra"
+ },
+ {
+  "code": "HP-97",
+  "prefix": "HP",
+  "office": "Indora"
+ },
+ {
+  "code": "HP-98",
+  "prefix": "HP",
+  "office": "Kasauli"
+ },
+ {
+  "code": "HP-99",
+  "prefix": "HP",
+  "office": "Kotkhai"
+ },
+ {
+  "code": "HR-01",
+  "prefix": "HR",
+  "office": "Ambala",
+  "jurisdiction": "Ambala"
+ },
+ {
+  "code": "HR-02",
+  "prefix": "HR",
+  "office": "Jagadhari",
+  "jurisdiction": "Yamunanagar"
+ },
+ {
+  "code": "HR-03",
+  "prefix": "HR",
+  "office": "Panchkula",
+  "jurisdiction": "Panchkula"
+ },
+ {
+  "code": "HR-04",
+  "prefix": "HR",
+  "office": "Naraingarh",
+  "jurisdiction": "Naraingarh"
+ },
+ {
+  "code": "HR-05",
+  "prefix": "HR",
+  "office": "Karnal",
+  "jurisdiction": "Karnal"
+ },
+ {
+  "code": "HR-06",
+  "prefix": "HR",
+  "office": "Panipat",
+  "jurisdiction": "Panipat"
+ },
+ {
+  "code": "HR-07",
+  "prefix": "HR",
+  "office": "Thanesar",
+  "jurisdiction": "Thanesar"
+ },
+ {
+  "code": "HR-08",
+  "prefix": "HR",
+  "office": "Kaithal",
+  "jurisdiction": "Kaithal"
+ },
+ {
+  "code": "HR-09",
+  "prefix": "HR",
+  "office": "Guhla",
+  "jurisdiction": "Guhla"
+ },
+ {
+  "code": "HR-10",
+  "prefix": "HR",
+  "office": "Sonipat",
+  "jurisdiction": "Sonipat"
+ },
+ {
+  "code": "HR-11",
+  "prefix": "HR",
+  "office": "Gohana",
+  "jurisdiction": "Gohana"
+ },
+ {
+  "code": "HR-12",
+  "prefix": "HR",
+  "office": "Rohtak",
+  "jurisdiction": "Rohtak"
+ },
+ {
+  "code": "HR-13",
+  "prefix": "HR",
+  "office": "Bahadurgarh",
+  "jurisdiction": "Bahadurgarh"
+ },
+ {
+  "code": "HR-14",
+  "prefix": "HR",
+  "office": "Jhajjar",
+  "jurisdiction": "Jhajjar"
+ },
+ {
+  "code": "HR-15",
+  "prefix": "HR",
+  "office": "Meham",
+  "jurisdiction": "Meham"
+ },
+ {
+  "code": "HR-16",
+  "prefix": "HR",
+  "office": "Bhiwani",
+  "jurisdiction": "Bhiwani"
+ },
+ {
+  "code": "HR-17",
+  "prefix": "HR",
+  "office": "Siwani",
+  "jurisdiction": "Siwani"
+ },
+ {
+  "code": "HR-18",
+  "prefix": "HR",
+  "office": "Loharu",
+  "jurisdiction": "Loharu"
+ },
+ {
+  "code": "HR-19",
+  "prefix": "HR",
+  "office": "Charkhi Dadri",
+  "jurisdiction": "Charkhi Dadri"
+ },
+ {
+  "code": "HR-20",
+  "prefix": "HR",
+  "office": "Hisar",
+  "jurisdiction": "Hisar"
+ },
+ {
+  "code": "HR-21",
+  "prefix": "HR",
+  "office": "Hansi",
+  "jurisdiction": "Hansi"
+ },
+ {
+  "code": "HR-22",
+  "prefix": "HR",
+  "office": "Fatehabad",
+  "jurisdiction": "Fatehabad"
+ },
+ {
+  "code": "HR-23",
+  "prefix": "HR",
+  "office": "Tohana, Jakhal Mandi",
+  "jurisdiction": "Tohana"
+ },
+ {
+  "code": "HR-24",
+  "prefix": "HR",
+  "office": "Sirsa",
+  "jurisdiction": "Sirsa"
+ },
+ {
+  "code": "HR-25",
+  "prefix": "HR",
+  "office": "Mandi Dabwali",
+  "jurisdiction": "Mandi Dabwali"
+ },
+ {
+  "code": "HR-26",
+  "prefix": "HR",
+  "office": "Gurugram (Gurugram North)",
+  "jurisdiction": "Old Gurgaon City (Northern Parts)"
+ },
+ {
+  "code": "HR-27",
+  "prefix": "HR",
+  "office": "Nuh",
+  "jurisdiction": "Nuh"
+ },
+ {
+  "code": "HR-28",
+  "prefix": "HR",
+  "office": "Ferozepur Jhirka",
+  "jurisdiction": "Ferozepur Jhirka"
+ },
+ {
+  "code": "HR-29",
+  "prefix": "HR",
+  "office": "Ballabgarh (Faridabad South)",
+  "jurisdiction": "Ballabgarh"
+ },
+ {
+  "code": "HR-30",
+  "prefix": "HR",
+  "office": "Palwal",
+  "jurisdiction": "Palwal"
+ },
+ {
+  "code": "HR-31",
+  "prefix": "HR",
+  "office": "Jind",
+  "jurisdiction": "Jind"
+ },
+ {
+  "code": "HR-32",
+  "prefix": "HR",
+  "office": "Narwana",
+  "jurisdiction": "Narwana"
+ },
+ {
+  "code": "HR-33",
+  "prefix": "HR",
+  "office": "Safidon",
+  "jurisdiction": "Safidon"
+ },
+ {
+  "code": "HR-34",
+  "prefix": "HR",
+  "office": "Mahendragarh",
+  "jurisdiction": "Mahendragarh"
+ },
+ {
+  "code": "HR-35",
+  "prefix": "HR",
+  "office": "Narnaul",
+  "jurisdiction": "Narnaul"
+ },
+ {
+  "code": "HR-36",
+  "prefix": "HR",
+  "office": "Rewari",
+  "jurisdiction": "Rewari"
+ },
+ {
+  "code": "HR-37",
+  "prefix": "HR",
+  "office": "Ambala",
+  "jurisdiction": "Ambala",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-38",
+  "prefix": "HR",
+  "office": "Faridabad",
+  "jurisdiction": "Faridabad district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-39",
+  "prefix": "HR",
+  "office": "Hisar",
+  "jurisdiction": "Hisar district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-40",
+  "prefix": "HR",
+  "office": "Assandh",
+  "jurisdiction": "Assandh"
+ },
+ {
+  "code": "HR-41",
+  "prefix": "HR",
+  "office": "Pehowa",
+  "jurisdiction": "Pehowa"
+ },
+ {
+  "code": "HR-42",
+  "prefix": "HR",
+  "office": "Ganaur",
+  "jurisdiction": "Ganaur"
+ },
+ {
+  "code": "HR-43",
+  "prefix": "HR",
+  "office": "Kosli",
+  "jurisdiction": "Kosli"
+ },
+ {
+  "code": "HR-44",
+  "prefix": "HR",
+  "office": "Ellenabad",
+  "jurisdiction": "Ellenabad"
+ },
+ {
+  "code": "HR-45",
+  "prefix": "HR",
+  "office": "Karnal",
+  "jurisdiction": "Karnal district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-46",
+  "prefix": "HR",
+  "office": "Rohtak",
+  "jurisdiction": "Rohtak district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-47",
+  "prefix": "HR",
+  "office": "Rewari",
+  "jurisdiction": "Rewari district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-48",
+  "prefix": "HR",
+  "office": "Tosham",
+  "jurisdiction": "Tosham, Bawani Khera"
+ },
+ {
+  "code": "HR-49",
+  "prefix": "HR",
+  "office": "Kalka",
+  "jurisdiction": "Kalka"
+ },
+ {
+  "code": "HR-50",
+  "prefix": "HR",
+  "office": "Hodal",
+  "jurisdiction": "Hodal"
+ },
+ {
+  "code": "HR-51",
+  "prefix": "HR",
+  "office": "Faridabad (Faridabad North)",
+  "jurisdiction": "Faridabad"
+ },
+ {
+  "code": "HR-52",
+  "prefix": "HR",
+  "office": "Hathin",
+  "jurisdiction": "Hathin"
+ },
+ {
+  "code": "HR-53",
+  "prefix": "HR",
+  "office": "Adampur",
+  "jurisdiction": "Adampur"
+ },
+ {
+  "code": "HR-54",
+  "prefix": "HR",
+  "office": "Barara",
+  "jurisdiction": "Barara"
+ },
+ {
+  "code": "HR-55",
+  "prefix": "HR",
+  "office": "Gurugram",
+  "jurisdiction": "Gurugram district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-56",
+  "prefix": "HR",
+  "office": "Jind",
+  "jurisdiction": "Jind, Julana",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-57",
+  "prefix": "HR",
+  "office": "Sirsa",
+  "jurisdiction": "Sirsa district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-58",
+  "prefix": "HR",
+  "office": "Yamunanagar",
+  "jurisdiction": "Yamunanagar district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-59",
+  "prefix": "HR",
+  "office": "Ratia",
+  "jurisdiction": "Ratia"
+ },
+ {
+  "code": "HR-60",
+  "prefix": "HR",
+  "office": "Samalkha",
+  "jurisdiction": "Samalkha"
+ },
+ {
+  "code": "HR-61",
+  "prefix": "HR",
+  "office": "Bhiwani",
+  "jurisdiction": "Bhiwani district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-62",
+  "prefix": "HR",
+  "office": "Fatehabad",
+  "jurisdiction": "Fatehabad district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-63",
+  "prefix": "HR",
+  "office": "Jhajjar",
+  "jurisdiction": "Jhajjar, Bahadurgarh",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-64",
+  "prefix": "HR",
+  "office": "Kaithal",
+  "jurisdiction": "Kaithal district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-65",
+  "prefix": "HR",
+  "office": "Kurukshetra",
+  "jurisdiction": "Kurukshetra district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-66",
+  "prefix": "HR",
+  "office": "Narnaul",
+  "jurisdiction": "Mahendragarh district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-67",
+  "prefix": "HR",
+  "office": "Panipat",
+  "jurisdiction": "Panipat district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-68",
+  "prefix": "HR",
+  "office": "Panchkula",
+  "jurisdiction": "Panchkula district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-69",
+  "prefix": "HR",
+  "office": "Sonipat",
+  "jurisdiction": "Sonipat district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-70",
+  "prefix": "HR",
+  "office": "Chandigarh",
+  "jurisdiction": "Chandigarh",
+  "notes": "This series belongs to the Transport Commissioner in Chandigarh. It is meant for special out of turn VIP or special demand numbers. Also re-registered vehicles whose original number was from 1 to 100 (now retained by the original buyer for his new vehicle) or government auctioned vehicles and others are getting numbers from this series."
+ },
+ {
+  "code": "HR-71",
+  "prefix": "HR",
+  "office": "Bilaspur",
+  "jurisdiction": "Bilaspur"
+ },
+ {
+  "code": "HR-72",
+  "prefix": "HR",
+  "office": "Sohna",
+  "jurisdiction": "Sohna"
+ },
+ {
+  "code": "HR-73",
+  "prefix": "HR",
+  "office": "Palwal",
+  "jurisdiction": "Palwal district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-74",
+  "prefix": "HR",
+  "office": "Nuh",
+  "jurisdiction": "Mewat district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-75",
+  "prefix": "HR",
+  "office": "Indri",
+  "jurisdiction": "Indri"
+ },
+ {
+  "code": "HR-76",
+  "prefix": "HR",
+  "office": "Pataudi",
+  "jurisdiction": "Pataudi, Farrukhnagar"
+ },
+ {
+  "code": "HR-77",
+  "prefix": "HR",
+  "office": "Beri",
+  "jurisdiction": "Beri"
+ },
+ {
+  "code": "HR-78",
+  "prefix": "HR",
+  "office": "Shahabad Markanda",
+  "jurisdiction": "Shahabad Markanda"
+ },
+ {
+  "code": "HR-79",
+  "prefix": "HR",
+  "office": "Kharkhoda",
+  "jurisdiction": "Kharkhoda"
+ },
+ {
+  "code": "HR-80",
+  "prefix": "HR",
+  "office": "Barwala",
+  "jurisdiction": "Barwala"
+ },
+ {
+  "code": "HR-81",
+  "prefix": "HR",
+  "office": "Bawal",
+  "jurisdiction": "Bawal"
+ },
+ {
+  "code": "HR-82",
+  "prefix": "HR",
+  "office": "Kanina",
+  "jurisdiction": "Kanina"
+ },
+ {
+  "code": "HR-83",
+  "prefix": "HR",
+  "office": "Kalayat",
+  "jurisdiction": "Kalayat"
+ },
+ {
+  "code": "HR-84",
+  "prefix": "HR",
+  "office": "Charkhi Dadri",
+  "jurisdiction": "Charkhi Dadri district",
+  "notes": "commercial vehicles only"
+ },
+ {
+  "code": "HR-85",
+  "prefix": "HR",
+  "office": "Ambala Cantt",
+  "jurisdiction": "Ambala Cantt"
+ },
+ {
+  "code": "HR-86",
+  "prefix": "HR",
+  "office": "Narnaund",
+  "jurisdiction": "Narnaund"
+ },
+ {
+  "code": "HR-87",
+  "prefix": "HR",
+  "office": "Badkhal (Faridabad West)",
+  "jurisdiction": "Badkhal Tehsil"
+ },
+ {
+  "code": "HR-88",
+  "prefix": "HR",
+  "office": "Badhra",
+  "jurisdiction": "Badhra"
+ },
+ {
+  "code": "HR-89",
+  "prefix": "HR",
+  "office": "Badli",
+  "jurisdiction": "Badli"
+ },
+ {
+  "code": "HR-90",
+  "prefix": "HR",
+  "office": "Uchana",
+  "jurisdiction": "Uchana"
+ },
+ {
+  "code": "HR-91",
+  "prefix": "HR",
+  "office": "Gharaunda",
+  "jurisdiction": "Gharaunda"
+ },
+ {
+  "code": "HR-92",
+  "prefix": "HR",
+  "office": "Radaur",
+  "jurisdiction": "Radaur"
+ },
+ {
+  "code": "HR-93",
+  "prefix": "HR",
+  "office": "Punhana",
+  "jurisdiction": "Punhana"
+ },
+ {
+  "code": "HR-94",
+  "prefix": "HR",
+  "office": "Kalanwali",
+  "jurisdiction": "Kalanwali"
+ },
+ {
+  "code": "HR-95",
+  "prefix": "HR",
+  "office": "Sampla",
+  "jurisdiction": "Sampla"
+ },
+ {
+  "code": "HR-96",
+  "prefix": "HR",
+  "office": "Taoru",
+  "jurisdiction": "Taoru"
+ },
+ {
+  "code": "HR-97",
+  "prefix": "HR",
+  "office": "Ladwa",
+  "jurisdiction": "Ladwa"
+ },
+ {
+  "code": "HR-98",
+  "prefix": "HR",
+  "office": "Badshahpur (Gurugram South)",
+  "jurisdiction": "New Gurgaon City (southern parts) including Badshahpur \u0026 Wazirabad"
+ },
+ {
+  "code": "HR-99",
+  "prefix": "HR",
+  "office": "entire Haryana",
+  "jurisdiction": "entire Haryana",
+  "notes": "Temporary numbers for new vehicles"
+ },
+ {
+  "code": "JH-01",
+  "prefix": "JH",
+  "office": "Ranchi",
+  "jurisdiction": "Ranchi district"
+ },
+ {
+  "code": "JH-02",
+  "prefix": "JH",
+  "office": "Hazaribagh",
+  "jurisdiction": "Hazaribagh district"
+ },
+ {
+  "code": "JH-03",
+  "prefix": "JH",
+  "office": "Daltonganj",
+  "jurisdiction": "Palamu district"
+ },
+ {
+  "code": "JH-04",
+  "prefix": "JH",
+  "office": "Dumka",
+  "jurisdiction": "Dumka district"
+ },
+ {
+  "code": "JH-05",
+  "prefix": "JH",
+  "office": "Jamshedpur",
+  "jurisdiction": "East Singhbhum district"
+ },
+ {
+  "code": "JH-06",
+  "prefix": "JH",
+  "office": "Chaibasa",
+  "jurisdiction": "West Singhbhum district"
+ },
+ {
+  "code": "JH-07",
+  "prefix": "JH",
+  "office": "Gumla",
+  "jurisdiction": "Gumla district"
+ },
+ {
+  "code": "JH-08",
+  "prefix": "JH",
+  "office": "Lohardaga",
+  "jurisdiction": "Lohardaga district"
+ },
+ {
+  "code": "JH-09",
+  "prefix": "JH",
+  "office": "Bokaro",
+  "jurisdiction": "Bokaro district"
+ },
+ {
+  "code": "JH-10",
+  "prefix": "JH",
+  "office": "Dhanbad",
+  "jurisdiction": "Dhanbad district"
+ },
+ {
+  "code": "JH-11",
+  "prefix": "JH",
+  "office": "Giridih",
+  "jurisdiction": "Giridih district"
+ },
+ {
+  "code": "JH-12",
+  "prefix": "JH",
+  "office": "Koderma",
+  "jurisdiction": "Koderma district"
+ },
+ {
+  "code": "JH-13",
+  "prefix": "JH",
+  "office": "Chatra",
+  "jurisdiction": "Chatra district"
+ },
+ {
+  "code": "JH-14",
+  "prefix": "JH",
+  "office": "Garhwa",
+  "jurisdiction": "Garhwa district"
+ },
+ {
+  "code": "JH-15",
+  "prefix": "JH",
+  "office": "Deoghar",
+  "jurisdiction": "Deoghar district"
+ },
+ {
+  "code": "JH-16",
+  "prefix": "JH",
+  "office": "Pakur",
+  "jurisdiction": "Pakur district"
+ },
+ {
+  "code": "JH-17",
+  "prefix": "JH",
+  "office": "Godda",
+  "jurisdiction": "Godda district"
+ },
+ {
+  "code": "JH-18",
+  "prefix": "JH",
+  "office": "Sahibganj",
+  "jurisdiction": "Sahebganj district"
+ },
+ {
+  "code": "JH-19",
+  "prefix": "JH",
+  "office": "Latehar",
+  "jurisdiction": "Latehar district"
+ },
+ {
+  "code": "JH-20",
+  "prefix": "JH",
+  "office": "Simdega",
+  "jurisdiction": "Simdega district"
+ },
+ {
+  "code": "JH-21",
+  "prefix": "JH",
+  "office": "Jamtara",
+  "jurisdiction": "Jamtara district"
+ },
+ {
+  "code": "JH-22",
+  "prefix": "JH",
+  "office": "Seraikela Kharsawan",
+  "jurisdiction": "Seraikela Kharsawan district"
+ },
+ {
+  "code": "JH-23",
+  "prefix": "JH",
+  "office": "Khunti",
+  "jurisdiction": "Khunti district"
+ },
+ {
+  "code": "JH-24",
+  "prefix": "JH",
+  "office": "Ramgarh",
+  "jurisdiction": "Ramgarh district"
+ },
+ {
+  "code": "JK-01",
+  "prefix": "JK",
+  "office": "Srinagar",
+  "jurisdiction": "Srinagar District"
+ },
+ {
+  "code": "JK-02",
+  "prefix": "JK",
+  "office": "Jammu",
+  "jurisdiction": "Jammu District"
+ },
+ {
+  "code": "JK-03",
+  "prefix": "JK",
+  "office": "Anantnag",
+  "jurisdiction": "Anantnag District"
+ },
+ {
+  "code": "JK-04",
+  "prefix": "JK",
+  "office": "Budgam",
+  "jurisdiction": "Budgam District"
+ },
+ {
+  "code": "JK-05",
+  "prefix": "JK",
+  "office": "Baramulla",
+  "jurisdiction": "Baramulla District"
+ },
+ {
+  "code": "JK-06",
+  "prefix": "JK",
+  "office": "Doda",
+  "jurisdiction": "Doda District"
+ },
+ {
+  "code": "JK-08",
+  "prefix": "JK",
+  "office": "Lakhanpur, Kathua",
+  "jurisdiction": "Kathua District"
+ },
+ {
+  "code": "JK-09",
+  "prefix": "JK",
+  "office": "Kupwara",
+  "jurisdiction": "Kupwara District"
+ },
+ {
+  "code": "JK-11",
+  "prefix": "JK",
+  "office": "Rajouri",
+  "jurisdiction": "Rajouri District"
+ },
+ {
+  "code": "JK-12",
+  "prefix": "JK",
+  "office": "Poonch",
+  "jurisdiction": "Poonch district, India"
+ },
+ {
+  "code": "JK-13",
+  "prefix": "JK",
+  "office": "Pulwama",
+  "jurisdiction": "Pulwama District"
+ },
+ {
+  "code": "JK-14",
+  "prefix": "JK",
+  "office": "Udhampur",
+  "jurisdiction": "Udhampur District"
+ },
+ {
+  "code": "JK-15",
+  "prefix": "JK",
+  "office": "Bandipora",
+  "jurisdiction": "Bandipora District"
+ },
+ {
+  "code": "JK-16",
+  "prefix": "JK",
+  "office": "Ganderbal",
+  "jurisdiction": "Ganderbal District"
+ },
+ {
+  "code": "JK-17",
+  "prefix": "JK",
+  "office": "Kishtwar",
+  "jurisdiction": "Kishtwar District"
+ },
+ {
+  "code": "JK-18",
+  "prefix": "JK",
+  "office": "Kulgam",
+  "jurisdiction": "Kulgam District"
+ },
+ {
+  "code": "JK-19",
+  "prefix": "JK",
+  "office": "Ramban",
+  "jurisdiction": "Ramban District"
+ },
+ {
+  "code": "JK-20",
+  "prefix": "JK",
+  "office": "Reasi",
+  "jurisdiction": "Reasi District"
+ },
+ {
+  "code": "JK-21",
+  "prefix": "JK",
+  "office": "Samba",
+  "jurisdiction": "Samba District"
+ },
+ {
+  "code": "JK-22",
+  "prefix": "JK",
+  "office": "Shopian",
+  "jurisdiction": "Shopian District"
+ },
+ {
+  "code": "KA-01",
+  "prefix": "KA",
+  "office": "Bengaluru Central, HSR Layout (Previously located in Koramangala)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Central Bengaluru"
+ },
+ {
+  "code": "KA-02",
+  "prefix": "KA",
+  "office": "Bengaluru West, Rajajinagar",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Western Bengaluru"
+ },
+ {
+  "code": "KA-03",
+  "prefix": "KA",
+  "office": "Bengaluru East, Kasturinagar (Previously located in Indiranagar)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Eastern Bengaluru"
+ },
+ {
+  "code": "KA-04",
+  "prefix": "KA",
+  "office": "Bengaluru North, Yeshwantpur",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Northern Bengaluru"
+ },
+ {
+  "code": "KA-05",
+  "prefix": "KA",
+  "office": "Bengaluru South, Jayaprakash Nagara (Previously located in Jayanagar)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Southern Bengaluru"
+ },
+ {
+  "code": "KA-06",
+  "prefix": "KA",
+  "office": "Tumakuru",
+  "jurisdiction": "Tumakuru District",
+  "notes": "Covers Tumkur Town and Taluk, Kunigal and Gubbi Taluks"
+ },
+ {
+  "code": "KA-07",
+  "prefix": "KA",
+  "office": "Kolar",
+  "jurisdiction": "Kolar District",
+  "notes": "Covers Kolar Town and Taluk, Srinivasapura and Mulbagal Taluks"
+ },
+ {
+  "code": "KA-08",
+  "prefix": "KA",
+  "office": "Kolar (KGF region)",
+  "jurisdiction": "Kolar District",
+  "notes": "Covers K.G.F. Town, Bangarpet and Malur Taluks"
+ },
+ {
+  "code": "KA-09",
+  "prefix": "KA",
+  "office": "Mysuru West",
+  "jurisdiction": "Mysuru District",
+  "notes": "Covers Western Mysuru City Suburbs, Western parts of Mysuru Taluk and Nanjangud Taluk"
+ },
+ {
+  "code": "KA-10",
+  "prefix": "KA",
+  "office": "Chamarajanagar",
+  "jurisdiction": "Chamarajanagara District",
+  "notes": "Covers entire Chamarajanagar District"
+ },
+ {
+  "code": "KA-11",
+  "prefix": "KA",
+  "office": "Mandya",
+  "jurisdiction": "Mandya District",
+  "notes": "Covers Mandya Town and Taluk, Malavalli, Maddur, Srirangapatna and Pandavapura Taluks"
+ },
+ {
+  "code": "KA-12",
+  "prefix": "KA",
+  "office": "Madikeri",
+  "jurisdiction": "Kodagu District",
+  "notes": "Covers entire Kodagu District"
+ },
+ {
+  "code": "KA-13",
+  "prefix": "KA",
+  "office": "Hassan",
+  "jurisdiction": "Hassan District",
+  "notes": "Covers Hassan Town and Taluk, Arasikere, Holenarasipura, Channarayapatna and Arakalgud Taluks"
+ },
+ {
+  "code": "KA-14",
+  "prefix": "KA",
+  "office": "Shivamogga",
+  "jurisdiction": "Shivamogga District",
+  "notes": "Covers Shivamogga Town and Taluk, Bhadravathi and Tirthahalli Taluks"
+ },
+ {
+  "code": "KA-15",
+  "prefix": "KA",
+  "office": "Sagara",
+  "jurisdiction": "Shivamogga District",
+  "notes": "Covers Sagara Town and Taluk, Soraba, Shikaripura, and Hosanagar Taluks"
+ },
+ {
+  "code": "KA-16",
+  "prefix": "KA",
+  "office": "Chitradurga",
+  "jurisdiction": "Chitradurga District",
+  "notes": "Covers entire Chitradurga District"
+ },
+ {
+  "code": "KA-17",
+  "prefix": "KA",
+  "office": "Davanagere",
+  "jurisdiction": "Davanagere District",
+  "notes": "Covers entire Davanagere District"
+ },
+ {
+  "code": "KA-18",
+  "prefix": "KA",
+  "office": "Chikkamagaluru",
+  "jurisdiction": "Chikkamagaluru District",
+  "notes": "Covers Chikkamagaluru, Mudigere, Sringeri as well as parts of Narsimharaja and Koppa Taluks"
+ },
+ {
+  "code": "KA-19",
+  "prefix": "KA",
+  "office": "Mangaluru",
+  "jurisdiction": "Dakshina Kannada District",
+  "notes": "Covers Mangaluru City and Taluk"
+ },
+ {
+  "code": "KA-20",
+  "prefix": "KA",
+  "office": "Udupi",
+  "jurisdiction": "Udupi District",
+  "notes": "Covers entire Udupi District"
+ },
+ {
+  "code": "KA-21",
+  "prefix": "KA",
+  "office": "Puttur",
+  "jurisdiction": "Dakshina Kannada District",
+  "notes": "Covers Puttur and Sullia Taluks"
+ },
+ {
+  "code": "KA-22",
+  "prefix": "KA",
+  "office": "Belagavi",
+  "jurisdiction": "Belagavi District",
+  "notes": "Covers Belgaum Town and Taluk and Khanapur Taluk"
+ },
+ {
+  "code": "KA-23",
+  "prefix": "KA",
+  "office": "Chikkodi",
+  "jurisdiction": "Belagavi District",
+  "notes": "Covers Chikkodi, and parts of Hukkeri and Raibag Taluks"
+ },
+ {
+  "code": "KA-24",
+  "prefix": "KA",
+  "office": "Bailhongal",
+  "jurisdiction": "Belagavi District",
+  "notes": "Covers Bailhongal, Kittur and parts of Saundatti Taluk"
+ },
+ {
+  "code": "KA-25",
+  "prefix": "KA",
+  "office": "Dharwad",
+  "jurisdiction": "Dharwad District",
+  "notes": "Covers Northern suburbs of Hubli-Dharwad City, Dharwad and parts of Navalgund and Kalghatgi Taluks"
+ },
+ {
+  "code": "KA-26",
+  "prefix": "KA",
+  "office": "Gadag",
+  "jurisdiction": "Gadag District",
+  "notes": "Covers entire Gadag District"
+ },
+ {
+  "code": "KA-27",
+  "prefix": "KA",
+  "office": "Haveri",
+  "jurisdiction": "Haveri District",
+  "notes": "Covers Haveri Town and Taluk, Hanagal, Shiggaon and Savanoor"
+ },
+ {
+  "code": "KA-28",
+  "prefix": "KA",
+  "office": "Vijayapura",
+  "jurisdiction": "Vijayapura District",
+  "notes": "Covers entire Vijayapura District"
+ },
+ {
+  "code": "KA-29",
+  "prefix": "KA",
+  "office": "Bagalkote",
+  "jurisdiction": "Bagalkote District",
+  "notes": "Covers Bagalkot Town and Taluk, Hunagund, Bilagi and Badami Taluks"
+ },
+ {
+  "code": "KA-30",
+  "prefix": "KA",
+  "office": "Karwar",
+  "jurisdiction": "Uttara Kannada District",
+  "notes": "Covers Karwar Town and Taluk, Ankola and parts of Supa Taluks"
+ },
+ {
+  "code": "KA-31",
+  "prefix": "KA",
+  "office": "Sirsi",
+  "jurisdiction": "Uttara Kannada District",
+  "notes": "Covers Sirsi, Siddapura, Yellapura, and Mundagod Taluks"
+ },
+ {
+  "code": "KA-32",
+  "prefix": "KA",
+  "office": "Kalaburagi",
+  "jurisdiction": "Kalaburagi District",
+  "notes": "Covers entire Kalaburagi District"
+ },
+ {
+  "code": "KA-33",
+  "prefix": "KA",
+  "office": "Yadgir",
+  "jurisdiction": "Yadgir District",
+  "notes": "Covers entire Yadgir District"
+ },
+ {
+  "code": "KA-34",
+  "prefix": "KA",
+  "office": "Ballari",
+  "jurisdiction": "Ballari District",
+  "notes": "Covers entire Ballari District"
+ },
+ {
+  "code": "KA-35",
+  "prefix": "KA",
+  "office": "Hosapete",
+  "jurisdiction": "Vijayanagara District",
+  "notes": "Covers entire Vijayanagara District"
+ },
+ {
+  "code": "KA-36",
+  "prefix": "KA",
+  "office": "Raichur",
+  "jurisdiction": "Raichur District",
+  "notes": "Covers entire Raichur District"
+ },
+ {
+  "code": "KA-37",
+  "prefix": "KA",
+  "office": "Koppal",
+  "jurisdiction": "Koppal District",
+  "notes": "Covers entire Koppal District"
+ },
+ {
+  "code": "KA-38",
+  "prefix": "KA",
+  "office": "Bidar",
+  "jurisdiction": "Bidar District",
+  "notes": "Covers Bidar Town and Taluk, as well as Aurad Taluk"
+ },
+ {
+  "code": "KA-39",
+  "prefix": "KA",
+  "office": "Bhalki",
+  "jurisdiction": "Bidar District",
+  "notes": "Covers Bhalki and Humnabad Taluks"
+ },
+ {
+  "code": "KA-40",
+  "prefix": "KA",
+  "office": "Chikkaballapura",
+  "jurisdiction": "Chikkaballapura District",
+  "notes": "Covers Chikkaballapura Town and Taluk, Gauribidanur, Gudibande and parts of Sidlaghatta and Bagepalli Taluks"
+ },
+ {
+  "code": "KA-41",
+  "prefix": "KA",
+  "office": "Jnana Bharathi (Bengaluru Western Suburbs)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Greater Bengaluru's western suburbs"
+ },
+ {
+  "code": "KA-42",
+  "prefix": "KA",
+  "office": "Ramanagara",
+  "jurisdiction": "Ramanagara District",
+  "notes": "Covers entire Ramanagara District"
+ },
+ {
+  "code": "KA-43",
+  "prefix": "KA",
+  "office": "Devanahalli",
+  "jurisdiction": "Bengaluru Rural District",
+  "notes": "Covers Devanahalli and Doddaballapura Taluks"
+ },
+ {
+  "code": "KA-44",
+  "prefix": "KA",
+  "office": "Tiptur",
+  "jurisdiction": "Tumakuru District",
+  "notes": "Covers Tiptur, Turuvekere and Chikkanayakanahalli Taluks"
+ },
+ {
+  "code": "KA-45",
+  "prefix": "KA",
+  "office": "Hunsur",
+  "jurisdiction": "Mysuru District",
+  "notes": "Covers Hunsur, Piriyapatna, H.D. Kote and K.R. Nagar Taluks"
+ },
+ {
+  "code": "KA-46",
+  "prefix": "KA",
+  "office": "Sakleshpura, Hassan District",
+  "jurisdiction": "Hassan District",
+  "notes": "Covers Sakleshpura, Alur and Belur Taluks"
+ },
+ {
+  "code": "KA-47",
+  "prefix": "KA",
+  "office": "Honnavar, Uttara Kannada District",
+  "jurisdiction": "Uttara Kannada District",
+  "notes": "Covers Honnavara, Bhatkal and Kumta Taluks"
+ },
+ {
+  "code": "KA-48",
+  "prefix": "KA",
+  "office": "Jamkhandi, Bagalkote District",
+  "jurisdiction": "Bagalkote District",
+  "notes": "Covers Jamkhandi and Mudhol Taluks"
+ },
+ {
+  "code": "KA-49",
+  "prefix": "KA",
+  "office": "Gokak, Belagavi District",
+  "jurisdiction": "Belagavi District",
+  "notes": "Covers Gokak and parts of Hukkeri Taluk"
+ },
+ {
+  "code": "KA-50",
+  "prefix": "KA",
+  "office": "Yelahanka, Bengaluru (Bengaluru Northern Suburbs)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Bengaluru's northern suburbs"
+ },
+ {
+  "code": "KA-51",
+  "prefix": "KA",
+  "office": "Electronic City, Bengaluru (Bengaluru Southern Suburbs)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Bengaluru's southern suburbs"
+ },
+ {
+  "code": "KA-52",
+  "prefix": "KA",
+  "office": "Nelamangala, Bengaluru Rural District",
+  "jurisdiction": "Bengaluru Rural District",
+  "notes": "Covers Nelamangala Taluk"
+ },
+ {
+  "code": "KA-53",
+  "prefix": "KA",
+  "office": "Krishnarajapuram, Bengaluru (Bengaluru Eastern Suburbs)",
+  "jurisdiction": "Bengaluru Urban District and parts of Bengaluru Rural District",
+  "notes": "Covers Bengaluru's eastern suburbs and Hoskote Taluk in Bengaluru Rural District"
+ },
+ {
+  "code": "KA-54",
+  "prefix": "KA",
+  "office": "Nagamangala, Mandya District",
+  "jurisdiction": "Mandya District",
+  "notes": "Covers Nagamangala \u0026 K.R. Pet Taluks"
+ },
+ {
+  "code": "KA-55",
+  "prefix": "KA",
+  "office": "Mysuru East",
+  "jurisdiction": "Mysuru District",
+  "notes": "Covers Eastern Mysuru Suburbs, Eastern parts of Mysuru Taluk and T. Narasipura Taluk"
+ },
+ {
+  "code": "KA-56",
+  "prefix": "KA",
+  "office": "Basavakalyan, Bidar District",
+  "jurisdiction": "Bidar District",
+  "notes": "Covers Basavakalyana Taluk"
+ },
+ {
+  "code": "KA-57",
+  "prefix": "KA",
+  "office": "Shantinagara, KSRTC and BMTC buses",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Only for \"KA-57 F\" series exclusively for KSRTC and BMTC buses. Autorickshaw permits are also available here, although registration has to be done from Bengaluru's other RTOs."
+ },
+ {
+  "code": "KA-59",
+  "prefix": "KA",
+  "office": "Chandapura, Bengaluru Urban District",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Anekal Taluk, including Kudlu Ward of Bengaluru South City Corporation, which is the only ward within the Greater Bengaluru Area under this RTO."
+ },
+ {
+  "code": "KA-63",
+  "prefix": "KA",
+  "office": "Dharwad East",
+  "jurisdiction": "Dharwad District",
+  "notes": "Covers Southern suburbs of Hubli-Dharwad City, Hubli, Kundgol and parts of Navalgund and Kalghatgi Taluks"
+ },
+ {
+  "code": "KA-64",
+  "prefix": "KA",
+  "office": "Madhugiri, Tumkur District",
+  "jurisdiction": "Tumakuru District",
+  "notes": "Covers Madhugiri, Sira, Koratagere and Pavagada Taluks"
+ },
+ {
+  "code": "KA-65",
+  "prefix": "KA",
+  "office": "Dandeli, Uttara Kannada District",
+  "jurisdiction": "Uttara Kannada District",
+  "notes": "Covers Dandeli, Supa and Haliyal Taluks"
+ },
+ {
+  "code": "KA-66",
+  "prefix": "KA",
+  "office": "Tarikere, Chikkamagaluru District",
+  "jurisdiction": "Chikkamagaluru District",
+  "notes": "Covers Tarikere, Kadur as well as parts of Narsimharaja and Koppa Taluks"
+ },
+ {
+  "code": "KA-67",
+  "prefix": "KA",
+  "office": "Chintamani, Chikkaballapura District",
+  "jurisdiction": "Chikkaballapura District",
+  "notes": "Covers Chintamani and parts of Sidlaghatta and Bagepalli Taluks"
+ },
+ {
+  "code": "KA-68",
+  "prefix": "KA",
+  "office": "Ranebennur, Haveri District",
+  "jurisdiction": "Haveri District",
+  "notes": "Covers Ranebennur Town and Taluk, Hirekerur and Byadagi Taluks"
+ },
+ {
+  "code": "KA-69",
+  "prefix": "KA",
+  "office": "Ramdurg, Belagavi District",
+  "jurisdiction": "Belagavi District",
+  "notes": "Covers Ramdurg and parts of Saundatti Taluks"
+ },
+ {
+  "code": "KA-70",
+  "prefix": "KA",
+  "office": "Bantwal, Dakshina Kannada District",
+  "jurisdiction": "Dakshina Kannada District",
+  "notes": "Covers Bantwal and Belthangady Taluks"
+ },
+ {
+  "code": "KA-71",
+  "prefix": "KA",
+  "office": "Athani, Belagavi District",
+  "jurisdiction": "Belagavi District",
+  "notes": "Covers Athnani and Raibag taluks"
+ },
+ {
+  "code": "KL-01",
+  "prefix": "KL",
+  "office": "Thiruvananthapuram",
+  "jurisdiction": "Thiruvananthapuram Corporation wards 12-101, Kalliyoor",
+  "notes": "Most Kerala Government vehicles, including Police are registered here."
+ },
+ {
+  "code": "KL-02",
+  "prefix": "KL",
+  "office": "Kollam",
+  "jurisdiction": "Kollam Municipal Corporation, Paravur, Adichanalloor, Chathannoor, Chirakkara, Elampalloor, Kalluvathukkal, Kottamkara, Kundara, Mayyanad, Munroe Island, Nedumpana, Panayam, Perayam, Perinad, Poothakkulam, Thrikkaruva, Thrikkovilvattom"
+ },
+ {
+  "code": "KL-03",
+  "prefix": "KL",
+  "office": "Pathanamthitta",
+  "jurisdiction": "Pathanamthitta Town, Kaipattoor, Omallur, Malayalapuzha, Mylapra, Naranganam, Sabarigiri, Aranmula, Kozhencherri"
+ },
+ {
+  "code": "KL-04",
+  "prefix": "KL",
+  "office": "Alappuzha",
+  "jurisdiction": "Alappuzha Town, Ambalappuzha, Aryad, Komalapuram, Kommadi, Polathai, Thumboli, Punnapra, Kalavur, Ananthanarayanapuram"
+ },
+ {
+  "code": "KL-05",
+  "prefix": "KL",
+  "office": "Kottayam",
+  "jurisdiction": "Kottayam Town, Kodimatha, Manarcaud, Pampady, Tirunnakara, Nattakom, Tiruvarppu, Tiruvathikkal, Sankranthi, Vijayapuram, Pallickathodu, Ettumanoor"
+ },
+ {
+  "code": "KL-06",
+  "prefix": "KL",
+  "office": "Idukki",
+  "jurisdiction": "Idukki Twp, Painavu"
+ },
+ {
+  "code": "KL-07",
+  "prefix": "KL",
+  "office": "Kochi, Ernakulam District.",
+  "jurisdiction": "Areas of Greater Kochi covered by the Kochi Municipal Corporation, Kalamassery Municipality, Infopark Phase 2, Thrikkakara Municipality, Cheranallur Grama Panchayat",
+  "notes": "Covers parts of Greater Kochi, including those outside Kochi Corporation limits"
+ },
+ {
+  "code": "KL-08",
+  "prefix": "KL",
+  "office": "Thrissur",
+  "jurisdiction": "Thrissur Corporation, Pananchery, Cherpu, Paralam, Kolazhy, Nadathara, Madakkathara, Adat, Avinissery, Avanur, Mulamkunnathukavu"
+ },
+ {
+  "code": "KL-09",
+  "prefix": "KL",
+  "office": "Palakkad",
+  "jurisdiction": "Palakkad municipality,Parli,Pirayiri,Kongad,Mankara,Mundur,Malampuzha,Puduppariyaram,Keralasseri Grama Panchayat areas"
+ },
+ {
+  "code": "KL-10",
+  "prefix": "KL",
+  "office": "Malappuram (part of Ernad, Perintalmanna \u0026 Tirur Taluks)",
+  "jurisdiction": "Malappuram, Manjeri, Anakkayam, Pookkoottor, Kavanur, Pulpetta, Edavanna, Pandikkad, Thrikkalangode, Koottilangadi, Kodur, Ponmala"
+ },
+ {
+  "code": "KL-11",
+  "prefix": "KL",
+  "office": "Kozhikode",
+  "jurisdiction": "Kozhikode Municipal Corporation, Feroke, Ramanattukara, Chathamangalam, Chelannur, Kadalundi, Kakkodi, Kakkur, Karassery, Kunnamangalam, Kuruvattur, Mavoor, Mukkam, Nanmanda, Olavanna, Perumanna, Peruvayal, Thalakulathur"
+ },
+ {
+  "code": "KL-12",
+  "prefix": "KL",
+  "office": "Kalpetta, Wayanad District",
+  "jurisdiction": "Kalpetta Township, Chitragiri, Vythiri"
+ },
+ {
+  "code": "KL-13",
+  "prefix": "KL",
+  "office": "Kannur",
+  "jurisdiction": "Kannur Municipal Corporation limits, Valapattanam, Papinnisheri, Kannapuram, Dharmadam, Parashinikadavu"
+ },
+ {
+  "code": "KL-14",
+  "prefix": "KL",
+  "office": "Kasaragod",
+  "jurisdiction": "Kasaragod, Chandragiri, Manjeshwaram, Uppala, Mogral Puttur, Kumbla"
+ },
+ {
+  "code": "KL-15",
+  "prefix": "KL",
+  "office": "Nationalised Sector I, Thiruvananthapuram",
+  "jurisdiction": "Used exclusively for KSRTC and KURTC buses",
+  "notes": "Kerala State Road Transport Corporation"
+ },
+ {
+  "code": "KL-16",
+  "prefix": "KL",
+  "office": "Attingal, Thiruvananthapuram District",
+  "jurisdiction": "Chirayinkeezhu Taluk"
+ },
+ {
+  "code": "KL-17",
+  "prefix": "KL",
+  "office": "Muvattupuzha, Ernakulam District",
+  "jurisdiction": "Muvattupuzha, Vazhakulam, Koothattukulam, Piravom"
+ },
+ {
+  "code": "KL-18",
+  "prefix": "KL",
+  "office": "Vadakara, Kozhikode District",
+  "jurisdiction": "Vadakara, Nadapuram"
+ },
+ {
+  "code": "KL-19",
+  "prefix": "KL",
+  "office": "Parassala, Thiruvananthapuram District",
+  "jurisdiction": "Padmanabhapuram, Tiruvattar, Tiruparappu, Kulasekaram, Amaravilla, Dhanuvachapuram, Marthandam Poovaar"
+ },
+ {
+  "code": "KL-20",
+  "prefix": "KL",
+  "office": "Neyyattinkara, Thiruvananthapuram District",
+  "jurisdiction": "Neyyattinkara, Balaramapuram, Vedivachankovil, Pravachambalam, Pallichal"
+ },
+ {
+  "code": "KL-21",
+  "prefix": "KL",
+  "office": "Nedumangad, Thiruvananthapuram District",
+  "jurisdiction": "Nedumangad, Arruvikara, Bhartheeswaram, Palode, Vithura, Ponmudi, Karakulam, Perrorkada"
+ },
+ {
+  "code": "KL-22",
+  "prefix": "KL",
+  "office": "Kazhakkoottam, Thiruvananthapuram",
+  "jurisdiction": "Thiruvananthapuram Corporation, Thiruvananthapuram Taluk Northern Areas (Andoorkonam, Kadinamkulam, Mangalapuram, Pothencode Panchayats)"
+ },
+ {
+  "code": "KL-23",
+  "prefix": "KL",
+  "office": "Karunagappalli, Kollam District",
+  "jurisdiction": "Karunagapalli, Oachira, Mynagapalli, Chavara, Amrithapuri, Thazhava, Paavumba"
+ },
+ {
+  "code": "KL-24",
+  "prefix": "KL",
+  "office": "Kottarakkara, Kollam District",
+  "jurisdiction": "Kottarakara, Malanada, Enathu, Pavitreeswaram, Chengamanad. Mavadi"
+ },
+ {
+  "code": "KL-25",
+  "prefix": "KL",
+  "office": "Punalur, Kollam District",
+  "jurisdiction": "Punalur, Thenmala, Aryankavu, Bhagavathipuram, Anchal, Kulathuppuzha, Achankovil"
+ },
+ {
+  "code": "KL-26",
+  "prefix": "KL",
+  "office": "Adoor, Pathanamthitta District",
+  "jurisdiction": "Adoor Taluk"
+ },
+ {
+  "code": "KL-27",
+  "prefix": "KL",
+  "office": "Tiruvalla, Pathanamthitta District",
+  "jurisdiction": "Tiruvalla, Tirumoolapuram, Othera, Manjadi, Parumala, Valanjavattom"
+ },
+ {
+  "code": "KL-28",
+  "prefix": "KL",
+  "office": "Mallappally, Pathanamthitta District",
+  "jurisdiction": "Mallappally, Kaviyoor"
+ },
+ {
+  "code": "KL-29",
+  "prefix": "KL",
+  "office": "Kayamkulam, Alappuzha District",
+  "jurisdiction": "Karthikapalli, Kayankulam Town, Krishnapuram, Harippad, Shaktipuram, Karuvatta, Manarssala"
+ },
+ {
+  "code": "KL-30",
+  "prefix": "KL",
+  "office": "Chengannur, Alappuzha District",
+  "jurisdiction": "Chengannur, Cheriyanad, Budhannur, Pandanad, Venmani-kalyathra"
+ },
+ {
+  "code": "KL-31",
+  "prefix": "KL",
+  "office": "Mavelikkara, Alappuzha District",
+  "jurisdiction": "Mavelikara, Chettikulangara, Kattanam, Mannar, Charummod, Adhikattukulangara, Aakanattukara, Vallikonam, Vathukonam, Vettiyar"
+ },
+ {
+  "code": "KL-32",
+  "prefix": "KL",
+  "office": "Cherthala, Alappuzha District",
+  "jurisdiction": "Cherthala, Tiruvizha, Pattanakkad, Vayalar, Turavur, Aroor, Eramalloor, Varanad, Mannancherry, Panavally, Varanam"
+ },
+ {
+  "code": "KL-33",
+  "prefix": "KL",
+  "office": "Changanassery, Kottayam District",
+  "jurisdiction": "Changanassery, Nalukodi, Kurichi, Chingavanam, Karukachal, Perunna, Vazhoor, Kangazha, Vellavoor"
+ },
+ {
+  "code": "KL-34",
+  "prefix": "KL",
+  "office": "Kanjirapalli, Kottayam District",
+  "jurisdiction": "Kanjirapalli, Erumelli, Mundakayam, Ponkunnam, Chirrakadavu, Anchillappa, Anakkal, Koottickal"
+ },
+ {
+  "code": "KL-35",
+  "prefix": "KL",
+  "office": "Pala, Kottayam District",
+  "jurisdiction": "Meenachil, Erattupetta, Poonjar, Bharananganam, Kadanad, Kidangoor, Mutholi, Poovarani, Melukavu, Thalanad, Teekoi, Moonnilavu, Thalappulam, Thidanad"
+ },
+ {
+  "code": "KL-36",
+  "prefix": "KL",
+  "office": "Vaikom, Kottayam District",
+  "jurisdiction": "Vaikom, Talayolaparambu, Udayanapuram, Vadayar, Kaduthuruthi, Vechoor"
+ },
+ {
+  "code": "KL-37",
+  "prefix": "KL",
+  "office": "Vandiperiyar, Idukki District",
+  "jurisdiction": "Peerumed, Elappara, Kuttikanam, Vandiperiyar, Kumili, Kattappana, Kambammedu, Mangaladevi"
+ },
+ {
+  "code": "KL-38",
+  "prefix": "KL",
+  "office": "Thodupuzha, Idukki District",
+  "jurisdiction": "Thodupuzha, Kumaramangalam .Vengannur, Muttum, Uravvappara, Malankara, Moolamattam"
+ },
+ {
+  "code": "KL-39",
+  "prefix": "KL",
+  "office": "Thripunithura, Ernakulam District",
+  "jurisdiction": "Thripunithura, Udayamperoor, Cheppanam-Chattamma, Kanjiramattom, Mulanthuruthy, Chottanikkara",
+  "notes": "Covers parts of Greater Kochi outside Kochi Corporation limits"
+ },
+ {
+  "code": "KL-40",
+  "prefix": "KL",
+  "office": "Perumbavoor, Ernakulam District",
+  "jurisdiction": "Kunnathunad, Nellad, Valayanchirangara, Chellamattom, Thottuva, Rayamangalam, Pattimattam"
+ },
+ {
+  "code": "KL-41",
+  "prefix": "KL",
+  "office": "Aluva, Ernakulam District",
+  "jurisdiction": "Aluva Municipality limits, Edathala Grama Panchayat limits, Vazhakulam Grama Panchayat, Choornikkara Grama Panchayat",
+  "notes": "Covers parts of Greater Kochi outside Kochi Corporation limits"
+ },
+ {
+  "code": "KL-42",
+  "prefix": "KL",
+  "office": "North Paravur, Ernakulam District",
+  "jurisdiction": "North Paravur, Munambam, Cherrai, Vypin, Puthuvype",
+  "notes": "Covers parts of Greater Kochi outside Kochi Corporation limits"
+ },
+ {
+  "code": "KL-43",
+  "prefix": "KL",
+  "office": "Fort Kochi \u0026 Mattancherry, Ernakulam District",
+  "jurisdiction": "Kochi Corporation Area, Pallurthi, Kumbalangi",
+  "notes": "Covers parts of Greater Kochi, including those outside Kochi Corporation limits"
+ },
+ {
+  "code": "KL-44",
+  "prefix": "KL",
+  "office": "Kothamangalam, Ernakulam District",
+  "jurisdiction": "Kothamangalam Taluk, Odakkali, Neriyamangalam, Bhootathankettu"
+ },
+ {
+  "code": "KL-45",
+  "prefix": "KL",
+  "office": "Irinjalakuda, Thrissur District",
+  "jurisdiction": "Mukundapuram Taluk, Ashtamichira, Annammanada, Mala, Cherppu, Kandassamkadavu"
+ },
+ {
+  "code": "KL-46",
+  "prefix": "KL",
+  "office": "Guruvayur, Thrissur District",
+  "jurisdiction": "Guruvayur Taluk, Chhavakad, Chettuva, Pavaratti"
+ },
+ {
+  "code": "KL-47",
+  "prefix": "KL",
+  "office": "Kodungallur, Thrissur District",
+  "jurisdiction": "Kodungallur, Methala, Sringapuram"
+ },
+ {
+  "code": "KL-48",
+  "prefix": "KL",
+  "office": "Wadakkancherry, Thrissur District",
+  "jurisdiction": "Wadakkancherry, Thiruvilwamala, Pazhayannur, Chelakkara, Anthimahal, Uthralikavu, Mulangunathukavu, Deshamangalam, Chittada, Malakha, Akamalavaram"
+ },
+ {
+  "code": "KL-49",
+  "prefix": "KL",
+  "office": "Alathur, Palakkad District",
+  "jurisdiction": "Alathur, Vadakkenchery, Kavassery, Kuzhalmannam, Thenkurissi, Kottayi, Mathur, Peringottukurissi"
+ },
+ {
+  "code": "KL-50",
+  "prefix": "KL",
+  "office": "Mannarkkad, Palakkad District",
+  "jurisdiction": "Mannarkkad municipality, Attappady Taluk comprising Agali,Pudur and Sholaiyur Panchayats,Karimba, Kanhirappuzha,Thachampara,Kumarampathur,Kottopadam,Alanellur,Thachanattukara,Thenkara,Karakurissy Panchayats."
+ },
+ {
+  "code": "KL-51",
+  "prefix": "KL",
+  "office": "Ottapalam, Palakkad District",
+  "jurisdiction": "Ottapalam and Shoranur Municipalities, Ambalapara,Cherpulasseri municipality,Sreekrishnapuram,Karimpuzha,Pookkottukave,Trikkaderi,Katambazhipuram,Karimpuzha,Ananganadi,Vaniyamkulam and Chalavara Grama Panchayats of Ottapalam Taluk."
+ },
+ {
+  "code": "KL-52",
+  "prefix": "KL",
+  "office": "Pattambi, Palakkad District",
+  "jurisdiction": "Pattambi Municipality, Thrithala, Nagalassery, Vallapuzha, Koppam,Vilayur,Tiruvegappura,Paruthur,Thirumittakode,Pattithara,Chalissery,Muthuthala,Kulukkallur and Ongallur Grama Panchayats."
+ },
+ {
+  "code": "KL-53",
+  "prefix": "KL",
+  "office": "Perinthalmanna, Malappuram District",
+  "jurisdiction": "Perinthalmanna, Edappatta, Keezhattur, Aliparamba, Elamkulam, Thazhekode, Vettathur, Pulamanthole, Melattur, Angadippuram, Kuruva, Mankada, Puzhakkattiri, Moorkkanad, Makkaraparamba"
+ },
+ {
+  "code": "KL-54",
+  "prefix": "KL",
+  "office": "Ponnani, Malappuram District",
+  "jurisdiction": "Ponnani, Edappal, Alankode, Marancheri, Nannammukku, Perumpadappu, Veliynakode, Thavanur, Kaladi, Vattamkulam"
+ },
+ {
+  "code": "KL-55",
+  "prefix": "KL",
+  "office": "Tirur, Malappuram District",
+  "jurisdiction": "Tirur, Tirunnavaya, Tanur, Valancheri, Kalapancheri, Valavannur, Vettam, Thalakkad, Athavanad, Ponmundam, Cheriyamundam, Ozhur, Nirmaruthur, Thanalur, Edayur, Irimbiliyma, Marakkara, Kuttippuram, Purathur, Mangalam, Thrippangode"
+ },
+ {
+  "code": "KL-56",
+  "prefix": "KL",
+  "office": "Koyilandy, Kozhikode District",
+  "jurisdiction": "Koyilandy, Payyoli, Chemancheri"
+ },
+ {
+  "code": "KL-57",
+  "prefix": "KL",
+  "office": "Koduvally, Kozhikode District",
+  "jurisdiction": "Mukkam, Kunnamangalam, Koduvally, Thamarasseri, Elettiyil, Vattoli, Mavoor, Thiruvambadi, Kattangal"
+ },
+ {
+  "code": "KL-58",
+  "prefix": "KL",
+  "office": "Thalassery, Kannur District",
+  "jurisdiction": "Thalassery, Anjarakandy, Koothuparamba, Gopalpet, Chokli, Pinarayi, Pathirayad, Sivapuram"
+ },
+ {
+  "code": "KL-59",
+  "prefix": "KL",
+  "office": "Taliparamba, Kannur District",
+  "jurisdiction": "Taliparamba, Sreekandapuram, Alakkode, Karthikapuram, Payyavoor, Irikkur, Chemperi, Mayyil"
+ },
+ {
+  "code": "KL-60",
+  "prefix": "KL",
+  "office": "Kanhangad, Kasargod District",
+  "jurisdiction": "Hosdurg, Balla, Nileshwaram, Trikkarippur, Cheruvathur"
+ },
+ {
+  "code": "KL-61",
+  "prefix": "KL",
+  "office": "Kunnathur, Kollam District",
+  "jurisdiction": "Sasthamkotta, Bharanikkavu, Kallada, Anayadi"
+ },
+ {
+  "code": "KL-62",
+  "prefix": "KL",
+  "office": "Ranni, Pathanamthitta District",
+  "jurisdiction": "Ranni Perinad, Kuravamoozhi, Mandamaruthi"
+ },
+ {
+  "code": "KL-63",
+  "prefix": "KL",
+  "office": "Angamaly, Ernakulam District",
+  "jurisdiction": "Angamaly, Karukutti, Tirumoozhikulam, Malayathur, Kodannad, Yordhanapuram"
+ },
+ {
+  "code": "KL-64",
+  "prefix": "KL",
+  "office": "Chalakkudy, Thrissur District",
+  "jurisdiction": "Chalakkudy, Athirapalli, Malakkapara, Poringu, Potta, Kodakara"
+ },
+ {
+  "code": "KL-65",
+  "prefix": "KL",
+  "office": "Tirurangadi, Malappuram District",
+  "jurisdiction": "Tirurangadi, Thenhipalam, Parappanangadi, Kottakkal, Edarikode, Parappur, Othukkungal, Oorakam, Vengara, Kannamangalam, Peruvalloore, AR Nagar, Perumanna Klari, Thennala, Nannambra, Moonniyur, Vallikkunnu",
+  "notes": "Covers the entirety of Tirurangadi taluk \u0026 parts of Tirur taluk"
+ },
+ {
+  "code": "KL-66",
+  "prefix": "KL",
+  "office": "Kuttanad, Alappuzha District",
+  "jurisdiction": "Champakulam, Kainakari, Puthukari, Mithrakari, Ramankari, Champakulam, Thayankary, Nedumudi, Takazhi, Vezhapra, Edathua, Thalavadi, Mancompu, Pulincunnoo, Koduppunna, Kavalam, Neelamperoor, Veliyanad, Veeyapuram, Muttar, Chennamkary, Kidangara"
+ },
+ {
+  "code": "KL-67",
+  "prefix": "KL",
+  "office": "Uzhavoor, Kottayam District",
+  "jurisdiction": "Uzhavur, Ramapuram, Njeezhoor, Kuravilangad, Monipalli, Aandoor, Kuruppanthara"
+ },
+ {
+  "code": "KL-68",
+  "prefix": "KL",
+  "office": "Devikulam, Idukki District",
+  "jurisdiction": "Devikulam, Munnar, Marayur, Chinnar, Boddimettu, Mattupetti, Vatavada, Kanthaloor, Chinnakanal"
+ },
+ {
+  "code": "KL-69",
+  "prefix": "KL",
+  "office": "Udumbanchola, Idukki District",
+  "jurisdiction": "Udumbancholla, Nedumkandam, Rajakumari, Rajakkad, Bison Valley, Chithirapuram, Vellathooval"
+ },
+ {
+  "code": "KL-70",
+  "prefix": "KL",
+  "office": "Chittur, Palakkad District",
+  "jurisdiction": "Chittur-Thathamangalam Municipality,Meenakshipuram, Gopalapuram, Govindapuram, Kollengode, Koduvayur, Pudunagaram, Nenmara, Neliyampathy areas of Chittur Taluk"
+ },
+ {
+  "code": "KL-71",
+  "prefix": "KL",
+  "office": "Nilambur, Malappuram District",
+  "jurisdiction": "Nilambur, Wandoor, Chaliyar, Vazhikkadavu, Edakakra, Pothukkallu, Chungathara, Mothedam, Amarambalam, Karulai, Thiruvali, Mampad, Porur, Kalikavu, Chokkad, Karuvarakundu, Thuvvoor"
+ },
+ {
+  "code": "KL-72",
+  "prefix": "KL",
+  "office": "Mananthavady, Wayanad District",
+  "jurisdiction": "Manathawadi, Ambalavayal, Kottiyur, Tirunelli, Tholpetti, Bramhagiri"
+ },
+ {
+  "code": "KL-73",
+  "prefix": "KL",
+  "office": "Sulthan Bathery, Wayanad District",
+  "jurisdiction": "Sulthan Bathery, Muthanga, Meenangadi"
+ },
+ {
+  "code": "KL-74",
+  "prefix": "KL",
+  "office": "Kattakada, Thiruvananthapuram District",
+  "jurisdiction": "Kattakada, Malayankeezh, Vilappil, Otasekharamangalam, Amboori, Vellarda, Vilvoorkal"
+ },
+ {
+  "code": "KL-75",
+  "prefix": "KL",
+  "office": "Thriprayar, Thrissur District",
+  "jurisdiction": "Thriprayyar, Vadannapalli, Valappad, Nattikka"
+ },
+ {
+  "code": "KL-76",
+  "prefix": "KL",
+  "office": "Nanmanda, Kozhikode District",
+  "jurisdiction": "Balusseri, Atholli, Chelannur, Kakkodi, Kuruvattur"
+ },
+ {
+  "code": "KL-77",
+  "prefix": "KL",
+  "office": "Perambra, Kozhikode District",
+  "jurisdiction": "Perambra, Kuttiyadi"
+ },
+ {
+  "code": "KL-78",
+  "prefix": "KL",
+  "office": "Iritty, Kannur District",
+  "jurisdiction": "Iritty, Padiyoor, Ulikkal, Aralam, Payam, Ayyankunnu, Mattannur, Peravoor, Kottiyoor, Kelakam, Kanichar, Muzhakkunnu, Thillenkery"
+ },
+ {
+  "code": "KL-79",
+  "prefix": "KL",
+  "office": "Vellarikundu, Kasargod District",
+  "jurisdiction": "Vellarikundu, Chittarikkal, Rajapuram, Ranipuram, Bandadukka, Cheruppuzha, Parappa, Konnakkad, Bovikanam"
+ },
+ {
+  "code": "KL-80",
+  "prefix": "KL",
+  "office": "Pathanapuram, Kollam District",
+  "jurisdiction": "Pathanapuram, Manchaloor, Pattazhi, Pakalkuri, Avaneeswaram"
+ },
+ {
+  "code": "KL-81",
+  "prefix": "KL",
+  "office": "Varkala, Thiruvananthapuram District",
+  "jurisdiction": "Varkala, Sivagiri, Anchuthengu, Edavai"
+ },
+ {
+  "code": "KL-82",
+  "prefix": "KL",
+  "office": "Chadayamangalam, Kollam District",
+  "jurisdiction": "Chadayamangalam, Elamadu, Velinallur, Ittiva, Kottukkal, Nilamel, Kadakkal, Chithara, Mankode, Kummil"
+ },
+ {
+  "code": "KL-83",
+  "prefix": "KL",
+  "office": "Konni, Pathanamthitta District",
+  "jurisdiction": "Konni, Koodal-Rajagiri, Gavi"
+ },
+ {
+  "code": "KL-84",
+  "prefix": "KL",
+  "office": "Kondotty, Malappuram District",
+  "jurisdiction": "Karippur, Kondotty, Pallikkal, Chelembra, Kuzhimanna, Cherukavu, Muthuvallore, Vazhayur, Vazhakkad, Pulikkal, Chekkode, Morayur, Keezhuparmab, Areekode, Orgnatteeri",
+  "notes": "Covers the entirety of Kondotty taluk \u0026 parts of Eranad taluk"
+ },
+ {
+  "code": "KL-85",
+  "prefix": "KL",
+  "office": "Ramanattukara-Feroke, Kozhikode District",
+  "jurisdiction": "Feroke, Ramanattukara, Kadalundi Beypore, Nallalam, Olavanna, Perumanna"
+ },
+ {
+  "code": "KL-86",
+  "prefix": "KL",
+  "office": "Payyannur, Kannur District",
+  "jurisdiction": "Payyannur, Ramanthali, Cherupuzha, Peringome, Kankole, Kadannappally-Panapuzha, Eramam-Kuttoor, Karivellur"
+ },
+ {
+  "code": "KL-90",
+  "prefix": "KL",
+  "office": "Nationalised Sector II Thiruvananthapuram",
+  "jurisdiction": "Used exclusively for Government Vehicle's",
+  "notes": "KL-90A: Kerala Government, KL-90B: Central Government, KL-90C: Local body, KL-90D: Public sector undertakings"
+ },
+ {
+  "code": "KL-99",
+  "prefix": "KL",
+  "office": "Thiruvananthapuram",
+  "jurisdiction": "Used exclusively for State Transport Authority vehicles",
+  "notes": "Limited in circulation"
+ },
+ {
+  "code": "LA-01",
+  "prefix": "LA",
+  "office": "Kargil",
+  "jurisdiction": "Kargil district, Zanskar district, Drass district",
+  "notes": "Previously JK-07"
+ },
+ {
+  "code": "LA-02",
+  "prefix": "LA",
+  "office": "Leh",
+  "jurisdiction": "Leh district, Changthang district, Nubra district, Sham district",
+  "notes": "Previously JK-10"
+ },
+ {
+  "code": "LD-01",
+  "prefix": "LD",
+  "office": "Kavaratti",
+  "jurisdiction": "Kavaratti"
+ },
+ {
+  "code": "LD-02",
+  "prefix": "LD",
+  "office": "Agatti",
+  "jurisdiction": "Agatti"
+ },
+ {
+  "code": "LD-03",
+  "prefix": "LD",
+  "office": "Amini",
+  "jurisdiction": "Amini"
+ },
+ {
+  "code": "LD-04",
+  "prefix": "LD",
+  "office": "Androth",
+  "jurisdiction": "Androth"
+ },
+ {
+  "code": "LD-05",
+  "prefix": "LD",
+  "office": "Kadmat",
+  "jurisdiction": "Kadmat"
+ },
+ {
+  "code": "LD-06",
+  "prefix": "LD",
+  "office": "Kiltan",
+  "jurisdiction": "Kiltan"
+ },
+ {
+  "code": "LD-07",
+  "prefix": "LD",
+  "office": "Kalpeni",
+  "jurisdiction": "Kalpeni"
+ },
+ {
+  "code": "LD-08",
+  "prefix": "LD",
+  "office": "Kalpeni",
+  "jurisdiction": "Kalpeni"
+ },
+ {
+  "code": "LD-09",
+  "prefix": "LD",
+  "office": "Minicoy",
+  "jurisdiction": "Minicoy"
+ },
+ {
+  "code": "MH-01",
+  "prefix": "MH",
+  "office": "Mumbai Central (Tardeo)",
+  "jurisdiction": "Jurisdiction: Nariman Point, Colaba to Mahim, Sion, Wadala in Mumbai City district, Kurla (parts) in Mumbai Suburban district and Elephanta (Raigad district)",
+  "notes": "BEST buses (BMC Owned), BMC, Government vehicles serving Mumbai jurisdiction are also registered here."
+ },
+ {
+  "code": "MH-02",
+  "prefix": "MH",
+  "office": "Mumbai West (Andheri)",
+  "jurisdiction": "Jurisdiction: Bandra to Jogeshwari in Mumbai Suburban district",
+  "notes": "This RTO also included the northern suburbs of Goregaon to Dahisar until 2015, after which they came under the jurisdiction of the MH47 RTO"
+ },
+ {
+  "code": "MH-03",
+  "prefix": "MH",
+  "office": "Mumbai East (Wadala)",
+  "jurisdiction": "Jurisdiction: Kurla to Mulund, Mankhurd in Mumbai Suburban district"
+ },
+ {
+  "code": "MH-04",
+  "prefix": "MH",
+  "office": "Thane",
+  "jurisdiction": "Jurisdiction: Talukas of Thane, Bhiwandi and Shahapur",
+  "notes": "This RTO also covered present-day Palghar district until 2014"
+ },
+ {
+  "code": "MH-05",
+  "prefix": "MH",
+  "office": "Kalyan",
+  "jurisdiction": "Jurisdiction: Talukas of Kalyan (Kalyan-Dombivli), Murbad, Ulhasnagar (Town and Taluka), Ambernath (Town and Taluka, including Badlapur Town)"
+ },
+ {
+  "code": "MH-06",
+  "prefix": "MH",
+  "office": "Raigad",
+  "jurisdiction": "Jurisdiction: Taluks of Pen, Alibag, Roha, Murud, Shrivardhan, Mangaon, Mhasala, Poladpur, Tala, Mahad, Sudhagad"
+ },
+ {
+  "code": "MH-07",
+  "prefix": "MH",
+  "office": "Sindhudurg",
+  "jurisdiction": "Jurisdiction: Entire Sindhudurg district"
+ },
+ {
+  "code": "MH-08",
+  "prefix": "MH",
+  "office": "Ratnagiri",
+  "jurisdiction": "Jurisdiction: Entire Ratnagiri district"
+ },
+ {
+  "code": "MH-09",
+  "prefix": "MH",
+  "office": "Kolhapur",
+  "jurisdiction": "Jurisdiction: Entire Kolhapur district"
+ },
+ {
+  "code": "MH-10",
+  "prefix": "MH",
+  "office": "Sangli",
+  "jurisdiction": "Jurisdiction: Entire Sangli district except Jat Taluka"
+ },
+ {
+  "code": "MH-11",
+  "prefix": "MH",
+  "office": "Satara",
+  "jurisdiction": "Jurisdiction: Entire Satara district"
+ },
+ {
+  "code": "MH-12",
+  "prefix": "MH",
+  "office": "Pune",
+  "jurisdiction": "Jurisdiction: Pune City and Talukas of Haveli, Bhor, Velhe, Purandar, Shirur. Parts of Mulshi Taluka are also covered by this RTO",
+  "notes": "All codes in this series have been allocated, and this RTO is the first in India that has been completely exhausted. MH61 has been allocated as the new RTO code for the same jurisdiction."
+ },
+ {
+  "code": "MH-13",
+  "prefix": "MH",
+  "office": "Solapur",
+  "jurisdiction": "Jurisdiction: Talukas of North Solapur, Solapur South, Mangalwedha, Barshi, Mohol, Pandharpur, Akkalkot"
+ },
+ {
+  "code": "MH-14",
+  "prefix": "MH",
+  "office": "Pimpri-Chinchwad",
+  "jurisdiction": "Jurisdiction: Pimpri-Chinchwad Municipal Corporation and Hinjawadi, parts of Mulshi Taluka, Talukas of Junnar, Khed, Maval, Ambegaon"
+ },
+ {
+  "code": "MH-15",
+  "prefix": "MH",
+  "office": "Nashik",
+  "jurisdiction": "Jurisdiction: Talukas of Nashik, Dindori, Trimbakeshwar, Surgana, Yeola, Chandvad, Niphad, Sinnar, Peth, Igatpuri"
+ },
+ {
+  "code": "MH-16",
+  "prefix": "MH",
+  "office": "Ahmednagar",
+  "jurisdiction": "Jurisdiction: Talukas of Nagar, Jamkhed, Shrigonda, Pathardi, Parner, Karjat, Shevgaon"
+ },
+ {
+  "code": "MH-17",
+  "prefix": "MH",
+  "office": "Shrirampur",
+  "jurisdiction": "Jurisdiction: Talukas of Shrirampur, Nevasa, Rahuri, Rahta, Kopargaon, Sangamner, Akole"
+ },
+ {
+  "code": "MH-18",
+  "prefix": "MH",
+  "office": "Dhule",
+  "jurisdiction": "Jurisdiction: Entire Dhule District"
+ },
+ {
+  "code": "MH-19",
+  "prefix": "MH",
+  "office": "Jalgaon",
+  "jurisdiction": "Jurisdiction: Talukas of Jalgaon, Bhusawal, Jamner, Yaval, Bodwad, Muktainagar and Raver"
+ },
+ {
+  "code": "MH-20",
+  "prefix": "MH",
+  "office": "Chhatrapati Sambhajinagar",
+  "jurisdiction": "Jurisdiction: Entire Chhatrapati Sambhajinagar district"
+ },
+ {
+  "code": "MH-21",
+  "prefix": "MH",
+  "office": "Jalna",
+  "jurisdiction": "Jurisdiction: Entire Jalna District"
+ },
+ {
+  "code": "MH-22",
+  "prefix": "MH",
+  "office": "Parbhani",
+  "jurisdiction": "Jurisdiction: Entire Parbhani District"
+ },
+ {
+  "code": "MH-23",
+  "prefix": "MH",
+  "office": "Beed",
+  "jurisdiction": "Jurisdiction: Talukas of Beed, Ashti, Gevrai, Patoda, Shirur Kasar"
+ },
+ {
+  "code": "MH-24",
+  "prefix": "MH",
+  "office": "Latur",
+  "jurisdiction": "Jurisdiction: Talukas of Latur, Ausa, Nilanga, Renapur and Chakur"
+ },
+ {
+  "code": "MH-25",
+  "prefix": "MH",
+  "office": "Dharashiv",
+  "jurisdiction": "Jurisdiction: Entire Dharashiv District"
+ },
+ {
+  "code": "MH-26",
+  "prefix": "MH",
+  "office": "Nanded",
+  "jurisdiction": "Jurisdiction: Entire Nanded District"
+ },
+ {
+  "code": "MH-27",
+  "prefix": "MH",
+  "office": "Amravati",
+  "jurisdiction": "Jurisdiction: Entire Amaravati District"
+ },
+ {
+  "code": "MH-28",
+  "prefix": "MH",
+  "office": "Buldhana",
+  "jurisdiction": "Jurisdiction: Tehsil including Buldhana, Motala, Chikhali, Mehkar, Lonar, Sindkhed Raja and Deulgaon Raja"
+ },
+ {
+  "code": "MH-29",
+  "prefix": "MH",
+  "office": "Yavatmal",
+  "jurisdiction": "Jurisdiction: Entire Yavatmal District"
+ },
+ {
+  "code": "MH-30",
+  "prefix": "MH",
+  "office": "Akola",
+  "jurisdiction": "Jurisdiction: Entire Akola District"
+ },
+ {
+  "code": "MH-31",
+  "prefix": "MH",
+  "office": "Nagpur West",
+  "jurisdiction": "Jurisdiction: Western Suburbs of Nagpur City"
+ },
+ {
+  "code": "MH-32",
+  "prefix": "MH",
+  "office": "Wardha",
+  "jurisdiction": "Jurisdiction: Entire Wardha District"
+ },
+ {
+  "code": "MH-33",
+  "prefix": "MH",
+  "office": "Gadchiroli",
+  "jurisdiction": "Jurisdiction: Entire Gadchiroli District"
+ },
+ {
+  "code": "MH-34",
+  "prefix": "MH",
+  "office": "Chandrapur",
+  "jurisdiction": "Jurisdiction: Entire Chandrapur District"
+ },
+ {
+  "code": "MH-35",
+  "prefix": "MH",
+  "office": "Gondia",
+  "jurisdiction": "Jurisdiction: Entire Gondia District"
+ },
+ {
+  "code": "MH-36",
+  "prefix": "MH",
+  "office": "Bhandara",
+  "jurisdiction": "Jurisdiction: Entire Bhandara District"
+ },
+ {
+  "code": "MH-37",
+  "prefix": "MH",
+  "office": "Washim",
+  "jurisdiction": "Jurisdiction: Entire Washim District"
+ },
+ {
+  "code": "MH-38",
+  "prefix": "MH",
+  "office": "Hingoli",
+  "jurisdiction": "Jurisdiction: Entire Hingoli District"
+ },
+ {
+  "code": "MH-39",
+  "prefix": "MH",
+  "office": "Nandurbar",
+  "jurisdiction": "Jurisdiction: Entire Nandurbar District"
+ },
+ {
+  "code": "MH-40",
+  "prefix": "MH",
+  "office": "Nagpur Rural",
+  "jurisdiction": "Jurisdiction: Entire Nagpur District except Nagpur Urban Taluka"
+ },
+ {
+  "code": "MH-41",
+  "prefix": "MH",
+  "office": "Malegaon",
+  "jurisdiction": "Jurisdiction: Talukas of Malegaon, Satana, Kalwan, Deola, Nandgaon"
+ },
+ {
+  "code": "MH-42",
+  "prefix": "MH",
+  "office": "Baramati",
+  "jurisdiction": "Jurisdiction: Talukas of Baramati, Indapur, Daund"
+ },
+ {
+  "code": "MH-43",
+  "prefix": "MH",
+  "office": "Navi Mumbai",
+  "jurisdiction": "Jurisdiction: Airoli to CBD Belapur and surrounding areas in Thane Taluka"
+ },
+ {
+  "code": "MH-44",
+  "prefix": "MH",
+  "office": "Ambajogai",
+  "jurisdiction": "Jurisdiction: Talukas of Ambajogai, Kaij, Vadvani, Majalgaon, Parli, Dharur"
+ },
+ {
+  "code": "MH-45",
+  "prefix": "MH",
+  "office": "Akluj",
+  "jurisdiction": "Jurisdiction: Talukas of Malshiras, Madha, Sangola, Karmala"
+ },
+ {
+  "code": "MH-46",
+  "prefix": "MH",
+  "office": "Panvel",
+  "jurisdiction": "Jurisdiction: Kharghar to Panvel suburbs in Navi Mumbai, Talukas of Panvel, Uran, Khalapur, Karjat"
+ },
+ {
+  "code": "MH-47",
+  "prefix": "MH",
+  "office": "Mumbai North (Borivali)",
+  "jurisdiction": "Jurisdiction: Goregaon to Dahisar in Mumbai Suburban District"
+ },
+ {
+  "code": "MH-48",
+  "prefix": "MH",
+  "office": "Vasai",
+  "jurisdiction": "Jurisdiction: Vasai-Virar City Limits and whole of Palghar District"
+ },
+ {
+  "code": "MH-49",
+  "prefix": "MH",
+  "office": "Nagpur East",
+  "jurisdiction": "Jurisdiction: Eastern Suburbs of Nagpur City"
+ },
+ {
+  "code": "MH-50",
+  "prefix": "MH",
+  "office": "Karad",
+  "jurisdiction": "Jurisdiction: Karad and Patan Talukas"
+ },
+ {
+  "code": "MH-51",
+  "prefix": "MH",
+  "office": "Ichalkaranji",
+  "jurisdiction": "Jurisdiction: Ichalkaranji Town and Talukas of Hatkanangle and Shirol"
+ },
+ {
+  "code": "MH-52",
+  "prefix": "MH",
+  "office": "Chalisgaon",
+  "jurisdiction": "Jurisdiction: Chalisgaon Taluka"
+ },
+ {
+  "code": "MH-53",
+  "prefix": "MH",
+  "office": "Phaltan",
+  "jurisdiction": "Jurisdiction: Talukas of Phaltan and Man"
+ },
+ {
+  "code": "MH-54",
+  "prefix": "MH",
+  "office": "Bhadgaon",
+  "jurisdiction": "Jurisdiction: Talukas of Bhadgaon, Pachora, Parola, Amalner, Chopada, Erandol, Dharangaon"
+ },
+ {
+  "code": "MH-55",
+  "prefix": "MH",
+  "office": "Udgir",
+  "jurisdiction": "Jurisdiction: Talukas of Udgir, Deoni, Jalkot, Shirur Anantpal and Ahmadpur"
+ },
+ {
+  "code": "MH-56",
+  "prefix": "MH",
+  "office": "Khamgaon",
+  "jurisdiction": "Jurisdiction: Talukas of Khamgaon, Nandura, Shegaon, Malkapur, Jalgaon Jamod and Sangrampur"
+ },
+ {
+  "code": "MH-57",
+  "prefix": "MH",
+  "office": "Vaijapur",
+  "jurisdiction": "Jurisdiction: Talukas of Vaijapur and Gangapur"
+ },
+ {
+  "code": "MH-58",
+  "prefix": "MH",
+  "office": "Mira-Bhayandar",
+  "jurisdiction": "Jurisdiction: Mira Road-Bhayandar Municipal Limits in Thane Taluka"
+ },
+ {
+  "code": "MH-59",
+  "prefix": "MH",
+  "office": "Jat",
+  "jurisdiction": "Jurisdiction:"
+ },
+ {
+  "code": "MH-60",
+  "prefix": "MH",
+  "office": "Palghar",
+  "jurisdiction": "Jurisdiction: Entire Palghar District excluding Vasai Taluka (Speculative)"
+ },
+ {
+  "code": "MH-61",
+  "prefix": "MH",
+  "office": "Pune (New)",
+  "jurisdiction": "Jurisdiction: Pune City and Talukas of Haveli, Bhor, Velha, Indapur, Purandar, Shirur. Parts of Mulshi Taluka are also covered by this RTO"
+ },
+ {
+  "code": "ML-01",
+  "prefix": "ML",
+  "office": "Meghalaya Government vehicles",
+  "jurisdiction": "N/A"
+ },
+ {
+  "code": "ML-02",
+  "prefix": "ML",
+  "office": "Meghalaya Police vehicles",
+  "jurisdiction": "N/A"
+ },
+ {
+  "code": "ML-04",
+  "prefix": "ML",
+  "office": "Jowai",
+  "jurisdiction": "Jaintia Hills"
+ },
+ {
+  "code": "ML-05",
+  "prefix": "ML",
+  "office": "Shillong",
+  "jurisdiction": "Shillong"
+ },
+ {
+  "code": "ML-06",
+  "prefix": "ML",
+  "office": "Nongstoin",
+  "jurisdiction": "West Khasi Hills"
+ },
+ {
+  "code": "ML-07",
+  "prefix": "ML",
+  "office": "William Nagar",
+  "jurisdiction": "East Garo Hills"
+ },
+ {
+  "code": "ML-08",
+  "prefix": "ML",
+  "office": "Tura",
+  "jurisdiction": "West Garo Hills"
+ },
+ {
+  "code": "ML-09",
+  "prefix": "ML",
+  "office": "Baghmara",
+  "jurisdiction": "South Garo Hills"
+ },
+ {
+  "code": "ML-10",
+  "prefix": "ML",
+  "office": "Nongpoh",
+  "jurisdiction": "Ri-Bhoi"
+ },
+ {
+  "code": "MN-01",
+  "prefix": "MN",
+  "office": "Imphal West",
+  "jurisdiction": "Imphal West"
+ },
+ {
+  "code": "MN-02",
+  "prefix": "MN",
+  "office": "Churachandpur",
+  "jurisdiction": "Churachandpur"
+ },
+ {
+  "code": "MN-03",
+  "prefix": "MN",
+  "office": "Kangpokpi",
+  "jurisdiction": "Kangpokpi"
+ },
+ {
+  "code": "MN-04",
+  "prefix": "MN",
+  "office": "Thoubal",
+  "jurisdiction": "Thoubal"
+ },
+ {
+  "code": "MN-05",
+  "prefix": "MN",
+  "office": "Bishnupur",
+  "jurisdiction": "Bishnupur"
+ },
+ {
+  "code": "MN-06",
+  "prefix": "MN",
+  "office": "Imphal East",
+  "jurisdiction": "Imphal East"
+ },
+ {
+  "code": "MN-07",
+  "prefix": "MN",
+  "office": "Ukhrul",
+  "jurisdiction": "Ukhrul"
+ },
+ {
+  "code": "MN-08",
+  "prefix": "MN",
+  "office": "Senapati",
+  "jurisdiction": "Senapati"
+ },
+ {
+  "code": "MP-01",
+  "prefix": "MP",
+  "office": "Bhopal",
+  "jurisdiction": "entire Madhya Pradesh",
+  "notes": "Governor of Madhya Pradesh vehicles"
+ },
+ {
+  "code": "MP-02",
+  "prefix": "MP",
+  "office": "Bhopal",
+  "jurisdiction": "entire Madhya Pradesh",
+  "notes": "MP Government vehicles"
+ },
+ {
+  "code": "MP-03",
+  "prefix": "MP",
+  "office": "Bhopal",
+  "jurisdiction": "entire Madhya Pradesh",
+  "notes": "MP Police vehicles"
+ },
+ {
+  "code": "MP-04",
+  "prefix": "MP",
+  "office": "Bhopal",
+  "jurisdiction": "Bhopal"
+ },
+ {
+  "code": "MP-06",
+  "prefix": "MP",
+  "office": "Morena",
+  "jurisdiction": "Morena"
+ },
+ {
+  "code": "MP-07",
+  "prefix": "MP",
+  "office": "Gwalior",
+  "jurisdiction": "Gwalior"
+ },
+ {
+  "code": "MP-08",
+  "prefix": "MP",
+  "office": "Guna",
+  "jurisdiction": "Guna"
+ },
+ {
+  "code": "MP-09",
+  "prefix": "MP",
+  "office": "Indore",
+  "jurisdiction": "Indore"
+ },
+ {
+  "code": "MP-10",
+  "prefix": "MP",
+  "office": "Khargone",
+  "jurisdiction": "Khargone"
+ },
+ {
+  "code": "MP-11",
+  "prefix": "MP",
+  "office": "Dhar",
+  "jurisdiction": "Dhar"
+ },
+ {
+  "code": "MP-12",
+  "prefix": "MP",
+  "office": "Khandwa",
+  "jurisdiction": "Khandwa"
+ },
+ {
+  "code": "MP-13",
+  "prefix": "MP",
+  "office": "Ujjain",
+  "jurisdiction": "Ujjain"
+ },
+ {
+  "code": "MP-14",
+  "prefix": "MP",
+  "office": "Mandsaur",
+  "jurisdiction": "Mandsaur"
+ },
+ {
+  "code": "MP-15",
+  "prefix": "MP",
+  "office": "Sagar",
+  "jurisdiction": "Sagar"
+ },
+ {
+  "code": "MP-16",
+  "prefix": "MP",
+  "office": "Chhatarpur",
+  "jurisdiction": "Chhatarpur"
+ },
+ {
+  "code": "MP-17",
+  "prefix": "MP",
+  "office": "Rewa",
+  "jurisdiction": "Rewa"
+ },
+ {
+  "code": "MP-18",
+  "prefix": "MP",
+  "office": "Shahdol",
+  "jurisdiction": "Shahdol"
+ },
+ {
+  "code": "MP-19",
+  "prefix": "MP",
+  "office": "Satna",
+  "jurisdiction": "Satna"
+ },
+ {
+  "code": "MP-20",
+  "prefix": "MP",
+  "office": "Jabalpur",
+  "jurisdiction": "Jabalpur"
+ },
+ {
+  "code": "MP-21",
+  "prefix": "MP",
+  "office": "Katni",
+  "jurisdiction": "Katni"
+ },
+ {
+  "code": "MP-22",
+  "prefix": "MP",
+  "office": "Seoni",
+  "jurisdiction": "Seoni"
+ },
+ {
+  "code": "MP-28",
+  "prefix": "MP",
+  "office": "Chhindwara",
+  "jurisdiction": "Chhindwara"
+ },
+ {
+  "code": "MP-30",
+  "prefix": "MP",
+  "office": "Bhind",
+  "jurisdiction": "Bhind"
+ },
+ {
+  "code": "MP-31",
+  "prefix": "MP",
+  "office": "Sheopur",
+  "jurisdiction": "Sheopur"
+ },
+ {
+  "code": "MP-32",
+  "prefix": "MP",
+  "office": "Datia",
+  "jurisdiction": "Datia"
+ },
+ {
+  "code": "MP-33",
+  "prefix": "MP",
+  "office": "Shivpuri",
+  "jurisdiction": "Shivpuri"
+ },
+ {
+  "code": "MP-34",
+  "prefix": "MP",
+  "office": "Damoh",
+  "jurisdiction": "Damoh"
+ },
+ {
+  "code": "MP-35",
+  "prefix": "MP",
+  "office": "Panna",
+  "jurisdiction": "Panna"
+ },
+ {
+  "code": "MP-36",
+  "prefix": "MP",
+  "office": "Tikamgarh",
+  "jurisdiction": "Tikamgarh"
+ },
+ {
+  "code": "MP-37",
+  "prefix": "MP",
+  "office": "Sehore",
+  "jurisdiction": "Sehore"
+ },
+ {
+  "code": "MP-38",
+  "prefix": "MP",
+  "office": "Raisen",
+  "jurisdiction": "Raisen"
+ },
+ {
+  "code": "MP-39",
+  "prefix": "MP",
+  "office": "Rajgarh",
+  "jurisdiction": "Rajgarh"
+ },
+ {
+  "code": "MP-40",
+  "prefix": "MP",
+  "office": "Vidisha",
+  "jurisdiction": "Vidisha"
+ },
+ {
+  "code": "MP-41",
+  "prefix": "MP",
+  "office": "Dewas",
+  "jurisdiction": "Dewas"
+ },
+ {
+  "code": "MP-42",
+  "prefix": "MP",
+  "office": "Shajapur",
+  "jurisdiction": "Shajapur"
+ },
+ {
+  "code": "MP-43",
+  "prefix": "MP",
+  "office": "Ratlam",
+  "jurisdiction": "Ratlam"
+ },
+ {
+  "code": "MP-44",
+  "prefix": "MP",
+  "office": "Neemuch",
+  "jurisdiction": "Neemuch"
+ },
+ {
+  "code": "MP-45",
+  "prefix": "MP",
+  "office": "Jhabua",
+  "jurisdiction": "Jhabua"
+ },
+ {
+  "code": "MP-46",
+  "prefix": "MP",
+  "office": "Barwani",
+  "jurisdiction": "Barwani"
+ },
+ {
+  "code": "MP-47",
+  "prefix": "MP",
+  "office": "Harda",
+  "jurisdiction": "Harda"
+ },
+ {
+  "code": "MP-48",
+  "prefix": "MP",
+  "office": "Betul",
+  "jurisdiction": "Betul"
+ },
+ {
+  "code": "MP-49",
+  "prefix": "MP",
+  "office": "Narsinghpur",
+  "jurisdiction": "Narsinghpur"
+ },
+ {
+  "code": "MP-50",
+  "prefix": "MP",
+  "office": "Balaghat",
+  "jurisdiction": "Balaghat"
+ },
+ {
+  "code": "MP-51",
+  "prefix": "MP",
+  "office": "Mandla",
+  "jurisdiction": "Mandla"
+ },
+ {
+  "code": "MP-52",
+  "prefix": "MP",
+  "office": "Dindori",
+  "jurisdiction": "Dindori"
+ },
+ {
+  "code": "MP-53",
+  "prefix": "MP",
+  "office": "Sidhi",
+  "jurisdiction": "Sidhi"
+ },
+ {
+  "code": "MP-54",
+  "prefix": "MP",
+  "office": "Umaria",
+  "jurisdiction": "Umaria"
+ },
+ {
+  "code": "MP-65",
+  "prefix": "MP",
+  "office": "Anuppur",
+  "jurisdiction": "Anuppur"
+ },
+ {
+  "code": "MP-66",
+  "prefix": "MP",
+  "office": "Singrauli",
+  "jurisdiction": "Waidhan"
+ },
+ {
+  "code": "MP-67",
+  "prefix": "MP",
+  "office": "Ashoknagar",
+  "jurisdiction": "Ashoknagar"
+ },
+ {
+  "code": "MP-68",
+  "prefix": "MP",
+  "office": "Burhanpur",
+  "jurisdiction": "Burhanpur"
+ },
+ {
+  "code": "MP-69",
+  "prefix": "MP",
+  "office": "Alirajpur",
+  "jurisdiction": "Alirajpur"
+ },
+ {
+  "code": "MP-70",
+  "prefix": "MP",
+  "office": "Agar",
+  "jurisdiction": "Agar Malwa"
+ },
+ {
+  "code": "MP-71",
+  "prefix": "MP",
+  "office": "Niwari",
+  "jurisdiction": "Niwari"
+ },
+ {
+  "code": "MP-73",
+  "prefix": "MP",
+  "office": "Maihar",
+  "jurisdiction": "Maihar"
+ },
+ {
+  "code": "MP-74",
+  "prefix": "MP",
+  "office": "Pandhurna",
+  "jurisdiction": "Pandhurna"
+ },
+ {
+  "code": "MP-79",
+  "prefix": "MP",
+  "office": "Mauganj",
+  "jurisdiction": "Mauganj"
+ },
+ {
+  "code": "MZ-01",
+  "prefix": "MZ",
+  "office": "Aizawl"
+ },
+ {
+  "code": "MZ-02",
+  "prefix": "MZ",
+  "office": "Lunglei"
+ },
+ {
+  "code": "MZ-03",
+  "prefix": "MZ",
+  "office": "Saiha"
+ },
+ {
+  "code": "MZ-04",
+  "prefix": "MZ",
+  "office": "Champhai"
+ },
+ {
+  "code": "MZ-05",
+  "prefix": "MZ",
+  "office": "Kolasib"
+ },
+ {
+  "code": "MZ-06",
+  "prefix": "MZ",
+  "office": "Serchhip"
+ },
+ {
+  "code": "MZ-07",
+  "prefix": "MZ",
+  "office": "Lawngtlai"
+ },
+ {
+  "code": "MZ-08",
+  "prefix": "MZ",
+  "office": "Mamit"
+ },
+ {
+  "code": "NL-01",
+  "prefix": "NL",
+  "office": "Kohima",
+  "jurisdiction": "Kohima District"
+ },
+ {
+  "code": "NL-02",
+  "prefix": "NL",
+  "office": "Mokokchung District",
+  "jurisdiction": "Mokokchung District"
+ },
+ {
+  "code": "NL-03",
+  "prefix": "NL",
+  "office": "Tuensang District",
+  "jurisdiction": "Tuensang District"
+ },
+ {
+  "code": "NL-04",
+  "prefix": "NL",
+  "office": "Mon District",
+  "jurisdiction": "Mon District"
+ },
+ {
+  "code": "NL-05",
+  "prefix": "NL",
+  "office": "Wokha District",
+  "jurisdiction": "Wokha District"
+ },
+ {
+  "code": "NL-06",
+  "prefix": "NL",
+  "office": "Zünheboto District",
+  "jurisdiction": "Zünheboto District"
+ },
+ {
+  "code": "NL-07",
+  "prefix": "NL",
+  "office": "Chümoukedima District; Dimapur District; Niuland District",
+  "jurisdiction": "Chümoukedima District; Dimapur District; Niuland District"
+ },
+ {
+  "code": "NL-08",
+  "prefix": "NL",
+  "office": "Phek District",
+  "jurisdiction": "Phek District"
+ },
+ {
+  "code": "NL-09",
+  "prefix": "NL",
+  "office": "entire Nagaland",
+  "jurisdiction": "entire Nagaland",
+  "notes": "Government of Nagaland vehicles (Non-Transport)"
+ },
+ {
+  "code": "NL-10",
+  "prefix": "NL",
+  "office": "entire Nagaland",
+  "jurisdiction": "entire Nagaland",
+  "notes": "Government of Nagaland vehicles (Transport)"
+ },
+ {
+  "code": "OD-01",
+  "prefix": "OD",
+  "office": "Balasore",
+  "jurisdiction": "Balasore district"
+ },
+ {
+  "code": "OD-02",
+  "prefix": "OD",
+  "office": "Bhubaneswar",
+  "jurisdiction": "Khurda district"
+ },
+ {
+  "code": "OD-03",
+  "prefix": "OD",
+  "office": "Bolangir",
+  "jurisdiction": "Bolangir district"
+ },
+ {
+  "code": "OD-04",
+  "prefix": "OD",
+  "office": "Chandikhol",
+  "jurisdiction": "Jajpur district"
+ },
+ {
+  "code": "OD-05",
+  "prefix": "OD",
+  "office": "Cuttack",
+  "jurisdiction": "Cuttack district"
+ },
+ {
+  "code": "OD-06",
+  "prefix": "OD",
+  "office": "Dhenkanal",
+  "jurisdiction": "Dhenkanal district"
+ },
+ {
+  "code": "OD-07",
+  "prefix": "OD",
+  "office": "Chatrapur",
+  "jurisdiction": "Ganjam district"
+ },
+ {
+  "code": "OD-08",
+  "prefix": "OD",
+  "office": "Bhawanipatna",
+  "jurisdiction": "Kalahandi district"
+ },
+ {
+  "code": "OD-09",
+  "prefix": "OD",
+  "office": "Keonjhar",
+  "jurisdiction": "Keonjhar district"
+ },
+ {
+  "code": "OD-10",
+  "prefix": "OD",
+  "office": "Koraput",
+  "jurisdiction": "Koraput district"
+ },
+ {
+  "code": "OD-11",
+  "prefix": "OD",
+  "office": "Baripada",
+  "jurisdiction": "Mayurbhanj district"
+ },
+ {
+  "code": "OD-12",
+  "prefix": "OD",
+  "office": "Phulbani",
+  "jurisdiction": "Kandhamal district"
+ },
+ {
+  "code": "OD-13",
+  "prefix": "OD",
+  "office": "Puri",
+  "jurisdiction": "Puri district"
+ },
+ {
+  "code": "OD-14",
+  "prefix": "OD",
+  "office": "Rourkela",
+  "jurisdiction": "Sundargarh district"
+ },
+ {
+  "code": "OD-15",
+  "prefix": "OD",
+  "office": "Sambalpur",
+  "jurisdiction": "Sambalpur district"
+ },
+ {
+  "code": "OD-16",
+  "prefix": "OD",
+  "office": "Sundargarh",
+  "jurisdiction": "Sundargarh district"
+ },
+ {
+  "code": "OD-17",
+  "prefix": "OD",
+  "office": "Bargarh",
+  "jurisdiction": "Bargarh district"
+ },
+ {
+  "code": "OD-18",
+  "prefix": "OD",
+  "office": "Rayagada",
+  "jurisdiction": "Rayagada district"
+ },
+ {
+  "code": "OD-19",
+  "prefix": "OD",
+  "office": "Angul",
+  "jurisdiction": "Angul district"
+ },
+ {
+  "code": "OD-20",
+  "prefix": "OD",
+  "office": "Paralakhemundi",
+  "jurisdiction": "Gajapati district"
+ },
+ {
+  "code": "OD-21",
+  "prefix": "OD",
+  "office": "Jagatsinghpur",
+  "jurisdiction": "Jagatsinghpur district"
+ },
+ {
+  "code": "OD-22",
+  "prefix": "OD",
+  "office": "Bhadrak",
+  "jurisdiction": "Bhadrak district"
+ },
+ {
+  "code": "OD-23",
+  "prefix": "OD",
+  "office": "Jharsuguda",
+  "jurisdiction": "Jharsuguda district"
+ },
+ {
+  "code": "OD-24",
+  "prefix": "OD",
+  "office": "Nabarangpur",
+  "jurisdiction": "Nabarangpur district"
+ },
+ {
+  "code": "OD-25",
+  "prefix": "OD",
+  "office": "Nayagarh",
+  "jurisdiction": "Nayagarh district"
+ },
+ {
+  "code": "OD-26",
+  "prefix": "OD",
+  "office": "Nuapada",
+  "jurisdiction": "Nuapada district"
+ },
+ {
+  "code": "OD-27",
+  "prefix": "OD",
+  "office": "Boudh",
+  "jurisdiction": "Boudh district"
+ },
+ {
+  "code": "OD-28",
+  "prefix": "OD",
+  "office": "Debagarh",
+  "jurisdiction": "Debagarh district"
+ },
+ {
+  "code": "OD-29",
+  "prefix": "OD",
+  "office": "Kendrapara",
+  "jurisdiction": "Kendrapara district"
+ },
+ {
+  "code": "OD-30",
+  "prefix": "OD",
+  "office": "Malkangiri",
+  "jurisdiction": "Malkangiri district"
+ },
+ {
+  "code": "OD-31",
+  "prefix": "OD",
+  "office": "Subarnapur",
+  "jurisdiction": "Subarnapur district"
+ },
+ {
+  "code": "OD-32",
+  "prefix": "OD",
+  "office": "Bhanjanagar",
+  "jurisdiction": "Ganjam district"
+ },
+ {
+  "code": "OD-33",
+  "prefix": "OD",
+  "office": "Bhubaneswar-II",
+  "jurisdiction": "Khurda district"
+ },
+ {
+  "code": "OD-34",
+  "prefix": "OD",
+  "office": "Jajpur",
+  "jurisdiction": "Jajpur district"
+ },
+ {
+  "code": "OD-35",
+  "prefix": "OD",
+  "office": "Talcher",
+  "jurisdiction": "Angul district"
+ },
+ {
+  "code": "PB-01",
+  "prefix": "PB",
+  "office": "Rented cars, self drive cars in Chandigarh \u0026 taxi vehicles from Punjab"
+ },
+ {
+  "code": "PB-02",
+  "prefix": "PB",
+  "office": "Amritsar (1)"
+ },
+ {
+  "code": "PB-03",
+  "prefix": "PB",
+  "office": "Bathinda"
+ },
+ {
+  "code": "PB-04",
+  "prefix": "PB",
+  "office": "Faridkot"
+ },
+ {
+  "code": "PB-05",
+  "prefix": "PB",
+  "office": "Ferozpur"
+ },
+ {
+  "code": "PB-06",
+  "prefix": "PB",
+  "office": "Gurdaspur"
+ },
+ {
+  "code": "PB-07",
+  "prefix": "PB",
+  "office": "Hoshiarpur"
+ },
+ {
+  "code": "PB-08",
+  "prefix": "PB",
+  "office": "Jalandhar (1)"
+ },
+ {
+  "code": "PB-09",
+  "prefix": "PB",
+  "office": "Kapurthala"
+ },
+ {
+  "code": "PB-10",
+  "prefix": "PB",
+  "office": "Ludhiana (West)"
+ },
+ {
+  "code": "PB-11",
+  "prefix": "PB",
+  "office": "Patiala"
+ },
+ {
+  "code": "PB-12",
+  "prefix": "PB",
+  "office": "Rupnagar"
+ },
+ {
+  "code": "PB-13",
+  "prefix": "PB",
+  "office": "Sangrur"
+ },
+ {
+  "code": "PB-14",
+  "prefix": "PB",
+  "office": "Ajnala"
+ },
+ {
+  "code": "PB-15",
+  "prefix": "PB",
+  "office": "Abohar"
+ },
+ {
+  "code": "PB-16",
+  "prefix": "PB",
+  "office": "Anandpur Sahib"
+ },
+ {
+  "code": "PB-17",
+  "prefix": "PB",
+  "office": "Baba Bakala"
+ },
+ {
+  "code": "PB-18",
+  "prefix": "PB",
+  "office": "Batala"
+ },
+ {
+  "code": "PB-19",
+  "prefix": "PB",
+  "office": "Barnala"
+ },
+ {
+  "code": "PB-20",
+  "prefix": "PB",
+  "office": "Balachaur"
+ },
+ {
+  "code": "PB-21",
+  "prefix": "PB",
+  "office": "Dasuya"
+ },
+ {
+  "code": "PB-22",
+  "prefix": "PB",
+  "office": "Fazilka"
+ },
+ {
+  "code": "PB-23",
+  "prefix": "PB",
+  "office": "Fatehgarh Sahib"
+ },
+ {
+  "code": "PB-24",
+  "prefix": "PB",
+  "office": "Garhshankar"
+ },
+ {
+  "code": "PB-25",
+  "prefix": "PB",
+  "office": "Jagraon"
+ },
+ {
+  "code": "PB-26",
+  "prefix": "PB",
+  "office": "Khanna"
+ },
+ {
+  "code": "PB-27",
+  "prefix": "PB",
+  "office": "Kharar"
+ },
+ {
+  "code": "PB-28",
+  "prefix": "PB",
+  "office": "Malerkotla"
+ },
+ {
+  "code": "PB-29",
+  "prefix": "PB",
+  "office": "Moga"
+ },
+ {
+  "code": "PB-30",
+  "prefix": "PB",
+  "office": "Muktsar"
+ },
+ {
+  "code": "PB-31",
+  "prefix": "PB",
+  "office": "Mansa"
+ },
+ {
+  "code": "PB-32",
+  "prefix": "PB",
+  "office": "Nawanshahar"
+ },
+ {
+  "code": "PB-33",
+  "prefix": "PB",
+  "office": "Nakodar"
+ },
+ {
+  "code": "PB-34",
+  "prefix": "PB",
+  "office": "Nabha"
+ },
+ {
+  "code": "PB-35",
+  "prefix": "PB",
+  "office": "Pathankot"
+ },
+ {
+  "code": "PB-36",
+  "prefix": "PB",
+  "office": "Phagwara"
+ },
+ {
+  "code": "PB-37",
+  "prefix": "PB",
+  "office": "Phillaur"
+ },
+ {
+  "code": "PB-38",
+  "prefix": "PB",
+  "office": "Patti"
+ },
+ {
+  "code": "PB-39",
+  "prefix": "PB",
+  "office": "Rajpura"
+ },
+ {
+  "code": "PB-40",
+  "prefix": "PB",
+  "office": "Rampura Phul"
+ },
+ {
+  "code": "PB-41",
+  "prefix": "PB",
+  "office": "Sultanpur Lodhi"
+ },
+ {
+  "code": "PB-42",
+  "prefix": "PB",
+  "office": "Samana"
+ },
+ {
+  "code": "PB-43",
+  "prefix": "PB",
+  "office": "Samrala"
+ },
+ {
+  "code": "PB-44",
+  "prefix": "PB",
+  "office": "Sunam"
+ },
+ {
+  "code": "PB-45",
+  "prefix": "PB",
+  "office": "Talwandi Sabo"
+ },
+ {
+  "code": "PB-46",
+  "prefix": "PB",
+  "office": "Tarn Taran"
+ },
+ {
+  "code": "PB-47",
+  "prefix": "PB",
+  "office": "Zira"
+ },
+ {
+  "code": "PB-48",
+  "prefix": "PB",
+  "office": "Amloh"
+ },
+ {
+  "code": "PB-49",
+  "prefix": "PB",
+  "office": "Khamanon"
+ },
+ {
+  "code": "PB-50",
+  "prefix": "PB",
+  "office": "Budhlada"
+ },
+ {
+  "code": "PB-51",
+  "prefix": "PB",
+  "office": "Sardulgarh"
+ },
+ {
+  "code": "PB-52",
+  "prefix": "PB",
+  "office": "Bassi Pathana"
+ },
+ {
+  "code": "PB-53",
+  "prefix": "PB",
+  "office": "Malout"
+ },
+ {
+  "code": "PB-54",
+  "prefix": "PB",
+  "office": "Mukerian"
+ },
+ {
+  "code": "PB-55",
+  "prefix": "PB",
+  "office": "Payal"
+ },
+ {
+  "code": "PB-56",
+  "prefix": "PB",
+  "office": "Raikot"
+ },
+ {
+  "code": "PB-57",
+  "prefix": "PB",
+  "office": "Bhulath"
+ },
+ {
+  "code": "PB-58",
+  "prefix": "PB",
+  "office": "Dera Baba Nanak"
+ },
+ {
+  "code": "PB-59",
+  "prefix": "PB",
+  "office": "Dhuri"
+ },
+ {
+  "code": "PB-60",
+  "prefix": "PB",
+  "office": "Gidderbaha"
+ },
+ {
+  "code": "PB-61",
+  "prefix": "PB",
+  "office": "Jalalabad"
+ },
+ {
+  "code": "PB-62",
+  "prefix": "PB",
+  "office": "Jaitu"
+ },
+ {
+  "code": "PB-63",
+  "prefix": "PB",
+  "office": "Khadoor Sahib"
+ },
+ {
+  "code": "PB-64",
+  "prefix": "PB",
+  "office": "Moonak"
+ },
+ {
+  "code": "PB-65",
+  "prefix": "PB",
+  "office": "Mohali"
+ },
+ {
+  "code": "PB-66",
+  "prefix": "PB",
+  "office": "Nihal Singh Wala"
+ },
+ {
+  "code": "PB-67",
+  "prefix": "PB",
+  "office": "Shahkot"
+ },
+ {
+  "code": "PB-68",
+  "prefix": "PB",
+  "office": "Dhar Kalan"
+ },
+ {
+  "code": "PB-69",
+  "prefix": "PB",
+  "office": "Bagha Purana"
+ },
+ {
+  "code": "PB-70",
+  "prefix": "PB",
+  "office": "Dera Bassi"
+ },
+ {
+  "code": "PB-71",
+  "prefix": "PB",
+  "office": "Chamkaur Sahib"
+ },
+ {
+  "code": "PB-72",
+  "prefix": "PB",
+  "office": "Pattran"
+ },
+ {
+  "code": "PB-73",
+  "prefix": "PB",
+  "office": "Tappa Mandi"
+ },
+ {
+  "code": "PB-74",
+  "prefix": "PB",
+  "office": "Nangal"
+ },
+ {
+  "code": "PB-75",
+  "prefix": "PB",
+  "office": "Lehragaga"
+ },
+ {
+  "code": "PB-76",
+  "prefix": "PB",
+  "office": "Dharamkot"
+ },
+ {
+  "code": "PB-77",
+  "prefix": "PB",
+  "office": "Guru Har Sahai"
+ },
+ {
+  "code": "PB-78",
+  "prefix": "PB",
+  "office": "Banga"
+ },
+ {
+  "code": "PB-79",
+  "prefix": "PB",
+  "office": "Kotkapura"
+ },
+ {
+  "code": "PB-80",
+  "prefix": "PB",
+  "office": "Maur"
+ },
+ {
+  "code": "PB-81",
+  "prefix": "PB",
+  "office": "Majitha"
+ },
+ {
+  "code": "PB-82",
+  "prefix": "PB",
+  "office": "Ahmedgarh"
+ },
+ {
+  "code": "PB-83",
+  "prefix": "PB",
+  "office": "Dudhan Sadhan"
+ },
+ {
+  "code": "PB-84",
+  "prefix": "PB",
+  "office": "Bhawanigarh"
+ },
+ {
+  "code": "PB-85",
+  "prefix": "PB",
+  "office": "Kalanaur"
+ },
+ {
+  "code": "PB-86",
+  "prefix": "PB",
+  "office": "Dirba"
+ },
+ {
+  "code": "PB-87",
+  "prefix": "PB",
+  "office": "Morinda"
+ },
+ {
+  "code": "PB-88",
+  "prefix": "PB",
+  "office": "Bhikhiwind"
+ },
+ {
+  "code": "PB-89",
+  "prefix": "PB",
+  "office": "Amritsar (2)"
+ },
+ {
+  "code": "PB-90",
+  "prefix": "PB",
+  "office": "Jalandhar (2)"
+ },
+ {
+  "code": "PB-91",
+  "prefix": "PB",
+  "office": "Ludhiana (East)"
+ },
+ {
+  "code": "PB-92",
+  "prefix": "PB",
+  "office": "Amargarh"
+ },
+ {
+  "code": "PB-93",
+  "prefix": "PB",
+  "office": "Lopoke"
+ },
+ {
+  "code": "PB-99",
+  "prefix": "PB",
+  "office": "Dinanagar"
+ },
+ {
+  "code": "PY-01",
+  "prefix": "PY",
+  "office": "Puducherry"
+ },
+ {
+  "code": "PY-02",
+  "prefix": "PY",
+  "office": "Karaikal"
+ },
+ {
+  "code": "PY-03",
+  "prefix": "PY",
+  "office": "Mahe"
+ },
+ {
+  "code": "PY-04",
+  "prefix": "PY",
+  "office": "Yanam"
+ },
+ {
+  "code": "PY-05",
+  "prefix": "PY",
+  "office": "Oulgaret"
+ },
+ {
+  "code": "RJ-01",
+  "prefix": "RJ",
+  "office": "Ajmer",
+  "jurisdiction": "Ajmer district"
+ },
+ {
+  "code": "RJ-02",
+  "prefix": "RJ",
+  "office": "Alwar",
+  "jurisdiction": "Alwar district"
+ },
+ {
+  "code": "RJ-03",
+  "prefix": "RJ",
+  "office": "Banswara",
+  "jurisdiction": "Banswara district"
+ },
+ {
+  "code": "RJ-04",
+  "prefix": "RJ",
+  "office": "Barmer",
+  "jurisdiction": "Barmer district"
+ },
+ {
+  "code": "RJ-05",
+  "prefix": "RJ",
+  "office": "Bharatpur",
+  "jurisdiction": "Bharatpur district"
+ },
+ {
+  "code": "RJ-06",
+  "prefix": "RJ",
+  "office": "Bhilwara",
+  "jurisdiction": "Bhilwara district"
+ },
+ {
+  "code": "RJ-07",
+  "prefix": "RJ",
+  "office": "Bikaner",
+  "jurisdiction": "Bikaner district"
+ },
+ {
+  "code": "RJ-08",
+  "prefix": "RJ",
+  "office": "Bundi",
+  "jurisdiction": "Bundi district"
+ },
+ {
+  "code": "RJ-09",
+  "prefix": "RJ",
+  "office": "Chittorgarh",
+  "jurisdiction": "Chittorgarh district"
+ },
+ {
+  "code": "RJ-10",
+  "prefix": "RJ",
+  "office": "Churu",
+  "jurisdiction": "Churu district"
+ },
+ {
+  "code": "RJ-11",
+  "prefix": "RJ",
+  "office": "Dholpur",
+  "jurisdiction": "Dholpur district"
+ },
+ {
+  "code": "RJ-12",
+  "prefix": "RJ",
+  "office": "Dungarpur",
+  "jurisdiction": "Dungarpur district"
+ },
+ {
+  "code": "RJ-13",
+  "prefix": "RJ",
+  "office": "Sri Ganganagar",
+  "jurisdiction": "Sri Ganganagar district"
+ },
+ {
+  "code": "RJ-14",
+  "prefix": "RJ",
+  "office": "Jaipur (South)",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "RJ-15",
+  "prefix": "RJ",
+  "office": "Jaisalmer",
+  "jurisdiction": "Jaisalmer district"
+ },
+ {
+  "code": "RJ-16",
+  "prefix": "RJ",
+  "office": "Jalore",
+  "jurisdiction": "Jalore district"
+ },
+ {
+  "code": "RJ-17",
+  "prefix": "RJ",
+  "office": "Jhalawar",
+  "jurisdiction": "Jhalawar district"
+ },
+ {
+  "code": "RJ-18",
+  "prefix": "RJ",
+  "office": "Jhunjhunu",
+  "jurisdiction": "Jhunjhunu district"
+ },
+ {
+  "code": "RJ-19",
+  "prefix": "RJ",
+  "office": "Jodhpur",
+  "jurisdiction": "Jodhpur district"
+ },
+ {
+  "code": "RJ-20",
+  "prefix": "RJ",
+  "office": "Kota",
+  "jurisdiction": "Kota district"
+ },
+ {
+  "code": "RJ-21",
+  "prefix": "RJ",
+  "office": "Nagaur",
+  "jurisdiction": "Nagaur district"
+ },
+ {
+  "code": "RJ-22",
+  "prefix": "RJ",
+  "office": "Pali",
+  "jurisdiction": "Pali district"
+ },
+ {
+  "code": "RJ-23",
+  "prefix": "RJ",
+  "office": "Sikar",
+  "jurisdiction": "Sikar district"
+ },
+ {
+  "code": "RJ-24",
+  "prefix": "RJ",
+  "office": "Sirohi",
+  "jurisdiction": "Sirohi district"
+ },
+ {
+  "code": "RJ-25",
+  "prefix": "RJ",
+  "office": "Sawai Madhopur",
+  "jurisdiction": "Sawai Madhopur district"
+ },
+ {
+  "code": "RJ-26",
+  "prefix": "RJ",
+  "office": "Tonk",
+  "jurisdiction": "Tonk district"
+ },
+ {
+  "code": "RJ-27",
+  "prefix": "RJ",
+  "office": "Udaipur",
+  "jurisdiction": "Udaipur district"
+ },
+ {
+  "code": "RJ-28",
+  "prefix": "RJ",
+  "office": "Baran",
+  "jurisdiction": "Baran district"
+ },
+ {
+  "code": "RJ-29",
+  "prefix": "RJ",
+  "office": "Dausa",
+  "jurisdiction": "Dausa district"
+ },
+ {
+  "code": "RJ-30",
+  "prefix": "RJ",
+  "office": "Rajsamand",
+  "jurisdiction": "Rajsamand district"
+ },
+ {
+  "code": "RJ-31",
+  "prefix": "RJ",
+  "office": "Hanumangarh",
+  "jurisdiction": "Hanumangarh district"
+ },
+ {
+  "code": "RJ-32",
+  "prefix": "RJ",
+  "office": "Kotputli",
+  "jurisdiction": "Kotputli-Behror district"
+ },
+ {
+  "code": "RJ-33",
+  "prefix": "RJ",
+  "office": "Ramganj Mandi",
+  "jurisdiction": "Kota district"
+ },
+ {
+  "code": "RJ-34",
+  "prefix": "RJ",
+  "office": "Karauli",
+  "jurisdiction": "Karauli district"
+ },
+ {
+  "code": "RJ-35",
+  "prefix": "RJ",
+  "office": "Pratapgarh",
+  "jurisdiction": "Pratapgarh district"
+ },
+ {
+  "code": "RJ-36",
+  "prefix": "RJ",
+  "office": "Beawar",
+  "jurisdiction": "Beawar District"
+ },
+ {
+  "code": "RJ-37",
+  "prefix": "RJ",
+  "office": "Didwana",
+  "jurisdiction": "Didwana-Kuchaman district"
+ },
+ {
+  "code": "RJ-38",
+  "prefix": "RJ",
+  "office": "Abu Road",
+  "jurisdiction": "Sirohi district"
+ },
+ {
+  "code": "RJ-39",
+  "prefix": "RJ",
+  "office": "Balotra",
+  "jurisdiction": "Balotra district"
+ },
+ {
+  "code": "RJ-40",
+  "prefix": "RJ",
+  "office": "Bhiwadi",
+  "jurisdiction": "Khairthal-Tijara district"
+ },
+ {
+  "code": "RJ-41",
+  "prefix": "RJ",
+  "office": "Chomu",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "RJ-42",
+  "prefix": "RJ",
+  "office": "Kishangarh",
+  "jurisdiction": "Ajmer district"
+ },
+ {
+  "code": "RJ-43",
+  "prefix": "RJ",
+  "office": "Phalodi",
+  "jurisdiction": "Phalodi district"
+ },
+ {
+  "code": "RJ-44",
+  "prefix": "RJ",
+  "office": "Sujangarh",
+  "jurisdiction": "Churu district"
+ },
+ {
+  "code": "RJ-45",
+  "prefix": "RJ",
+  "office": "Jaipur (North)",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "RJ-46",
+  "prefix": "RJ",
+  "office": "Bhinmal",
+  "jurisdiction": "Jalore district"
+ },
+ {
+  "code": "RJ-47",
+  "prefix": "RJ",
+  "office": "Dudu",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "RJ-48",
+  "prefix": "RJ",
+  "office": "Kekri",
+  "jurisdiction": "Ajmer district"
+ },
+ {
+  "code": "RJ-49",
+  "prefix": "RJ",
+  "office": "Nohar",
+  "jurisdiction": "Hanumangarh district"
+ },
+ {
+  "code": "RJ-50",
+  "prefix": "RJ",
+  "office": "Nokha",
+  "jurisdiction": "Bikaner district"
+ },
+ {
+  "code": "RJ-51",
+  "prefix": "RJ",
+  "office": "Shahpura",
+  "jurisdiction": "Bhilwara district"
+ },
+ {
+  "code": "RJ-52",
+  "prefix": "RJ",
+  "office": "Shahpura",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "RJ-53",
+  "prefix": "RJ",
+  "office": "Khetri",
+  "jurisdiction": "Jhunjhunu district"
+ },
+ {
+  "code": "RJ-54",
+  "prefix": "RJ",
+  "office": "Piparcity",
+  "jurisdiction": "Jodhpur district"
+ },
+ {
+  "code": "RJ-55",
+  "prefix": "RJ",
+  "office": "Pokhran",
+  "jurisdiction": "Jaisalmer district"
+ },
+ {
+  "code": "RJ-56",
+  "prefix": "RJ",
+  "office": "Sadulshahar",
+  "jurisdiction": "Sri Ganganagar district"
+ },
+ {
+  "code": "RJ-57",
+  "prefix": "RJ",
+  "office": "Sumerpur",
+  "jurisdiction": "Pali district"
+ },
+ {
+  "code": "RJ-58",
+  "prefix": "RJ",
+  "office": "Salumbar",
+  "jurisdiction": "Salumbar district"
+ },
+ {
+  "code": "RJ-59",
+  "prefix": "RJ",
+  "office": "Shahpura",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "RJ-60",
+  "prefix": "RJ",
+  "office": "Jaipur(Additional)",
+  "jurisdiction": "Jaipur district"
+ },
+ {
+  "code": "SK-01",
+  "prefix": "SK",
+  "office": "Gangtok",
+  "jurisdiction": "Gangtok"
+ },
+ {
+  "code": "SK-02",
+  "prefix": "SK",
+  "office": "Gyalshing",
+  "jurisdiction": "Gyalshing district"
+ },
+ {
+  "code": "SK-03",
+  "prefix": "SK",
+  "office": "Mangan",
+  "jurisdiction": "Mangan"
+ },
+ {
+  "code": "SK-04",
+  "prefix": "SK",
+  "office": "Jorethang",
+  "jurisdiction": "Namchi district"
+ },
+ {
+  "code": "SK-05",
+  "prefix": "SK",
+  "office": "Namchi",
+  "jurisdiction": "Namchi district"
+ },
+ {
+  "code": "SK-06",
+  "prefix": "SK",
+  "office": "Soreng",
+  "jurisdiction": "Soreng district"
+ },
+ {
+  "code": "SK-07",
+  "prefix": "SK",
+  "office": "Pakyong",
+  "jurisdiction": "Pakyong district"
+ },
+ {
+  "code": "SK-08",
+  "prefix": "SK",
+  "office": "Singtam"
+ },
+ {
+  "code": "TG-01",
+  "prefix": "TG",
+  "office": "Adilabad",
+  "jurisdiction": "Adilabad district"
+ },
+ {
+  "code": "TG-02",
+  "prefix": "TG",
+  "office": "Karimnagar",
+  "jurisdiction": "Karimnagar district",
+  "notes": "Sub-agencies: Huzurabad (MVI)"
+ },
+ {
+  "code": "TG-03",
+  "prefix": "TG",
+  "office": "Warangal",
+  "jurisdiction": "Hanamkonda district"
+ },
+ {
+  "code": "TG-04",
+  "prefix": "TG",
+  "office": "Khammam",
+  "jurisdiction": "Khammam district",
+  "notes": "Sub-agencies: Sathupalli (AMVI), Wyra (MVI)"
+ },
+ {
+  "code": "TG-05",
+  "prefix": "TG",
+  "office": "Nalgonda",
+  "jurisdiction": "Nalgonda district",
+  "notes": "Sub-agencies: Miryalaguda (MVI)"
+ },
+ {
+  "code": "TG-06",
+  "prefix": "TG",
+  "office": "Mahbubnagar",
+  "jurisdiction": "Mahbubnagar district"
+ },
+ {
+  "code": "TG-07",
+  "prefix": "TG",
+  "office": "Attapur (Hyderabad)*",
+  "jurisdiction": "Ranga Reddy",
+  "notes": "Sub-agencies: Ibrahimpatnam (RTO), Shadnagar (MVI)"
+ },
+ {
+  "code": "TG-08",
+  "prefix": "TG",
+  "office": "Medchal (Hyderabad)*",
+  "jurisdiction": "Medchal-Malkajgiri District",
+  "notes": "Sub-agencies: Uppal Kalan (Hyderabad)* (RTO), Kukatpally (Hyderabad)* (MVI)"
+ },
+ {
+  "code": "TG-09",
+  "prefix": "TG",
+  "office": "Khairtabad (Hyderabad)",
+  "jurisdiction": "Hyderabad Central"
+ },
+ {
+  "code": "TG-10",
+  "prefix": "TG",
+  "office": "Secunderabad (Hyderabad)",
+  "jurisdiction": "Hyderabad North"
+ },
+ {
+  "code": "TG-11",
+  "prefix": "TG",
+  "office": "Malakpet (Hyderabad)",
+  "jurisdiction": "Hyderabad East"
+ },
+ {
+  "code": "TG-12",
+  "prefix": "TG",
+  "office": "Kishanbagh (Hyderabad)",
+  "jurisdiction": "Hyderabad South"
+ },
+ {
+  "code": "TG-13",
+  "prefix": "TG",
+  "office": "Tolichowki (Hyderabad)",
+  "jurisdiction": "Hyderabad West"
+ },
+ {
+  "code": "TG-14",
+  "prefix": "TG",
+  "office": "Hyderabad",
+  "jurisdiction": "Reserved for Hyderabad"
+ },
+ {
+  "code": "TG-15",
+  "prefix": "TG",
+  "office": "Sangareddy",
+  "jurisdiction": "Sangareddy district",
+  "notes": "Sub-agencies: Patancheru (Hyderabad)* (MVI), Zaheerabad (MVI)"
+ },
+ {
+  "code": "TG-16",
+  "prefix": "TG",
+  "office": "Nizamabad",
+  "jurisdiction": "Nizamabad district",
+  "notes": "Sub-agencies: Armoor (MVI), Bodhan (MVI)"
+ },
+ {
+  "code": "TG-17",
+  "prefix": "TG",
+  "office": "Kamareddy",
+  "jurisdiction": "Kamareddy district"
+ },
+ {
+  "code": "TG-18",
+  "prefix": "TG",
+  "office": "Nirmal",
+  "jurisdiction": "Nirmal district"
+ },
+ {
+  "code": "TG-19",
+  "prefix": "TG",
+  "office": "Mancherial",
+  "jurisdiction": "Mancherial district"
+ },
+ {
+  "code": "TG-20",
+  "prefix": "TG",
+  "office": "Asifabad",
+  "jurisdiction": "Komaram Bheem district"
+ },
+ {
+  "code": "TG-21",
+  "prefix": "TG",
+  "office": "Jagtial",
+  "jurisdiction": "Jagtial district",
+  "notes": "Sub-agencies: Koratla (MVI)"
+ },
+ {
+  "code": "TG-22",
+  "prefix": "TG",
+  "office": "Peddapalli",
+  "jurisdiction": "Peddapalli district",
+  "notes": "Sub-agencies: Ramagundam (MVI)"
+ },
+ {
+  "code": "TG-23",
+  "prefix": "TG",
+  "office": "Sircilla",
+  "jurisdiction": "Sircilla district"
+ },
+ {
+  "code": "TG-24",
+  "prefix": "TG",
+  "office": "Warangal",
+  "jurisdiction": "Warangal district"
+ },
+ {
+  "code": "TG-25",
+  "prefix": "TG",
+  "office": "Bhupalpalle",
+  "jurisdiction": "Jayashankar Bhupalpally district"
+ },
+ {
+  "code": "TG-26",
+  "prefix": "TG",
+  "office": "Mahabubabad",
+  "jurisdiction": "Mahabubabad district"
+ },
+ {
+  "code": "TG-27",
+  "prefix": "TG",
+  "office": "Jangaon",
+  "jurisdiction": "Jangaon district"
+ },
+ {
+  "code": "TG-28",
+  "prefix": "TG",
+  "office": "Kothagudem",
+  "jurisdiction": "Bhadradri Kothagudem district",
+  "notes": "Sub-agencies: Bhadrachalam (MVI)"
+ },
+ {
+  "code": "TG-29",
+  "prefix": "TG",
+  "office": "Suryapet",
+  "jurisdiction": "Suryapet district",
+  "notes": "Sub-agencies: Kodad (MVI)"
+ },
+ {
+  "code": "TG-30",
+  "prefix": "TG",
+  "office": "Bhuvanagiri",
+  "jurisdiction": "Yadadri Bhuvanagiri district"
+ },
+ {
+  "code": "TG-31",
+  "prefix": "TG",
+  "office": "Nagarkurnool",
+  "jurisdiction": "Nagarkurnool district",
+  "notes": "Sub-agencies: Kalwakurthy (MVI)"
+ },
+ {
+  "code": "TG-32",
+  "prefix": "TG",
+  "office": "Wanaparthy",
+  "jurisdiction": "Wanaparthy district",
+  "notes": "Sub-agencies: Pebbair (MVI)"
+ },
+ {
+  "code": "TG-33",
+  "prefix": "TG",
+  "office": "Gadwal",
+  "jurisdiction": "Jogulamba Gadwal district"
+ },
+ {
+  "code": "TG-34",
+  "prefix": "TG",
+  "office": "Vikarabad",
+  "jurisdiction": "Vikarabad district",
+  "notes": "Sub-agencies: Parigi (MVI)"
+ },
+ {
+  "code": "TG-35",
+  "prefix": "TG",
+  "office": "Medak",
+  "jurisdiction": "Medak district"
+ },
+ {
+  "code": "TG-36",
+  "prefix": "TG",
+  "office": "Siddipet",
+  "jurisdiction": "Siddipet district"
+ },
+ {
+  "code": "TG-37",
+  "prefix": "TG",
+  "office": "Mulugu",
+  "jurisdiction": "Mulugu district"
+ },
+ {
+  "code": "TG-38",
+  "prefix": "TG",
+  "office": "Narayanpet",
+  "jurisdiction": "Narayanpet district"
+ },
+ {
+  "code": "TN-01",
+  "prefix": "TN",
+  "office": "Chennai (Central): Ayanavaram",
+  "jurisdiction": "Chennai",
+  "notes": "SETC \u0026 MTC buses are registered here under TN 01 N XXXX."
+ },
+ {
+  "code": "TN-02",
+  "prefix": "TN",
+  "office": "Chennai (North West): Anna Nagar",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-03",
+  "prefix": "TN",
+  "office": "Chennai (North East): Tondiarpet",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-04",
+  "prefix": "TN",
+  "office": "Chennai (East): Royapuram",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-05",
+  "prefix": "TN",
+  "office": "Chennai (North): Kolathur",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-06",
+  "prefix": "TN",
+  "office": "Chennai (South East): Mandavelli",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-07",
+  "prefix": "TN",
+  "office": "Chennai (South): Adyar",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-09",
+  "prefix": "TN",
+  "office": "Chennai (West): K. K. Nagar",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-10",
+  "prefix": "TN",
+  "office": "Chennai (South West): Virugambakkam",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-11",
+  "prefix": "TN",
+  "office": "Tambaram",
+  "jurisdiction": "Chengalpattu"
+ },
+ {
+  "code": "TN-12",
+  "prefix": "TN",
+  "office": "Poonamallee",
+  "jurisdiction": "Tiruvallur"
+ },
+ {
+  "code": "TN-13",
+  "prefix": "TN",
+  "office": "Ambattur",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-14",
+  "prefix": "TN",
+  "office": "Sholinganallur",
+  "jurisdiction": "Chengalpattu"
+ },
+ {
+  "code": "TN-15",
+  "prefix": "TN",
+  "office": "Ulundurpet",
+  "jurisdiction": "Kallakurichi"
+ },
+ {
+  "code": "TN-15M",
+  "prefix": "TN",
+  "office": "Kallakurichi",
+  "jurisdiction": "Kallakurichi",
+  "notes": "Shared series with Ulunderpettai"
+ },
+ {
+  "code": "TN-16",
+  "prefix": "TN",
+  "office": "Tindivanam",
+  "jurisdiction": "Villupuram"
+ },
+ {
+  "code": "TN-16Z",
+  "prefix": "TN",
+  "office": "Gingee",
+  "jurisdiction": "Villupuram",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-18",
+  "prefix": "TN",
+  "office": "Red Hills",
+  "jurisdiction": "Tiruvallur"
+ },
+ {
+  "code": "TN-18Y",
+  "prefix": "TN",
+  "office": "Gummidipoondi",
+  "jurisdiction": "Tiruvallur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-19",
+  "prefix": "TN",
+  "office": "Chengalpattu",
+  "jurisdiction": "Chengalpattu"
+ },
+ {
+  "code": "TN-19Y",
+  "prefix": "TN",
+  "office": "Thirukazhugundram",
+  "jurisdiction": "Chengalpattu",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-19Z",
+  "prefix": "TN",
+  "office": "Madurantakam",
+  "jurisdiction": "Chengalpattu",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-20",
+  "prefix": "TN",
+  "office": "Tiruvallur",
+  "jurisdiction": "Tiruvallur",
+  "notes": "TNSTC-Villupuram / Thiruvallur Region buses are registered here under TN 20 N XXXX."
+ },
+ {
+  "code": "TN-20X",
+  "prefix": "TN",
+  "office": "Thiruthani",
+  "jurisdiction": "Tiruvallur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-21",
+  "prefix": "TN",
+  "office": "Kanchipuram",
+  "jurisdiction": "Kanchipuram",
+  "notes": "TNSTC-Villupuram / Kanchipuram Region buses are registered here under TN 21 N XXXX."
+ },
+ {
+  "code": "TN-22",
+  "prefix": "TN",
+  "office": "Meenambakkam",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-23",
+  "prefix": "TN",
+  "office": "Vellore",
+  "jurisdiction": "Vellore",
+  "notes": "TNSTC-Villupuram / Vellore Region buses are registered here under TN 23 N XXXX."
+ },
+ {
+  "code": "TN-23T",
+  "prefix": "TN",
+  "office": "Gudiyatham",
+  "jurisdiction": "Vellore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-24",
+  "prefix": "TN",
+  "office": "Krishnagiri",
+  "jurisdiction": "Krishnagiri"
+ },
+ {
+  "code": "TN-25",
+  "prefix": "TN",
+  "office": "Thiruvannamalai",
+  "jurisdiction": "Thiruvannamalai",
+  "notes": "TNSTC-Villupuram / Thiruvannamalai Region buses are registered here under TN 25 N XXXX."
+ },
+ {
+  "code": "TN-27",
+  "prefix": "TN",
+  "office": "Salem",
+  "jurisdiction": "Salem",
+  "notes": "Not in use"
+ },
+ {
+  "code": "TN-28",
+  "prefix": "TN",
+  "office": "Namakkal (North)",
+  "jurisdiction": "Namakkal"
+ },
+ {
+  "code": "TN-28Z",
+  "prefix": "TN",
+  "office": "Rasipuram",
+  "jurisdiction": "Namakkal",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-29",
+  "prefix": "TN",
+  "office": "Dharmapuri",
+  "jurisdiction": "Dharmapuri",
+  "notes": "TNSTC-Salem / Dharmapuri Region buses are registered here under TN 29 N XXXX."
+ },
+ {
+  "code": "TN-29W",
+  "prefix": "TN",
+  "office": "Palacode",
+  "jurisdiction": "Dharmapuri",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-29Z",
+  "prefix": "TN",
+  "office": "Harur",
+  "jurisdiction": "Dharmapuri",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-30",
+  "prefix": "TN",
+  "office": "Salem (West)",
+  "jurisdiction": "Salem",
+  "notes": "TNSTC-Salem / Salem Region buses are registered here under TN 30 N XXXX."
+ },
+ {
+  "code": "TN-30W",
+  "prefix": "TN",
+  "office": "Omalur",
+  "jurisdiction": "Salem",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-31",
+  "prefix": "TN",
+  "office": "Cuddalore",
+  "jurisdiction": "Cuddalore",
+  "notes": "TNSTC-Villupuram / Cuddalore Region buses are registered here under TN 31 N XXXX."
+ },
+ {
+  "code": "TN-31Y",
+  "prefix": "TN",
+  "office": "Neyveli",
+  "jurisdiction": "Cuddalore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-31Z",
+  "prefix": "TN",
+  "office": "Panruti",
+  "jurisdiction": "Cuddalore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-32",
+  "prefix": "TN",
+  "office": "Villupuram",
+  "jurisdiction": "Villupuram",
+  "notes": "TNSTC-Villupuram / Villupuram Region buses are registered here under TN 32 N XXXX."
+ },
+ {
+  "code": "TN-33",
+  "prefix": "TN",
+  "office": "Erode (East)",
+  "jurisdiction": "Erode",
+  "notes": "TNSTC-Coimbatore / Erode Region buses are registered here under TN 33 N XXXX."
+ },
+ {
+  "code": "TN-34",
+  "prefix": "TN",
+  "office": "Tiruchengode",
+  "jurisdiction": "Namakkal"
+ },
+ {
+  "code": "TN-34M",
+  "prefix": "TN",
+  "office": "Kumarapalayam",
+  "jurisdiction": "Namakkal",
+  "notes": "Shared series with Tiruchengode"
+ },
+ {
+  "code": "TN-36",
+  "prefix": "TN",
+  "office": "Gobichettipalayam",
+  "jurisdiction": "Erode"
+ },
+ {
+  "code": "TN-36W",
+  "prefix": "TN",
+  "office": "Bhavani",
+  "jurisdiction": "Erode",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-36Z",
+  "prefix": "TN",
+  "office": "Sathyamangalam",
+  "jurisdiction": "Erode",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-37",
+  "prefix": "TN",
+  "office": "Coimbatore (South)",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-37Z",
+  "prefix": "TN",
+  "office": "Sulur",
+  "jurisdiction": "Coimbatore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-38",
+  "prefix": "TN",
+  "office": "Coimbatore (North)",
+  "jurisdiction": "Coimbatore",
+  "notes": "TNSTC-Coimbatore / Coimbatore Region buses are registered here under TN 38 N XXXX."
+ },
+ {
+  "code": "TN-39",
+  "prefix": "TN",
+  "office": "Tirupur (North)",
+  "jurisdiction": "Tirupur",
+  "notes": "TNSTC-Coimbatore / Tirupur Region buses are registered here under TN 39 N XXXX."
+ },
+ {
+  "code": "TN-39Z",
+  "prefix": "TN",
+  "office": "Avinashi",
+  "jurisdiction": "Tirupur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-40",
+  "prefix": "TN",
+  "office": "Mettupalayam",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-41",
+  "prefix": "TN",
+  "office": "Pollachi",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-41W",
+  "prefix": "TN",
+  "office": "Valparai",
+  "jurisdiction": "Coimbatore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-42",
+  "prefix": "TN",
+  "office": "Tirupur (South)",
+  "jurisdiction": "Tirupur"
+ },
+ {
+  "code": "TN-42Y",
+  "prefix": "TN",
+  "office": "Kangayam",
+  "jurisdiction": "Tirupur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-43",
+  "prefix": "TN",
+  "office": "Ooty",
+  "jurisdiction": "Nilgiris",
+  "notes": "TNSTC-Coimbatore / Ooty Region buses are registered here under TN 43 N XXXX."
+ },
+ {
+  "code": "TN-43Z",
+  "prefix": "TN",
+  "office": "Gudalur",
+  "jurisdiction": "Nilgiris",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-45",
+  "prefix": "TN",
+  "office": "Tiruchirapalli (West)",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Tnstc-Kumbakonam / Tiruchirapalli Region buses are registered here under TN 45 N XXXX."
+ },
+ {
+  "code": "TN-45Z",
+  "prefix": "TN",
+  "office": "Manapparai",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-46",
+  "prefix": "TN",
+  "office": "Perambalur",
+  "jurisdiction": "Perambalur"
+ },
+ {
+  "code": "TN-47",
+  "prefix": "TN",
+  "office": "Karur",
+  "jurisdiction": "Karur"
+ },
+ {
+  "code": "TN-47X",
+  "prefix": "TN",
+  "office": "Manmangalam",
+  "jurisdiction": "Karur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-47Y",
+  "prefix": "TN",
+  "office": "Aravakurichi",
+  "jurisdiction": "Karur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-47Z",
+  "prefix": "TN",
+  "office": "Kulithalai",
+  "jurisdiction": "Karur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-48",
+  "prefix": "TN",
+  "office": "Srirangam",
+  "jurisdiction": "Tiruchirapalli"
+ },
+ {
+  "code": "TN-48X",
+  "prefix": "TN",
+  "office": "Lalgudi",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-48Y",
+  "prefix": "TN",
+  "office": "Musiri",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-48Z",
+  "prefix": "TN",
+  "office": "Thuraiyur",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-49",
+  "prefix": "TN",
+  "office": "Thanjavur",
+  "jurisdiction": "Thanjavur"
+ },
+ {
+  "code": "TN-49Y",
+  "prefix": "TN",
+  "office": "Pattukottai",
+  "jurisdiction": "Thanjavur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-50",
+  "prefix": "TN",
+  "office": "Tiruvarur",
+  "jurisdiction": "Tiruvarur"
+ },
+ {
+  "code": "TN-50Y",
+  "prefix": "TN",
+  "office": "Thiruthuraipoondi",
+  "jurisdiction": "Tiruvarur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-50Z",
+  "prefix": "TN",
+  "office": "Mannargudi",
+  "jurisdiction": "Tiruvarur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-51",
+  "prefix": "TN",
+  "office": "Nagapattinam",
+  "jurisdiction": "Nagapattinam"
+ },
+ {
+  "code": "TN-52",
+  "prefix": "TN",
+  "office": "Sankagiri",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-54",
+  "prefix": "TN",
+  "office": "Salem (East)",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-55",
+  "prefix": "TN",
+  "office": "Pudukottai",
+  "jurisdiction": "Pudukottai",
+  "notes": "TNSTC-Kumbakonam / Pudukottai Region buses are registered here under TN 55 N XXXX."
+ },
+ {
+  "code": "TN-55BQ",
+  "prefix": "TN",
+  "office": "Alangudi",
+  "jurisdiction": "Pudukottai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-55Y",
+  "prefix": "TN",
+  "office": "Iluppur",
+  "jurisdiction": "Pudukottai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-55Z",
+  "prefix": "TN",
+  "office": "Aranthangi",
+  "jurisdiction": "Pudukottai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-56",
+  "prefix": "TN",
+  "office": "Perundurai",
+  "jurisdiction": "Erode"
+ },
+ {
+  "code": "TN-57",
+  "prefix": "TN",
+  "office": "Dindigul",
+  "jurisdiction": "Dindigul",
+  "notes": "TNSTC-Madurai / Dindigul region buses are registered here under TN 57 N XXXX."
+ },
+ {
+  "code": "TN-57V",
+  "prefix": "TN",
+  "office": "Vedasandur",
+  "jurisdiction": "Dindigul",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-57W",
+  "prefix": "TN",
+  "office": "Natham",
+  "jurisdiction": "Dindigul",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-58",
+  "prefix": "TN",
+  "office": "Madurai (South)",
+  "jurisdiction": "Madurai",
+  "notes": "TNSTC-Madurai / Madurai region buses are registered here under TN 58 N XXXX."
+ },
+ {
+  "code": "TN-58Y",
+  "prefix": "TN",
+  "office": "Usilampatti",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-58Z",
+  "prefix": "TN",
+  "office": "Thirumangalam",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-59",
+  "prefix": "TN",
+  "office": "Madurai (North)",
+  "jurisdiction": "Madurai"
+ },
+ {
+  "code": "TN-59V",
+  "prefix": "TN",
+  "office": "Vadipatti",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-59Z",
+  "prefix": "TN",
+  "office": "Melur",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-60",
+  "prefix": "TN",
+  "office": "Theni",
+  "jurisdiction": "Theni"
+ },
+ {
+  "code": "TN-60Z",
+  "prefix": "TN",
+  "office": "Uthamapalayam",
+  "jurisdiction": "Theni",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-61",
+  "prefix": "TN",
+  "office": "Ariyalur",
+  "jurisdiction": "Ariyalur"
+ },
+ {
+  "code": "TN-63",
+  "prefix": "TN",
+  "office": "Sivaganga",
+  "jurisdiction": "Sivaganga"
+ },
+ {
+  "code": "TN-63Z",
+  "prefix": "TN",
+  "office": "Karaikudi",
+  "jurisdiction": "Sivaganga",
+  "notes": "Unit office of the RTO. TNSTC-Kumbakonam / Karaikudi region buses are registered here under TN 63 N XXXX."
+ },
+ {
+  "code": "TN-64",
+  "prefix": "TN",
+  "office": "Madurai (Central)",
+  "jurisdiction": "Madurai"
+ },
+ {
+  "code": "TN-65",
+  "prefix": "TN",
+  "office": "Ramanathapuram",
+  "jurisdiction": "Ramanathapuram"
+ },
+ {
+  "code": "TN-65Z",
+  "prefix": "TN",
+  "office": "Paramakudi",
+  "jurisdiction": "Ramanathapuram",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-66",
+  "prefix": "TN",
+  "office": "Coimbatore (Central)",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-67",
+  "prefix": "TN",
+  "office": "Virudhunagar",
+  "jurisdiction": "Virudhunagar",
+  "notes": "TNSTC-Madurai / Virudhunagar Region buses are registered here under TN 67 N XXXX."
+ },
+ {
+  "code": "TN-67W",
+  "prefix": "TN",
+  "office": "Aruppukottai",
+  "jurisdiction": "Virudhunagar",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-68",
+  "prefix": "TN",
+  "office": "Kumbakonam",
+  "jurisdiction": "Thanjavur",
+  "notes": "TNSTC-Kumbakonam / Kumbakonam Region buses are registered here under TN 68 N XXXX."
+ },
+ {
+  "code": "TN-69",
+  "prefix": "TN",
+  "office": "Thoothukudi",
+  "jurisdiction": "Thoothukudi"
+ },
+ {
+  "code": "TN-70",
+  "prefix": "TN",
+  "office": "Hosur",
+  "jurisdiction": "Krishnagiri"
+ },
+ {
+  "code": "TN-72",
+  "prefix": "TN",
+  "office": "Tirunelveli",
+  "jurisdiction": "Tirunelveli",
+  "notes": "TNSTC-Tirunelveli / Tirunelveli Region buses are registered here under TN 72 N XXXX."
+ },
+ {
+  "code": "TN-72V",
+  "prefix": "TN",
+  "office": "Valliyur",
+  "jurisdiction": "Tirunelveli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-73",
+  "prefix": "TN",
+  "office": "Ranipet",
+  "jurisdiction": "Ranipet"
+ },
+ {
+  "code": "TN-73Z",
+  "prefix": "TN",
+  "office": "Arakkonam",
+  "jurisdiction": "Ranipet",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-74",
+  "prefix": "TN",
+  "office": "Nagercoil",
+  "jurisdiction": "Kanniyakumari",
+  "notes": "TNSTC-Tirunelveli / Nagercoil region buses are registered here under TN 74 N XXXX."
+ },
+ {
+  "code": "TN-75",
+  "prefix": "TN",
+  "office": "Marthandam",
+  "jurisdiction": "Kanniyakumari"
+ },
+ {
+  "code": "TN-76",
+  "prefix": "TN",
+  "office": "Tenkasi",
+  "jurisdiction": "Tenkasi"
+ },
+ {
+  "code": "TN-76Y",
+  "prefix": "TN",
+  "office": "Ambasamudram",
+  "jurisdiction": "Tirunelveli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-77",
+  "prefix": "TN",
+  "office": "Attur",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-77Z",
+  "prefix": "TN",
+  "office": "Vazhapadi",
+  "jurisdiction": "Salem",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-78",
+  "prefix": "TN",
+  "office": "Dharapuram",
+  "jurisdiction": "Tirupur"
+ },
+ {
+  "code": "TN-78M",
+  "prefix": "TN",
+  "office": "Udumalpet",
+  "jurisdiction": "Tirupur",
+  "notes": "Shared series with Dharapuram"
+ },
+ {
+  "code": "TN-79",
+  "prefix": "TN",
+  "office": "Sankarankovil",
+  "jurisdiction": "Tenkasi"
+ },
+ {
+  "code": "TN-81",
+  "prefix": "TN",
+  "office": "Tiruchirapalli (East)",
+  "jurisdiction": "Tiruchirapalli"
+ },
+ {
+  "code": "TN-81Z",
+  "prefix": "TN",
+  "office": "Thiruverumbur",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-82",
+  "prefix": "TN",
+  "office": "Mayiladuthurai",
+  "jurisdiction": "Mayiladuthurai"
+ },
+ {
+  "code": "TN-82Z",
+  "prefix": "TN",
+  "office": "Sirkazhi",
+  "jurisdiction": "Mayiladuthurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-83",
+  "prefix": "TN",
+  "office": "Vaniyambadi",
+  "jurisdiction": "Thirupattur"
+ },
+ {
+  "code": "TN-83M",
+  "prefix": "TN",
+  "office": "Thirupattur",
+  "jurisdiction": "Thirupattur",
+  "notes": "Shared series with Vaniyambadi"
+ },
+ {
+  "code": "TN-83Y",
+  "prefix": "TN",
+  "office": "Ambur",
+  "jurisdiction": "Thirupattur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-84",
+  "prefix": "TN",
+  "office": "Srivilliputhur",
+  "jurisdiction": "Virudhunagar"
+ },
+ {
+  "code": "TN-84U",
+  "prefix": "TN",
+  "office": "Rajapalayam",
+  "jurisdiction": "Virudhunagar",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-85",
+  "prefix": "TN",
+  "office": "Kundrathur",
+  "jurisdiction": "Kanchipuram"
+ },
+ {
+  "code": "TN-86",
+  "prefix": "TN",
+  "office": "Erode (West)",
+  "jurisdiction": "Erode"
+ },
+ {
+  "code": "TN-87",
+  "prefix": "TN",
+  "office": "Sriperumbudur",
+  "jurisdiction": "Kanchipuram"
+ },
+ {
+  "code": "TN-88",
+  "prefix": "TN",
+  "office": "Namakkal (South)",
+  "jurisdiction": "Namakkal"
+ },
+ {
+  "code": "TN-88Z",
+  "prefix": "TN",
+  "office": "Paramathi Velur",
+  "jurisdiction": "Namakkal",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-90",
+  "prefix": "TN",
+  "office": "Salem (South)",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-91",
+  "prefix": "TN",
+  "office": "Chidambaram",
+  "jurisdiction": "Cuddalore"
+ },
+ {
+  "code": "TN-91Z",
+  "prefix": "TN",
+  "office": "Virudhachalam",
+  "jurisdiction": "Cuddalore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-92",
+  "prefix": "TN",
+  "office": "Thiruchendur",
+  "jurisdiction": "Thoothukudi"
+ },
+ {
+  "code": "TN-93",
+  "prefix": "TN",
+  "office": "Mettur",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-94",
+  "prefix": "TN",
+  "office": "Palani",
+  "jurisdiction": "Dindigul"
+ },
+ {
+  "code": "TN-94Z",
+  "prefix": "TN",
+  "office": "Oddanchatram",
+  "jurisdiction": "Dindigul",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-95",
+  "prefix": "TN",
+  "office": "Sivakasi",
+  "jurisdiction": "Virudhunagar"
+ },
+ {
+  "code": "TN-96",
+  "prefix": "TN",
+  "office": "Kovilpatti",
+  "jurisdiction": "Thoothukudi"
+ },
+ {
+  "code": "TN-97",
+  "prefix": "TN",
+  "office": "Arani",
+  "jurisdiction": "Tiruvannamalai"
+ },
+ {
+  "code": "TN-97Z",
+  "prefix": "TN",
+  "office": "Cheyyar",
+  "jurisdiction": "Tiruvannamalai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-99",
+  "prefix": "TN",
+  "office": "Coimbatore (West)",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TR-01",
+  "prefix": "TR",
+  "office": "Agartala",
+  "jurisdiction": "West Tripura"
+ },
+ {
+  "code": "TR-02",
+  "prefix": "TR",
+  "office": "Kailasahar",
+  "jurisdiction": "Unakoti"
+ },
+ {
+  "code": "TR-03",
+  "prefix": "TR",
+  "office": "Udaipur",
+  "jurisdiction": "Gomati"
+ },
+ {
+  "code": "TR-04",
+  "prefix": "TR",
+  "office": "Ambassa",
+  "jurisdiction": "Dhalai"
+ },
+ {
+  "code": "TR-05",
+  "prefix": "TR",
+  "office": "Dharmanagar",
+  "jurisdiction": "North Tripura"
+ },
+ {
+  "code": "TR-06",
+  "prefix": "TR",
+  "office": "Teliamura",
+  "jurisdiction": "Khowai"
+ },
+ {
+  "code": "TR-07",
+  "prefix": "TR",
+  "office": "Bishramganj",
+  "jurisdiction": "Sipahijala"
+ },
+ {
+  "code": "TR-08",
+  "prefix": "TR",
+  "office": "Santirbazar",
+  "jurisdiction": "South Tripura"
+ },
+ {
+  "code": "UK-01",
+  "prefix": "UK",
+  "office": "Almora",
+  "jurisdiction": "Almora district"
+ },
+ {
+  "code": "UK-02",
+  "prefix": "UK",
+  "office": "Bageshwar",
+  "jurisdiction": "Bageshwar district"
+ },
+ {
+  "code": "UK-03",
+  "prefix": "UK",
+  "office": "Champawat",
+  "jurisdiction": "Champawat district"
+ },
+ {
+  "code": "UK-04",
+  "prefix": "UK",
+  "office": "Haldwani",
+  "jurisdiction": "Nainital district"
+ },
+ {
+  "code": "UK-05",
+  "prefix": "UK",
+  "office": "Pithoragarh",
+  "jurisdiction": "Pithoragarh district"
+ },
+ {
+  "code": "UK-06",
+  "prefix": "UK",
+  "office": "Rudrapur",
+  "jurisdiction": "Udham Singh Nagar district"
+ },
+ {
+  "code": "UK-07",
+  "prefix": "UK",
+  "office": "Dehradun",
+  "jurisdiction": "Dehradun district"
+ },
+ {
+  "code": "UK-08",
+  "prefix": "UK",
+  "office": "Haridwar",
+  "jurisdiction": "Haridwar district"
+ },
+ {
+  "code": "UK-09",
+  "prefix": "UK",
+  "office": "Tehri",
+  "jurisdiction": "Tehri Garhwal district"
+ },
+ {
+  "code": "UK-10",
+  "prefix": "UK",
+  "office": "Uttarkashi",
+  "jurisdiction": "Uttarkashi district"
+ },
+ {
+  "code": "UK-11",
+  "prefix": "UK",
+  "office": "Gopeshwar",
+  "jurisdiction": "Chamoli district"
+ },
+ {
+  "code": "UK-12",
+  "prefix": "UK",
+  "office": "Pauri",
+  "jurisdiction": "Pauri Garhwal district"
+ },
+ {
+  "code": "UK-13",
+  "prefix": "UK",
+  "office": "Rudraprayag",
+  "jurisdiction": "Rudraprayag district"
+ },
+ {
+  "code": "UK-14",
+  "prefix": "UK",
+  "office": "Rishikesh",
+  "jurisdiction": "Dehradun district"
+ },
+ {
+  "code": "UK-15",
+  "prefix": "UK",
+  "office": "Kotdwar",
+  "jurisdiction": "Pauri Garhwal district"
+ },
+ {
+  "code": "UK-16",
+  "prefix": "UK",
+  "office": "Vikasnagar",
+  "jurisdiction": "Dehradun district"
+ },
+ {
+  "code": "UK-17",
+  "prefix": "UK",
+  "office": "Roorkee",
+  "jurisdiction": "Haridwar district"
+ },
+ {
+  "code": "UK-18",
+  "prefix": "UK",
+  "office": "Kashipur",
+  "jurisdiction": "Udham Singh Nagar district"
+ },
+ {
+  "code": "UK-19",
+  "prefix": "UK",
+  "office": "Ramnagar",
+  "jurisdiction": "Nainital District"
+ },
+ {
+  "code": "UK-20",
+  "prefix": "UK",
+  "office": "Ranikhet",
+  "jurisdiction": "Almora District"
+ },
+ {
+  "code": "UP-11",
+  "prefix": "UP",
+  "office": "Saharanpur",
+  "jurisdiction": "Saharanpur district"
+ },
+ {
+  "code": "UP-12",
+  "prefix": "UP",
+  "office": "Muzaffarnagar",
+  "jurisdiction": "Muzaffarnagar district"
+ },
+ {
+  "code": "UP-13",
+  "prefix": "UP",
+  "office": "Bulandshahr",
+  "jurisdiction": "Bulandshahr district"
+ },
+ {
+  "code": "UP-14",
+  "prefix": "UP",
+  "office": "Ghaziabad",
+  "jurisdiction": "Ghaziabad district"
+ },
+ {
+  "code": "UP-15",
+  "prefix": "UP",
+  "office": "Meerut",
+  "jurisdiction": "Meerut district"
+ },
+ {
+  "code": "UP-16",
+  "prefix": "UP",
+  "office": "Noida",
+  "jurisdiction": "Gautam Buddha Nagar district"
+ },
+ {
+  "code": "UP-17",
+  "prefix": "UP",
+  "office": "Baghpat",
+  "jurisdiction": "Bagpat district"
+ },
+ {
+  "code": "UP-19",
+  "prefix": "UP",
+  "office": "Shamli",
+  "jurisdiction": "Shamli district"
+ },
+ {
+  "code": "UP-20",
+  "prefix": "UP",
+  "office": "Bijnor",
+  "jurisdiction": "Bijnor district"
+ },
+ {
+  "code": "UP-21",
+  "prefix": "UP",
+  "office": "Moradabad",
+  "jurisdiction": "Moradabad district",
+  "notes": "21G for government vehicles, 21N for commercial vehicles"
+ },
+ {
+  "code": "UP-22",
+  "prefix": "UP",
+  "office": "Rampur",
+  "jurisdiction": "Rampur district",
+  "notes": "22G for government vehicles, 22T for commercial vehicles"
+ },
+ {
+  "code": "UP-23",
+  "prefix": "UP",
+  "office": "Amroha",
+  "jurisdiction": "Amroha district"
+ },
+ {
+  "code": "UP-24",
+  "prefix": "UP",
+  "office": "Badaun",
+  "jurisdiction": "Badaun district"
+ },
+ {
+  "code": "UP-25",
+  "prefix": "UP",
+  "office": "Bareilly",
+  "jurisdiction": "Bareilly district"
+ },
+ {
+  "code": "UP-26",
+  "prefix": "UP",
+  "office": "Pilibhit",
+  "jurisdiction": "Pilibhit district"
+ },
+ {
+  "code": "UP-27",
+  "prefix": "UP",
+  "office": "Shahjahanpur",
+  "jurisdiction": "Shahjahanpur district"
+ },
+ {
+  "code": "UP-30",
+  "prefix": "UP",
+  "office": "Hardoi",
+  "jurisdiction": "Hardoi district"
+ },
+ {
+  "code": "UP-31",
+  "prefix": "UP",
+  "office": "Lakhimpur",
+  "jurisdiction": "Lakhimpur Kheri district"
+ },
+ {
+  "code": "UP-32",
+  "prefix": "UP",
+  "office": "Lucknow",
+  "jurisdiction": "Lucknow district",
+  "notes": "Trans Gomti Vistar Patal Lucknow"
+ },
+ {
+  "code": "UP-33",
+  "prefix": "UP",
+  "office": "Raebareli",
+  "jurisdiction": "Raebareli district"
+ },
+ {
+  "code": "UP-34",
+  "prefix": "UP",
+  "office": "Sitapur",
+  "jurisdiction": "Sitapur district"
+ },
+ {
+  "code": "UP-35",
+  "prefix": "UP",
+  "office": "Unnao",
+  "jurisdiction": "Unnao district"
+ },
+ {
+  "code": "UP-36",
+  "prefix": "UP",
+  "office": "Amethi",
+  "jurisdiction": "Amethi district"
+ },
+ {
+  "code": "UP-37",
+  "prefix": "UP",
+  "office": "Hapur",
+  "jurisdiction": "Hapur district"
+ },
+ {
+  "code": "UP-38",
+  "prefix": "UP",
+  "office": "Bahjoi",
+  "jurisdiction": "Sambhal district"
+ },
+ {
+  "code": "UP-40",
+  "prefix": "UP",
+  "office": "Bahraich",
+  "jurisdiction": "Bahraich district"
+ },
+ {
+  "code": "UP-41",
+  "prefix": "UP",
+  "office": "Barabanki",
+  "jurisdiction": "Barabanki district"
+ },
+ {
+  "code": "UP-42",
+  "prefix": "UP",
+  "office": "Ayodhya",
+  "jurisdiction": "Ayodhya district"
+ },
+ {
+  "code": "UP-43",
+  "prefix": "UP",
+  "office": "Gonda",
+  "jurisdiction": "Gonda district"
+ },
+ {
+  "code": "UP-44",
+  "prefix": "UP",
+  "office": "Sultanpur",
+  "jurisdiction": "Sultanpur district"
+ },
+ {
+  "code": "UP-45",
+  "prefix": "UP",
+  "office": "Akbarpur",
+  "jurisdiction": "Ambedkar Nagar"
+ },
+ {
+  "code": "UP-46",
+  "prefix": "UP",
+  "office": "Shravasti",
+  "jurisdiction": "Shravasti district"
+ },
+ {
+  "code": "UP-47",
+  "prefix": "UP",
+  "office": "Balrampur",
+  "jurisdiction": "Balrampur district"
+ },
+ {
+  "code": "UP-50",
+  "prefix": "UP",
+  "office": "Azamgarh",
+  "jurisdiction": "Azamgarh district"
+ },
+ {
+  "code": "UP-51",
+  "prefix": "UP",
+  "office": "Basti",
+  "jurisdiction": "Basti district"
+ },
+ {
+  "code": "UP-52",
+  "prefix": "UP",
+  "office": "Deoria",
+  "jurisdiction": "Deoria district"
+ },
+ {
+  "code": "UP-53",
+  "prefix": "UP",
+  "office": "Gorakhpur",
+  "jurisdiction": "Gorakhpur district"
+ },
+ {
+  "code": "UP-54",
+  "prefix": "UP",
+  "office": "Mau",
+  "jurisdiction": "Mau district"
+ },
+ {
+  "code": "UP-55",
+  "prefix": "UP",
+  "office": "Siddharthnagar",
+  "jurisdiction": "Siddharth Nagar"
+ },
+ {
+  "code": "UP-56",
+  "prefix": "UP",
+  "office": "Maharajganj",
+  "jurisdiction": "Maharajganj district"
+ },
+ {
+  "code": "UP-57",
+  "prefix": "UP",
+  "office": "Padrauna",
+  "jurisdiction": "Kushinagar district"
+ },
+ {
+  "code": "UP-58",
+  "prefix": "UP",
+  "office": "Khalilabad",
+  "jurisdiction": "Sant Kabir Nagar"
+ },
+ {
+  "code": "UP-60",
+  "prefix": "UP",
+  "office": "Ballia",
+  "jurisdiction": "Ballia district"
+ },
+ {
+  "code": "UP-61",
+  "prefix": "UP",
+  "office": "Ghazipur",
+  "jurisdiction": "Ghazipur district"
+ },
+ {
+  "code": "UP-62",
+  "prefix": "UP",
+  "office": "Jaunpur",
+  "jurisdiction": "Jaunpur district"
+ },
+ {
+  "code": "UP-63",
+  "prefix": "UP",
+  "office": "Mirzapur",
+  "jurisdiction": "Mirzapur district"
+ },
+ {
+  "code": "UP-64",
+  "prefix": "UP",
+  "office": "Robertsganj",
+  "jurisdiction": "Sonbhadra district"
+ },
+ {
+  "code": "UP-65",
+  "prefix": "UP",
+  "office": "Varanasi",
+  "jurisdiction": "Varanasi district"
+ },
+ {
+  "code": "UP-66",
+  "prefix": "UP",
+  "office": "Gyanpur",
+  "jurisdiction": "Bhadohi district"
+ },
+ {
+  "code": "UP-67",
+  "prefix": "UP",
+  "office": "Chandauli",
+  "jurisdiction": "Chandauli district"
+ },
+ {
+  "code": "UP-70",
+  "prefix": "UP",
+  "office": "Prayagraj",
+  "jurisdiction": "Prayagraj district"
+ },
+ {
+  "code": "UP-71",
+  "prefix": "UP",
+  "office": "Fatehpur",
+  "jurisdiction": "Fatehpur district"
+ },
+ {
+  "code": "UP-72",
+  "prefix": "UP",
+  "office": "Pratapgarh",
+  "jurisdiction": "Pratapgarh district"
+ },
+ {
+  "code": "UP-73",
+  "prefix": "UP",
+  "office": "Manjhanpur",
+  "jurisdiction": "Kaushambi"
+ },
+ {
+  "code": "UP-74",
+  "prefix": "UP",
+  "office": "Kannauj",
+  "jurisdiction": "Kannauj district"
+ },
+ {
+  "code": "UP-75",
+  "prefix": "UP",
+  "office": "Etawah",
+  "jurisdiction": "Etawah district"
+ },
+ {
+  "code": "UP-76",
+  "prefix": "UP",
+  "office": "Farrukhabad",
+  "jurisdiction": "Farrukhabad district"
+ },
+ {
+  "code": "UP-77",
+  "prefix": "UP",
+  "office": "Akbarpur",
+  "jurisdiction": "Kanpur Dehat district"
+ },
+ {
+  "code": "UP-78",
+  "prefix": "UP",
+  "office": "Kanpur",
+  "jurisdiction": "Kanpur Nagar district"
+ },
+ {
+  "code": "UP-79",
+  "prefix": "UP",
+  "office": "Auraiya",
+  "jurisdiction": "Auraiya district"
+ },
+ {
+  "code": "UP-80",
+  "prefix": "UP",
+  "office": "Agra",
+  "jurisdiction": "Agra district"
+ },
+ {
+  "code": "UP-81",
+  "prefix": "UP",
+  "office": "Aligarh",
+  "jurisdiction": "Aligarh district"
+ },
+ {
+  "code": "UP-82",
+  "prefix": "UP",
+  "office": "Etah",
+  "jurisdiction": "Etah district"
+ },
+ {
+  "code": "UP-83",
+  "prefix": "UP",
+  "office": "Firozabad",
+  "jurisdiction": "Firozabad district"
+ },
+ {
+  "code": "UP-84",
+  "prefix": "UP",
+  "office": "Mainpuri",
+  "jurisdiction": "Mainpuri district"
+ },
+ {
+  "code": "UP-85",
+  "prefix": "UP",
+  "office": "Mathura",
+  "jurisdiction": "Mathura district"
+ },
+ {
+  "code": "UP-86",
+  "prefix": "UP",
+  "office": "Hathras",
+  "jurisdiction": "Hathras district"
+ },
+ {
+  "code": "UP-87",
+  "prefix": "UP",
+  "office": "Kasganj",
+  "jurisdiction": "Kasganj district"
+ },
+ {
+  "code": "UP-90",
+  "prefix": "UP",
+  "office": "Banda",
+  "jurisdiction": "Banda district"
+ },
+ {
+  "code": "UP-91",
+  "prefix": "UP",
+  "office": "Hamirpur",
+  "jurisdiction": "Hamirpur district"
+ },
+ {
+  "code": "UP-92",
+  "prefix": "UP",
+  "office": "Jalaun",
+  "jurisdiction": "Jalaun district"
+ },
+ {
+  "code": "UP-93",
+  "prefix": "UP",
+  "office": "Jhansi",
+  "jurisdiction": "Jhansi district"
+ },
+ {
+  "code": "UP-94",
+  "prefix": "UP",
+  "office": "Lalitpur",
+  "jurisdiction": "Lalitpur district"
+ },
+ {
+  "code": "UP-95",
+  "prefix": "UP",
+  "office": "Mahoba",
+  "jurisdiction": "Mahoba district"
+ },
+ {
+  "code": "UP-96",
+  "prefix": "UP",
+  "office": "Chitrakoot Dham",
+  "jurisdiction": "Chitrakoot district"
+ },
+ {
+  "code": "WB-01",
+  "prefix": "WB",
+  "office": "Beltala (two Wheelers)",
+  "jurisdiction": "Kolkata district",
+  "notes": "however series starting from WB-01BB is new series for both Commercial and Private vehicles under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-02",
+  "prefix": "WB",
+  "office": "Beltala (four Wheelers private vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "Discontinued, as WB-01BB is new code for all types of Commercial and Private vehicles under Beltala RTO"
+ },
+ {
+  "code": "WB-03",
+  "prefix": "WB",
+  "office": "Beltala (commercial goods carriages)",
+  "jurisdiction": "Kolkata district",
+  "notes": "Discontinued, as WB-01BB is new code for all types of Commercial and Private vehicles under Beltala RTO"
+ },
+ {
+  "code": "WB-04",
+  "prefix": "WB",
+  "office": "Beltala (commercial passenger vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "WB-01BB is new code for all types of Commercial and Private vehicles under Beltala RTO"
+ },
+ {
+  "code": "WB-05",
+  "prefix": "WB",
+  "office": "Kasba (commercial vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "however, WB-05B is the new code for both Commercial and Private vehicles under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-06",
+  "prefix": "WB",
+  "office": "Kasba (private vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "series starts from (WB-06K); however, from WB-06 until WB-06J registered in Beltala RTO as private four-wheelers; series discontinued after WB-06AC WB-05B is the new code for both Commercial and Private vehicles under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-07",
+  "prefix": "WB",
+  "office": "Salt Lake (commercial vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "series starts from (WB-07J); however, from WB-07 until WB-07H registered in Kolkata RTO as two-wheelers; series discontinued after WB-07K as it has been replaced by WB-07V"
+ },
+ {
+  "code": "WB-08",
+  "prefix": "WB",
+  "office": "Salt Lake (private vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "Series replaced by WB-07V (after WB-08S) as WB-07V is the new code for both Commercial and Private vehicles; some government vehicles have been registered under WB-08T"
+ },
+ {
+  "code": "WB-09",
+  "prefix": "WB",
+  "office": "Behala (commercial vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "however, series replaced by WB-09B under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-10",
+  "prefix": "WB",
+  "office": "Behala (private vehicles)",
+  "jurisdiction": "Kolkata district",
+  "notes": "however, series replaced by WB-09B under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-11",
+  "prefix": "WB",
+  "office": "Howrah (commercial vehicles)",
+  "jurisdiction": "Howrah district",
+  "notes": "however, series replaced by WB-11H under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-12",
+  "prefix": "WB",
+  "office": "Howrah (private vehicles)",
+  "jurisdiction": "Howrah district",
+  "notes": "however, series replaced by WB-11H under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-13",
+  "prefix": "WB",
+  "office": "Uluberia (commercial vehicles)",
+  "jurisdiction": "Howrah district",
+  "notes": "however, series replaced by WB-13B under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-14",
+  "prefix": "WB",
+  "office": "Uluberia (private vehicles)",
+  "jurisdiction": "Howrah district",
+  "notes": "series starts from (WB14K); however from WB-14E until WB-14L Two-wheelers are registered under Howrah RTO however, series replaced by WB-13B under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-15",
+  "prefix": "WB",
+  "office": "Chinsurah (commercial vehicles)",
+  "jurisdiction": "Hooghly district",
+  "notes": "Replaced by series starting with WB-15E under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-16",
+  "prefix": "WB",
+  "office": "Chinsurah (private vehicles)",
+  "jurisdiction": "Hooghly district",
+  "notes": "discontinued and replaced by series starting with WB-15E under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-17",
+  "prefix": "WB",
+  "office": "Serampore (commercial vehicles)",
+  "jurisdiction": "Hooghly district",
+  "notes": "From WB17N it is Arambagh ARTO"
+ },
+ {
+  "code": "WB-18",
+  "prefix": "WB",
+  "office": "Serampore (private vehicles)",
+  "jurisdiction": "Hooghly district",
+  "notes": "series starts from (WB18K); however from WB-18 until WB-18G registered in Chinsurah RTO as private vehicles. WB-18 series discontinued after WB-18AM and replaced by series starting with WB-17B under One RTO One Code initiative. Series from WB-18TA registered in Arambagh arto as private vehicles WB-18TA series discontinued after WB-18TF and replaced by WB-17N under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-19",
+  "prefix": "WB",
+  "office": "Alipore (commercial vehicles)",
+  "jurisdiction": "South 24 Parganas district",
+  "notes": "however, series starting with WB-19P is now used for both Private and Commercial vehicles under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-20",
+  "prefix": "WB",
+  "office": "Alipore (private vehicles)",
+  "jurisdiction": "South 24 Parganas district",
+  "notes": "Discontinued and replaced by series starting with WB-19P"
+ },
+ {
+  "code": "WB-21",
+  "prefix": "WB",
+  "office": "Basirhat (commercial vehicles)",
+  "jurisdiction": "North 24 Parganas district",
+  "notes": "Common series for private and commercial vehicles starts from WB-21A under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-22",
+  "prefix": "WB",
+  "office": "Basirhat (private vehicles)",
+  "jurisdiction": "North 24 Parganas district",
+  "notes": "Common series for private and commercial vehicles starts from WB-21A under One RTO One Code initiative of WB Transport Department, however WB-22U registered in Alipore RTO as private vehicle"
+ },
+ {
+  "code": "WB-23",
+  "prefix": "WB",
+  "office": "Barrackpore (commercial vehicles)",
+  "jurisdiction": "North 24 Parganas district",
+  "notes": "series starting from WB-23H applies for both Private and Commercial vehicles"
+ },
+ {
+  "code": "WB-24",
+  "prefix": "WB",
+  "office": "Barrackpore (private vehicles)",
+  "jurisdiction": "North 24 Parganas district",
+  "notes": "Now discontinued and replaced by series starting from WB-23H"
+ },
+ {
+  "code": "WB-25",
+  "prefix": "WB",
+  "office": "Barasat (commercial vehicles)",
+  "jurisdiction": "North 24 Parganas district",
+  "notes": "however, series replaced by WB-25N for both Commercial and Private vehicles under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-26",
+  "prefix": "WB",
+  "office": "Barasat (private vehicles)",
+  "jurisdiction": "North 24 Parganas district",
+  "notes": "however, series replaced by WB-25N for both Commercial and Private vehicles (after WB-26CC) under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-27",
+  "prefix": "WB",
+  "office": "Bangaon (commercial vehicles)",
+  "jurisdiction": "North 24 Parganas district"
+ },
+ {
+  "code": "WB-28",
+  "prefix": "WB",
+  "office": "Bangaon (private vehicles)",
+  "jurisdiction": "North 24 Parganas district"
+ },
+ {
+  "code": "WB-29",
+  "prefix": "WB",
+  "office": "Tamluk (commercial vehicles)",
+  "jurisdiction": "Purba Medinipur district"
+ },
+ {
+  "code": "WB-30",
+  "prefix": "WB",
+  "office": "Tamluk (private vehicles)",
+  "jurisdiction": "Purba Medinipur district"
+ },
+ {
+  "code": "WB-31",
+  "prefix": "WB",
+  "office": "Contai (commercial vehicles)",
+  "jurisdiction": "Purba Medinipur district",
+  "notes": "However series starts from WB-31N are registered under Haldia ARTO as commercial vehicles; WB-31 discontinued in Contai and replaced by WB-32 for both Private and Commercial vehicles"
+ },
+ {
+  "code": "WB-32",
+  "prefix": "WB",
+  "office": "Contai (private vehicles)",
+  "jurisdiction": "Purba Medinipur district",
+  "notes": "However series starts from WB-32N are registered under Haldia ARTO as private vehicles; WB-32 now applies for both Private and Commercial vehicles under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-33",
+  "prefix": "WB",
+  "office": "Medinipur (commercial vehicles)",
+  "jurisdiction": "Paschim Medinipur district"
+ },
+ {
+  "code": "WB-34",
+  "prefix": "WB",
+  "office": "Medinipur (private vehicles)",
+  "jurisdiction": "Paschim Medinipur district"
+ },
+ {
+  "code": "WB-35",
+  "prefix": "WB",
+  "office": "Kharagpur (commercial vehicles)",
+  "jurisdiction": "Paschim Medinipur district"
+ },
+ {
+  "code": "WB-36",
+  "prefix": "WB",
+  "office": "Kharagpur (private vehicles)",
+  "jurisdiction": "Paschim Medinipur district"
+ },
+ {
+  "code": "WB-37",
+  "prefix": "WB",
+  "office": "Asansol (commercial vehicles)",
+  "jurisdiction": "Paschim Bardhaman district"
+ },
+ {
+  "code": "WB-38",
+  "prefix": "WB",
+  "office": "Asansol (private vehicles)",
+  "jurisdiction": "Paschim Bardhaman district"
+ },
+ {
+  "code": "WB-39",
+  "prefix": "WB",
+  "office": "Durgapur (commercial vehicles), also SBSTC buses are registered here.",
+  "jurisdiction": "Paschim Bardhaman district"
+ },
+ {
+  "code": "WB-40",
+  "prefix": "WB",
+  "office": "Durgapur (private vehicles)",
+  "jurisdiction": "Paschim Bardhaman district"
+ },
+ {
+  "code": "WB-41",
+  "prefix": "WB",
+  "office": "Bardhaman (commercial vehicles)",
+  "jurisdiction": "Purba Bardhaman district"
+ },
+ {
+  "code": "WB-42",
+  "prefix": "WB",
+  "office": "Bardhaman (private vehicles)",
+  "jurisdiction": "Purba Bardhaman district"
+ },
+ {
+  "code": "WB-43",
+  "prefix": "WB",
+  "office": "Kalna (commercial vehicles)",
+  "jurisdiction": "Purba Bardhaman district"
+ },
+ {
+  "code": "WB-44",
+  "prefix": "WB",
+  "office": "Kalna (private vehicles)",
+  "jurisdiction": "Purba Bardhaman district",
+  "notes": "However WB44-44D is registered at Asansol ARTO."
+ },
+ {
+  "code": "WB-45",
+  "prefix": "WB",
+  "office": "Rampurhat (commercial vehicles)",
+  "jurisdiction": "Birbhum district"
+ },
+ {
+  "code": "WB-46",
+  "prefix": "WB",
+  "office": "Rampurhat (private vehicles)",
+  "jurisdiction": "Birbhum district"
+ },
+ {
+  "code": "WB-47",
+  "prefix": "WB",
+  "office": "Bolpur (commercial vehicles)",
+  "jurisdiction": "Birbhum district"
+ },
+ {
+  "code": "WB-48",
+  "prefix": "WB",
+  "office": "Bolpur (private vehicles)",
+  "jurisdiction": "Birbhum district"
+ },
+ {
+  "code": "WB-49",
+  "prefix": "WB",
+  "office": "Jhargram (commercial vehicles)",
+  "jurisdiction": "Jhargram district",
+  "notes": "However series starts from WB-49N are registered under Ghatal arto as commercial vehicles"
+ },
+ {
+  "code": "WB-50",
+  "prefix": "WB",
+  "office": "Jhargram (private vehicles)",
+  "jurisdiction": "Jhargram district",
+  "notes": "However series starts from WB-50N are registered under Ghatal as private vehicles"
+ },
+ {
+  "code": "WB-51",
+  "prefix": "WB",
+  "office": "Krishnanagar (commercial vehicles)",
+  "jurisdiction": "Nadia district"
+ },
+ {
+  "code": "WB-52",
+  "prefix": "WB",
+  "office": "Krishnanagar (private vehicles)",
+  "jurisdiction": "Nadia district",
+  "notes": "However series starts from WB-52JA is registered at Tehatta ARTO"
+ },
+ {
+  "code": "WB-53",
+  "prefix": "WB",
+  "office": "Birbhum (commercial vehicles)",
+  "jurisdiction": "Birbhum district"
+ },
+ {
+  "code": "WB-54",
+  "prefix": "WB",
+  "office": "Birbhum (private vehicles)",
+  "jurisdiction": "Birbhum district"
+ },
+ {
+  "code": "WB-55",
+  "prefix": "WB",
+  "office": "Purulia (commercial vehicles)",
+  "jurisdiction": "Purulia district"
+ },
+ {
+  "code": "WB-56",
+  "prefix": "WB",
+  "office": "Purulia (private vehicles)",
+  "jurisdiction": "Purulia district"
+ },
+ {
+  "code": "WB-57",
+  "prefix": "WB",
+  "office": "Murshidabad (commercial vehicles)",
+  "jurisdiction": "Murshidabad district"
+ },
+ {
+  "code": "WB-58",
+  "prefix": "WB",
+  "office": "Murshidabad (private vehicles)",
+  "jurisdiction": "Murshidabad district"
+ },
+ {
+  "code": "WB-59",
+  "prefix": "WB",
+  "office": "Raiganj (commercial vehicles)",
+  "jurisdiction": "Uttar Dinajpur district"
+ },
+ {
+  "code": "WB-60",
+  "prefix": "WB",
+  "office": "Raiganj (private vehicles)",
+  "jurisdiction": "Uttar Dinajpur district"
+ },
+ {
+  "code": "WB-61",
+  "prefix": "WB",
+  "office": "Balurghat (commercial vehicles)",
+  "jurisdiction": "Dakshin Dinajpur district"
+ },
+ {
+  "code": "WB-62",
+  "prefix": "WB",
+  "office": "Balurghat (private vehicles)",
+  "jurisdiction": "Dakshin Dinajpur district"
+ },
+ {
+  "code": "WB-63",
+  "prefix": "WB",
+  "office": "Cooch Behar (commercial vehicles), also NBSTC buses are registered here.",
+  "jurisdiction": "Cooch Behar district"
+ },
+ {
+  "code": "WB-64",
+  "prefix": "WB",
+  "office": "Cooch Behar (private vehicles)",
+  "jurisdiction": "Cooch Behar district"
+ },
+ {
+  "code": "WB-65",
+  "prefix": "WB",
+  "office": "Malda City (commercial vehicles)",
+  "jurisdiction": "Malda district"
+ },
+ {
+  "code": "WB-66",
+  "prefix": "WB",
+  "office": "Malda City (private vehicles)",
+  "jurisdiction": "Malda district"
+ },
+ {
+  "code": "WB-67",
+  "prefix": "WB",
+  "office": "Bankura (commercial vehicles)",
+  "jurisdiction": "Bankura district"
+ },
+ {
+  "code": "WB-68",
+  "prefix": "WB",
+  "office": "Bankura (private vehicles)",
+  "jurisdiction": "Bankura district"
+ },
+ {
+  "code": "WB-69",
+  "prefix": "WB",
+  "office": "Alipurduar (commercial vehicles)",
+  "jurisdiction": "Alipurduar district"
+ },
+ {
+  "code": "WB-70",
+  "prefix": "WB",
+  "office": "Alipurduar (private vehicles)",
+  "jurisdiction": "Alipurduar district"
+ },
+ {
+  "code": "WB-71",
+  "prefix": "WB",
+  "office": "Jalpaiguri (commercial vehicles)",
+  "jurisdiction": "Jalpaiguri district"
+ },
+ {
+  "code": "WB-72",
+  "prefix": "WB",
+  "office": "Jalpaiguri (private vehicles)",
+  "jurisdiction": "Jalpaiguri district"
+ },
+ {
+  "code": "WB-73",
+  "prefix": "WB",
+  "office": "Siliguri (commercial vehicles)",
+  "jurisdiction": "Darjeeling district",
+  "notes": "Replaced by series starting with WB-73K under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-74",
+  "prefix": "WB",
+  "office": "Siliguri (private vehicles)",
+  "jurisdiction": "Darjeeling district",
+  "notes": "Replaced by series starting with WB-73K under One RTO One Code initiative"
+ },
+ {
+  "code": "WB-75",
+  "prefix": "WB",
+  "office": "Katwa (private and commercial vehicles)",
+  "jurisdiction": "Purba Bardhaman district"
+ },
+ {
+  "code": "WB-76",
+  "prefix": "WB",
+  "office": "Darjeeling (commercial vehicles)",
+  "jurisdiction": "Darjeeling district"
+ },
+ {
+  "code": "WB-77",
+  "prefix": "WB",
+  "office": "Darjeeling (private vehicles)",
+  "jurisdiction": "Darjeeling district"
+ },
+ {
+  "code": "WB-78",
+  "prefix": "WB",
+  "office": "Kalimpong (commercial vehicles)",
+  "jurisdiction": "Kalimpong district"
+ },
+ {
+  "code": "WB-79",
+  "prefix": "WB",
+  "office": "Kalimpong (private vehicles)",
+  "jurisdiction": "Kalimpong district"
+ },
+ {
+  "code": "WB-80",
+  "prefix": "WB",
+  "office": "Manbazar (private and commercial vehicles)",
+  "jurisdiction": "Purulia district"
+ },
+ {
+  "code": "WB-81",
+  "prefix": "WB",
+  "office": "Raghunathpur (commercial vehicles)",
+  "jurisdiction": "Purulia district"
+ },
+ {
+  "code": "WB-82",
+  "prefix": "WB",
+  "office": "Raghunathpur (private vehicles)",
+  "jurisdiction": "Purulia district"
+ },
+ {
+  "code": "WB-83",
+  "prefix": "WB",
+  "office": "Chanchal (commercial vehicles)",
+  "jurisdiction": "Malda district"
+ },
+ {
+  "code": "WB-84",
+  "prefix": "WB",
+  "office": "Chanchal (private vehicles)",
+  "jurisdiction": "Malda district"
+ },
+ {
+  "code": "WB-85",
+  "prefix": "WB",
+  "office": "Mathabhanga (commercial vehicles)",
+  "jurisdiction": "Cooch Behar district"
+ },
+ {
+  "code": "WB-86",
+  "prefix": "WB",
+  "office": "Mathabhanga (private vehicles)",
+  "jurisdiction": "Cooch Behar district"
+ },
+ {
+  "code": "WB-87",
+  "prefix": "WB",
+  "office": "Bishnupur (commercial vehicles)",
+  "jurisdiction": "Bankura district"
+ },
+ {
+  "code": "WB-88",
+  "prefix": "WB",
+  "office": "Bishnupur (private vehicles)",
+  "jurisdiction": "Bankura district"
+ },
+ {
+  "code": "WB-89",
+  "prefix": "WB",
+  "office": "Kalyani (commercial vehicles)",
+  "jurisdiction": "Nadia district"
+ },
+ {
+  "code": "WB-90",
+  "prefix": "WB",
+  "office": "Kalyani (private vehicles)",
+  "jurisdiction": "Nadia district"
+ },
+ {
+  "code": "WB-91",
+  "prefix": "WB",
+  "office": "Islampur (commercial vehicles)",
+  "jurisdiction": "Uttar Dinajpur district"
+ },
+ {
+  "code": "WB-92",
+  "prefix": "WB",
+  "office": "Islampur (private vehicles)",
+  "jurisdiction": "Uttar Dinajpur district"
+ },
+ {
+  "code": "WB-93",
+  "prefix": "WB",
+  "office": "Jangipur (commercial vehicles)",
+  "jurisdiction": "Murshidabad district"
+ },
+ {
+  "code": "WB-94",
+  "prefix": "WB",
+  "office": "Jangipur (private vehicles)",
+  "jurisdiction": "Murshidabad district"
+ },
+ {
+  "code": "WB-95",
+  "prefix": "WB",
+  "office": "Baruipur (commercial vehicles)",
+  "jurisdiction": "South 24 Parganas district",
+  "notes": "Common series for private and commercial vehicles starts from WB-95C under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-96",
+  "prefix": "WB",
+  "office": "Baruipur (private vehicles)",
+  "jurisdiction": "South 24 Parganas district",
+  "notes": "Common series for private and commercial vehicles starts from WB-95C under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-97",
+  "prefix": "WB",
+  "office": "Diamond Harbour (commercial vehicles)",
+  "jurisdiction": "South 24 Parganas district",
+  "notes": "Common series for private and commercial vehicles starts from WB-97B under One RTO One Code initiative of WB Transport Department"
+ },
+ {
+  "code": "WB-98",
+  "prefix": "WB",
+  "office": "Canning (All vehicles)",
+  "jurisdiction": "South 24 Parganas district",
+  "notes": "Series start from WB-98AA registered under Canning ARTO From July 2025"
+ },
+ {
+  "code": "WB-99",
+  "prefix": "WB",
+  "office": "Kandi (Private and Commercial vehicles)",
+  "jurisdiction": "Murshidabad district"
+ }
+]

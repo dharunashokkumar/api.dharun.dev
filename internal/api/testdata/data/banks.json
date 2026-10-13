@@ -1,0 +1,38 @@
+{
+ "SBIN": {
+  "code": "SBIN",
+  "ifsc": "SBIN0004343",
+  "micr": "400002000",
+  "iin": "508548",
+  "ach_credit": true,
+  "ach_debit": true,
+  "apbs": true,
+  "nach_debit": true,
+  "type": "PSB",
+  "upi": true
+ },
+ "HDFC": {
+  "code": "HDFC",
+  "ifsc": "HDFC0999999",
+  "micr": "400240001",
+  "iin": "607152",
+  "ach_credit": true,
+  "ach_debit": true,
+  "apbs": true,
+  "nach_debit": true,
+  "type": "Private",
+  "upi": true
+ },
+ "ICIC": {
+  "code": "ICIC",
+  "ifsc": "ICIC0TREA00",
+  "micr": "400229000",
+  "iin": "508534",
+  "ach_credit": true,
+  "ach_debit": true,
+  "apbs": true,
+  "nach_debit": true,
+  "type": "Private",
+  "upi": true
+ }
+}

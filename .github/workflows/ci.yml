@@ -18,25 +18,25 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-go@v7
         with:
-          node-version: 24
+          go-version-file: go.mod
 
-      - run: npm ci
+      - name: Formatting
+        run: test -z "$(gofmt -l cmd internal)" || { gofmt -l cmd internal; exit 1; }
 
-      - name: Validate logos and metadata
-        run: npm run validate
+      - run: go vet ./...
 
       - name: Unit, API and updater tests
-        run: npm test
+        run: go test ./...
 
       - name: Lint shell scripts
         run: shellcheck deploy/*.sh tools/*.sh
 
-      - name: Check the scraper compiles
+      - name: Check the logo scraper compiles
         run: python3 -m py_compile tools/scrape_logo_metadata.py
 
-      - name: Build the release bundle and smoke-test it
+      - name: Build the release bundle from the full datasets and smoke-test it
         run: |
-          npm run build:release
-          bash tools/smoke-test.sh dist/logos-api.tar.gz
+          bash tools/build-release.sh 0.0.0-ci
+          bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz

@@ -1,0 +1,983 @@
+[
+ {
+  "code": "AP-39",
+  "prefix": "AP",
+  "office": "RTA",
+  "jurisdiction": "Tirupati district, Krishna district, NTR district, Vizianagaram district, Visakhapatnam district, Alluri Sitharama Raju district, Anakapalli district, Kakinada district, East Godavari, Konaseema district, Eluru district, West Godavari district, Palnadu district, Guntur district, Bapatla district, Polavaram district, Prakasam district, Sri Potti Sriramulu Nellore district, Kurnool district, Nandyal district, Anantapur district, Sri Sathya Sai district, YSR district, Annamayya district, Parvathipuram Manyam district, Srikakulam district, Chittoor district"
+ },
+ {
+  "code": "CH-01",
+  "prefix": "CH",
+  "office": "Chandigarh",
+  "jurisdiction": "Chandigarh district"
+ },
+ {
+  "code": "DL-01",
+  "prefix": "DL",
+  "office": "Mall Road, Vishwavidyalaya",
+  "jurisdiction": "North Delhi District: Civil Lines, Pratap Bagh, Kotwali, Bela Road, Andha Mugal, Mori Gate, Majnu Ka Tila, Gulabi Bagh, Red Fort, Sant Nagar, Sarai Rohilla, Yamuna Bazar, Roop Nagar, Inder Lok, Lahori Gate, Maurice Nagar, Sadar Bazar, Church Mission, Shakti Nagar, Ahata Kedara, Town Hall, Subzi Mandi, Bara Hindu Rao, Nai Sarak, Tis Hazari, Kashmere Gate, Chandni Chowk"
+ },
+ {
+  "code": "KA-01",
+  "prefix": "KA",
+  "office": "Bengaluru Central, HSR Layout (Previously located in Koramangala)",
+  "jurisdiction": "Bengaluru Urban District",
+  "notes": "Covers Central Bengaluru"
+ },
+ {
+  "code": "TN-01",
+  "prefix": "TN",
+  "office": "Chennai (Central): Ayanavaram",
+  "jurisdiction": "Chennai",
+  "notes": "SETC & MTC buses are registered here under TN 01 N XXXX."
+ },
+ {
+  "code": "TN-02",
+  "prefix": "TN",
+  "office": "Chennai (North West): Anna Nagar",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-03",
+  "prefix": "TN",
+  "office": "Chennai (North East): Tondiarpet",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-04",
+  "prefix": "TN",
+  "office": "Chennai (East): Royapuram",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-05",
+  "prefix": "TN",
+  "office": "Chennai (North): Kolathur",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-06",
+  "prefix": "TN",
+  "office": "Chennai (South East): Mandavelli",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-07",
+  "prefix": "TN",
+  "office": "Chennai (South): Adyar",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-09",
+  "prefix": "TN",
+  "office": "Chennai (West): K. K. Nagar",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-10",
+  "prefix": "TN",
+  "office": "Chennai (South West): Virugambakkam",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-11",
+  "prefix": "TN",
+  "office": "Tambaram",
+  "jurisdiction": "Chengalpattu"
+ },
+ {
+  "code": "TN-12",
+  "prefix": "TN",
+  "office": "Poonamallee",
+  "jurisdiction": "Tiruvallur"
+ },
+ {
+  "code": "TN-13",
+  "prefix": "TN",
+  "office": "Ambattur",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-14",
+  "prefix": "TN",
+  "office": "Sholinganallur",
+  "jurisdiction": "Chengalpattu"
+ },
+ {
+  "code": "TN-15",
+  "prefix": "TN",
+  "office": "Ulundurpet",
+  "jurisdiction": "Kallakurichi"
+ },
+ {
+  "code": "TN-15M",
+  "prefix": "TN",
+  "office": "Kallakurichi",
+  "jurisdiction": "Kallakurichi",
+  "notes": "Shared series with Ulunderpettai"
+ },
+ {
+  "code": "TN-16",
+  "prefix": "TN",
+  "office": "Tindivanam",
+  "jurisdiction": "Villupuram"
+ },
+ {
+  "code": "TN-16Z",
+  "prefix": "TN",
+  "office": "Gingee",
+  "jurisdiction": "Villupuram",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-18",
+  "prefix": "TN",
+  "office": "Red Hills",
+  "jurisdiction": "Tiruvallur"
+ },
+ {
+  "code": "TN-18Y",
+  "prefix": "TN",
+  "office": "Gummidipoondi",
+  "jurisdiction": "Tiruvallur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-19",
+  "prefix": "TN",
+  "office": "Chengalpattu",
+  "jurisdiction": "Chengalpattu"
+ },
+ {
+  "code": "TN-19Y",
+  "prefix": "TN",
+  "office": "Thirukazhugundram",
+  "jurisdiction": "Chengalpattu",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-19Z",
+  "prefix": "TN",
+  "office": "Madurantakam",
+  "jurisdiction": "Chengalpattu",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-20",
+  "prefix": "TN",
+  "office": "Tiruvallur",
+  "jurisdiction": "Tiruvallur",
+  "notes": "TNSTC-Villupuram / Thiruvallur Region buses are registered here under TN 20 N XXXX."
+ },
+ {
+  "code": "TN-20X",
+  "prefix": "TN",
+  "office": "Thiruthani",
+  "jurisdiction": "Tiruvallur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-21",
+  "prefix": "TN",
+  "office": "Kanchipuram",
+  "jurisdiction": "Kanchipuram",
+  "notes": "TNSTC-Villupuram / Kanchipuram Region buses are registered here under TN 21 N XXXX."
+ },
+ {
+  "code": "TN-22",
+  "prefix": "TN",
+  "office": "Meenambakkam",
+  "jurisdiction": "Chennai"
+ },
+ {
+  "code": "TN-23",
+  "prefix": "TN",
+  "office": "Vellore",
+  "jurisdiction": "Vellore",
+  "notes": "TNSTC-Villupuram / Vellore Region buses are registered here under TN 23 N XXXX."
+ },
+ {
+  "code": "TN-23T",
+  "prefix": "TN",
+  "office": "Gudiyatham",
+  "jurisdiction": "Vellore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-24",
+  "prefix": "TN",
+  "office": "Krishnagiri",
+  "jurisdiction": "Krishnagiri"
+ },
+ {
+  "code": "TN-25",
+  "prefix": "TN",
+  "office": "Thiruvannamalai",
+  "jurisdiction": "Thiruvannamalai",
+  "notes": "TNSTC-Villupuram / Thiruvannamalai Region buses are registered here under TN 25 N XXXX."
+ },
+ {
+  "code": "TN-27",
+  "prefix": "TN",
+  "office": "Salem",
+  "jurisdiction": "Salem",
+  "notes": "Not in use"
+ },
+ {
+  "code": "TN-28",
+  "prefix": "TN",
+  "office": "Namakkal (North)",
+  "jurisdiction": "Namakkal"
+ },
+ {
+  "code": "TN-28Z",
+  "prefix": "TN",
+  "office": "Rasipuram",
+  "jurisdiction": "Namakkal",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-29",
+  "prefix": "TN",
+  "office": "Dharmapuri",
+  "jurisdiction": "Dharmapuri",
+  "notes": "TNSTC-Salem / Dharmapuri Region buses are registered here under TN 29 N XXXX."
+ },
+ {
+  "code": "TN-29W",
+  "prefix": "TN",
+  "office": "Palacode",
+  "jurisdiction": "Dharmapuri",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-29Z",
+  "prefix": "TN",
+  "office": "Harur",
+  "jurisdiction": "Dharmapuri",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-30",
+  "prefix": "TN",
+  "office": "Salem (West)",
+  "jurisdiction": "Salem",
+  "notes": "TNSTC-Salem / Salem Region buses are registered here under TN 30 N XXXX."
+ },
+ {
+  "code": "TN-30W",
+  "prefix": "TN",
+  "office": "Omalur",
+  "jurisdiction": "Salem",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-31",
+  "prefix": "TN",
+  "office": "Cuddalore",
+  "jurisdiction": "Cuddalore",
+  "notes": "TNSTC-Villupuram / Cuddalore Region buses are registered here under TN 31 N XXXX."
+ },
+ {
+  "code": "TN-31Y",
+  "prefix": "TN",
+  "office": "Neyveli",
+  "jurisdiction": "Cuddalore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-31Z",
+  "prefix": "TN",
+  "office": "Panruti",
+  "jurisdiction": "Cuddalore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-32",
+  "prefix": "TN",
+  "office": "Villupuram",
+  "jurisdiction": "Villupuram",
+  "notes": "TNSTC-Villupuram / Villupuram Region buses are registered here under TN 32 N XXXX."
+ },
+ {
+  "code": "TN-33",
+  "prefix": "TN",
+  "office": "Erode (East)",
+  "jurisdiction": "Erode",
+  "notes": "TNSTC-Coimbatore / Erode Region buses are registered here under TN 33 N XXXX."
+ },
+ {
+  "code": "TN-34",
+  "prefix": "TN",
+  "office": "Tiruchengode",
+  "jurisdiction": "Namakkal"
+ },
+ {
+  "code": "TN-34M",
+  "prefix": "TN",
+  "office": "Kumarapalayam",
+  "jurisdiction": "Namakkal",
+  "notes": "Shared series with Tiruchengode"
+ },
+ {
+  "code": "TN-36",
+  "prefix": "TN",
+  "office": "Gobichettipalayam",
+  "jurisdiction": "Erode"
+ },
+ {
+  "code": "TN-36W",
+  "prefix": "TN",
+  "office": "Bhavani",
+  "jurisdiction": "Erode",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-36Z",
+  "prefix": "TN",
+  "office": "Sathyamangalam",
+  "jurisdiction": "Erode",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-37",
+  "prefix": "TN",
+  "office": "Coimbatore (South)",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-37Z",
+  "prefix": "TN",
+  "office": "Sulur",
+  "jurisdiction": "Coimbatore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-38",
+  "prefix": "TN",
+  "office": "Coimbatore (North)",
+  "jurisdiction": "Coimbatore",
+  "notes": "TNSTC-Coimbatore / Coimbatore Region buses are registered here under TN 38 N XXXX."
+ },
+ {
+  "code": "TN-39",
+  "prefix": "TN",
+  "office": "Tirupur (North)",
+  "jurisdiction": "Tirupur",
+  "notes": "TNSTC-Coimbatore / Tirupur Region buses are registered here under TN 39 N XXXX."
+ },
+ {
+  "code": "TN-39Z",
+  "prefix": "TN",
+  "office": "Avinashi",
+  "jurisdiction": "Tirupur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-40",
+  "prefix": "TN",
+  "office": "Mettupalayam",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-41",
+  "prefix": "TN",
+  "office": "Pollachi",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-41W",
+  "prefix": "TN",
+  "office": "Valparai",
+  "jurisdiction": "Coimbatore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-42",
+  "prefix": "TN",
+  "office": "Tirupur (South)",
+  "jurisdiction": "Tirupur"
+ },
+ {
+  "code": "TN-42Y",
+  "prefix": "TN",
+  "office": "Kangayam",
+  "jurisdiction": "Tirupur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-43",
+  "prefix": "TN",
+  "office": "Ooty",
+  "jurisdiction": "Nilgiris",
+  "notes": "TNSTC-Coimbatore / Ooty Region buses are registered here under TN 43 N XXXX."
+ },
+ {
+  "code": "TN-43Z",
+  "prefix": "TN",
+  "office": "Gudalur",
+  "jurisdiction": "Nilgiris",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-45",
+  "prefix": "TN",
+  "office": "Tiruchirapalli (West)",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Tnstc-Kumbakonam / Tiruchirapalli Region buses are registered here under TN 45 N XXXX."
+ },
+ {
+  "code": "TN-45Z",
+  "prefix": "TN",
+  "office": "Manapparai",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-46",
+  "prefix": "TN",
+  "office": "Perambalur",
+  "jurisdiction": "Perambalur"
+ },
+ {
+  "code": "TN-47",
+  "prefix": "TN",
+  "office": "Karur",
+  "jurisdiction": "Karur"
+ },
+ {
+  "code": "TN-47X",
+  "prefix": "TN",
+  "office": "Manmangalam",
+  "jurisdiction": "Karur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-47Y",
+  "prefix": "TN",
+  "office": "Aravakurichi",
+  "jurisdiction": "Karur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-47Z",
+  "prefix": "TN",
+  "office": "Kulithalai",
+  "jurisdiction": "Karur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-48",
+  "prefix": "TN",
+  "office": "Srirangam",
+  "jurisdiction": "Tiruchirapalli"
+ },
+ {
+  "code": "TN-48X",
+  "prefix": "TN",
+  "office": "Lalgudi",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-48Y",
+  "prefix": "TN",
+  "office": "Musiri",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-48Z",
+  "prefix": "TN",
+  "office": "Thuraiyur",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-49",
+  "prefix": "TN",
+  "office": "Thanjavur",
+  "jurisdiction": "Thanjavur"
+ },
+ {
+  "code": "TN-49Y",
+  "prefix": "TN",
+  "office": "Pattukottai",
+  "jurisdiction": "Thanjavur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-50",
+  "prefix": "TN",
+  "office": "Tiruvarur",
+  "jurisdiction": "Tiruvarur"
+ },
+ {
+  "code": "TN-50Y",
+  "prefix": "TN",
+  "office": "Thiruthuraipoondi",
+  "jurisdiction": "Tiruvarur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-50Z",
+  "prefix": "TN",
+  "office": "Mannargudi",
+  "jurisdiction": "Tiruvarur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-51",
+  "prefix": "TN",
+  "office": "Nagapattinam",
+  "jurisdiction": "Nagapattinam"
+ },
+ {
+  "code": "TN-52",
+  "prefix": "TN",
+  "office": "Sankagiri",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-54",
+  "prefix": "TN",
+  "office": "Salem (East)",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-55",
+  "prefix": "TN",
+  "office": "Pudukottai",
+  "jurisdiction": "Pudukottai",
+  "notes": "TNSTC-Kumbakonam / Pudukottai Region buses are registered here under TN 55 N XXXX."
+ },
+ {
+  "code": "TN-55BQ",
+  "prefix": "TN",
+  "office": "Alangudi",
+  "jurisdiction": "Pudukottai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-55Y",
+  "prefix": "TN",
+  "office": "Iluppur",
+  "jurisdiction": "Pudukottai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-55Z",
+  "prefix": "TN",
+  "office": "Aranthangi",
+  "jurisdiction": "Pudukottai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-56",
+  "prefix": "TN",
+  "office": "Perundurai",
+  "jurisdiction": "Erode"
+ },
+ {
+  "code": "TN-57",
+  "prefix": "TN",
+  "office": "Dindigul",
+  "jurisdiction": "Dindigul",
+  "notes": "TNSTC-Madurai / Dindigul region buses are registered here under TN 57 N XXXX."
+ },
+ {
+  "code": "TN-57V",
+  "prefix": "TN",
+  "office": "Vedasandur",
+  "jurisdiction": "Dindigul",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-57W",
+  "prefix": "TN",
+  "office": "Natham",
+  "jurisdiction": "Dindigul",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-58",
+  "prefix": "TN",
+  "office": "Madurai (South)",
+  "jurisdiction": "Madurai",
+  "notes": "TNSTC-Madurai / Madurai region buses are registered here under TN 58 N XXXX."
+ },
+ {
+  "code": "TN-58Y",
+  "prefix": "TN",
+  "office": "Usilampatti",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-58Z",
+  "prefix": "TN",
+  "office": "Thirumangalam",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-59",
+  "prefix": "TN",
+  "office": "Madurai (North)",
+  "jurisdiction": "Madurai"
+ },
+ {
+  "code": "TN-59V",
+  "prefix": "TN",
+  "office": "Vadipatti",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-59Z",
+  "prefix": "TN",
+  "office": "Melur",
+  "jurisdiction": "Madurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-60",
+  "prefix": "TN",
+  "office": "Theni",
+  "jurisdiction": "Theni"
+ },
+ {
+  "code": "TN-60Z",
+  "prefix": "TN",
+  "office": "Uthamapalayam",
+  "jurisdiction": "Theni",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-61",
+  "prefix": "TN",
+  "office": "Ariyalur",
+  "jurisdiction": "Ariyalur"
+ },
+ {
+  "code": "TN-63",
+  "prefix": "TN",
+  "office": "Sivaganga",
+  "jurisdiction": "Sivaganga"
+ },
+ {
+  "code": "TN-63Z",
+  "prefix": "TN",
+  "office": "Karaikudi",
+  "jurisdiction": "Sivaganga",
+  "notes": "Unit office of the RTO. TNSTC-Kumbakonam / Karaikudi region buses are registered here under TN 63 N XXXX."
+ },
+ {
+  "code": "TN-64",
+  "prefix": "TN",
+  "office": "Madurai (Central)",
+  "jurisdiction": "Madurai"
+ },
+ {
+  "code": "TN-65",
+  "prefix": "TN",
+  "office": "Ramanathapuram",
+  "jurisdiction": "Ramanathapuram"
+ },
+ {
+  "code": "TN-65Z",
+  "prefix": "TN",
+  "office": "Paramakudi",
+  "jurisdiction": "Ramanathapuram",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-66",
+  "prefix": "TN",
+  "office": "Coimbatore (Central)",
+  "jurisdiction": "Coimbatore"
+ },
+ {
+  "code": "TN-67",
+  "prefix": "TN",
+  "office": "Virudhunagar",
+  "jurisdiction": "Virudhunagar",
+  "notes": "TNSTC-Madurai / Virudhunagar Region buses are registered here under TN 67 N XXXX."
+ },
+ {
+  "code": "TN-67W",
+  "prefix": "TN",
+  "office": "Aruppukottai",
+  "jurisdiction": "Virudhunagar",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-68",
+  "prefix": "TN",
+  "office": "Kumbakonam",
+  "jurisdiction": "Thanjavur",
+  "notes": "TNSTC-Kumbakonam / Kumbakonam Region buses are registered here under TN 68 N XXXX."
+ },
+ {
+  "code": "TN-69",
+  "prefix": "TN",
+  "office": "Thoothukudi",
+  "jurisdiction": "Thoothukudi"
+ },
+ {
+  "code": "TN-70",
+  "prefix": "TN",
+  "office": "Hosur",
+  "jurisdiction": "Krishnagiri"
+ },
+ {
+  "code": "TN-72",
+  "prefix": "TN",
+  "office": "Tirunelveli",
+  "jurisdiction": "Tirunelveli",
+  "notes": "TNSTC-Tirunelveli / Tirunelveli Region buses are registered here under TN 72 N XXXX."
+ },
+ {
+  "code": "TN-72V",
+  "prefix": "TN",
+  "office": "Valliyur",
+  "jurisdiction": "Tirunelveli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-73",
+  "prefix": "TN",
+  "office": "Ranipet",
+  "jurisdiction": "Ranipet"
+ },
+ {
+  "code": "TN-73Z",
+  "prefix": "TN",
+  "office": "Arakkonam",
+  "jurisdiction": "Ranipet",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-74",
+  "prefix": "TN",
+  "office": "Nagercoil",
+  "jurisdiction": "Kanniyakumari",
+  "notes": "TNSTC-Tirunelveli / Nagercoil region buses are registered here under TN 74 N XXXX."
+ },
+ {
+  "code": "TN-75",
+  "prefix": "TN",
+  "office": "Marthandam",
+  "jurisdiction": "Kanniyakumari"
+ },
+ {
+  "code": "TN-76",
+  "prefix": "TN",
+  "office": "Tenkasi",
+  "jurisdiction": "Tenkasi"
+ },
+ {
+  "code": "TN-76Y",
+  "prefix": "TN",
+  "office": "Ambasamudram",
+  "jurisdiction": "Tirunelveli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-77",
+  "prefix": "TN",
+  "office": "Attur",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-77Z",
+  "prefix": "TN",
+  "office": "Vazhapadi",
+  "jurisdiction": "Salem",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-78",
+  "prefix": "TN",
+  "office": "Dharapuram",
+  "jurisdiction": "Tirupur"
+ },
+ {
+  "code": "TN-78M",
+  "prefix": "TN",
+  "office": "Udumalpet",
+  "jurisdiction": "Tirupur",
+  "notes": "Shared series with Dharapuram"
+ },
+ {
+  "code": "TN-79",
+  "prefix": "TN",
+  "office": "Sankarankovil",
+  "jurisdiction": "Tenkasi"
+ },
+ {
+  "code": "TN-81",
+  "prefix": "TN",
+  "office": "Tiruchirapalli (East)",
+  "jurisdiction": "Tiruchirapalli"
+ },
+ {
+  "code": "TN-81Z",
+  "prefix": "TN",
+  "office": "Thiruverumbur",
+  "jurisdiction": "Tiruchirapalli",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-82",
+  "prefix": "TN",
+  "office": "Mayiladuthurai",
+  "jurisdiction": "Mayiladuthurai"
+ },
+ {
+  "code": "TN-82Z",
+  "prefix": "TN",
+  "office": "Sirkazhi",
+  "jurisdiction": "Mayiladuthurai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-83",
+  "prefix": "TN",
+  "office": "Vaniyambadi",
+  "jurisdiction": "Thirupattur"
+ },
+ {
+  "code": "TN-83M",
+  "prefix": "TN",
+  "office": "Thirupattur",
+  "jurisdiction": "Thirupattur",
+  "notes": "Shared series with Vaniyambadi"
+ },
+ {
+  "code": "TN-83Y",
+  "prefix": "TN",
+  "office": "Ambur",
+  "jurisdiction": "Thirupattur",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-84",
+  "prefix": "TN",
+  "office": "Srivilliputhur",
+  "jurisdiction": "Virudhunagar"
+ },
+ {
+  "code": "TN-84U",
+  "prefix": "TN",
+  "office": "Rajapalayam",
+  "jurisdiction": "Virudhunagar",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-85",
+  "prefix": "TN",
+  "office": "Kundrathur",
+  "jurisdiction": "Kanchipuram"
+ },
+ {
+  "code": "TN-86",
+  "prefix": "TN",
+  "office": "Erode (West)",
+  "jurisdiction": "Erode"
+ },
+ {
+  "code": "TN-87",
+  "prefix": "TN",
+  "office": "Sriperumbudur",
+  "jurisdiction": "Kanchipuram"
+ },
+ {
+  "code": "TN-88",
+  "prefix": "TN",
+  "office": "Namakkal (South)",
+  "jurisdiction": "Namakkal"
+ },
+ {
+  "code": "TN-88Z",
+  "prefix": "TN",
+  "office": "Paramathi Velur",
+  "jurisdiction": "Namakkal",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-90",
+  "prefix": "TN",
+  "office": "Salem (South)",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-91",
+  "prefix": "TN",
+  "office": "Chidambaram",
+  "jurisdiction": "Cuddalore"
+ },
+ {
+  "code": "TN-91Z",
+  "prefix": "TN",
+  "office": "Virudhachalam",
+  "jurisdiction": "Cuddalore",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-92",
+  "prefix": "TN",
+  "office": "Thiruchendur",
+  "jurisdiction": "Thoothukudi"
+ },
+ {
+  "code": "TN-93",
+  "prefix": "TN",
+  "office": "Mettur",
+  "jurisdiction": "Salem"
+ },
+ {
+  "code": "TN-94",
+  "prefix": "TN",
+  "office": "Palani",
+  "jurisdiction": "Dindigul"
+ },
+ {
+  "code": "TN-94Z",
+  "prefix": "TN",
+  "office": "Oddanchatram",
+  "jurisdiction": "Dindigul",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-95",
+  "prefix": "TN",
+  "office": "Sivakasi",
+  "jurisdiction": "Virudhunagar"
+ },
+ {
+  "code": "TN-96",
+  "prefix": "TN",
+  "office": "Kovilpatti",
+  "jurisdiction": "Thoothukudi"
+ },
+ {
+  "code": "TN-97",
+  "prefix": "TN",
+  "office": "Arani",
+  "jurisdiction": "Tiruvannamalai"
+ },
+ {
+  "code": "TN-97Z",
+  "prefix": "TN",
+  "office": "Cheyyar",
+  "jurisdiction": "Tiruvannamalai",
+  "notes": "Unit office of the RTO"
+ },
+ {
+  "code": "TN-99",
+  "prefix": "TN",
+  "office": "Coimbatore (West)",
+  "jurisdiction": "Coimbatore"
+ }
+]

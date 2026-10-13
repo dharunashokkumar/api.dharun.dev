@@ -1,0 +1,26 @@
+[Unit]
+Description=api.dharun.dev: free, open APIs for Indian developers
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/dharun-api/current/api
+
+[Service]
+User=dharun-api
+Group=dharun-api
+WorkingDirectory=/opt/dharun-api/current
+EnvironmentFile=/etc/dharun-api/env
+Environment=DB_PATH=/opt/dharun-api/current/api.db
+# Lifetime request totals live here; systemd creates /var/lib/dharun-api for the service user.
+StateDirectory=dharun-api
+Environment=STATE_DIR=/var/lib/dharun-api
+ExecStart=/opt/dharun-api/current/api
+Restart=always
+RestartSec=3
+MemoryMax=192M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

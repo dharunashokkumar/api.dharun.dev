@@ -1,0 +1,1484 @@
+{
+ "logos": [
+  {
+   "id": "NSE:BAJAJ_AUTO",
+   "exchange": "NSE",
+   "ticker": "BAJAJ_AUTO",
+   "file": "nse/NSE_BAJAJ_AUTO.svg",
+   "matched": true,
+   "company_name": "Bajaj Auto Limited",
+   "sector": "Consumer Durables",
+   "industry": "Motor Vehicles",
+   "one_liner": "Bajaj Auto Limited operates in the Motor Vehicles industry within the Consumer Durables sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE917I01010",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 2700689847651,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Auto",
+     "symbol": "NSE:CNXAUTO"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty India Consumption",
+     "symbol": "NSE:CNXCONSUMPTION"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty India Manufacturing",
+     "symbol": "NSE:NIFTY_INDIA_MFG"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty EV & New Age Automotive",
+     "symbol": "NSE:NIFTY_EV"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Transportation & Logistics",
+     "symbol": "NSE:NIFTY_TRANS_LOGIS"
+    },
+    {
+     "name": "Nifty Mobility",
+     "symbol": "NSE:NIFTY_MOBILITY"
+    },
+    {
+     "name": "Nifty 50 Value 20",
+     "symbol": "NSE:NIFTY50_VALUE_20"
+    },
+    {
+     "name": "Nifty Dividend Opportunities 50",
+     "symbol": "NSE:CNXDIVIDOPPT"
+    },
+    {
+     "name": "Nifty Rural",
+     "symbol": "NSE:NIFTY_RURAL"
+    },
+    {
+     "name": "Nifty 500 Multicap India Manufacturing 50:30:20",
+     "symbol": "NSE:NIFTY_MULTI_MFG"
+    },
+    {
+     "name": "Nifty India New Age Consumption",
+     "symbol": "NSE:NIFTY_NEW_CONSUMP"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty 200 Quality 30",
+     "symbol": "NSE:NIFTY200QUALTY30"
+    },
+    {
+     "name": "Nifty 100 Quality 30",
+     "symbol": "NSE:NIFTYQUALITY30"
+    },
+    {
+     "name": "Nifty 500 Quality 50",
+     "symbol": "NSE:NIFTY500_QLTY50"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty 500 Multifactor MQVLv 50",
+     "symbol": "NSE:NIFTY500_MQVLV50"
+    },
+    {
+     "name": "Nifty 500 Low Volatility 50",
+     "symbol": "NSE:NIFTY500_LOWVOL50"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Alpha Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQL_30"
+    },
+    {
+     "name": "Nifty Alpha Quality Value Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQLV_30"
+    },
+    {
+     "name": "Nifty Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_QLTY_LV_30"
+    }
+   ],
+   "logo_id": "bajaj-auto",
+   "source": "tradingview",
+   "source_symbol": "NSE:BAJAJ_AUTO"
+  },
+  {
+   "id": "NSE:BIRET.RR",
+   "exchange": "NSE",
+   "ticker": "BIRET.RR",
+   "file": "nse/NSE_BIRET.RR.svg",
+   "matched": true,
+   "company_name": "Brookfield India Real Estate Trust",
+   "sector": "Finance",
+   "industry": "Real Estate Investment Trusts",
+   "one_liner": "Brookfield India Real Estate Trust operates in the Real Estate Investment Trusts industry within the Finance sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE0FDU25010",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 266341965034,
+   "security_type": "fund",
+   "security_subtype": "reit",
+   "typespecs": [
+    "reit"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": false,
+   "indexes": [],
+   "logo_id": "brookfield",
+   "source": "tradingview",
+   "source_symbol": "NSE:BIRET.RR"
+  },
+  {
+   "id": "NSE:HDFCBANK",
+   "exchange": "NSE",
+   "ticker": "HDFCBANK",
+   "file": "nse/NSE_HDFCBANK.svg",
+   "matched": true,
+   "company_name": "HDFC Bank Limited",
+   "sector": "Finance",
+   "industry": "Major Banks",
+   "one_liner": "HDFC Bank Limited operates in the Major Banks industry within the Finance sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE040A01034",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 12160604213650,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty Bank",
+     "symbol": "NSE:BANKNIFTY"
+    },
+    {
+     "name": "Nifty Financial Services",
+     "symbol": "NSE:CNXFINANCE"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Financial Services 25/50",
+     "symbol": "NSE:NIFTYFINSRV25_50"
+    },
+    {
+     "name": "Nifty Private Bank",
+     "symbol": "NSE:NIFTYPVTBANK"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Services Sector",
+     "symbol": "NSE:CNXSERVICE"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty Housing",
+     "symbol": "NSE:NIFTY_HOUSING"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Alpha Low Volatility 30",
+     "symbol": "NSE:NIFTYALPHALOWVOL"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty Top 10 Equal Weight Index",
+     "symbol": "NSE:NIFTY_TOP_10_EW"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    },
+    {
+     "name": "Nifty Alpha Quality Value Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQLV_30"
+    },
+    {
+     "name": "Nifty Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_QLTY_LV_30"
+    }
+   ],
+   "logo_id": "hdfc-bank",
+   "source": "tradingview",
+   "source_symbol": "NSE:HDFCBANK"
+  },
+  {
+   "id": "NSE:ICICIBANK",
+   "exchange": "NSE",
+   "ticker": "ICICIBANK",
+   "file": "nse/NSE_ICICIBANK.svg",
+   "matched": true,
+   "company_name": "ICICI Bank Limited",
+   "sector": "Finance",
+   "industry": "Regional Banks",
+   "one_liner": "ICICI Bank Limited operates in the Regional Banks industry within the Finance sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE090A01021",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 9422844080707,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty Bank",
+     "symbol": "NSE:BANKNIFTY"
+    },
+    {
+     "name": "Nifty Financial Services",
+     "symbol": "NSE:CNXFINANCE"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Financial Services 25/50",
+     "symbol": "NSE:NIFTYFINSRV25_50"
+    },
+    {
+     "name": "Nifty Private Bank",
+     "symbol": "NSE:NIFTYPVTBANK"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Services Sector",
+     "symbol": "NSE:CNXSERVICE"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty Housing",
+     "symbol": "NSE:NIFTY_HOUSING"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Alpha Low Volatility 30",
+     "symbol": "NSE:NIFTYALPHALOWVOL"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty Top 10 Equal Weight Index",
+     "symbol": "NSE:NIFTY_TOP_10_EW"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    },
+    {
+     "name": "Nifty Alpha Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQL_30"
+    },
+    {
+     "name": "Nifty Alpha Quality Value Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQLV_30"
+    },
+    {
+     "name": "Nifty Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_QLTY_LV_30"
+    }
+   ],
+   "logo_id": "icici-bank",
+   "source": "tradingview",
+   "source_symbol": "NSE:ICICIBANK"
+  },
+  {
+   "id": "NSE:INFY",
+   "exchange": "NSE",
+   "ticker": "INFY",
+   "file": "nse/NSE_INFY.svg",
+   "matched": true,
+   "company_name": "Infosys Limited",
+   "sector": "Technology Services",
+   "industry": "Information Technology Services",
+   "one_liner": "Infosys Limited operates in the Information Technology Services industry within the Technology Services sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE009A01021",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 4744876556928,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty IT",
+     "symbol": "NSE:CNXIT"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Services Sector",
+     "symbol": "NSE:CNXSERVICE"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty India Digital",
+     "symbol": "NSE:NIFTY_IND_DIGITAL"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Dividend Opportunities 50",
+     "symbol": "NSE:CNXDIVIDOPPT"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty 200 Quality 30",
+     "symbol": "NSE:NIFTY200QUALTY30"
+    },
+    {
+     "name": "Nifty Growth Sectors 15",
+     "symbol": "NSE:NI15"
+    },
+    {
+     "name": "Nifty Top 10 Equal Weight Index",
+     "symbol": "NSE:NIFTY_TOP_10_EW"
+    },
+    {
+     "name": "Nifty 100 Quality 30",
+     "symbol": "NSE:NIFTYQUALITY30"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    },
+    {
+     "name": "Nifty Alpha Quality Value Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQLV_30"
+    },
+    {
+     "name": "Nifty Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_QLTY_LV_30"
+    }
+   ],
+   "logo_id": "infosys",
+   "source": "tradingview",
+   "source_symbol": "NSE:INFY"
+  },
+  {
+   "id": "NSE:M&M",
+   "exchange": "NSE",
+   "ticker": "M&M",
+   "file": "nse/NSE_M&M.svg",
+   "matched": true,
+   "company_name": "Mahindra & Mahindra Ltd.",
+   "sector": "Consumer Durables",
+   "industry": "Motor Vehicles",
+   "one_liner": "Mahindra & Mahindra Ltd. operates in the Motor Vehicles industry within the Consumer Durables sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE101A01026",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 3858172981717,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Auto",
+     "symbol": "NSE:CNXAUTO"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty India Consumption",
+     "symbol": "NSE:CNXCONSUMPTION"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Alpha 50",
+     "symbol": "NSE:NIFTYALPHA50"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty India Manufacturing",
+     "symbol": "NSE:NIFTY_INDIA_MFG"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty EV & New Age Automotive",
+     "symbol": "NSE:NIFTY_EV"
+    },
+    {
+     "name": "Nifty 500 Momentum 50",
+     "symbol": "NSE:NIFTY500MOMENTM50"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Transportation & Logistics",
+     "symbol": "NSE:NIFTY_TRANS_LOGIS"
+    },
+    {
+     "name": "Nifty Mobility",
+     "symbol": "NSE:NIFTY_MOBILITY"
+    },
+    {
+     "name": "Nifty 50 Value 20",
+     "symbol": "NSE:NIFTY50_VALUE_20"
+    },
+    {
+     "name": "Nifty Rural",
+     "symbol": "NSE:NIFTY_RURAL"
+    },
+    {
+     "name": "Nifty 500 Multicap India Manufacturing 50:30:20",
+     "symbol": "NSE:NIFTY_MULTI_MFG"
+    },
+    {
+     "name": "Nifty India New Age Consumption",
+     "symbol": "NSE:NIFTY_NEW_CONSUMP"
+    },
+    {
+     "name": "Nifty Growth Sectors 15",
+     "symbol": "NSE:NI15"
+    },
+    {
+     "name": "Nifty 100 Alpha 30",
+     "symbol": "NSE:NIFTY100_ALPHA_30"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty India Select 5 Corporate Groups (MAATR)",
+     "symbol": "NSE:NIFTY_CORP_MAATR"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    }
+   ],
+   "logo_id": "mahindra",
+   "source": "tradingview",
+   "source_symbol": "NSE:M&M"
+  },
+  {
+   "id": "NSE:RELIANCE",
+   "exchange": "NSE",
+   "ticker": "RELIANCE",
+   "file": "nse/NSE_RELIANCE.svg",
+   "matched": true,
+   "company_name": "Reliance Industries Limited",
+   "sector": "Energy Minerals",
+   "industry": "Oil Refining/Marketing",
+   "one_liner": "Reliance Industries Limited operates in the Oil Refining/Marketing industry within the Energy Minerals sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE002A01018",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 18484771071653,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Infrastructure",
+     "symbol": "NSE:CNXINFRA"
+    },
+    {
+     "name": "Nifty Oil and Gas",
+     "symbol": "NSE:NIFTY_OIL_AND_GAS"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Energy",
+     "symbol": "NSE:CNXENERGY"
+    },
+    {
+     "name": "Nifty Commodities",
+     "symbol": "NSE:CNXCOMMODITIES"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty India Manufacturing",
+     "symbol": "NSE:NIFTY_INDIA_MFG"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty EV & New Age Automotive",
+     "symbol": "NSE:NIFTY_EV"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Mobility",
+     "symbol": "NSE:NIFTY_MOBILITY"
+    },
+    {
+     "name": "Nifty 50 Value 20",
+     "symbol": "NSE:NIFTY50_VALUE_20"
+    },
+    {
+     "name": "Nifty 500 Multicap India Manufacturing 50:30:20",
+     "symbol": "NSE:NIFTY_MULTI_MFG"
+    },
+    {
+     "name": "Nifty Alpha Low Volatility 30",
+     "symbol": "NSE:NIFTYALPHALOWVOL"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty 500 Multicap Infrastructure 50:30:20",
+     "symbol": "NSE:NIFTY_MULTI_INFRA"
+    },
+    {
+     "name": "Nifty Top 10 Equal Weight Index",
+     "symbol": "NSE:NIFTY_TOP_10_EW"
+    },
+    {
+     "name": "Nifty 100 Liquid 15",
+     "symbol": "NSE:LIX15"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty India Select 5 Corporate Groups (MAATR)",
+     "symbol": "NSE:NIFTY_CORP_MAATR"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    },
+    {
+     "name": "Nifty Alpha Quality Value Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQLV_30"
+    }
+   ],
+   "logo_id": "reliance-industrial-infrastructure",
+   "source": "tradingview",
+   "source_symbol": "NSE:RELIANCE"
+  },
+  {
+   "id": "NSE:SBIN",
+   "exchange": "NSE",
+   "ticker": "SBIN",
+   "file": "nse/NSE_SBIN.svg",
+   "matched": true,
+   "company_name": "State Bank of India",
+   "sector": "Finance",
+   "industry": "Regional Banks",
+   "one_liner": "State Bank of India operates in the Regional Banks industry within the Finance sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE062A01020",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 10262601725518,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty Bank",
+     "symbol": "NSE:BANKNIFTY"
+    },
+    {
+     "name": "Nifty Financial Services",
+     "symbol": "NSE:CNXFINANCE"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty PSU Bank",
+     "symbol": "NSE:CNXPSUBANK"
+    },
+    {
+     "name": "Nifty Financial Services 25/50",
+     "symbol": "NSE:NIFTYFINSRV25_50"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Services Sector",
+     "symbol": "NSE:CNXSERVICE"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Alpha 50",
+     "symbol": "NSE:NIFTYALPHA50"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty 200 Momentum 30",
+     "symbol": "NSE:NIFTY200MOMENTM30"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty Housing",
+     "symbol": "NSE:NIFTY_HOUSING"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Dividend Opportunities 50",
+     "symbol": "NSE:CNXDIVIDOPPT"
+    },
+    {
+     "name": "Nifty Rural",
+     "symbol": "NSE:NIFTY_RURAL"
+    },
+    {
+     "name": "Nifty 200 Alpha 30",
+     "symbol": "NSE:NIFTY200_ALPHA_30"
+    },
+    {
+     "name": "Nifty Alpha Low Volatility 30",
+     "symbol": "NSE:NIFTYALPHALOWVOL"
+    },
+    {
+     "name": "Nifty 500 Value 50",
+     "symbol": "NSE:NIFTY500_VALUE_50"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty 200 Value 30",
+     "symbol": "NSE:NIFTY200_VALUE_30"
+    },
+    {
+     "name": "Nifty 100 Liquid 15",
+     "symbol": "NSE:LIX15"
+    },
+    {
+     "name": "Nifty 100 Alpha 30",
+     "symbol": "NSE:NIFTY100_ALPHA_30"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    }
+   ],
+   "logo_id": "state-bank",
+   "source": "tradingview",
+   "source_symbol": "NSE:SBIN"
+  },
+  {
+   "id": "NSE:TATAPOWER",
+   "exchange": "NSE",
+   "ticker": "TATAPOWER",
+   "file": "nse/NSE_TATAPOWER.svg",
+   "matched": true,
+   "company_name": "Tata Power Company Limited",
+   "sector": "Utilities",
+   "industry": "Electric Utilities",
+   "one_liner": "Tata Power Company Limited operates in the Electric Utilities industry within the Utilities sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE245A01021",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 1448766954960,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Next 50",
+     "symbol": "NSE:NIFTYJR"
+    },
+    {
+     "name": "Nifty Infrastructure",
+     "symbol": "NSE:CNXINFRA"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Energy",
+     "symbol": "NSE:CNXENERGY"
+    },
+    {
+     "name": "Nifty India Consumption",
+     "symbol": "NSE:CNXCONSUMPTION"
+    },
+    {
+     "name": "Nifty Commodities",
+     "symbol": "NSE:CNXCOMMODITIES"
+    },
+    {
+     "name": "Nifty Services Sector",
+     "symbol": "NSE:CNXSERVICE"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty Housing",
+     "symbol": "NSE:NIFTY_HOUSING"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Rural",
+     "symbol": "NSE:NIFTY_RURAL"
+    },
+    {
+     "name": "Nifty Tata Group 25% Cap",
+     "symbol": "NSE:NIFTY_TATA_25_CAP"
+    },
+    {
+     "name": "Nifty 500 Multicap Infrastructure 50:30:20",
+     "symbol": "NSE:NIFTY_MULTI_INFRA"
+    },
+    {
+     "name": "Nifty High Beta 50",
+     "symbol": "NSE:NIFTY_HIGHBETA_50"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty 500 Low Volatility 50",
+     "symbol": "NSE:NIFTY500_LOWVOL50"
+    },
+    {
+     "name": "Nifty India Select 5 Corporate Groups (MAATR)",
+     "symbol": "NSE:NIFTY_CORP_MAATR"
+    }
+   ],
+   "logo_id": "tata",
+   "source": "tradingview",
+   "source_symbol": "NSE:TATAPOWER"
+  },
+  {
+   "id": "NSE:TATASTEEL",
+   "exchange": "NSE",
+   "ticker": "TATASTEEL",
+   "file": "nse/NSE_TATASTEEL.svg",
+   "matched": true,
+   "company_name": "Tata Steel Limited",
+   "sector": "Non-Energy Minerals",
+   "industry": "Steel",
+   "one_liner": "Tata Steel Limited operates in the Steel industry within the Non-Energy Minerals sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE081A01020",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 2665234130371,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty Metal",
+     "symbol": "NSE:CNXMETAL"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Commodities",
+     "symbol": "NSE:CNXCOMMODITIES"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty India Manufacturing",
+     "symbol": "NSE:NIFTY_INDIA_MFG"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty Housing",
+     "symbol": "NSE:NIFTY_HOUSING"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Dividend Opportunities 50",
+     "symbol": "NSE:CNXDIVIDOPPT"
+    },
+    {
+     "name": "Nifty 500 Multicap India Manufacturing 50:30:20",
+     "symbol": "NSE:NIFTY_MULTI_MFG"
+    },
+    {
+     "name": "Nifty 500 Value 50",
+     "symbol": "NSE:NIFTY500_VALUE_50"
+    },
+    {
+     "name": "Nifty Tata Group 25% Cap",
+     "symbol": "NSE:NIFTY_TATA_25_CAP"
+    },
+    {
+     "name": "Nifty 200 Value 30",
+     "symbol": "NSE:NIFTY200_VALUE_30"
+    },
+    {
+     "name": "Nifty High Beta 50",
+     "symbol": "NSE:NIFTY_HIGHBETA_50"
+    },
+    {
+     "name": "Nifty 100 Alpha 30",
+     "symbol": "NSE:NIFTY100_ALPHA_30"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty India Select 5 Corporate Groups (MAATR)",
+     "symbol": "NSE:NIFTY_CORP_MAATR"
+    }
+   ],
+   "logo_id": "tata",
+   "source": "tradingview",
+   "source_symbol": "NSE:TATASTEEL"
+  },
+  {
+   "id": "NSE:TCS",
+   "exchange": "NSE",
+   "ticker": "TCS",
+   "file": "nse/NSE_TCS.svg",
+   "matched": true,
+   "company_name": "Tata Consultancy Services Limited",
+   "sector": "Technology Services",
+   "industry": "Information Technology Services",
+   "one_liner": "Tata Consultancy Services Limited operates in the Information Technology Services industry within the Technology Services sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE467B01029",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 8855087836202,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty 50",
+     "symbol": "NSE:NIFTY"
+    },
+    {
+     "name": "Nifty 500",
+     "symbol": "NSE:CNX500"
+    },
+    {
+     "name": "Nifty IT",
+     "symbol": "NSE:CNXIT"
+    },
+    {
+     "name": "Nifty 200",
+     "symbol": "NSE:CNX200"
+    },
+    {
+     "name": "Nifty Services Sector",
+     "symbol": "NSE:CNXSERVICE"
+    },
+    {
+     "name": "Nifty 100",
+     "symbol": "NSE:CNX100"
+    },
+    {
+     "name": "Nifty Total Market",
+     "symbol": "NSE:NIFTY_TOTAL_MKT"
+    },
+    {
+     "name": "Nifty 500 MultiCap 50:25:25",
+     "symbol": "NSE:NIFTY500_MULTICAP"
+    },
+    {
+     "name": "Nifty India Digital",
+     "symbol": "NSE:NIFTY_IND_DIGITAL"
+    },
+    {
+     "name": "Nifty 50 Equal Weight",
+     "symbol": "NSE:NIFTY50EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty LargeMidCap 250",
+     "symbol": "NSE:NIFTY_LARGEMID250"
+    },
+    {
+     "name": "Nifty 500 Equal Weight",
+     "symbol": "NSE:NIFTY500_EW"
+    },
+    {
+     "name": "Nifty 100 Equal Weight",
+     "symbol": "NSE:NIFTY100EQUALWEIGHT"
+    },
+    {
+     "name": "Nifty Dividend Opportunities 50",
+     "symbol": "NSE:CNXDIVIDOPPT"
+    },
+    {
+     "name": "Nifty Tata Group 25% Cap",
+     "symbol": "NSE:NIFTY_TATA_25_CAP"
+    },
+    {
+     "name": "Nifty 100 Low Volatility 30",
+     "symbol": "NSE:NIFTY100LOWVOL30"
+    },
+    {
+     "name": "Nifty 200 Quality 30",
+     "symbol": "NSE:NIFTY200QUALTY30"
+    },
+    {
+     "name": "Nifty Growth Sectors 15",
+     "symbol": "NSE:NI15"
+    },
+    {
+     "name": "Nifty Top 10 Equal Weight Index",
+     "symbol": "NSE:NIFTY_TOP_10_EW"
+    },
+    {
+     "name": "Nifty 100 Quality 30",
+     "symbol": "NSE:NIFTYQUALITY30"
+    },
+    {
+     "name": "Nifty 500 Quality 50",
+     "symbol": "NSE:NIFTY500_QLTY50"
+    },
+    {
+     "name": "Nifty 500 LargeMidSmall Equal-Cap",
+     "symbol": "NSE:NIFTY500_LMS_EQL"
+    },
+    {
+     "name": "Nifty 500 Multifactor MQVLv 50",
+     "symbol": "NSE:NIFTY500_MQVLV50"
+    },
+    {
+     "name": "Nifty 500 Low Volatility 50",
+     "symbol": "NSE:NIFTY500_LOWVOL50"
+    },
+    {
+     "name": "Nifty Top 20 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_20_EW"
+    },
+    {
+     "name": "Nifty India Select 5 Corporate Groups (MAATR)",
+     "symbol": "NSE:NIFTY_CORP_MAATR"
+    },
+    {
+     "name": "Nifty Low Volatility 50",
+     "symbol": "NSE:NIFTY_LOW_VOL_50"
+    },
+    {
+     "name": "Nifty Top 15 Equal Weight",
+     "symbol": "NSE:NIFTY_TOP_15_EW"
+    },
+    {
+     "name": "Nifty Alpha Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQL_30"
+    },
+    {
+     "name": "Nifty Alpha Quality Value Low-Volatility 30",
+     "symbol": "NSE:NIFTY_AQLV_30"
+    },
+    {
+     "name": "Nifty Quality Low-Volatility 30",
+     "symbol": "NSE:NIFTY_QLTY_LV_30"
+    }
+   ],
+   "logo_id": "tata",
+   "source": "tradingview",
+   "source_symbol": "NSE:TCS"
+  },
+  {
+   "id": "BSE:7SEASL",
+   "exchange": "BSE",
+   "ticker": "7SEASL",
+   "file": "bse/BSE_7SEASL.svg",
+   "matched": true,
+   "company_name": "7Seas Entertainment Limited",
+   "sector": "Technology Services",
+   "industry": "Packaged Software",
+   "one_liner": "7Seas Entertainment Limited operates in the Packaged Software industry within the Technology Services sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE454F01010",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 1856317946,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": false,
+   "indexes": [],
+   "logo_id": "7seas-entertainment-limited",
+   "source": "tradingview",
+   "source_symbol": "BSE:7SEASL"
+  },
+  {
+   "id": "BSE:A1L",
+   "exchange": "BSE",
+   "ticker": "A1L",
+   "file": "bse/BSE_A1L.svg",
+   "matched": true,
+   "company_name": "A-1 Limited",
+   "sector": "Process Industries",
+   "industry": "Chemicals: Specialty",
+   "one_liner": "A-1 Limited operates in the Chemicals: Specialty industry within the Process Industries sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE911Z01025",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 5239400158,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": false,
+   "indexes": [],
+   "logo_id": "a-1-limited",
+   "source": "tradingview",
+   "source_symbol": "BSE:A1L"
+  },
+  {
+   "id": "BSE:AAIL",
+   "exchange": "BSE",
+   "ticker": "AAIL",
+   "file": "bse/BSE_AAIL.svg",
+   "matched": true,
+   "company_name": "Akar Auto Industries Ltd",
+   "sector": "Consumer Durables",
+   "industry": "Tools & Hardware",
+   "one_liner": "Akar Auto Industries Ltd operates in the Tools & Hardware industry within the Consumer Durables sector.",
+   "one_liner_source": "derived_from_sector_industry",
+   "isin": "INE864E01021",
+   "country": "India",
+   "currency": "INR",
+   "market_cap": 949776379,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "typespecs": [
+    "common"
+   ],
+   "is_index_symbol": false,
+   "is_index_constituent": false,
+   "indexes": [],
+   "logo_id": "akar-auto-industries-limited",
+   "source": "tradingview",
+   "source_symbol": "BSE:AAIL"
+  }
+ ]
+}

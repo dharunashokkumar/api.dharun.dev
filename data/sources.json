@@ -1,0 +1,54 @@
+{
+  "holidays": {
+    "name": "Indian holiday lists",
+    "publisher": "Reserve Bank of India; Department of Personnel and Training; National Stock Exchange of India",
+    "url": "https://www.rbi.org.in/Scripts/HolidayMatrixDisplay.aspx",
+    "licence": "Official notifications, compiled into one list",
+    "retrieved": "2026-10-13",
+    "attribution": "Bank holidays from the Reserve Bank of India holiday matrix, central government holidays from Department of Personnel and Training memoranda, trading holidays from the National Stock Exchange of India.",
+    "notes": "Central government lists are typed in by hand each year. State government holiday lists are not included."
+  },
+  "ifsc": {
+    "name": "IFSC dataset",
+    "publisher": "Razorpay, compiled from Reserve Bank of India and NPCI lists",
+    "url": "https://github.com/razorpay/ifsc/releases/tag/v2.0.62",
+    "licence": "Public domain (dataset), as stated by the publisher",
+    "licenceUrl": "https://github.com/razorpay/ifsc#license",
+    "version": "v2.0.62",
+    "retrieved": "2026-10-13",
+    "sha256": "f03870a0ecb06f6c7606c90e4743fc63f9111f088a7175b871c2516bdb8f468e",
+    "attribution": "IFSC data from the open razorpay/ifsc dataset, compiled from Reserve Bank of India and NPCI publications."
+  },
+  "logos": {
+    "name": "Indian listed company logos",
+    "publisher": "api.dharun.dev",
+    "url": "https://github.com/dharunashokkumar/api.dharun.dev",
+    "licence": "Logos are trademarks of the companies they identify",
+    "retrieved": "2026-04-29",
+    "attribution": "Company logos and trademarks belong to their respective owners.",
+    "notes": "Compiled dataset; the README records where the files and company details were collected from."
+  },
+  "pincode": {
+    "name": "All India Pincode Directory",
+    "publisher": "Department of Posts, Ministry of Communications, Government of India",
+    "url": "https://www.data.gov.in/resource/all-india-pincode-directory-till-last-month",
+    "licence": "Government Open Data License - India (GODL)",
+    "licenceUrl": "https://www.data.gov.in/Godl",
+    "version": "23760720 bytes",
+    "retrieved": "2026-10-13",
+    "sha256": "84af12fa29adddedfa9addcf46546000d89d2e2899b2993dc88050fafc8861e2",
+    "attribution": "Contains data from the All India Pincode Directory, Department of Posts, published on data.gov.in under the Government Open Data License - India.",
+    "notes": "The portal refuses scripted downloads, so this copy came from the mirror github.com/dropdevrahul/pincodes-india (commit d817d3e652e8). Its size matches the file size the portal lists for the official resource, last changed there on 2026-08-10."
+  },
+  "rto": {
+    "name": "List of Regional Transport Office districts in India",
+    "publisher": "Wikipedia contributors",
+    "url": "https://en.wikipedia.org/w/index.php?title=List_of_Regional_Transport_Office_districts_in_India&oldid=1377425763",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "version": "revision 1377425763",
+    "retrieved": "2026-10-13",
+    "sha256": "8b53c0453054067f237763ad32887bda9f069bfb966a81f40721ed0c0d4f9f86",
+    "attribution": "RTO codes adapted from the Wikipedia article \"List of Regional Transport Office districts in India\", licensed CC BY-SA 4.0. This dataset is shared under the same licence."
+  }
+}

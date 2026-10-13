@@ -1,9 +1,9 @@
 {
-  "uid": "logos-api",
-  "title": "Logos API",
-  "description": "Traffic, errors, latency and memory of the Indian Listed Company Logos API (job logos-api).",
+  "uid": "dharun-api",
+  "title": "api.dharun.dev",
+  "description": "Requests served, per API, plus errors, speed and memory (Prometheus job dharun-api).",
   "tags": [
-    "logos-api"
+    "dharun-api"
   ],
   "timezone": "browser",
   "schemaVersion": 39,
@@ -27,13 +27,136 @@
     {
       "id": 1,
       "type": "stat",
-      "title": "Version",
+      "title": "Served, all time",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
         "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "none",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(api_lifetime_requests_total{job=\"dharun-api\"})",
+          "legendFormat": "",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Served in this time range",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "none",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(api_http_requests_total{job=\"dharun-api\",route!~\"health|preflight\"}[$__range]))",
+          "legendFormat": "",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Unknown logo symbols in range",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "none",
+        "graphMode": "none"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(increase(api_logo_requests_total{job=\"dharun-api\",result!=\"found\"}[$__range]))",
+          "legendFormat": "",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Version",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 16,
         "y": 0,
         "w": 4,
         "h": 4
@@ -57,128 +180,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "logos_build_info{job=\"logos-api\"}",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "legendFormat": "{{version}}"
-        }
-      ]
-    },
-    {
-      "id": 2,
-      "type": "stat",
-      "title": "Requests (range)",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "x": 4,
-        "y": 0,
-        "w": 5,
-        "h": 4
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ]
-        },
-        "colorMode": "none",
-        "graphMode": "none"
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "expr": "sum(increase(logos_http_requests_total{job=\"logos-api\",route!=\"health\"}[$__range]))",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          }
-        }
-      ]
-    },
-    {
-      "id": 3,
-      "type": "stat",
-      "title": "Logo lookups (range)",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "x": 9,
-        "y": 0,
-        "w": 5,
-        "h": 4
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ]
-        },
-        "colorMode": "none",
-        "graphMode": "none"
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "expr": "sum(increase(logos_logo_requests_total{job=\"logos-api\"}[$__range]))",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          }
-        }
-      ]
-    },
-    {
-      "id": 4,
-      "type": "stat",
-      "title": "Unknown symbols (range)",
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "gridPos": {
-        "x": 14,
-        "y": 0,
-        "w": 5,
-        "h": 4
-      },
-      "fieldConfig": {
-        "defaults": {
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ]
-        },
-        "colorMode": "none",
-        "graphMode": "none"
-      },
-      "targets": [
-        {
-          "refId": "A",
-          "expr": "sum(increase(logos_logo_requests_total{job=\"logos-api\",result!=\"found\"}[$__range]))",
+          "expr": "api_build_info{job=\"dharun-api\"}",
+          "legendFormat": "{{version}}",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
@@ -195,9 +198,9 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "x": 19,
+        "x": 20,
         "y": 0,
-        "w": 5,
+        "w": 4,
         "h": 4
       },
       "fieldConfig": {
@@ -218,7 +221,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "time() - process_start_time_seconds{job=\"logos-api\"}",
+          "expr": "time() - process_start_time_seconds{job=\"dharun-api\"}",
+          "legendFormat": "",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
@@ -228,8 +232,8 @@
     },
     {
       "id": 6,
-      "type": "timeseries",
-      "title": "Requests per second by route",
+      "type": "bargauge",
+      "title": "Served all time, by API",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -238,44 +242,42 @@
         "x": 0,
         "y": 4,
         "w": 12,
-        "h": 8
+        "h": 9
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "reqps",
-          "custom": {
-            "fillOpacity": 10,
-            "showPoints": "never"
-          },
+          "unit": "short",
           "min": 0
         },
         "overrides": []
       },
       "options": {
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom"
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
         },
-        "tooltip": {
-          "mode": "multi"
-        }
+        "showUnfilled": true
       },
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (route) (rate(logos_http_requests_total{job=\"logos-api\",route!=\"health\"}[5m]))",
+          "expr": "sort_desc(api_lifetime_requests_total{job=\"dharun-api\"})",
           "legendFormat": "{{route}}",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
-          }
+          },
+          "instant": true
         }
       ]
     },
     {
       "id": 7,
       "type": "timeseries",
-      "title": "Responses by status",
+      "title": "Requests per second by API",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -284,16 +286,16 @@
         "x": 12,
         "y": 4,
         "w": 12,
-        "h": 8
+        "h": 9
       },
       "fieldConfig": {
         "defaults": {
           "unit": "reqps",
+          "min": 0,
           "custom": {
             "fillOpacity": 10,
             "showPoints": "never"
-          },
-          "min": 0
+          }
         },
         "overrides": []
       },
@@ -309,8 +311,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (status) (rate(logos_http_requests_total{job=\"logos-api\",route!=\"health\"}[5m]))",
-          "legendFormat": "{{status}}",
+          "expr": "sum by (route) (rate(api_http_requests_total{job=\"dharun-api\",route!~\"health|preflight\"}[5m]))",
+          "legendFormat": "{{route}}",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
@@ -321,25 +323,25 @@
     {
       "id": 8,
       "type": "timeseries",
-      "title": "p95 response time by route",
+      "title": "Responses by status",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
         "x": 0,
-        "y": 12,
+        "y": 13,
         "w": 12,
         "h": 8
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "s",
+          "unit": "reqps",
+          "min": 0,
           "custom": {
             "fillOpacity": 10,
             "showPoints": "never"
-          },
-          "min": 0
+          }
         },
         "overrides": []
       },
@@ -355,8 +357,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "histogram_quantile(0.95, sum by (le, route) (rate(logos_http_request_duration_seconds_bucket{job=\"logos-api\",route!=\"health\"}[5m])))",
-          "legendFormat": "{{route}}",
+          "expr": "sum by (status) (rate(api_http_requests_total{job=\"dharun-api\",route!~\"health|preflight\"}[5m]))",
+          "legendFormat": "{{status}}",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
@@ -367,25 +369,25 @@
     {
       "id": 9,
       "type": "timeseries",
-      "title": "Logo lookups by format and outcome",
+      "title": "95th percentile response time by API",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
         "x": 12,
-        "y": 12,
+        "y": 13,
         "w": 12,
         "h": 8
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "reqps",
+          "unit": "s",
+          "min": 0,
           "custom": {
             "fillOpacity": 10,
             "showPoints": "never"
-          },
-          "min": 0
+          }
         },
         "overrides": []
       },
@@ -401,8 +403,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (format, result) (rate(logos_logo_requests_total{job=\"logos-api\"}[5m]))",
-          "legendFormat": "{{format}} {{result}}",
+          "expr": "histogram_quantile(0.95, sum by (le, route) (rate(api_http_request_duration_seconds_bucket{job=\"dharun-api\",route!~\"health|preflight\"}[5m])))",
+          "legendFormat": "{{route}}",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
@@ -413,25 +415,25 @@
     {
       "id": 10,
       "type": "timeseries",
-      "title": "Memory",
+      "title": "Logo lookups by format and outcome",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
         "x": 0,
-        "y": 20,
-        "w": 12,
+        "y": 21,
+        "w": 8,
         "h": 7
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "bytes",
+          "unit": "reqps",
+          "min": 0,
           "custom": {
             "fillOpacity": 10,
             "showPoints": "never"
-          },
-          "min": 0
+          }
         },
         "overrides": []
       },
@@ -447,17 +449,8 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "process_resident_memory_bytes{job=\"logos-api\"}",
-          "legendFormat": "resident",
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          }
-        },
-        {
-          "refId": "B",
-          "expr": "nodejs_heap_used_bytes{job=\"logos-api\"}",
-          "legendFormat": "JS heap",
+          "expr": "sum by (format, result) (rate(api_logo_requests_total{job=\"dharun-api\"}[5m]))",
+          "legendFormat": "{{format}} {{result}}",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
@@ -468,25 +461,25 @@
     {
       "id": 11,
       "type": "timeseries",
-      "title": "Rate-limited requests per second",
+      "title": "Memory",
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
       },
       "gridPos": {
-        "x": 12,
-        "y": 20,
-        "w": 12,
+        "x": 8,
+        "y": 21,
+        "w": 8,
         "h": 7
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "reqps",
+          "unit": "bytes",
+          "min": 0,
           "custom": {
             "fillOpacity": 10,
             "showPoints": "never"
-          },
-          "min": 0
+          }
         },
         "overrides": []
       },
@@ -502,12 +495,111 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "rate(logos_rate_limited_total{job=\"logos-api\"}[5m])",
+          "expr": "process_resident_memory_bytes{job=\"dharun-api\"}",
+          "legendFormat": "resident",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        },
+        {
+          "refId": "B",
+          "expr": "go_memstats_heap_alloc_bytes{job=\"dharun-api\"}",
+          "legendFormat": "Go heap",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "timeseries",
+      "title": "Rate-limited requests per second",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 21,
+        "w": 8,
+        "h": 7
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "min": 0,
+          "custom": {
+            "fillOpacity": 10,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "rate(api_rate_limited_total{job=\"dharun-api\"}[5m])",
           "legendFormat": "rejected",
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           }
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "bargauge",
+      "title": "Records loaded, by dataset",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 28,
+        "w": 24,
+        "h": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "showUnfilled": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "api_dataset_records{job=\"dharun-api\"}",
+          "legendFormat": "{{dataset}}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "instant": true
         }
       ]
     }
