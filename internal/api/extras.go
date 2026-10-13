@@ -18,6 +18,11 @@ func (s *Server) registerMore() {
 	s.handle("working_day", costLight, "GET /v1/working-days/{date}", s.handleWorkingDay)
 	s.handle("working_days", costLight, "GET /v1/working-days", s.handleWorkingDays)
 	s.handle("market_status", costLight, "GET /v1/market/status", s.handleMarketStatus)
+	s.handle("qr", costLight, "GET /v1/qr", s.handleQR)
+	s.handle("qr", costLight, "POST /v1/qr", s.handleQR)
+	s.handle("upi_qr", costLight, "GET /v1/upi-qr", s.handleUPIQR)
+	s.handle("barcode", costLight, "GET /v1/barcode/{type}", s.handleBarcode)
+	s.handle("barcode", costLight, "POST /v1/barcode/{type}", s.handleBarcode)
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

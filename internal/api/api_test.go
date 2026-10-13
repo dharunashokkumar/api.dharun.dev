@@ -135,6 +135,14 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 	for _, group := range catalog {
 		for _, e := range group.Endpoints {
 			documented["GET "+e.Path] = true
+			if e.Post {
+				documented["POST "+e.Path] = true
+				if e.ExampleBody == "" || e.Body == "" {
+					t.Errorf("%s takes POST but documents no body or example body", e.Path)
+				} else if posted := request(t, http.MethodPost, e.Example, e.ExampleBody, "Content-Type", "text/plain"); posted.status != http.StatusOK {
+					t.Errorf("POST %s = %d: %s", e.Example, posted.status, clip(string(posted.body), 200))
+				}
+			}
 			got := expectStatus(t, e.Example, http.StatusOK)
 			if e.Image {
 				if !strings.HasPrefix(got.header.Get("Content-Type"), "image/") {
@@ -156,7 +164,7 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 	}
 	// Every data route must be documented, or it would be invisible to docs, OpenAPI and llms.txt.
 	for pattern := range testServer.routes {
-		if strings.HasPrefix(pattern, "GET /v1/") && !documented[pattern] {
+		if (strings.HasPrefix(pattern, "GET /v1/") || strings.HasPrefix(pattern, "POST /v1/")) && !documented[pattern] {
 			t.Errorf("route %q is not in the catalog", pattern)
 		}
 	}

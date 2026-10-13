@@ -252,6 +252,51 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:      "codes",
+		Title:   "QR codes and barcodes",
+		Tagline: "QR codes, UPI payment QR codes and barcodes as SVG or PNG.",
+		Intro:   "Generates codes; it does not read them. What you encode is never logged or kept, and the images are not cached by shared caches.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/qr", Summary: "QR code for any text", Image: true, Post: true, Private: true,
+				Doc:         "Returns the image itself. Text up to about 2,900 bytes at error correction L.",
+				Body:        "The text to encode.",
+				Example:     "/v1/qr?text=https://api.dharun.dev&format=png&size=256",
+				ExampleBody: "https://api.dharun.dev",
+				Params: append([]param{
+					{Name: "text", In: "query", Type: "string", Doc: "Text to encode (or POST it)."},
+					{Name: "ecc", In: "query", Type: "string", Enum: []string{"L", "M", "Q", "H"}, Doc: "Error correction: how much damage the code survives. Default M."},
+				}, codeImageParams(4)...),
+			},
+			{
+				Path: "/v1/upi-qr", Summary: "UPI payment QR code", Image: true, Private: true,
+				Doc:     "A QR code any UPI app can scan to pay, built to NPCI's upi://pay link format. format=json returns the link instead of the image. Nothing is checked with a bank.",
+				Example: "/v1/upi-qr?pa=shop@okaxis&pn=Sri%20Murugan%20Stores&am=250&tn=Order%2042",
+				Params: append([]param{
+					{Name: "pa", In: "query", Type: "string", Required: true, Doc: "Payee UPI ID, such as shop@okaxis."},
+					{Name: "pn", In: "query", Type: "string", Doc: "Payee name shown in the app."},
+					{Name: "am", In: "query", Type: "string", Doc: "Amount in rupees, up to two decimals. Leave out to let the payer type it."},
+					{Name: "tn", In: "query", Type: "string", Doc: "Note shown with the payment, up to 80 characters."},
+					{Name: "tr", In: "query", Type: "string", Doc: "Your reference for the transaction."},
+					{Name: "mc", In: "query", Type: "string", Doc: "Merchant category code, four digits."},
+				}, codeImageParams(4)...),
+			},
+			{
+				Path: "/v1/barcode/{type}", Summary: "Barcode", Image: true, Post: true, Private: true,
+				Doc:         "Linear barcodes (code128, code39, code93, ean13, ean8, itf, codabar) and 2D codes (datamatrix, pdf417, aztec). Linear codes are sized with scale and height, 2D codes with size. No human-readable text is printed under the bars.",
+				Body:        "The text to encode.",
+				Example:     "/v1/barcode/ean13?text=890123456789",
+				ExampleBody: "890123456789",
+				Params: append([]param{
+					{Name: "type", In: "path", Type: "string", Required: true, Enum: barcodeKindIDs(), Doc: "Kind of barcode."},
+					{Name: "text", In: "query", Type: "string", Doc: "Text to encode (or POST it)."},
+					{Name: "scale", In: "query", Type: "integer", Doc: "Linear codes: pixels per bar module, 1 to 10. Default 2."},
+					{Name: "height", In: "query", Type: "integer", Doc: "Linear codes: bar height in pixels, 10 to 600. Default 80."},
+				}, codeImageParams(0)...),
+			},
+		},
+	},
+	{
 		ID:      "words",
 		Title:   "Number to words",
 		Tagline: "Numbers and rupee amounts in words, the Indian way.",
@@ -298,4 +343,19 @@ var catalog = []apiGroup{
 			},
 		},
 	},
+}
+
+// codeImageParams are the drawing options every code endpoint takes.
+func codeImageParams(margin int) []param {
+	marginDoc := "Light border, in modules, 0 to 16. The default depends on the code."
+	if margin > 0 {
+		marginDoc = "Light border (quiet zone), in modules, 0 to 16. Default " + strconv.Itoa(margin) + "."
+	}
+	return []param{
+		{Name: "format", In: "query", Type: "string", Enum: []string{"svg", "png"}, Doc: "Image format. Default svg."},
+		{Name: "size", In: "query", Type: "integer", Doc: "2D codes: width in pixels to stay within, 32 to 2048. Default 256."},
+		{Name: "margin", In: "query", Type: "integer", Doc: marginDoc},
+		{Name: "fg", In: "query", Type: "string", Doc: "Dark colour, hex such as 000000. Default black."},
+		{Name: "bg", In: "query", Type: "string", Doc: "Light colour, hex, or transparent. Default white."},
+	}
 }
