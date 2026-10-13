@@ -119,6 +119,9 @@ const gstinAlphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 // gstinCheckChar computes the 15th character from the first 14: a base-36 weighted
 // sum (weights 1, 2, 1, 2 ...) where each product contributes quotient plus remainder.
+// GSTINCheckChar is the check character for the first 14 characters of a GSTIN.
+func GSTINCheckChar(first14 string) byte { return gstinCheckChar(first14) }
+
 func gstinCheckChar(first14 string) byte {
 	sum := 0
 	for i := 0; i < len(first14); i++ {
