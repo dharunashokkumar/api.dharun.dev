@@ -9,6 +9,8 @@ import (
 // things loaded on first use and dropped when a dataset changes.
 type extras struct {
 	ip atomic.Pointer[ipReaders]
+	// dns answers DNS queries; nil means the real network. Tests set it.
+	dns dnsExchanger
 }
 
 // datasetChanged drops whatever was derived from a dataset that was just replaced.
@@ -42,6 +44,8 @@ func (s *Server) registerMore() {
 	s.handle("airport_search", costLight, "GET /v1/airports", s.handleAirportSearch)
 	s.handle("ip", costLight, "GET /v1/ip/{address}", s.handleIP)
 	s.handle("ip", costLight, "GET /v1/ip", s.handleMyIP)
+	s.handle("email", costHeavy, "GET /v1/email/{address}", s.handleEmail)
+	s.handle("dns", costHeavy, "GET /v1/dns/{name}", s.handleDNS)
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

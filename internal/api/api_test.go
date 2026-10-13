@@ -50,6 +50,7 @@ func TestMain(m *testing.M) {
 	testLive = filepath.Join(dir, "live")
 	buildIPDataset(panicker{}, testLive)
 	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true})
+	testServer.extras.dns = fakeDNS{} // tests never touch the network
 	testHTTP = httptest.NewServer(testServer)
 
 	code := m.Run()

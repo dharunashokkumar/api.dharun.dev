@@ -64,7 +64,7 @@ check /v1/airports/MAA application/json '"VOMM"'
 
 # Every dataset the repository holds must be in the bundle and served from its seed.
 health="$(curl -fsS "$base/healthz")"
-for dataset in holidays-bank holidays-central holidays-market ifsc logos pincode rto thirukkural airports; do
+for dataset in holidays-bank holidays-central holidays-market ifsc logos pincode rto thirukkural airports disposable-email; do
   case "$health" in
     *"\"$dataset\":{\"copy\":\"seed\""*) ;;
     *) echo "FAIL: /healthz does not serve $dataset from the seed: $health" >&2; exit 1 ;;

@@ -312,6 +312,36 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "email",
+		Title:     "Email checks",
+		Tagline:   "Is an email address well formed, throwaway, and able to receive mail.",
+		Intro:     "Checks the form of an address, whether its domain hands out throwaway mailboxes, whether it is a free provider or a role account such as support@, and whether the domain has mail servers. No mail server is contacted and no mailbox is tried. Addresses are never written to the request log. Counts as 10 requests against the rate limit.",
+		SourceKey: "disposable-email",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/email/{address}", Summary: "Check an email address", Private: true,
+				Example: "/v1/email/someone@mailinator.com",
+				Params:  []param{{Name: "address", In: "path", Type: "string", Required: true, Doc: "The email address."}},
+			},
+		},
+	},
+	{
+		ID:      "dns",
+		Title:   "DNS check",
+		Tagline: "A domain's DNS records at four public resolvers at once.",
+		Intro:   "Asks Cloudflare, Google, Quad9 and OpenDNS for the same record and says whether they agree: useful when a change is still spreading. Counts as 10 requests against the rate limit.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/dns/{name}", Summary: "Look up DNS records",
+				Example: "/v1/dns/dharun.dev?type=MX",
+				Params: []param{
+					{Name: "name", In: "path", Type: "string", Required: true, Doc: "Domain name (Indian-script names are accepted), or an IP address for PTR."},
+					{Name: "type", In: "query", Type: "string", Enum: dnsTypeNames(), Doc: "Record type. Default A."},
+				},
+			},
+		},
+	},
+	{
 		ID:        "airports",
 		Title:     "Airports",
 		Tagline:   "Airport codes to airports, and airports by city.",

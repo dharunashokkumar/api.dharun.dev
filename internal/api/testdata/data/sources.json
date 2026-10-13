@@ -10,6 +10,17 @@
     "sha256": "61c82a74de991e138dc57e1fbc72b6f47da30db9954be4e414452e896f7d40d8",
     "attribution": "Airport data from OurAirports, released into the public domain."
   },
+  "disposable-email": {
+    "name": "Disposable email domains",
+    "publisher": "github.com/disposable-email-domains/disposable-email-domains contributors",
+    "url": "https://github.com/disposable-email-domains/disposable-email-domains",
+    "licence": "CC0 1.0",
+    "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "version": "bf235abe3d82",
+    "retrieved": "2026-10-13",
+    "sha256": "bf235abe3d827cc9510a5cb4faedb0e1a7c5df88b7ad9437fd03d3770d826e1e",
+    "attribution": "Disposable domain list from the disposable-email-domains project (CC0)."
+  },
   "holidays-bank": {
     "name": "Bank holidays in India",
     "publisher": "Reserve Bank of India",
