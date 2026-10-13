@@ -297,6 +297,44 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "thirukkural",
+		Title:     "Thirukkural",
+		Tagline:   "All 1,330 kurals in Tamil with English translations.",
+		Intro:     "Thiruvalluvar's Thirukkural with a transliteration, G.U. Pope's verse translation (1886) and the prose translation by W.H. Drew and John Lazarus (1840, 1885), organised into 3 paals, 13 iyals and 133 chapters. Only text that is free to share is served; modern commentaries are added once their release into the public domain is confirmed.",
+		SourceKey: "thirukkural",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/thirukkural/{number}", Summary: "A kural by number",
+				Example: "/v1/thirukkural/1",
+				Params:  []param{{Name: "number", In: "path", Type: "integer", Required: true, Doc: "1 to 1330."}},
+			},
+			{
+				Path: "/v1/thirukkural", Summary: "Search kurals",
+				Doc:     "Finds kurals containing the text, in Tamil, the transliteration or either translation; or lists a chapter or a paal.",
+				Example: "/v1/thirukkural?q=rain",
+				Params: []param{
+					{Name: "q", In: "query", Type: "string", Doc: "Text to find, 2 or more characters, Tamil or English."},
+					{Name: "chapter", In: "query", Type: "integer", Doc: "Chapter (அதிகாரம்), 1 to 133."},
+					{Name: "paal", In: "query", Type: "integer", Doc: "1 virtue (அறத்துப்பால்), 2 wealth (பொருட்பால்), 3 love (காமத்துப்பால்)."},
+					limitParam, offsetParam,
+				},
+			},
+			{
+				Path: "/v1/thirukkural/today", Summary: "Kural of the day",
+				Doc:     "The same kural for everyone on a day in India, a different one the next day.",
+				Example: "/v1/thirukkural/today?date=2026-10-13",
+				Params:  []param{{Name: "date", In: "query", Type: "string", Doc: "A date, YYYY-MM-DD. Default today in India."}},
+			},
+			{Path: "/v1/thirukkural/random", Summary: "A random kural", Example: "/v1/thirukkural/random"},
+			{Path: "/v1/thirukkural/chapters", Summary: "All 133 chapters", Example: "/v1/thirukkural/chapters"},
+			{
+				Path: "/v1/thirukkural/chapters/{number}", Summary: "One chapter",
+				Example: "/v1/thirukkural/chapters/2",
+				Params:  []param{{Name: "number", In: "path", Type: "integer", Required: true, Doc: "1 to 133."}},
+			},
+		},
+	},
+	{
 		ID:      "words",
 		Title:   "Number to words",
 		Tagline: "Numbers and rupee amounts in words, the Indian way.",

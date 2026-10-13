@@ -76,6 +76,25 @@ type Spec struct {
 	// NoSeed marks a dataset that is too large for the repository: it exists only as a
 	// copy a server fetched.
 	NoSeed bool
+	// Fixed marks a text that never changes and is small, such as the Thirukkural. Tests
+	// build it from the repository's own data/ instead of a cut-down fixture.
+	Fixed bool
+}
+
+// FixtureNames and FixedNames split the datasets with a seed by how tests build them.
+func FixtureNames() []string { return seedNames(false) }
+
+// FixedNames lists the datasets tests build from the repository's data/.
+func FixedNames() []string { return seedNames(true) }
+
+func seedNames(fixed bool) []string {
+	var names []string
+	for _, spec := range Specs() {
+		if !spec.NoSeed && spec.Fixed == fixed {
+			names = append(names, spec.Name)
+		}
+	}
+	return names
 }
 
 var specs []*Spec

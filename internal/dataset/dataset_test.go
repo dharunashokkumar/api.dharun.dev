@@ -27,7 +27,12 @@ func mustSpec(t *testing.T, name string) *Spec {
 
 func TestBuildSeedsFromFixtures(t *testing.T) {
 	out := t.TempDir()
-	built, warnings, err := BuildSeeds(SeedOptions{DataDir: fixtureData, LogosDir: fixtureLogos, OutDir: out, Strict: true})
+	built, warnings, err := BuildSeeds(SeedOptions{DataDir: fixtureData, LogosDir: fixtureLogos, OutDir: out, Strict: true, Only: FixtureNames()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixed, _, err := BuildSeeds(SeedOptions{DataDir: filepath.Join("..", "..", "data"), OutDir: out, Strict: true, Only: FixedNames()})
+	built = append(built, fixed...)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,6 +48,7 @@ func TestBuildSeedsFromFixtures(t *testing.T) {
 		"holidays-bank":    {"holidays": 10, "year:2026": 10},
 		"holidays-market":  {"holidays": 10},
 		"holidays-central": {"holidays": 10},
+		"thirukkural":      {"kurals": 1330, "chapters": 133},
 	} {
 		for kind, want := range minimum {
 			if got := counts[dataset][kind]; got < want {

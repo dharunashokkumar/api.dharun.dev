@@ -35,6 +35,13 @@ func TestMain(m *testing.M) {
 	testSeed = filepath.Join(dir, "seed")
 	if _, _, err := dataset.BuildSeeds(dataset.SeedOptions{
 		DataDir: filepath.Join("testdata", "data"), LogosDir: filepath.Join("testdata", "logos"), OutDir: testSeed, Strict: true,
+		Only: dataset.FixtureNames(),
+	}); err != nil {
+		panic(err)
+	}
+	// Small fixed texts are tested as they are shipped.
+	if _, _, err := dataset.BuildSeeds(dataset.SeedOptions{
+		DataDir: filepath.Join("..", "..", "data"), OutDir: testSeed, Strict: true, Only: dataset.FixedNames(),
 	}); err != nil {
 		panic(err)
 	}

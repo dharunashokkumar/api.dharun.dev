@@ -23,6 +23,12 @@ func (s *Server) registerMore() {
 	s.handle("upi_qr", costLight, "GET /v1/upi-qr", s.handleUPIQR)
 	s.handle("barcode", costLight, "GET /v1/barcode/{type}", s.handleBarcode)
 	s.handle("barcode", costLight, "POST /v1/barcode/{type}", s.handleBarcode)
+	s.handle("thirukkural", costLight, "GET /v1/thirukkural/{number}", s.handleKural)
+	s.handle("thirukkural", costLight, "GET /v1/thirukkural/today", s.handleKuralOfTheDay)
+	s.handle("thirukkural", costLight, "GET /v1/thirukkural/random", s.handleKuralRandom)
+	s.handle("thirukkural_search", costLight, "GET /v1/thirukkural", s.handleKuralSearch)
+	s.handle("thirukkural", costLight, "GET /v1/thirukkural/chapters", s.handleKuralChapters)
+	s.handle("thirukkural", costLight, "GET /v1/thirukkural/chapters/{number}", s.handleKuralChapter)
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }
