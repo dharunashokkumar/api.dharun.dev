@@ -29,11 +29,13 @@ var errNoRenderer = errors.New("no renderer")
 type renderer struct {
 	resvg string
 	slots chan struct{} // one per picture being rendered
+	bench chan struct{} // one per picture being drawn or resized in this process
 	turn  chan struct{} // held while taking slots, so two large pictures cannot each wait for the other's
 }
 
 func newRenderer(cfg Config) *renderer {
-	r := &renderer{resvg: cfg.Resvg, slots: make(chan struct{}, max(1, cfg.RenderConcurrency)), turn: make(chan struct{}, 1)}
+	n := max(1, cfg.RenderConcurrency)
+	r := &renderer{resvg: cfg.Resvg, slots: make(chan struct{}, n), bench: make(chan struct{}, n), turn: make(chan struct{}, 1)}
 	if r.resvg == "" {
 		// Next to the server binary in a release, or on PATH while developing.
 		if self, err := os.Executable(); err == nil {
@@ -56,6 +58,15 @@ func isFile(path string) bool {
 }
 
 func (r *renderer) available() bool { return r.resvg != "" }
+
+// work runs picture work done in this process: shaping text (a few megabytes of parsed
+// fonts for as long as it takes) or resizing a bitmap. Each is quick, so they go a few at
+// a time and a burst waits its turn rather than holding all that memory at once.
+func (r *renderer) work(do func()) {
+	r.bench <- struct{}{}
+	defer func() { <-r.bench }()
+	do()
+}
 
 // take waits for n rendering slots and returns the function that gives them back.
 func (r *renderer) take(ctx context.Context, n int) (func(), error) {

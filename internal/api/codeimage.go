@@ -217,7 +217,8 @@ func (s *Server) handleCodeImage(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, err.Error()+".")
 		return
 	}
-	picture := image.draw()
+	var picture codePicture
+	s.extras.render.work(func() { picture = image.draw() })
 	w.Header().Set("X-Code-Language", picture.language)
 	s.sendImage(w, r, picture.svg, format, picture.zoom(), picture.large(), "private, no-store")
 }

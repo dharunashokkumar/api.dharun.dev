@@ -132,7 +132,10 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 		if master == nil {
 			return nil, errNoPNG
 		}
-		return resizePNG(master, size)
+		var resized []byte
+		var err error
+		s.extras.render.work(func() { resized, err = resizePNG(master, size) })
+		return resized, err
 	})
 	switch {
 	case errors.Is(err, errNoPNG):

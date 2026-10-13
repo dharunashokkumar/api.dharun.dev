@@ -195,5 +195,7 @@ func (s *Server) handleOGImage(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, err.Error()+".")
 		return
 	}
-	s.sendImage(w, r, card.svg(), format, 1, false, cacheLong)
+	var svg []byte
+	s.extras.render.work(func() { svg = card.svg() })
+	s.sendImage(w, r, svg, format, 1, false, cacheLong)
 }

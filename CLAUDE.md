@@ -41,9 +41,15 @@ CI (`.github/workflows/ci.yml`) also runs `shellcheck deploy/*.sh tools/*.sh`, t
 builds the real release bundle and smoke-tests it:
 
 ```bash
-bash tools/build-release.sh 0.0.0-ci       # Linux only: downloads resvg, renders PNGs
+bash tools/fetch-resvg.sh ~/.cache/tools   # Linux only: the pinned SVG renderer
+RESVG=~/.cache/tools/resvg go test ./...   # with RESVG set, PNG output is tested too
+bash tools/build-release.sh 0.0.0-ci       # Linux only: renders PNG logos with resvg
 bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz
 ```
+
+resvg has no Windows build. Without `RESVG` the PNG tests skip themselves and the image
+endpoints are tested as SVG only, so run the suite on Linux before trusting a change to
+rendering.
 
 Linux-only steps (release build, shellcheck, `internal/deploytest`, which has a
 `//go:build linux` tag) are run locally through WSL:
@@ -88,6 +94,11 @@ Some datasets cannot be fetched by a program and stay seed-only: pincodes (the p
 refuses scripted downloads), central government holidays (typed in by hand), logos.
 For those, `apidata import <dataset>` updates `data/` and the change ships with a push.
 
+Two spec flags mark the odd ones. `Fixed` (Thirukkural, constituencies) is a small text
+or map that never refreshes; tests build it from the real `data/` rather than a fixture.
+`NoSeed` (the IP database) is too large and too short-lived for the repository: it only
+ever exists as a server's own copy, and its endpoints answer 503 until the first refresh.
+
 ### The server (`cmd/api`, `internal/api`)
 
 `store.go` holds the copy in use of every dataset behind an atomic pointer and checks
@@ -126,6 +137,33 @@ keep the version first. It also lists every dataset with the copy in use.
 it. `TestEveryDocumentedExampleWorks` requests every `Example` in the catalog, and every
 `GET /v1/...` route must be in the catalog.
 
+### Generated images (`render.go`, `ogimage.go`, `codeimage.go`, `internal/typeset`)
+
+Text is never handed to the renderer. `internal/typeset` cuts a text into runs by script,
+shapes each run with `go-text/typesetting` using Noto fonts compiled into the binary
+(Latin, nine Indian scripts, and a monospaced face), and returns glyph outlines with exact
+positions. A `canvas` (`render.go`) draws those as `<use>` references to outlines defined
+once, so the SVG needs no fonts wherever it is shown and line breaking uses real widths.
+resvg's own text layout was tried first and drops conjuncts when scripts are mixed; do not
+go back to `<text>` elements.
+
+PNG is that SVG piped through the `resvg` program, one short-lived process per image
+(`RENDER_CONCURRENCY`, default 2). A large picture (resvg needs 40 to 75 MB for one) takes
+every slot, so its memory is never added to another's inside the service's `MemoryMax`.
+Fonts are parsed per image and dropped: all twenty-two kept parsed would hold 16 MB.
+Drawing and bitmap resizing in the server go through `renderer.work`, two at a time, so
+a burst queues instead of parsing fonts in every request at once.
+`tools/fetch-fonts.sh` re-downloads the fonts and checks them against `tools/fonts.sha256`.
+
+### Logic packages
+
+Endpoints that compute rather than look up keep their logic out of `internal/api`:
+`internal/panchang` (almanac, on `go-sampa`), `internal/translit` (scripts and Roman
+schemes), `internal/tamilfont` (8-bit Tamil encodings; tables are written from the
+published standards, never copied from GPL converters), `internal/textkit` (chunking,
+redaction, token counts with a vocabulary that is loaded on first use and dropped when
+idle, language detection), `internal/fake`, `internal/words`, `internal/validate`.
+
 ### MCP
 
 `mcp.go` is a stateless MCP server (Streamable HTTP) at `POST /mcp`. A tool does not
@@ -142,6 +180,9 @@ memory, so a tool returns exactly what the REST endpoint returns.
 3. A handler in `internal/api` in its own file, registered in `registerMore`.
 4. A catalog entry with a real `Example`; an MCP tool if an agent would call it.
 5. Fixture rows in `internal/api/testdata/` (real rows cut from the full data) and tests.
+   A test file adds its MCP tool's arguments to `mcpTestCalls` in `init`. Tests never
+   touch the network: DNS goes through `fakeDNS`, and the IP database is a fixture built
+   in `TestMain`.
 6. A line in `tools/smoke-test.sh` and the README table.
 
 ### Deploy
@@ -159,9 +200,10 @@ Pull-based: nothing connects in to the server, and GitHub never fetches data.
 3. `dharun-api-refresh.timer` (hourly) runs `apidata refresh` as the service user; each
    dataset decides whether it is due.
 
-Measured on Linux: the API idles at 22 MB and peaked at 40 MB under a burst
-(`MemoryMax=192M`); the refresh job peaks at 200 MB during the weekly IFSC refresh
-(`MemoryMax=512M`, separate unit).
+Measured on Linux: the API idles at 32 MB and peaked at 104 MB under a mixed burst over
+every kind of endpoint; resvg adds 11 to 75 MB per image while it runs (`MemoryMax=192M`,
+`GOMEMLIMIT=128MiB`). Dharun accepted about 120 MB on 2026-10-14. The refresh job peaks at 200 MB during the weekly
+IFSC refresh (`MemoryMax=512M`, separate unit).
 
 ## Rules that the code does not show
 
