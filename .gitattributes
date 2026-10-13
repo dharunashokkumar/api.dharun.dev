@@ -1,0 +1,2 @@
+# LF everywhere: the deploy scripts run on Linux, and CRLF breaks them.
+* text=auto eol=lf

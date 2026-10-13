@@ -1,0 +1,23 @@
+[Unit]
+Description=Indian Listed Company Logos API
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/opt/logos-api/current/server/index.mjs
+
+[Service]
+User=logos-api
+Group=logos-api
+WorkingDirectory=/opt/logos-api/current
+Environment=NODE_ENV=production
+EnvironmentFile=/etc/logos-api/logos-api.env
+ExecStart=/usr/bin/node --max-old-space-size=96 server/index.mjs
+Restart=always
+RestartSec=3
+MemoryMax=224M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

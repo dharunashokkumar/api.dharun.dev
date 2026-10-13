@@ -1,0 +1,7 @@
+# Add under scrape_configs in prometheus.yml. Replace the target with the address of the
+# machine running the API; 9464 is METRICS_PORT from logos-api.env.
+  - job_name: logos-api
+    static_configs:
+      - targets: ['LOGOS_API_HOST:9464']
+        labels:
+          instance: logos-api

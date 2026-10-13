@@ -1,0 +1,46 @@
+name: Release
+
+# Pushing a tag like v2.0.1 tests, builds and publishes a release. Servers running
+# deploy/logos-api-update.sh pick up the newest release on their own within minutes;
+# nothing in this workflow connects to them.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Tag must match package.json
+        run: |
+          expected="v$(node -p "require('./package.json').version")"
+          if [ "$expected" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json ($expected). Use: npm version <patch|minor|major>"
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run validate
+      - run: npm test
+
+      - name: Build the release bundle and smoke-test it
+        run: |
+          npm run build:release
+          bash tools/smoke-test.sh dist/logos-api.tar.gz
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/logos-api.tar.gz dist/logos-api.tar.gz.sha256 dist/VERSION \
+            --title "$GITHUB_REF_NAME" --generate-notes
