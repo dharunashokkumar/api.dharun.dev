@@ -126,6 +126,10 @@ func expectStatus(t *testing.T, path string, want int) result {
 	return got
 }
 
+// mcpTestCalls holds sensible arguments for each MCP tool; test files of later APIs add
+// their tools' calls in init.
+var mcpTestCalls = map[string]string{}
+
 func TestEveryDocumentedExampleWorks(t *testing.T) {
 	documented := map[string]bool{}
 	for _, group := range catalog {
@@ -605,7 +609,8 @@ func TestMCP(t *testing.T) {
 	}
 
 	// Every tool, called with sensible arguments, returns the same envelope as its REST endpoint.
-	calls := map[string]string{
+	calls := mcpTestCalls
+	for name, arguments := range map[string]string{
 		"get_company_logo":     `{"symbol":"tcs.ns"}`,
 		"search_companies":     `{"query":"tata","limit":2}`,
 		"lookup_pincode":       `{"pincode":"637001"}`,
@@ -617,6 +622,8 @@ func TestMCP(t *testing.T) {
 		"list_holidays":        `{"year":2026,"type":"market"}`,
 		"number_to_words":      `{"number":125000.5,"style":"currency"}`,
 		"validate_identifier":  `{"kind":"gstin","value":"27AAPFU0939F1ZV"}`,
+	} {
+		calls[name] = arguments
 	}
 	for _, tool := range mcpTools {
 		arguments, ok := calls[tool.Name]

@@ -13,6 +13,11 @@ func (e *extras) close() {}
 
 // registerMore registers the routes of the APIs added after the first release. Each
 // lives in its own file.
-func (s *Server) registerMore() {}
+func (s *Server) registerMore() {
+	s.handle("pincode_near", costLight, "GET /v1/pincode/near", s.handlePincodeNear)
+	s.handle("working_day", costLight, "GET /v1/working-days/{date}", s.handleWorkingDay)
+	s.handle("working_days", costLight, "GET /v1/working-days", s.handleWorkingDays)
+	s.handle("market_status", costLight, "GET /v1/market/status", s.handleMarketStatus)
+}
 
 func itoa(value int) string { return strconv.Itoa(value) }

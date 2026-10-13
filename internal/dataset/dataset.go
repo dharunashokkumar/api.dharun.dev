@@ -4,6 +4,7 @@
 package dataset
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"errors"
@@ -118,11 +119,14 @@ func ReadSources(dataDir string) (map[string]Source, error) {
 
 // WriteSources saves data/sources.json.
 func WriteSources(dataDir string, sources map[string]Source) error {
-	raw, err := json.MarshalIndent(sources, "", "  ")
-	if err != nil {
+	var out bytes.Buffer
+	encoder := json.NewEncoder(&out)
+	encoder.SetEscapeHTML(false) // keep & in URLs readable
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(sources); err != nil {
 		return err
 	}
-	return os.WriteFile(filepath.Join(dataDir, sourcesFile), append(raw, '\n'), 0o644)
+	return os.WriteFile(filepath.Join(dataDir, sourcesFile), out.Bytes(), 0o644)
 }
 
 // Open opens a built dataset read-only. The file is never written once built, so

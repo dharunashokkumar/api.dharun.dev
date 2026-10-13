@@ -43,9 +43,11 @@ type apiGroup struct {
 }
 
 var (
-	limitParam  = param{Name: "limit", In: "query", Type: "integer", Doc: "Results per page, 1 to 100."}
-	offsetParam = param{Name: "offset", In: "query", Type: "integer", Doc: "Results to skip."}
-	stateFilter = param{Name: "state", In: "query", Type: "string", Doc: "State code or name, for example TN or Tamil Nadu."}
+	limitParam       = param{Name: "limit", In: "query", Type: "integer", Doc: "Results per page, 1 to 100."}
+	offsetParam      = param{Name: "offset", In: "query", Type: "integer", Doc: "Results to skip."}
+	stateFilter      = param{Name: "state", In: "query", Type: "string", Doc: "State code or name, for example TN or Tamil Nadu."}
+	calendarParamDoc = param{Name: "calendar", In: "query", Type: "string", Enum: workCalendarIDs(),
+		Doc: "bank (default; needs state), market (NSE trading), settlement (NSE clearing) or central (central government offices)."}
 )
 
 var catalog = []apiGroup{
@@ -113,6 +115,17 @@ var catalog = []apiGroup{
 					stateFilter,
 					{Name: "district", In: "query", Type: "string", Doc: "Exact district name."},
 					limitParam, offsetParam,
+				},
+			},
+			{
+				Path: "/v1/pincode/near", Summary: "Post offices near a point",
+				Doc:     "Post offices within a radius of a latitude and longitude, nearest first, with the distance. Positions come from the Department of Posts and some are approximate.",
+				Example: "/v1/pincode/near?lat=11.2189&lng=78.1674&radius=5",
+				Params: []param{
+					{Name: "lat", In: "query", Type: "number", Required: true, Doc: "Latitude in decimal degrees."},
+					{Name: "lng", In: "query", Type: "number", Required: true, Doc: "Longitude in decimal degrees."},
+					{Name: "radius", In: "query", Type: "integer", Doc: "Kilometres, 1 to 50. Default 5."},
+					{Name: "limit", In: "query", Type: "integer", Doc: "Results, 1 to 100. Default 10."},
 				},
 			},
 		},
@@ -195,6 +208,45 @@ var catalog = []apiGroup{
 					{Name: "type", In: "query", Type: "string", Enum: holidayTypeNames(), Doc: "Kind of holiday. clearing days are ones on which the market trades but nothing settles."},
 					stateFilter,
 					{Name: "month", In: "query", Type: "integer", Doc: "Month number, 1 to 12."},
+				},
+			},
+		},
+	},
+	{
+		ID:        "working-days",
+		Title:     "Working days",
+		Tagline:   "Bank, market, settlement and government working days.",
+		Intro:     "Is a date a working day, what is the next one, and what date is N working days away. Bank days follow the Reserve Bank's holidays for a state plus Sundays and the second and fourth Saturdays; market and settlement days follow NSE's trading and clearing holidays. Only years with a published holiday list are answered.",
+		SourceKey: "holidays-bank", MoreSources: []string{"holidays-market", "holidays-central"},
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/working-days/{date}", Summary: "Is a date a working day",
+				Doc:     "Whether the date is a working day and why not, the previous and next working days, and with add=N the date N working days later (negative for earlier). A T+1 settlement date is calendar=settlement&add=1.",
+				Example: "/v1/working-days/2026-01-16?calendar=bank&state=TN&add=3",
+				Params: []param{
+					{Name: "date", In: "path", Type: "string", Required: true, Doc: "Date, YYYY-MM-DD."},
+					calendarParamDoc,
+					{Name: "state", In: "query", Type: "string", Doc: "State code or name. Required for the bank calendar."},
+					{Name: "add", In: "query", Type: "integer", Doc: "Working days to add, -366 to 366."},
+				},
+			},
+			{
+				Path: "/v1/working-days", Summary: "Count working days between two dates",
+				Doc:     "Counts working days from one date to another, both included, and lists each day off with its reason. At most 366 days.",
+				Example: "/v1/working-days?from=2026-01-01&to=2026-01-31&calendar=market",
+				Params: []param{
+					{Name: "from", In: "query", Type: "string", Required: true, Doc: "First date, YYYY-MM-DD."},
+					{Name: "to", In: "query", Type: "string", Required: true, Doc: "Last date, YYYY-MM-DD."},
+					calendarParamDoc,
+					{Name: "state", In: "query", Type: "string", Doc: "State code or name. Required for the bank calendar."},
+				},
+			},
+			{
+				Path: "/v1/market/status", Summary: "Is the stock market open",
+				Doc:     "NSE equities session at a moment: pre_open, open, closing or closed, the reason it is closed, and when it next opens. Without at, the current moment.",
+				Example: "/v1/market/status?at=2026-01-26T10:00:00%2B05:30",
+				Params: []param{
+					{Name: "at", In: "query", Type: "string", Doc: "Moment with its offset, RFC 3339, for example 2026-10-13T10:30:00+05:30."},
 				},
 			},
 		},
