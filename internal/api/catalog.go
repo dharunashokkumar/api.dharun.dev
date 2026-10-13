@@ -15,6 +15,7 @@ const (
 	tokensExample        = "வணக்கம், how many tokens is this?"
 	languageExample      = "அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு"
 	transliterateExample = "नमस्ते भारत"
+	tamilFontExample     = "¾Á¢ú Å½ì¸õ" // தமிழ் வணக்கம் in TSCII, seen without a TSCII font
 	codeExample          = "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"வணக்கம்\")\n}"
 )
 
@@ -603,6 +604,31 @@ var catalog = []apiGroup{
 					{Name: "to", In: "query", Type: "string", Required: true, Doc: "A script (" + strings.Join(transliterationTargets()[3:], ", ") + "), a language code such as ta or hi, or iso15919, iast, ascii."},
 					{Name: "from", In: "query", Type: "string", Doc: "auto (default: the script of the text), a script, or iso15919 or iast for romanised input."},
 				},
+			},
+		},
+	},
+	{
+		ID:      "tamil-font",
+		Title:   "Tamil legacy encodings",
+		Tagline: "Old Tamil text that shows as accented Latin letters, to Unicode and back.",
+		Intro:   "Before Unicode, Tamil was stored in 8-bit encodings that only looked like Tamil in one particular font; anywhere else the same text shows as characters like ¾Á¢ú. This converts such text to Unicode and Unicode back to it, moving the vowel signs that those encodings write before the consonant. TSCII 1.7 is offered now; TAB, TAM and Bamini are planned. The tables are written from the published standard.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/tamil-font/convert", Summary: "Convert Tamil text", Post: true, Private: true,
+				Doc:         "Give the text as it looks without its font (the Windows-1252 characters), or POST the raw bytes as application/octet-stream. Converting to an 8-bit encoding answers with the same kind of text, and with the bytes in base64. Bytes the encoding does not assign are counted in undefined; characters it has no code for are listed in unmapped.",
+				Body:        "The text, or with Content-Type application/octet-stream the raw bytes.",
+				Example:     "/v1/tamil-font/convert?from=tscii&text=" + url.QueryEscape(tamilFontExample),
+				ExampleBody: tamilFontExample,
+				Params: []param{
+					{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it)."},
+					{Name: "from", In: "query", Type: "string", Required: true, Enum: append([]string{"unicode"}, tamilEncodingIDs()...), Doc: "What the text is in."},
+					{Name: "to", In: "query", Type: "string", Enum: append([]string{"unicode"}, tamilEncodingIDs()...), Doc: "What to convert to. Default unicode; one of from and to must be unicode."},
+				},
+			},
+			{
+				Path: "/v1/tamil-font/encodings", Summary: "Encodings offered",
+				Doc:     "The encodings that can be converted, with fonts that use each, to help recognise what a text is in.",
+				Example: "/v1/tamil-font/encodings",
 			},
 		},
 	},

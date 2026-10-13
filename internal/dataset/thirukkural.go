@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"unicode"
 
 	"golang.org/x/text/unicode/norm"
 )
@@ -148,6 +149,16 @@ func buildThirukkural(b *Builder) error {
 
 const thirukkuralRepo = "https://raw.githubusercontent.com/tk120404/thirukkural/"
 
+// repairKural mends faults in the compilation. In seven couplets (483, 851, 913, 957,
+// 1118, 1192, 1321) the vowel sign i was stored as U+0BA7, which is not a character,
+// once with a stray space after it; and the first word of the second line of 599 was
+// stored with U+0BA6, also not a character, and its signs out of place.
+func repairKural(line string) string {
+	line = strings.ReplaceAll(line, "஦வ்ருஉம்", "வெரூஉம்")
+	line = strings.ReplaceAll(line, "஧ க்", "ிக்")
+	return strings.ReplaceAll(line, "஧", "ி")
+}
+
 func importThirukkural(im *Importer) (Source, error) {
 	version := im.Version
 	if version == "" {
@@ -177,7 +188,13 @@ func importThirukkural(im *Importer) (Source, error) {
 	// Only the fields known to be free to share are written into the repository.
 	kept := make([]Kural, len(source.Kural))
 	for i, k := range source.Kural {
-		kept[i] = Kural{Number: k.Number, Line1: norm.NFC.String(k.Line1), Line2: norm.NFC.String(k.Line2),
+		line1, line2 := repairKural(norm.NFC.String(k.Line1)), repairKural(norm.NFC.String(k.Line2))
+		for _, r := range line1 + line2 {
+			if r >= 0x0B80 && r <= 0x0BFF && !unicode.Is(unicode.Tamil, r) {
+				return Source{}, fmt.Errorf("kural %d has U+%04X, which is not a Tamil character", k.Number, r)
+			}
+		}
+		kept[i] = Kural{Number: k.Number, Line1: line1, Line2: line2,
 			Transliteration1: k.Transliteration1, Transliteration2: k.Transliteration2, Pope: k.Couplet, DrewLazarus: k.Explanation}
 	}
 	encoded, err := json.MarshalIndent(kept, "", " ")
