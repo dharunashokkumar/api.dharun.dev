@@ -1,0 +1,183 @@
+{
+ "operators": {
+  "AT": "Airtel India",
+  "CG": "BSNL/MTNL - Central Gov.",
+  "RJ": "Reliance Jio",
+  "VI": "Vodafone Idea"
+ },
+ "circles": [
+  {
+   "code": "AP",
+   "name": "Andhra Pradesh",
+   "category": "A",
+   "area": "State of Andhra Pradesh, State of Telangana and Yanam district"
+  },
+  {
+   "code": "AS",
+   "name": "Assam",
+   "category": "C",
+   "area": "State of Assam"
+  },
+  {
+   "code": "BR",
+   "name": "Bihar & Jharkhand",
+   "category": "C",
+   "area": "State of Bihar and State of Jharkhand"
+  },
+  {
+   "code": "CH",
+   "name": "Chennai",
+   "category": "Metro",
+   "area": "Chennai, upto Maraimalai Nagar, Minjur and Mahabalipuram"
+  },
+  {
+   "code": "DL",
+   "name": "Delhi",
+   "category": "Metro",
+   "area": "Union Territory of Delhi, Faridabad district and Gurgaon district in Haryana, Ghaziabad district and Gautam Buddh Nagar district in Uttar Pradesh"
+  },
+  {
+   "code": "GJ",
+   "name": "Gujarat",
+   "category": "A",
+   "area": "State of Gujarat and Union Territory of Dadra and Nagar Haveli and Daman and Diu"
+  },
+  {
+   "code": "HP",
+   "name": "Himachal Pradesh",
+   "category": "C",
+   "area": "State of Himachal Pradesh"
+  },
+  {
+   "code": "HR",
+   "name": "Haryana",
+   "category": "B",
+   "area": "State of Haryana (excluding Faridabad district, Gurgaon district and Panchkula district)."
+  },
+  {
+   "code": "JK",
+   "name": "Jammu and Kashmir",
+   "category": "C",
+   "area": "Union Territory of Jammu and Kashmir and Union Territory of Ladakh"
+  },
+  {
+   "code": "KL",
+   "name": "Kerala & Lakshadweep",
+   "category": "B",
+   "area": "State of Kerala, Union Territory of Lakshadweep and Mahé district"
+  },
+  {
+   "code": "KA",
+   "name": "Karnataka",
+   "category": "A",
+   "area": "State of Karnataka"
+  },
+  {
+   "code": "KO",
+   "name": "Kolkata",
+   "category": "Metro",
+   "area": "Kolkata (including parts of Howrah district, Hooghly district, North 24 Parganas district, South 24 Parganas district and Nadia district)"
+  },
+  {
+   "code": "MH",
+   "name": "Maharashtra & Goa",
+   "category": "A",
+   "area": "State of Maharashtra (excluding Mumbai, Navi Mumbai, Thane and Kalyan) and State of Goa"
+  },
+  {
+   "code": "MP",
+   "name": "Madhya Pradesh & Chhattisgarh",
+   "category": "B",
+   "area": "State of Madhya Pradesh and State of Chhattisgarh"
+  },
+  {
+   "code": "MU",
+   "name": "Mumbai",
+   "category": "Metro",
+   "area": "Mumbai, Navi Mumbai, Thane and Kalyan"
+  },
+  {
+   "code": "NE",
+   "name": "North East",
+   "category": "C",
+   "area": "State of Arunachal Pradesh, State of Manipur State of Meghalaya, State of Mizoram, State of Nagaland and State of Tripura"
+  },
+  {
+   "code": "OR",
+   "name": "Odisha",
+   "category": "C",
+   "area": "State of Odisha"
+  },
+  {
+   "code": "PB",
+   "name": "Punjab",
+   "category": "B",
+   "area": "State of Punjab, Union Territory of Chandigarh and Panchkula district"
+  },
+  {
+   "code": "RJ",
+   "name": "Rajasthan",
+   "category": "B",
+   "area": "State of Rajasthan"
+  },
+  {
+   "code": "TN",
+   "name": "Tamil Nadu",
+   "category": "A",
+   "area": "State of Tamil Nadu, Puducherry district and Karaikal district"
+  },
+  {
+   "code": "UE",
+   "name": "UP (East)",
+   "category": "B",
+   "area": "Eastern Uttar Pradesh"
+  },
+  {
+   "code": "UW",
+   "name": "UP (West)",
+   "category": "B",
+   "area": "Western Uttar Pradesh (excluding Ghaziabad district and Gautam Buddh Nagar district) and State of Uttarakhand"
+  },
+  {
+   "code": "WB",
+   "name": "West Bengal",
+   "category": "C",
+   "area": "State of West Bengal (excluding Kolkata), State of Sikkim and Union Territory of Andaman and Nicobar Islands"
+  }
+ ],
+ "series": [
+  {
+   "series": "9300"
+  },
+  {
+   "series": "9400",
+   "operator": "CG",
+   "circle": "KL"
+  },
+  {
+   "series": "9500",
+   "operator": "AT",
+   "circle": "TN"
+  },
+  {
+   "series": "9876",
+   "operator": "AT",
+   "circle": "PB"
+  },
+  {
+   "series": "8072",
+   "operator": "RJ",
+   "circle": "TN"
+  },
+  {
+   "series": "7010",
+   "operator": "RJ",
+   "circle": "TN"
+  },
+  {
+   "series": "6380",
+   "operator": "RJ",
+   "circle": "TN"
+  }
+ ]
+}

@@ -439,6 +439,20 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "phone",
+		Title:     "Phone numbers",
+		Tagline:   "Check and format an Indian phone number, and see whose series it is.",
+		Intro:     "Validates an Indian number, tells mobile from toll-free and fixed lines, formats it (E.164 and national), and names the operator and telecom circle a mobile number's series was first given to. With number portability the current operator can differ. Numbers are never written to the request log.",
+		SourceKey: "phones",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/phone/{number}", Summary: "Check a phone number", Private: true,
+				Example: "/v1/phone/+91%2095001%2012345",
+				Params:  []param{{Name: "number", In: "path", Type: "string", Required: true, Doc: "The number, with or without +91, 91 or 0; spaces and dashes are ignored."}},
+			},
+		},
+	},
+	{
 		ID:        "constituency",
 		Title:     "Constituencies",
 		Tagline:   "Which assembly and Lok Sabha constituency a place is in.",

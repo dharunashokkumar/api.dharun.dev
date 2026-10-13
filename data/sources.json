@@ -101,6 +101,17 @@
     "sha256": "cdba3e18950496b6b0b474287ee701703aa1c70a9332eb4eeb620860b6b6c22a",
     "attribution": "Net asset values as published by the Association of Mutual Funds in India."
   },
+  "phones": {
+    "name": "Mobile telephone numbering in India",
+    "publisher": "Wikipedia contributors",
+    "url": "https://en.wikipedia.org/w/index.php?title=Mobile_telephone_numbering_in_India&oldid=1376522760",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "version": "revision 1376522760",
+    "retrieved": "2026-10-13",
+    "sha256": "743e970dfc98f1e5fdf2e0acba754e02f7faf118f20464c017b30dfc2beff34d",
+    "attribution": "Mobile number series adapted from the Wikipedia article \"Mobile telephone numbering in India\", licensed CC BY-SA 4.0. This dataset is shared under the same licence."
+  },
   "pincode": {
     "name": "All India Pincode Directory",
     "publisher": "Department of Posts, Ministry of Communications, Government of India",
