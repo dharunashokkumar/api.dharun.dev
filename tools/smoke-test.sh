@@ -79,8 +79,9 @@ done
 echo "ok   /healthz lists every dataset"
 
 # The data tool in the bundle runs and reads the same seeds.
-(cd "$dir" && ./apidata status -seed seed -live "$dir/live") | grep -q '^rto  *seed' ||
-  { echo "FAIL: apidata status does not see the seeds" >&2; exit 1; }
+# (Captured first: with pipefail, grep -q stopping early would fail the pipe.)
+status="$(cd "$dir" && ./apidata status -seed seed -live "$dir/live")"
+grep -q '^rto  *seed' <<<"$status" || { echo "FAIL: apidata status does not see the seeds" >&2; exit 1; }
 echo "ok   apidata status"
 "$dir/resvg" --version >/dev/null || { echo "FAIL: the bundled resvg does not run" >&2; exit 1; }
 echo "ok   resvg"
