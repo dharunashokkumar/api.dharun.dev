@@ -63,6 +63,7 @@ check /v1/thirukkural/1 application/json '"The Praise of God"'
 check /v1/airports/MAA application/json '"VOMM"'
 check "/v1/text/tokens?text=hello%20world" application/json '"tokens":2'
 check "/v1/text/redact?text=PAN%20ABCPK1234F" application/json '[PAN]'
+check "/v1/transliterate?to=ascii&text=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D" application/json '"tamizh"'
 
 # Every dataset the repository holds must be in the bundle and served from its seed.
 health="$(curl -fsS "$base/healthz")"

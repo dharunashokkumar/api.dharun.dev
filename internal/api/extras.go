@@ -74,6 +74,8 @@ func (s *Server) registerMore() {
 	s.handle("ip", costLight, "GET /v1/ip", s.handleMyIP)
 	s.handle("email", costHeavy, "GET /v1/email/{address}", s.handleEmail)
 	s.handle("dns", costHeavy, "GET /v1/dns/{name}", s.handleDNS)
+	s.handle("transliterate", costLight, "GET /v1/transliterate", s.handleTransliterate)
+	s.handle("transliterate", costLight, "POST /v1/transliterate", s.handleTransliterate)
 	for _, tool := range []struct {
 		route, path string
 		handler     http.HandlerFunc

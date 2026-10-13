@@ -10,10 +10,11 @@ import (
 
 // Example inputs for the text tools, shared by the GET and POST examples.
 const (
-	chunkExample    = "# Setup\n\nInstall Go. Clone the repository.\n\n# Deploy\n\nPush to main."
-	redactExample   = "Call 98765 43210, PAN ABCPK1234F"
-	tokensExample   = "வணக்கம், how many tokens is this?"
-	languageExample = "அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு"
+	chunkExample         = "# Setup\n\nInstall Go. Clone the repository.\n\n# Deploy\n\nPush to main."
+	redactExample        = "Call 98765 43210, PAN ABCPK1234F"
+	tokensExample        = "வணக்கம், how many tokens is this?"
+	languageExample      = "அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு"
+	transliterateExample = "नमस्ते भारत"
 )
 
 // The catalog describes every public endpoint once. The documentation site, the
@@ -468,6 +469,25 @@ var catalog = []apiGroup{
 				Example:     "/v1/text/language?text=" + url.QueryEscape(languageExample),
 				ExampleBody: languageExample,
 				Params:      []param{{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it)."}},
+			},
+		},
+	},
+	{
+		ID:      "transliterate",
+		Title:   "Transliteration",
+		Tagline: "Rewrite text between Indian scripts and Roman letters.",
+		Intro:   "Converts by rule between Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam, and to ISO 15919, IAST or plain ASCII. ISO 15919 and IAST can also be turned back into any of the scripts. The spelling changes, not the language: this is not translation. Casual Roman typing (vanakkam) cannot be converted by rule and is not accepted as input.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/transliterate", Summary: "Transliterate text", Post: true, Private: true,
+				Body:        "The text.",
+				Example:     "/v1/transliterate?to=tamil&text=" + url.QueryEscape(transliterateExample),
+				ExampleBody: transliterateExample,
+				Params: []param{
+					{Name: "text", In: "query", Type: "string", Doc: "The text (or POST it). Letters of other scripts pass through unchanged."},
+					{Name: "to", In: "query", Type: "string", Required: true, Doc: "A script (" + strings.Join(transliterationTargets()[3:], ", ") + "), a language code such as ta or hi, or iso15919, iast, ascii."},
+					{Name: "from", In: "query", Type: "string", Doc: "auto (default: the script of the text), a script, or iso15919 or iast for romanised input."},
+				},
 			},
 		},
 	},
