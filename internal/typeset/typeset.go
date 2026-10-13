@@ -16,6 +16,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"sync"
 	"unicode"
 
 	"github.com/go-text/typesetting/di"
@@ -90,19 +91,29 @@ func (f Font) fileName() string {
 	return "fonts/" + families[f.family()].file + "-" + weight + ".ttf"
 }
 
-// load parses a font. Nothing is kept between images: parsing takes about four
-// milliseconds a font and an image uses one to three of them, while all twenty-two kept
-// parsed would hold 16 MB for as long as the server runs.
-func load(f Font) (*font.Face, error) {
-	raw, err := files.ReadFile(f.fileName())
-	if err != nil {
-		return nil, err
+// Parsed fonts are read-only and shared between images. Each is parsed on first use,
+// about four milliseconds, and kept: all twenty-two together hold 16 MB, and a font that
+// no text has needed is never parsed.
+var (
+	parsedLock sync.Mutex
+	parsed     [len(families) * 2]*font.Font
+)
+
+func load(f Font) (*font.Font, error) {
+	parsedLock.Lock()
+	defer parsedLock.Unlock()
+	if parsed[f] == nil {
+		raw, err := files.ReadFile(f.fileName())
+		if err != nil {
+			return nil, err
+		}
+		face, err := font.ParseTTF(bytes.NewReader(raw))
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", f.fileName(), err)
+		}
+		parsed[f] = face.Font
 	}
-	face, err := font.ParseTTF(bytes.NewReader(raw))
-	if err != nil {
-		return nil, fmt.Errorf("%s: %w", f.fileName(), err)
-	}
-	return face, nil
+	return parsed[f], nil
 }
 
 // Glyph is one glyph of a line: which outline, and where its origin sits relative to the
@@ -124,8 +135,8 @@ type Line struct {
 	Indic bool
 }
 
-// Setter shapes text. It holds the fonts it has needed so far, so make one per image and
-// let it go afterwards. It is not safe for concurrent use.
+// Setter shapes text. It keeps per-font caches of its own, so it is not safe for
+// concurrent use: make one per image.
 type Setter struct {
 	shaper shaping.HarfbuzzShaper
 	faces  [len(families) * 2]*font.Face
@@ -136,12 +147,12 @@ func New() *Setter { return &Setter{} }
 
 func (s *Setter) face(f Font) *font.Face {
 	if s.faces[f] == nil {
-		face, err := load(f)
+		parsed, err := load(f)
 		if err != nil {
 			// The fonts are compiled in and checked by the tests.
 			panic("typeset: " + err.Error())
 		}
-		s.faces[f] = face
+		s.faces[f] = font.NewFace(parsed)
 	}
 	return s.faces[f]
 }

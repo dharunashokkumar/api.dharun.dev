@@ -24,8 +24,8 @@ Restart=always
 RestartSec=3
 # The Go runtime collects harder as it nears this, trading processor time for memory.
 # It is a target for the server itself; resvg's memory comes on top, within MemoryMax.
-Environment=GOMEMLIMIT=128MiB
-MemoryMax=192M
+Environment=GOMEMLIMIT=384MiB
+MemoryMax=768M
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=yes

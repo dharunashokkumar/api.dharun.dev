@@ -148,11 +148,9 @@ resvg's own text layout was tried first and drops conjuncts when scripts are mix
 go back to `<text>` elements.
 
 PNG is that SVG piped through the `resvg` program, one short-lived process per image
-(`RENDER_CONCURRENCY`, default 2). A large picture (resvg needs 40 to 75 MB for one) takes
-every slot, so its memory is never added to another's inside the service's `MemoryMax`.
-Fonts are parsed per image and dropped: all twenty-two kept parsed would hold 16 MB.
-Drawing and bitmap resizing in the server go through `renderer.work`, two at a time, so
-a burst queues instead of parsing fonts in every request at once.
+(`RENDER_CONCURRENCY`, default 4). A large picture (resvg needs 40 to 75 MB for one)
+counts as half the slots. Parsed fonts are kept once used (16 MB for all twenty-two);
+drawing and bitmap resizing go through `renderer.work`, one per CPU.
 `tools/fetch-fonts.sh` re-downloads the fonts and checks them against `tools/fonts.sha256`.
 
 ### Logic packages
@@ -161,8 +159,8 @@ Endpoints that compute rather than look up keep their logic out of `internal/api
 `internal/panchang` (almanac, on `go-sampa`), `internal/translit` (scripts and Roman
 schemes), `internal/tamilfont` (8-bit Tamil encodings; tables are written from the
 published standards, never copied from GPL converters), `internal/textkit` (chunking,
-redaction, token counts with a vocabulary that is loaded on first use and dropped when
-idle, language detection), `internal/fake`, `internal/words`, `internal/validate`.
+redaction, token counts with a vocabulary that is loaded on first use and kept while it
+is in use, language detection), `internal/fake`, `internal/words`, `internal/validate`.
 
 ### MCP
 
@@ -200,9 +198,9 @@ Pull-based: nothing connects in to the server, and GitHub never fetches data.
 3. `dharun-api-refresh.timer` (hourly) runs `apidata refresh` as the service user; each
    dataset decides whether it is due.
 
-Measured on Linux: the API idles at 32 MB and peaked at 104 MB under a mixed burst over
-every kind of endpoint; resvg adds 11 to 75 MB per image while it runs (`MemoryMax=192M`,
-`GOMEMLIMIT=128MiB`). Dharun accepted about 120 MB on 2026-10-14. The refresh job peaks at 200 MB during the weekly
+Measured on Linux: the API idles at 34 MB and peaked at 144 MB under a mixed burst over
+every kind of endpoint; resvg adds 11 to 75 MB per image while it runs (`MemoryMax=768M`,
+`GOMEMLIMIT=384MiB`). The refresh job peaks at 200 MB during the weekly
 IFSC refresh (`MemoryMax=512M`, separate unit).
 
 ## Rules that the code does not show
@@ -219,8 +217,10 @@ IFSC refresh (`MemoryMax=512M`, separate unit).
 - **This repository is public; the server is a private homelab.** Container IDs, LAN IP
   addresses, tunnel names and scrape targets belong in the separate private homelab
   repository, never here.
-- **Memory is the scarce resource, CPU is not.** Prefer work at build time, in the
-  short-lived refresh job, or per request over data held in the API's memory. Do not drop
-  features to save memory; measure and report instead.
+- **Be sensible with memory, but never give up speed for it.** Dharun, 2026-10-14: up to
+  512 MB or 1 GB is fine. Keep things that are costly to rebuild (parsed fonts, tokenizer
+  vocabularies, database caches); still do bulk work at build time or in the short-lived
+  refresh job rather than holding whole datasets in the API's memory. Measure after a
+  round and report the numbers.
 - **Commits carry no AI attribution trailer.**
 - **Line endings are LF everywhere** (`.gitattributes`); CRLF breaks the deploy scripts.

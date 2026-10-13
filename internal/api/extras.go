@@ -34,8 +34,9 @@ func (e *extras) start(cfg Config) {
 		for {
 			select {
 			case <-ticker.C:
-				// A tokenizer vocabulary is 4 to 8 MB; keep it only while it is being used.
-				e.tokens.DropIdle(10 * time.Minute)
+				// A tokenizer vocabulary is 4 to 8 MB and takes a moment to load, so one
+				// that is in use stays; one nobody has asked for in half a day goes.
+				e.tokens.DropIdle(12 * time.Hour)
 			case <-e.stop:
 				return
 			}

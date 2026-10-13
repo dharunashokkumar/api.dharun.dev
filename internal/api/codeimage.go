@@ -29,7 +29,7 @@ const (
 	codeTitleSize  = 14
 	// PNGs are drawn at twice the size for sharp text, unless that would be a very large
 	// picture: the renderer needs several bytes for every pixel, and for every glyph.
-	codeMaxPixels   = 8 << 20
+	codeMaxPixels   = 16 << 20
 	codeLargePixels = 3 << 20
 	codeLargeSVG    = 200 << 10
 )
@@ -57,7 +57,7 @@ func (p codePicture) zoom() int {
 	return 2
 }
 
-// large reports a picture that is rendered on its own (see renderer.png).
+// large reports a picture that counts as several when rendered (see renderer.png).
 func (p codePicture) large() bool {
 	return p.width*p.height*p.zoom()*p.zoom() > codeLargePixels || len(p.svg) > codeLargeSVG
 }

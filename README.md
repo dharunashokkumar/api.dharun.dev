@@ -193,8 +193,8 @@ tar -C deploy -cz . | ssh <host> 'mkdir -p /root/api-deploy && tar -xz -C /root/
 ```
 
 The server is one static binary plus a database file per dataset. It runs as the
-unprivileged user `dharun-api` with a read-only filesystem, and uses about 32 MB of
-memory idle and about 100 MB under a burst. The updater
+unprivileged user `dharun-api` with a read-only filesystem, and uses about 35 MB of
+memory idle and about 150 MB under a burst. The updater
 runs as root and is only replaced by re-running `install.sh`. Restrict port `8080` to your
 proxy and port `9464` to Prometheus with a firewall.
 

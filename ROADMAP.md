@@ -45,10 +45,14 @@ the new APIs depend on them.
 - [x] Memory measured after the split: API 22 MB idle, 40 MB peak under a burst; refresh
       job 200 MB peak during the IFSC refresh.
 - [x] Memory measured again after group A (Linux, release bundle, all datasets): the API
-      idles at 32 MB and peaked at 104 MB under a mixed burst over every kind of endpoint,
+      idles at 34 MB and peaked at 144 MB under a mixed burst over every kind of endpoint,
       24 requests at a time. On top of that, `resvg` uses 11 MB for a preview image and up
-      to 75 MB for the largest code image, while it runs. Dharun, 2026-10-14: about 120 MB
-      is fine. The service limit stays at `MemoryMax=192M` with `GOMEMLIMIT=128MiB`.
+      to 75 MB for the largest code image, while it runs.
+- [x] Dharun, 2026-10-14: memory up to 512 MB or 1 GB is fine; do not give up speed to
+      save it. So parsed fonts are kept (a preview card is shaped in 1 ms, not 13), a
+      tokenizer vocabulary stays for half a day after its last use, each database
+      connection has a 4 MB cache, and four images render at once. The service limit is
+      `MemoryMax=768M` with `GOMEMLIMIT=384MiB`.
 
 Already live: single Go binary, read-only SQLite, `{ data, meta }` envelope, per-IP rate
 limit, docs site, OpenAPI, `llms.txt`, MCP server, Prometheus metrics, lifetime request
@@ -111,10 +115,10 @@ All of these run inside the existing server. "Memory" is what the API adds while
 | Fake Indian data | `/v1/fake/{kind}` | Generated: names, addresses with real pincode and city pairs, phone-shaped numbers, PAN and GSTIN that pass format checks. Seeded so results repeat. Every response marked as fake | Live |
 | Text chunking | `/v1/text/chunk` | Splits text or Markdown into overlap-aware chunks for retrieval | Live |
 | PII redaction | `/v1/text/redact` | Patterns with checksums: Aadhaar (Verhoeff), PAN, GSTIN, cards (Luhn), phone, email, UPI ID, IFSC, vehicle number, passport, voter ID. No name detection; that needs a model and is round 3. Private | Live |
-| Token count | `/v1/text/tokens` | OpenAI encodings (`o200k_base`, `cl100k_base`, `p50k_base`), counted by our own byte-pair merger over the published vocabularies (MIT), which holds 8 MB while in use against 22 MB for `tiktoken-go`; tests check it gives the same counts. Loaded on first use, dropped after ten idle minutes | Live. Claude and Llama tokenizers are not openly licensed for this, so not offered |
+| Token count | `/v1/text/tokens` | OpenAI encodings (`o200k_base`, `cl100k_base`, `p50k_base`), counted by our own byte-pair merger over the published vocabularies (MIT), which holds 8 MB while in use against 22 MB for `tiktoken-go`; tests check it gives the same counts. Loaded on first use, dropped after half a day unused | Live. Claude and Llama tokenizers are not openly licensed for this, so not offered |
 | Language detection | `/v1/text/language` | Script detection plus `whatlanggo` (MIT) trigram model; about 80 languages, 12 Indian. Weak on short or Romanised text, and the response carries a confidence value | Live |
 | Social preview image | `/v1/og-image` | A 1200x630 card. Text is shaped here with `go-text/typesetting` (BSD) and Noto fonts (OFL 1.1, compiled into the server) for Latin and nine Indian scripts, and drawn as glyph outlines; `resvg` then only fills paths. Text and colours only, no remote images | Live. PNG needs `resvg` (in every release); SVG works anywhere |
-| Code image | `/v1/code-image` | `chroma` (MIT) highlighting, drawn the same way. Up to 150 lines of 140 characters | Live. Large pictures are rendered one at a time, at single size, to bound the renderer's memory |
+| Code image | `/v1/code-image` | `chroma` (MIT) highlighting, drawn the same way. Up to 150 lines of 140 characters | Live. PNGs are drawn at twice the size; only the very largest at single size |
 
 ## 5. Data that changes daily
 
@@ -238,6 +242,7 @@ Waiting for the server. Steps, done in a session on the private homelab reposito
 | 2026-10-13 | RTO codes from Wikipedia, attributed, shared under CC BY-SA |
 | 2026-10-13 | Everything runs in one container |
 | 2026-10-13 | Memory is kept low; CPU may be used freely; features are not dropped to save memory |
+| 2026-10-14 | Memory up to 512 MB or 1 GB is acceptable; speed is not given up to save memory. Replaces "memory is kept low" where the two conflict |
 | 2026-10-13 | The server fetches and refreshes its own data. Replaces the earlier "manual updates only" |
 | 2026-10-13 | A push deploys the program; it does not overwrite data the server has refreshed |
 | 2026-10-13 | Group A is built first, in one round; later groups each get their own session |

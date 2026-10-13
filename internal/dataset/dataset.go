@@ -163,16 +163,17 @@ func Open(path string) (*sql.DB, error) {
 	if !strings.HasPrefix(slashed, "/") {
 		slashed = "/" + slashed
 	}
-	dsn := "file://" + (&url.URL{Path: slashed}).EscapedPath() + "?mode=ro&immutable=1&_pragma=cache_size(-512)"
+	dsn := "file://" + (&url.URL{Path: slashed}).EscapedPath() + "?mode=ro&immutable=1&_pragma=cache_size(-4096)"
 	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		return nil, err
 	}
-	// Few connections, and idle ones are dropped: with a file per dataset, the page
-	// caches of connections nobody is using would otherwise add up.
-	db.SetMaxOpenConns(4)
-	db.SetMaxIdleConns(1)
-	db.SetConnMaxIdleTime(2 * time.Minute)
+	// Each connection has a page cache of up to 4 MB. Enough connections stay open that a
+	// burst does not wait for one or pay to open one; with a file per dataset, those
+	// nobody has used for a while are dropped so their caches do not add up.
+	db.SetMaxOpenConns(8)
+	db.SetMaxIdleConns(4)
+	db.SetConnMaxIdleTime(10 * time.Minute)
 	if err := db.Ping(); err != nil {
 		db.Close()
 		return nil, err

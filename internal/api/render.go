@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -29,13 +30,13 @@ var errNoRenderer = errors.New("no renderer")
 type renderer struct {
 	resvg string
 	slots chan struct{} // one per picture being rendered
-	bench chan struct{} // one per picture being drawn or resized in this process
+	bench chan struct{} // one per picture being drawn or resized in this process: one per CPU
 	turn  chan struct{} // held while taking slots, so two large pictures cannot each wait for the other's
 }
 
 func newRenderer(cfg Config) *renderer {
 	n := max(1, cfg.RenderConcurrency)
-	r := &renderer{resvg: cfg.Resvg, slots: make(chan struct{}, n), bench: make(chan struct{}, n), turn: make(chan struct{}, 1)}
+	r := &renderer{resvg: cfg.Resvg, slots: make(chan struct{}, n), bench: make(chan struct{}, runtime.NumCPU()), turn: make(chan struct{}, 1)}
 	if r.resvg == "" {
 		// Next to the server binary in a release, or on PATH while developing.
 		if self, err := os.Executable(); err == nil {
@@ -59,9 +60,9 @@ func isFile(path string) bool {
 
 func (r *renderer) available() bool { return r.resvg != "" }
 
-// work runs picture work done in this process: shaping text (a few megabytes of parsed
-// fonts for as long as it takes) or resizing a bitmap. Each is quick, so they go a few at
-// a time and a burst waits its turn rather than holding all that memory at once.
+// work runs picture work done in this process: shaping text or resizing a bitmap. It is
+// all processor work, so no more of it runs at once than there are CPUs; beyond that a
+// burst only takes more memory without finishing sooner.
 func (r *renderer) work(do func()) {
 	r.bench <- struct{}{}
 	defer func() { <-r.bench }()
@@ -95,15 +96,15 @@ func (r *renderer) take(ctx context.Context, n int) (func(), error) {
 }
 
 // png renders an SVG. zoom scales the image for sharper output. A large picture, which
-// takes resvg 40 to 75 MB, is rendered on its own, so that its memory is never added to
-// another's.
+// takes resvg 40 MB and more, counts as half the slots, so no more than two are rendered
+// at once.
 func (r *renderer) png(ctx context.Context, svg []byte, zoom int, large bool) ([]byte, error) {
 	if !r.available() {
 		return nil, errNoRenderer
 	}
 	slots := 1
 	if large {
-		slots = cap(r.slots)
+		slots = max(1, cap(r.slots)/2)
 	}
 	release, err := r.take(ctx, slots)
 	if err != nil {

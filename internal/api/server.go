@@ -49,7 +49,7 @@ type Config struct {
 	// Resvg is the renderer for generated images; empty looks next to the binary and on PATH.
 	Resvg string
 	// RenderConcurrency is how many generated images are rendered to PNG at once. Each is
-	// a resvg process of a few tens of megabytes while it runs. Zero means two.
+	// a resvg process of a few tens of megabytes while it runs. Zero means four.
 	RenderConcurrency int
 }
 
@@ -74,7 +74,7 @@ func New(cfg Config) (*Server, error) {
 		cfg.MaxBodyBytes = 256 << 10
 	}
 	if cfg.RenderConcurrency <= 0 {
-		cfg.RenderConcurrency = 2
+		cfg.RenderConcurrency = 4
 	}
 	if cfg.HeavyConcurrency <= 0 {
 		cfg.HeavyConcurrency = runtime.NumCPU()

@@ -337,7 +337,7 @@ func TestCodeImagePNG(t *testing.T) {
 	}
 }
 
-// A large picture waits for every slot and holds them all; pictures queue behind it.
+// take hands out several slots at once without a deadlock, and gives them all back.
 func TestRenderSlots(t *testing.T) {
 	r := newRenderer(Config{RenderConcurrency: 2})
 	one, err := r.take(t.Context(), 1)

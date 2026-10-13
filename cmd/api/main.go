@@ -53,12 +53,12 @@ func run() error {
 		MaxBodyBytes:       envInt("MAX_BODY_KB", 256) << 10,
 		HeavyConcurrency:   envInt("HEAVY_CONCURRENCY", 0),
 		Resvg:              os.Getenv("RESVG"),
-		RenderConcurrency:  envInt("RENDER_CONCURRENCY", 2),
+		RenderConcurrency:  envInt("RENDER_CONCURRENCY", 4),
 		PublicOrigin:       strings.TrimRight(os.Getenv("PUBLIC_ORIGIN"), "/"),
 		TrustProxy:         envBool("TRUST_PROXY", false),
 		RateLimitPerMinute: envInt("RATE_LIMIT_PER_MIN", 600),
 		LogRequests:        envBool("LOG_REQUESTS", true),
-		PNGCacheBytes:      envInt("PNG_CACHE_MB", 8) * 1024 * 1024,
+		PNGCacheBytes:      envInt("PNG_CACHE_MB", 32) * 1024 * 1024,
 		StateDir:           stateDir,
 	})
 	if err != nil {
