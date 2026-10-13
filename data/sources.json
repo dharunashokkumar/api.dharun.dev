@@ -10,6 +10,17 @@
     "sha256": "61c82a74de991e138dc57e1fbc72b6f47da30db9954be4e414452e896f7d40d8",
     "attribution": "Airport data from OurAirports, released into the public domain."
   },
+  "constituencies": {
+    "name": "Maps of assembly and parliamentary constituencies",
+    "publisher": "DataMeet India community (github.com/datameet/maps); parliamentary boundaries simplified by Arun Ganesh",
+    "url": "https://github.com/datameet/maps/tree/b3fbbde595310b397a55d718e0958ce249a4fa1f",
+    "licence": "Assembly boundaries CC BY 2.5 India; parliamentary boundaries (simplified, 2019) CC0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/2.5/in/",
+    "version": "commit b3fbbde59531",
+    "retrieved": "2026-10-13",
+    "sha256": "17be4a923f6b4d7e720f3e1127427030cca4439dcbfbe89303aae8c6f7fd1481",
+    "attribution": "Constituency boundaries from the DataMeet India community's maps (assembly: CC BY 2.5 India; parliamentary: CC0)."
+  },
   "disposable-email": {
     "name": "Disposable email domains",
     "publisher": "github.com/disposable-email-domains/disposable-email-domains contributors",

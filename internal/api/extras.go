@@ -85,6 +85,7 @@ func (s *Server) registerMore() {
 	s.handle("station_search", costLight, "GET /v1/stations", s.handleStationSearch)
 	s.handle("station", costLight, "GET /v1/stations/zones", s.handleStationZones)
 	s.handle("panchang", costHeavy, "GET /v1/panchang/{date}", s.handlePanchang)
+	s.handle("constituency", costLight, "GET /v1/constituency", s.handleConstituency)
 	for _, tool := range []struct {
 		route, path string
 		handler     http.HandlerFunc

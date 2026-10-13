@@ -439,6 +439,24 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:        "constituency",
+		Title:     "Constituencies",
+		Tagline:   "Which assembly and Lok Sabha constituency a place is in.",
+		Intro:     "The assembly (MLA) and parliamentary (MP) constituency of a point or a pincode, with number, name, reserved category, district and state. From the DataMeet community's maps; boundaries are approximate near their edges, assembly seats in six states predate the latest delimitation, and sitting members are not given.",
+		SourceKey: "constituencies",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/constituency", Summary: "Constituencies of a place",
+				Example: "/v1/constituency?pincode=637001",
+				Params: []param{
+					{Name: "pincode", In: "query", Type: "string", Doc: "Indian pincode (the average position of its post offices)."},
+					{Name: "lat", In: "query", Type: "number", Doc: "Latitude, if no pincode."},
+					{Name: "lng", In: "query", Type: "number", Doc: "Longitude, if no pincode."},
+				},
+			},
+		},
+	},
+	{
 		ID:        "airports",
 		Title:     "Airports",
 		Tagline:   "Airport codes to airports, and airports by city.",

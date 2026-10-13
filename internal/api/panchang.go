@@ -42,25 +42,11 @@ func (s *Server) panchangPlace(w http.ResponseWriter, r *http.Request) (panchang
 	view := panchangPlace{Latitude: defaultLatitude, Longitude: defaultLongitude, TimeZone: zoneName, Name: "New Delhi"}
 	switch pincode := strings.TrimSpace(query.Get("pincode")); {
 	case pincode != "":
-		set := s.need(w, r, "pincode")
-		if set == nil {
+		lat, lng, district, ok := s.pincodePosition(w, r, pincode)
+		if !ok {
 			return panchang.Place{}, panchangPlace{}, false
 		}
-		if !sixDigits.MatchString(pincode) {
-			s.badRequest(w, r, "A pincode is six digits and does not start with 0.")
-			return panchang.Place{}, panchangPlace{}, false
-		}
-		// The average position of the pincode's post offices that have one.
-		var lat, lng *float64
-		var name *string
-		if err := set.row(`SELECT AVG(lat), AVG(lng), MIN(district) FROM pincodes WHERE pincode = ? AND lat IS NOT NULL`, pincode).Scan(&lat, &lng, &name); err != nil || lat == nil {
-			s.notFound(w, r, "No position is known for pincode "+pincode+". Give lat and lng instead.")
-			return panchang.Place{}, panchangPlace{}, false
-		}
-		view = panchangPlace{Latitude: round(*lat, 4), Longitude: round(*lng, 4), TimeZone: zoneName, Pincode: pincode}
-		if name != nil {
-			view.Name = *name
-		}
+		view = panchangPlace{Latitude: round(lat, 4), Longitude: round(lng, 4), TimeZone: zoneName, Pincode: pincode, Name: district}
 	case query.Get("lat") != "" || query.Get("lng") != "":
 		lat, errLat := strconv.ParseFloat(strings.TrimSpace(query.Get("lat")), 64)
 		lng, errLng := strconv.ParseFloat(strings.TrimSpace(query.Get("lng")), 64)
