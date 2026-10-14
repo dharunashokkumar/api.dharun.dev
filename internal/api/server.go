@@ -52,6 +52,12 @@ type Config struct {
 	// RenderConcurrency is how many generated images are rendered to PNG at once. Each is
 	// a resvg process of a few tens of megabytes while it runs. Zero means four.
 	RenderConcurrency int
+	// ModelConcurrency is how many jobs that run a neural network (speech, denoise,
+	// background removal) run at once. Each takes a few hundred megabytes. Zero means one.
+	ModelConcurrency int
+	// Programs overrides where an outside program is found, by name (typst, piper, ...).
+	// A program not named here is looked for next to the server binary, then on PATH.
+	Programs map[string]string
 }
 
 // Server holds everything a request needs. It is safe for concurrent use.
@@ -67,6 +73,7 @@ type Server struct {
 	private   map[string]bool // route patterns whose input may be personal
 	documents sync.Map        // rendered docs, keyed by name and origin
 	heavy     chan struct{}
+	models    chan struct{} // one per model job running
 	extras    extras
 	logOut    io.Writer // where request log lines go; standard output when nil
 }
@@ -82,6 +89,9 @@ func New(cfg Config) (*Server, error) {
 	if cfg.HeavyConcurrency <= 0 {
 		cfg.HeavyConcurrency = runtime.NumCPU()
 	}
+	if cfg.ModelConcurrency <= 0 {
+		cfg.ModelConcurrency = 1
+	}
 	s := &Server{
 		cfg:     cfg,
 		store:   newStore(cfg.SeedDir, cfg.DataDir),
@@ -91,6 +101,7 @@ func New(cfg Config) (*Server, error) {
 		routes:  map[string]bool{},
 		private: map[string]bool{},
 		heavy:   make(chan struct{}, cfg.HeavyConcurrency),
+		models:  make(chan struct{}, cfg.ModelConcurrency),
 	}
 	s.extras.start(cfg)
 	s.store.changed = s.datasetChanged
@@ -203,6 +214,9 @@ func (w *statusWriter) WriteHeader(status int) {
 	w.status = status
 	w.ResponseWriter.WriteHeader(status)
 }
+
+// Unwrap lets http.ResponseController reach the connection, to give uploads more time.
+func (w *statusWriter) Unwrap() http.ResponseWriter { return w.ResponseWriter }
 
 func (w *statusWriter) Write(body []byte) (int, error) {
 	if w.status == 0 {
@@ -331,6 +345,13 @@ const (
 	// seconds. It waits on the network rather than the processor, so it takes no CPU
 	// slot; traceroutes keep their own, smaller limit.
 	costProbe = 20
+	// costUpload is a file sent in and worked on: OCR, PDF and image tools. The handler
+	// reads the whole upload first and only then waits for a CPU slot, so a slow upload
+	// does not hold one.
+	costUpload = 15
+	// costModel runs a neural network for seconds: speech, denoise, background removal.
+	// These wait for one of a few model slots instead.
+	costModel = 30
 )
 
 // heavyWait is how long a CPU-heavy request waits for a free slot before it is refused.
@@ -370,22 +391,32 @@ func (s *Server) handle(route string, cost int, pattern string, handler http.Han
 			return
 		}
 		if cost == costHeavy {
-			timer := time.NewTimer(heavyWait)
-			defer timer.Stop()
-			select {
-			case s.heavy <- struct{}{}:
-				defer func() { <-s.heavy }()
-			case <-r.Context().Done():
-				return
-			case <-timer.C:
-				s.metrics.busy()
-				w.Header().Set("Retry-After", "5")
-				s.fail(w, r, http.StatusServiceUnavailable, "busy", "The server is busy. Try again in a few seconds.")
+			release, ok := s.takeSlot(w, r, s.heavy, heavyWait)
+			if !ok {
 				return
 			}
+			defer release()
 		}
 		handler(w, r)
 	})
+}
+
+// takeSlot waits up to wait for a place in pool. When none comes free it answers 503
+// itself and reports false; otherwise it returns the function that gives the place back.
+func (s *Server) takeSlot(w http.ResponseWriter, r *http.Request, pool chan struct{}, wait time.Duration) (func(), bool) {
+	timer := time.NewTimer(wait)
+	defer timer.Stop()
+	select {
+	case pool <- struct{}{}:
+		return func() { <-pool }, true
+	case <-r.Context().Done():
+		return nil, false
+	case <-timer.C:
+		s.metrics.busy()
+		w.Header().Set("Retry-After", "5")
+		s.fail(w, r, http.StatusServiceUnavailable, "busy", "The server is busy. Try again in a few seconds.")
+		return nil, false
+	}
 }
 
 func (s *Server) clientKey(r *http.Request) string {

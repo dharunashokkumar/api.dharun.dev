@@ -24,7 +24,7 @@ func (s *Server) llmsIntro(origin string) string {
 	fmt.Fprintf(&out, "# %s (%s)\n\n> %s\n\n", productName, siteName, siteSummary)
 	fmt.Fprintf(&out, "Base URL: %s. Every endpoint is a plain GET under `/v1`; endpoints that take text also accept it as a POST body (text/plain, or JSON `{\"text\": ...}`). No API key and no sign-up. CORS is open, so browsers can call it directly.\n\n", origin)
 	out.WriteString("JSON responses share one shape: `{ \"data\": ..., \"meta\": { ... } }`. `meta.source` names the dataset, its licence, version and the credit it asks for. Lists add `meta.total`, `meta.limit` and `meta.offset`. Errors are `{ \"error\": { \"code\", \"message\" } }` with a matching HTTP status: 400 for bad input, 404 when nothing matches, 429 over the rate limit, 503 while a dataset is not loaded.\n\n")
-	fmt.Fprintf(&out, "Rate limit: %d requests per minute per client; endpoints that do heavy work (images, astronomy, live DNS) count as 10. Image endpoints return the image itself.\n\n", s.cfg.RateLimitPerMinute)
+	fmt.Fprintf(&out, "Rate limit: %d requests per minute per client; endpoints that do heavy work (images, astronomy, live DNS) count as 10, file uploads as 15 and neural-network jobs (speech, background removal, denoise) as 30. Image, PDF and audio endpoints return the file itself. Uploads are POSTed as the body or as multipart/form-data, up to 10 MB.\n\n", s.cfg.RateLimitPerMinute)
 	return out.String()
 }
 
@@ -34,7 +34,7 @@ func (s *Server) llmsIndex(origin string) []byte {
 	for _, category := range categorised() {
 		fmt.Fprintf(&out, "## %s\n\n", category.Title)
 		for _, group := range category.Groups {
-			fmt.Fprintf(&out, "- [%s](%s/docs/%s.md): %s Example: `GET %s`\n", group.Title, origin, group.ID, group.Tagline, group.Endpoints[0].Example)
+			fmt.Fprintf(&out, "- [%s](%s/docs/%s.md): %s Example: `%s %s`\n", group.Title, origin, group.ID, group.Tagline, group.Endpoints[0].Method(), group.Endpoints[0].Example)
 		}
 		out.WriteString("\n")
 	}
@@ -194,7 +194,7 @@ func (s *Server) handleAPICatalog(w http.ResponseWriter, r *http.Request) {
 	writeBody(w, r, http.StatusOK, encoded, `application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"`, cacheAPI, false)
 }
 
-const registryDescription = "Free Indian data: pincode, IFSC, GSTIN checks, holidays, RTO, logos, UPI QR. No key."
+const registryDescription = "Free Indian data and tools: pincode, IFSC, GSTIN, holidays, GST invoice PDF, OCR, UPI QR. No key."
 
 // serverCard describes the MCP server before anyone connects (MCP Server Cards, SEP-2127).
 func (s *Server) serverCard(origin string) map[string]any {

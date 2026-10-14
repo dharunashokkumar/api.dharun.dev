@@ -120,6 +120,9 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 				if e.Image {
 					success["content"] = map[string]any{"image/svg+xml": map[string]any{}, "image/png": map[string]any{}}
 				}
+				if types := outputTypes(e); types != nil {
+					success["content"] = types
+				}
 				errorResponse := map[string]any{"$ref": "#/components/responses/Error"}
 				operation := func(method string) map[string]any {
 					return map[string]any{
@@ -130,6 +133,13 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 						"parameters":  parameters,
 						"responses":   map[string]any{"200": success, "400": errorResponse, "404": errorResponse, "429": errorResponse},
 					}
+				}
+				if e.Upload != nil {
+					post := operation("")
+					post["requestBody"] = uploadBody(e)
+					post["responses"].(map[string]any)["413"] = errorResponse
+					paths[e.Path] = map[string]any{"post": post}
+					continue
 				}
 				item := map[string]any{"get": operation("")}
 				if e.Post {

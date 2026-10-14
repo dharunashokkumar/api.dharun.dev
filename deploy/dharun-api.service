@@ -17,15 +17,19 @@ Environment=DATA_DIR=/var/lib/dharun-api/data
 # Lifetime request totals. systemd creates /var/lib/dharun-api for the service user.
 StateDirectory=dharun-api
 Environment=STATE_DIR=/var/lib/dharun-api
-# Generated images are rendered by resvg, one short-lived process per image.
+# Generated images are rendered by resvg, one short-lived process per image. The file
+# tools run their programs (typst, piper, deep-filter, onnx-run from the release; tesseract,
+# vips, ffmpeg, poppler from Debian) the same way.
 Environment=RESVG=/opt/dharun-api/current/resvg
 ExecStart=/opt/dharun-api/current/api
 Restart=always
 RestartSec=3
 # The Go runtime collects harder as it nears this, trading processor time for memory.
-# It is a target for the server itself; resvg's memory comes on top, within MemoryMax.
+# It is a target for the server itself; the programs it runs come on top, within
+# MemoryMax. Measured (2026-10-15): a background removal peaks at 1 GB with the API, one
+# at a time (MODEL_CONCURRENCY); other file jobs 60 to 320 MB each, one per CPU at once.
 Environment=GOMEMLIMIT=384MiB
-MemoryMax=768M
+MemoryMax=3G
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=yes

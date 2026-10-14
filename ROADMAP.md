@@ -19,7 +19,8 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
-| Next rounds | Round 2 uploads, round 3 AI models, round 4 network tools. One round per session |
+| Round 2 | Uploads (section 6): built 2026-10-15, tested on Linux; not released. Needs the server change (packages, memory, disk) before its tools work there |
+| Next rounds | Round 3 AI models, round 4 network tools. One round per session |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
 ## 2. Platform work in round 1
@@ -149,13 +150,56 @@ Decided 2026-10-13: the server fetches this itself (section 9).
 
 ## 6. Later rounds
 
-### Round 2: uploads (group B)
+### Round 2: uploads (group B), built 2026-10-15, not released
 
-OCR (Tesseract), image resize and convert (libvips), PDF tools (`pdfcpu`), Typst to PDF
-with a ready GST invoice template, barcode reading, perceptual hash, text to speech
-(Piper), audio denoise, background removal. A tool is started per request and exits, so
-memory is used only while a request runs. Needs designing first: upload size limits, a
-queue, and what happens to uploaded files (processed in memory, never stored).
+Started 2026-10-14. Dharun's decisions, 2026-10-14:
+
+- **Scope: everything in the group**, the model-based tools (speech, denoise, background
+  removal) included rather than moved to round 3.
+- **Uploads:** up to 10 MB per file (a PDF merge up to 25 MB in all), sent as the raw
+  body or as `multipart/form-data`. No `?url=` fetching: the server does not download
+  files strangers name. Files are processed in a temporary directory and deleted when
+  the request ends; never stored, never logged (every upload endpoint is Private).
+- **Images through libvips** (JPEG, PNG, WebP, AVIF, HEIC, TIFF, GIF), installed with apt.
+- **Packaging, mixed:** apt on the server for Tesseract with the Indian language packs,
+  libvips, ffmpeg and poppler; the release carries typst, piper, deep-filter and a small
+  ONNX helper; model and voice files are fetched by the server once, pinned by checksum,
+  like the IP database, and never ship in a release. Their endpoints answer 503 until then.
+- **Memory and CPU:** first `MemoryMax=1.5G` and a 3 GB container; then, once speech
+  proved too slow on two CPUs (1,000 characters of Hindi took 33 s), Dharun chose
+  (2026-10-15) **10 CPUs and 5 GB for the container** and a 3,000-character speech limit.
+  The service gets `MemoryMax=3G`: one model job at a time (background removal peaks at
+  1 GB) beside one CPU job per CPU (each under 320 MB). Infra request.
+- **Voices: all Piper voices for Indian languages**, each with its licence in the response.
+  Clear: English LJSpeech and Cori (public domain), Telugu Padmavathi and Venkatesh
+  (CC BY 4.0). IIT Madras IndicTTS: Hindi Rohan, Telugu Maya, Malayalam Arjun and Meera;
+  the licence was read in full (2026-10-15, archived copy): royalty-free, sub-licensable,
+  derived works freely distributable, its copyright notice kept, which each of these
+  voices carries in its attribution. Non-commercial (CC BY-NC-SA 4.0), marked as such:
+  Hindi Pratham and Priyamvada. Piper has no Tamil, Kannada, Bengali or Gujarati voice.
+  **The Marathi voice was dropped**: it was trained with a newer phoneme set than the 2023
+  Piper release reads, and Piper stops on it. The newer Piper is Python only (GPL-3.0);
+  revisit with round 3's model process.
+- **Background removal: IS-Net general use** (Apache-2.0, from `xuebinqin/DIS`).
+
+| API | Endpoint | How | Status |
+|---|---|---|---|
+| OCR | `POST /v1/ocr` | Tesseract 5.5 (Apache-2.0), English and ten Indian languages; images, and PDFs up to 10 pages a request through poppler at 300 dpi | Built |
+| Image info and convert | `POST /v1/image/info`, `/v1/image/convert` | libvips 8.16 (`vips`, LGPL, its own process): resize, fit inside, cover or fill, JPEG, PNG, WebP, AVIF, GIF, TIFF out, HEIC and AVIF in, metadata always stripped; info warns of a GPS position | Built |
+| Background removal | `POST /v1/image/remove-background` | IS-Net at 1024 px through ONNX Runtime 1.29 (MIT) in `onnx-run`, a small cgo helper started per job; PNG, WebP or the mask | Built |
+| Perceptual hash | `POST /v1/image/hash`, `/v1/image/compare` | Computed here: average, difference and DCT hashes; similar at 10 bits or fewer of 64 | Built |
+| Barcode reading | `POST /v1/barcode/read` | `gozxing` (Apache-2.0): every QR code, and Data Matrix, Aztec, EAN, UPC, Code 128/39/93, ITF, Codabar. Not PDF417: gozxing has no reader for it | Built |
+| PDF tools | `POST /v1/pdf/info`, `merge`, `pages`, `rotate`, `compress`, `text`, `render` | `pdfcpu` (Apache-2.0) in the server; text and page images by poppler (`pdftotext`, `pdftoppm`). Password-protected PDFs are refused | Built |
+| Typst to PDF | `/v1/typst` | Typst 0.15.1 (Apache-2.0), shipped in the release; empty project folder, no packages (a proxy to nowhere), no system fonts, one thread, 20 s, 2 GB address space; the server's Noto fonts | Built |
+| GST invoice | `POST /v1/invoice` | JSON in, PDF (or PNG, or the worked-out JSON) out: a Typst template here; CGST and SGST, UTGST in union territories without a legislature, or IGST from the GSTINs or place of supply; HSN summary, round-off, amount in words, UPI QR for the total | Built |
+| Text to speech | `/v1/tts`, `/v1/tts/voices` | Piper (MIT, the 2023 release with espeak-ng, GPL-3.0, as its own program); 10 voices; MP3, Ogg Opus or WAV through ffmpeg | Built |
+| Audio denoise | `POST /v1/audio/denoise` | DeepFilterNet 0.5.6 (MIT or Apache-2.0, one static program); ffmpeg reads any audio or video in and writes the result; first five minutes | Built |
+
+Also in this round: sample files for every upload endpoint (`/samples/`, made by
+`tools/samples/make-samples.sh`), MCP tools for invoices, Typst, speech, OCR and barcode
+reading (files as base64), a downloader that gives up on a stalled transfer instead of
+after ten minutes (a 179 MB model on a slow line took longer), and the docs, OpenAPI,
+skill and plugin describing uploads.
 
 ### Round 3: AI models (group C)
 

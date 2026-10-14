@@ -6,7 +6,8 @@
 #
 # After this, new GitHub releases are installed automatically by dharun-api-update.timer,
 # and datasets are refreshed from their sources by dharun-api-refresh.timer.
-# The server is one static binary: nothing else needs installing.
+# The server is one static binary. The file tools (OCR, images, PDF text, audio) also run
+# programs from Debian, installed here; the rest come in the release bundle.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 export DEBIAN_FRONTEND=noninteractive
@@ -15,6 +16,9 @@ export DEBIAN_FRONTEND=noninteractive
 
 apt-get update -q
 apt-get install -y -q curl ca-certificates
+# Tesseract with English and ten Indian languages; libvips (with AVIF output); ffmpeg;
+# poppler's pdftotext and pdftoppm. About 600 MB. prlimit (util-linux) caps Typst's memory.
+apt-get install -y -q --no-install-recommends   tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-kan   tesseract-ocr-mal tesseract-ocr-ben tesseract-ocr-guj tesseract-ocr-pan tesseract-ocr-ori tesseract-ocr-mar   libvips-tools libheif-plugin-aomenc ffmpeg poppler-utils util-linux
 
 # useradd, not adduser: a minimal Debian 13 does not come with adduser.
 id dharun-api >/dev/null 2>&1 || useradd --system --user-group --home-dir /opt/dharun-api --no-create-home --shell /usr/sbin/nologin dharun-api

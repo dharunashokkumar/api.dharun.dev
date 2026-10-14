@@ -7,7 +7,7 @@ const htmlPages = `
 <section class="hero"><div class="wrap">
 <p class="eyebrow">` + productName + `</p>
 <h1>Free APIs for India.</h1>
-<p class="lead">Pincodes, IFSC codes, GSTIN checks, holidays, RTO codes, UPI QR codes and more: {{.Count}} APIs, one simple shape. No key. No sign-up. Open source.</p>
+<p class="lead">Pincodes, IFSC codes, GSTIN checks, holidays, GST invoices, OCR in Indian languages, UPI QR codes and more: {{.Count}} APIs, one simple shape. No key. No sign-up. Open source.</p>
 <div class="actions"><a class="button" href="/docs">Browse the APIs</a><a class="more" href="/ai">Use with AI ›</a></div>
 <div class="try">
 <div class="codebox"><pre><code>curl {{.Example}}</code></pre></div>
@@ -73,9 +73,11 @@ const htmlPages = `
 {{range .Endpoints}}
 <section class="endpoint" id="{{.Anchor}}">
 <h2>{{.Summary}}</h2>
-<p class="route"><span class="method">GET</span><span>{{.Path}}</span>{{if .Post}}<span class="method">POST</span>{{end}}</p>
+<p class="route"><span class="method">{{.Method}}</span><span>{{.Path}}</span>{{if .Post}}<span class="method">POST</span>{{end}}</p>
 {{if .Doc}}<p>{{.Doc}}</p>{{end}}
 {{if .Post}}<p>Also takes POST: {{.Body}} Send it as <code>text/plain</code>, or as JSON <code>{"text": "..."}</code> with the other options beside it, up to {{$.Body.BodyLimit}}.</p>{{end}}
+{{with .Upload}}<p>Send: {{.Accepts}}{{if not .JSON}} Post the file as the request body, or as <code>multipart/form-data</code>{{if gt .Files 1}} with one field per file{{end}}.{{end}}{{if .Sample}} Try it with <a href="/samples/{{.Sample}}">this sample</a>.{{end}}</p>{{end}}
+{{if .Returns}}<p>The answer {{.Returns}}; errors are JSON as everywhere else.</p>{{end}}
 {{if .Private}}<p class="note">What you send here is never written to the log, and the answer is not cached.</p>{{end}}
 {{if or .PathParams .Query}}<table class="params"><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody>
 {{range .PathParams}}<tr><th><code>{{.Name}}</code><small>path, required</small></th><td>{{.Doc}}{{if .Enum}} One of: {{join .Enum ", "}}.{{end}}</td></tr>
@@ -85,7 +87,8 @@ const htmlPages = `
 <div class="tabs" role="tablist">{{range .Samples}}<button type="button" role="tab" data-lang="{{.Lang}}">{{.Label}}</button>{{end}}</div>
 {{range .Samples}}<div class="panel" data-lang="{{.Lang}}"><p class="panel-label">{{.Label}}</p><div class="codebox"><pre><code>{{.Code}}</code></pre></div></div>
 {{end}}</div>
-{{if .Image}}<p class="label">Result</p><div class="preview"><img src="{{.URL}}" alt="Example: {{.Summary}}" loading="lazy"></div>
+{{if and .Upload .Upload.JSON}}<p class="label">invoice.json</p><div class="codebox"><pre><code>{{.ExampleBody}}</code></pre></div>{{end}}
+{{if and .Image (not .Upload)}}<p class="label">Result</p><div class="preview"><img src="{{.URL}}" alt="Example: {{.Summary}}" loading="lazy"></div>
 {{else if .Sample}}<p class="label">Response{{if .Sample.Shortened}}, with lists and long text shortened{{end}}</p><div class="codebox"><pre class="sample"><code>{{.Sample.JSON}}</code></pre></div>
 {{end}}</section>
 {{end}}
@@ -110,7 +113,7 @@ const htmlPages = `
 <div class="codebox"><pre><code>npx skills add {{.Repo}}</code></pre></div>
 <p>Or download it and upload it where your assistant takes skills, such as claude.ai: <a href="/skills/{{.Name}}.zip">{{.Name}}.zip</a>. Read it first at <a href="/.well-known/agent-skills/{{.Name}}/SKILL.md">SKILL.md</a>. The skill is MIT-0.</p>
 <h2>Try asking</h2>
-<ul><li>Which district and state is pincode 637001 in?</li><li>Which bank branch is IFSC SBIN0000001, and does it support RTGS?</li><li>Is 26 January 2026 a bank holiday in Tamil Nadu? What is the next working day?</li><li>Write 1,25,000.50 rupees in words in Hindi.</li><li>Is GSTIN 27AAPFU0939F1ZV well formed, and which state is it from?</li></ul>
+<ul><li>Which district and state is pincode 637001 in?</li><li>Which bank branch is IFSC SBIN0000001, and does it support RTGS?</li><li>Is 26 January 2026 a bank holiday in Tamil Nadu? What is the next working day?</li><li>Write 1,25,000.50 rupees in words in Hindi.</li><li>Is GSTIN 27AAPFU0939F1ZV well formed, and which state is it from?</li><li>Make a GST invoice PDF for 4 bags of rice at ₹2,150 each, 5% GST, from my Tamil Nadu shop to a buyer in Bengaluru.</li><li>Read the Tamil text in this photo.</li></ul>
 <h2>Tools</h2>
 <table class="params"><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
 {{range .Tools}}<tr><th><code>{{.Name}}</code></th><td>{{.Description}}</td></tr>

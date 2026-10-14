@@ -2,8 +2,9 @@
 
 **Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
 checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
-and crore, and more: 31 APIs behind one consistent JSON shape. No API key, no sign-up,
-open CORS, and an MCP server so AI assistants can use it too.
+and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, text to
+speech, and more: 37 APIs behind one consistent JSON shape. No API key, no sign-up, open
+CORS, and an MCP server so AI assistants can use it too.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dharunashokkumar/api.dharun.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/dharunashokkumar/api.dharun.dev)
@@ -52,7 +53,13 @@ JavaScript and Python.
 | [Email check](https://api.dharun.dev/docs/email) | `/v1/email/someone@example.com` | Syntax, disposable domain, whether the domain takes mail |
 | [DNS check](https://api.dharun.dev/docs/dns) | `/v1/dns/example.com?type=MX` | Records as several public resolvers see them |
 | [Traceroute from India](https://api.dharun.dev/docs/mtr) | `/v1/mtr/example.com` | MTR-style path from a server in India: network, loss and latency per hop |
-| [QR, UPI QR and barcodes](https://api.dharun.dev/docs/codes) | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250` | QR codes, UPI payment QR codes and links, barcodes |
+| [QR, UPI QR and barcodes](https://api.dharun.dev/docs/codes) | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250`, `POST /v1/barcode/read` | QR codes, UPI payment QR codes and links, barcodes; reading codes from a photo |
+| [GST invoice](https://api.dharun.dev/docs/invoice) | `POST /v1/invoice` | A GST tax invoice PDF from JSON: CGST and SGST or IGST, HSN summary, amount in words, UPI QR |
+| [OCR](https://api.dharun.dev/docs/ocr) | `POST /v1/ocr?lang=eng+tam` | Text from photos, scans and scanned PDFs in English and ten Indian languages |
+| [Image tools](https://api.dharun.dev/docs/image-tools) | `POST /v1/image/convert?format=webp&width=800` | Resize and convert (WebP, AVIF, HEIC in), remove backgrounds, perceptual hashes |
+| [PDF tools](https://api.dharun.dev/docs/pdf) | `POST /v1/pdf/merge`, `/pages`, `/rotate`, `/compress`, `/text`, `/render` | Merge, split, rotate, compress, read text, draw pages |
+| [Typst to PDF](https://api.dharun.dev/docs/typst) | `/v1/typst?text=...` | Typst documents to PDF or PNG, with Indian scripts |
+| [Speech](https://api.dharun.dev/docs/speech) | `/v1/tts?text=...&voice=hi`, `POST /v1/audio/denoise` | Text to speech in Hindi, Telugu, Malayalam and English; noise removal |
 | [Generated images](https://api.dharun.dev/docs/images) | `/v1/og-image?title=Hello` | Link preview cards and code images, in ten scripts |
 | [Text tools](https://api.dharun.dev/docs/text) | `/v1/text/chunk`, `/redact`, `/tokens`, `/language` | Chunking for retrieval, PII redaction, token counts, language detection |
 | [Regex tester](https://api.dharun.dev/docs/regex) | `/v1/regex?pattern=...&text=...` | Every match with its groups, replacement, the pattern explained |
@@ -68,9 +75,13 @@ JavaScript and Python.
 - `meta.source` names the dataset, its version, its licence and the credit it asks for.
 - Errors are `{ "error": { "code", "message" } }` with a matching HTTP status.
 - Each client has an allowance of 600 requests a minute. A lookup costs 1; a request that
-  takes real CPU work (image rendering, astronomy, live DNS) costs 10.
+  takes real CPU work (image rendering, astronomy, live DNS) costs 10, a file upload 15,
+  and a neural network job (speech, background removal, denoise) 30.
 - Text endpoints take `?text=`, or a POST body as `text/plain` or JSON `{"text": "..."}`.
-- Image endpoints return the image itself, ready for an `<img>` tag.
+- Image endpoints return the image itself, ready for an `<img>` tag; PDF and audio
+  endpoints return the file.
+- File endpoints take a POST of the file as the body, or as `multipart/form-data`, up to
+  10 MB. Files are deleted when the answer is sent; nothing is kept.
 
 ## Use it from AI assistants
 
@@ -155,6 +166,8 @@ accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 | IP addresses | [DB-IP](https://db-ip.com) Lite | CC BY 4.0 | fetched by each server |
 | Orbit elements | [CelesTrak](https://celestrak.org/NORAD/elements/), from US Space Force data via Space-Track.org; only computed passes and positions are published | None stated; redistribution with credit allowed by USSPACECOM | fetched by each server, 111 satellites |
 | Space weather | [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/) | Public domain (US government work) | fetched by each server, hourly |
+| Speech voices | [Piper voices](https://huggingface.co/rhasspy/piper-voices), each trained on its own recordings | Per voice: public domain, CC BY 4.0, IIT Madras Indic TTS licence, or CC BY-NC-SA 4.0 (two Hindi voices, non-commercial) | fetched by each server, 10 voices |
+| Background removal model | [IS-Net](https://github.com/xuebinqin/DIS) (Qin et al.), ONNX export by rembg | Apache-2.0 | fetched by each server |
 | Disposable email domains | [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) | CC0 | 9,881 domains |
 | Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 3,156 logos |
 

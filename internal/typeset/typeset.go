@@ -14,6 +14,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"io/fs"
 	"strconv"
 	"strings"
 	"sync"
@@ -29,6 +30,12 @@ import (
 
 //go:embed fonts/*.ttf fonts/LICENSE fonts/SHA256SUMS
 var files embed.FS
+
+// Fonts returns the font files, for programs that lay out text themselves (Typst).
+func Fonts() fs.FS {
+	sub, _ := fs.Sub(files, "fonts")
+	return sub
+}
 
 // Em is the number of layout units in one em.
 const Em = 1000

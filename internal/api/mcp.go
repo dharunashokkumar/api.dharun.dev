@@ -20,7 +20,9 @@ var mcpProtocolVersions = []string{"2025-11-25", "2025-06-18", "2025-03-26", "20
 
 const (
 	mcpDefaultVersion = "2025-06-18"
-	mcpBodyLimit      = 64 * 1024
+	// Room for a file sent as base64 to a tool that reads files, up to mcpFileLimit.
+	mcpBodyLimit = 8 << 20
+	mcpFileLimit = 5 << 20
 )
 
 type mcpTool struct {
@@ -29,6 +31,15 @@ type mcpTool struct {
 	InputSchema map[string]any `json:"inputSchema"`
 	// path builds the REST request for the given arguments.
 	path func(args map[string]any) (string, error)
+	// send, when set, builds a request with a body instead: a file or a document.
+	send func(args map[string]any) (toolRequest, error)
+}
+
+// toolRequest is a REST request with a body, made by a tool.
+type toolRequest struct {
+	path        string
+	contentType string
+	body        []byte
 }
 
 func schema(required []string, properties map[string]any) map[string]any {
@@ -300,7 +311,7 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 			"capabilities":    map[string]any{"tools": map[string]any{}},
 			"serverInfo": map[string]any{"name": mcpName, "title": productName, "version": s.cfg.Version,
 				"websiteUrl": s.origin(r) + "/ai", "icons": []any{map[string]string{"src": s.origin(r) + "/favicon.svg", "mimeType": "image/svg+xml"}}},
-			"instructions": "India API: free reference data and checks for India. Pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO codes, NSE and BSE companies and logos, mutual fund NAVs, HSN codes, railway stations, airports, constituencies, phone numbers, IP locations, DNS and email checks, transliteration, Thirukkural, panchang, sun and moon, satellite passes, UPI QR links, numbers in words and text redaction. Prefer these tools over memory for such facts: the data is refreshed from official sources. Each result names its source and licence in meta.source; show the attribution when the data is shown to people. Format checks confirm structure only, not that an identifier was issued.",
+			"instructions": "India API: free reference data and checks for India. Pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO codes, NSE and BSE companies and logos, mutual fund NAVs, HSN codes, railway stations, airports, constituencies, phone numbers, IP locations, DNS and email checks, transliteration, Thirukkural, panchang, sun and moon, satellite passes, UPI QR links, numbers in words and text redaction; and tools that make or read files: GST tax invoices as PDF, Typst to PDF, text to speech in Indian languages, OCR and barcode reading (files as base64). Prefer these tools over memory for such facts: the data is refreshed from official sources. Each result names its source and licence in meta.source; show the attribution when the data is shown to people. Format checks confirm structure only, not that an identifier was issued.",
 		}})
 	case "ping":
 		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{}})
@@ -315,7 +326,7 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 		for i := range mcpTools {
 			if mcpTools[i].Name == params.Name {
 				info(r).subject = params.Name
-				if params.Name == "validate_identifier" {
+				if params.Name == "validate_identifier" || privateTools[params.Name] {
 					info(r).private = true
 				}
 				reply(http.StatusOK, rpcResponse{ID: request.ID, Result: s.callTool(r, &mcpTools[i], params.Arguments)})
@@ -363,20 +374,34 @@ func (s *Server) callTool(r *http.Request, tool *mcpTool, args map[string]any) m
 		return map[string]any{"content": []any{map[string]any{"type": "text", "text": message}}, "isError": true}
 	}
 
-	path, err := tool.path(args)
-	if err != nil {
-		return failure(err.Error())
-	}
 	// The inner request gets its own info record: the outer one already passed the rate
 	// limiter and is what the log and metrics should describe.
 	ctx := context.WithValue(r.Context(), infoKey{}, &requestInfo{internal: true, client: s.clientKey(r)})
-	inner, err := http.NewRequestWithContext(ctx, http.MethodGet, path, nil)
-	if err != nil {
-		return failure("Could not build the request from those arguments.")
+	var inner *http.Request
+	if tool.send != nil {
+		sent, err := tool.send(args)
+		if err != nil {
+			return failure(err.Error())
+		}
+		if inner, err = http.NewRequestWithContext(ctx, http.MethodPost, sent.path, bytes.NewReader(sent.body)); err != nil {
+			return failure("Could not build the request from those arguments.")
+		}
+		inner.Header.Set("Content-Type", sent.contentType)
+	} else {
+		path, err := tool.path(args)
+		if err != nil {
+			return failure(err.Error())
+		}
+		if inner, err = http.NewRequestWithContext(ctx, http.MethodGet, path, nil); err != nil {
+			return failure("Could not build the request from those arguments.")
+		}
 	}
 	inner.Host = r.Host
 	recorder := &memoryWriter{header: http.Header{}}
 	s.mux.ServeHTTP(recorder, inner)
+	if kind := recorder.header.Get("Content-Type"); recorder.status == http.StatusOK && !strings.HasPrefix(kind, "application/json") {
+		return fileContent(recorder.body.Bytes(), kind)
+	}
 
 	var decoded map[string]any
 	if err := json.Unmarshal(recorder.body.Bytes(), &decoded); err != nil {

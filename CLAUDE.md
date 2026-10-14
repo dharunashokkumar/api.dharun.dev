@@ -5,8 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 `api.dharun.dev`, named **India API**: free, open source APIs for Indian developers (company
-logos, pincodes, IFSC, RTO codes, holidays, number to words, format checks, and more being
-added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
+logos, pincodes, IFSC, RTO codes, holidays, number to words, format checks, GST invoices,
+OCR, PDF, image and speech tools, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
 same service serves the website, the guides and the files for AI agents. No API keys,
 rate limit per IP. Code AGPL-3.0-only; examples, guides' code, skill and plugin MIT-0.
 
@@ -55,6 +55,16 @@ bash tools/install-test.sh dist            # needs Docker: installs on a fresh D
 resvg has no Windows build. Without `RESVG` the PNG tests skip themselves and the image
 endpoints are tested as SVG only, so run the suite on Linux before trusting a change to
 rendering.
+
+The file tools run outside programs. On Windows most are missing and their tests skip;
+on Linux install them as CI does (apt: tesseract and its language packs, libvips-tools,
+libheif-plugin-aomenc, ffmpeg, poppler-utils; then `bash tools/fetch-tools.sh <dir>` for
+typst, piper, deep-filter and onnx-run, and put `<dir>` and `<dir>/piper` on `PATH`).
+`REQUIRE_TOOLS=1` turns a missing program into a failure. The speech and background
+removal tests also need the server-only `voices` and `matting` datasets: fetch them once
+with `go run ./cmd/apidata refresh -live <dir> voices matting` (about 900 MB) and set
+`MODELS_DIR=<dir>`; `REQUIRE_MODELS=1` makes their absence a failure. The sample files the
+docs and tests post are made by `tools/samples/make-samples.sh`.
 
 Linux-only steps (release build, shellcheck, `internal/deploytest`, which has a
 `//go:build linux` tag) are run locally through WSL:
@@ -206,11 +216,45 @@ from `internal/api/testdata/data/` into the live directory in `TestMain`; the sa
 fixture's epochs are moved to the time of the test run. Never return a satellite's orbit
 elements, only what is computed from them.
 
+### Files in, files out (`upload.go` and the round 2 files)
+
+Endpoints that take files register through `s.handleUpload` with an `uploadRoute`: the
+whole upload (raw body or multipart, 10 MB, 25 MB for a merge) is read before the request
+takes a slot, so a slow upload holds none, and the connection deadlines are moved out
+for it. CPU work waits for `s.heavy`; anything that runs a neural network (speech,
+denoise, background removal) waits for `s.models` (`MODEL_CONCURRENCY`, default one).
+Costs: `costUpload` 15, `costModel` 30. Every upload endpoint is `Private`. Files live in
+memory or a per-request `workspace()` deleted when the answer is sent, and answers are
+`private, no-store` (`sendFile`).
+
+Outside programs run through `s.run(ctx, job{...})`: found once by `programs` (an env
+override such as `TYPST=`, next to the binary, then `PATH`), started with a minimal
+environment (never the server's own, which holds the Cloudflare token), a timeout, and
+stderr kept to 8 KB. On failure only the program and exit status are logged, never what
+it printed, which can quote the upload. A missing program answers 503 `not_available`.
+From the release: typst (run with an empty root, no packages, a proxy to nowhere, one
+thread, `prlimit` on memory), piper (in `piper/`, with espeak-ng), deep-filter, and
+`onnx-run` (`cmd/onnx-run`, cgo, loads `libonnxruntime.so` beside it; one model, one
+float32 tensor in, the first output out). From Debian: tesseract, vips, vipsheader,
+ffmpeg, pdftotext, pdftoppm. pdfcpu (PDF info, merge, pages, rotate, compress), gozxing
+(barcode reading) and the perceptual hashes run in the server itself.
+
+The model files are server-only datasets like the IP database: `voices` (10 Piper voices,
+each with its own licence in `dataset.Voices`) and `matting` (IS-Net), pinned by revision
+and SHA-256, checked monthly and downloaded only when the pinned set changes.
+
+In the catalog an endpoint that takes files has `Upload` (what it accepts, a sample file
+under `internal/api/samples/` that the docs and `TestEveryDocumentedExampleWorks` post)
+and is POST only; `Output` marks one that returns a PDF or audio.
+
 ### MCP
 
 `mcp.go` is a stateless MCP server (Streamable HTTP) at `POST /mcp`. A tool does not
 have its own logic: `callTool` builds a REST path and runs it through the same mux in
-memory, so a tool returns exactly what the REST endpoint returns.
+memory, so a tool returns exactly what the REST endpoint returns. A tool with `send`
+POSTs a body instead (a document, or a file passed as base64, up to 5 MB), and a file
+that comes back is returned as an image, audio or embedded resource block
+(`mcp_files.go`).
 
 ### Adding an API
 
@@ -290,9 +334,14 @@ install to be re-run: that is an infrastructure request too.
    `smoke-checks.sh` only when the live server answers it the same way as a fresh bundle.
 
 Measured on Linux: the API idles at 34 MB and peaked at 144 MB under a mixed burst over
-every kind of endpoint; resvg adds 11 to 75 MB per image while it runs (`MemoryMax=768M`,
-`GOMEMLIMIT=384MiB`). The refresh job peaks at 200 MB during the weekly
-IFSC refresh (`MemoryMax=512M`, separate unit).
+every kind of endpoint; resvg adds 11 to 75 MB per image while it runs. The file tools
+(2026-10-15, API plus the program, pinned to 10 CPUs as on the server): OCR 80 to 170 MB,
+image conversion of a 12 MP photo 150 to 210 MB, PDF tools 50 to 100 MB, speech up to
+320 MB (3,000 characters of Hindi in 14 s), denoise 145 MB, background removal 1 GB
+(5 s). After a large picture the API hands memory back (`debug.FreeOSMemory`) and idles
+at about 40 MB again. Limits: `MemoryMax=3G`, `GOMEMLIMIT=384MiB`, container 10 CPUs
+and 5 GB (Dharun, 2026-10-15). The refresh job peaks at 200 MB during the weekly IFSC
+refresh (`MemoryMax=512M`, separate unit).
 
 ## Rules that the code does not show
 

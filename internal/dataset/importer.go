@@ -3,6 +3,7 @@ package dataset
 import (
 	"bytes"
 	"compress/gzip"
+	"context"
 	"crypto/sha256"
 	"database/sql"
 	"encoding/hex"
@@ -25,7 +26,23 @@ const (
 
 	// No source file is anywhere near this size; a response that is means something is wrong.
 	maxDownload = 512 << 20
+	// downloadStall is how long a download may go without receiving a byte.
+	downloadStall = 2 * time.Minute
 )
+
+// progressReader calls progress whenever bytes arrive.
+type progressReader struct {
+	io.ReadCloser
+	progress func()
+}
+
+func (r *progressReader) Read(p []byte) (int, error) {
+	n, err := r.ReadCloser.Read(p)
+	if n > 0 {
+		r.progress()
+	}
+	return n, err
+}
 
 // Importer is handed to a dataset's Import function. The same function serves a
 // maintainer refreshing the repository's copy and a server refreshing its own.
@@ -124,17 +141,28 @@ var ErrNotChanged = errors.New("the source has not changed")
 
 // Download streams a URL into a file under the import directory, for sources too large
 // to hold in memory. It returns the file's path.
+//
+// A large file over a slow connection can take longer than the client's overall time
+// limit, so a download has none: it is given up only when no byte arrives for
+// downloadStall.
 func (im *Importer) Download(address, name string) (string, error) {
-	request, err := http.NewRequest(http.MethodGet, address, nil)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, address, nil)
 	if err != nil {
 		return "", err
 	}
 	request.Header.Set("User-Agent", userAgent)
-	response, err := im.http().Do(request)
+	client := *im.http()
+	client.Timeout = 0
+	stall := time.AfterFunc(downloadStall, cancel)
+	defer stall.Stop()
+	response, err := client.Do(request)
 	if err != nil {
 		return "", err
 	}
 	defer response.Body.Close()
+	response.Body = &progressReader{ReadCloser: response.Body, progress: func() { stall.Reset(downloadStall) }}
 	if response.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("GET %s: %s", address, response.Status)
 	}

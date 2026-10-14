@@ -8,7 +8,7 @@ Base URL `{{.Origin}}`. No API key. Answers are JSON, `{ "data": ..., "meta": { 
 {{range .Endpoints}}
 ## {{.Summary}}
 
-`GET {{.Path}}`{{if .Post}}, also `POST`{{end}}
+`{{.Method}} {{.Path}}`{{if .Post}}, also `POST`{{end}}
 {{- if .Doc}}
 
 {{.Doc}}
@@ -16,6 +16,10 @@ Base URL `{{.Origin}}`. No API key. Answers are JSON, `{ "data": ..., "meta": { 
 {{- if .Post}}
 
 POST body: {{.Body}} Send it as `text/plain`, or as JSON `{"text": "..."}` with the other options beside it.
+{{- end}}
+{{- with .Upload}}
+
+Send: {{.Accepts}}{{if not .JSON}} Post the file as the request body, or as `multipart/form-data`{{if gt .Files 1}} with one field per file{{end}}.{{end}}{{if .Sample}} Sample file: {{$.Origin}}/samples/{{.Sample}}{{end}}
 {{- end}}
 {{- if .Private}}
 
@@ -32,8 +36,16 @@ Parameters:
 {{- end}}
 {{- end}}
 
-Example: {{.URL}}
-{{- if .Image}} (returns the image itself){{end}}
+Example: {{if .Upload}}`POST` {{end}}{{.URL}}
+{{- if .Returns}} ({{.Returns}}){{end}}
+{{- if and .Upload .Upload.JSON}}
+
+Example body (invoice.json):
+
+```json
+{{.ExampleBody}}
+```
+{{- end}}
 {{- with .Sample}}
 
 Response{{if .Shortened}}, with lists and long text shortened{{end}}:

@@ -15,7 +15,9 @@ type extras struct {
 	ip     atomic.Pointer[ipReaders]
 	tokens *textkit.Tokenizer
 	render *renderer
-	stop   chan struct{}
+	// programs finds the outside programs the upload tools run.
+	programs *programs
+	stop     chan struct{}
 	// dns answers DNS queries; nil means the real network. Tests set it.
 	dns dnsExchanger
 	// trace runs a traceroute; nil means the real one. Tests set it.
@@ -31,6 +33,7 @@ func (e *extras) datasetChanged(name string) {}
 func (e *extras) start(cfg Config) {
 	e.tokens = textkit.NewTokenizer()
 	e.render = newRenderer(cfg)
+	e.programs = newPrograms(cfg.Programs)
 	e.traces = make(chan struct{}, mtrConcurrency)
 	e.stop = make(chan struct{})
 	go func() {
@@ -108,6 +111,7 @@ func (s *Server) registerMore() {
 	s.handle("og_image", costHeavy, "GET /v1/og-image", s.handleOGImage)
 	s.handle("code_image", costHeavy, "GET /v1/code-image", s.handleCodeImage)
 	s.handle("code_image", costHeavy, "POST /v1/code-image", s.handleCodeImage)
+	s.registerFileTools()
 	for _, tool := range []struct {
 		route, path string
 		handler     http.HandlerFunc
@@ -124,3 +128,41 @@ func (s *Server) registerMore() {
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }
+
+// registerFileTools registers the endpoints that take files (round 2). Their work waits
+// for a CPU slot, or for a model slot when it runs a neural network.
+func (s *Server) registerFileTools() {
+	cpu := uploadRoute{}
+	model := uploadRoute{pool: s.models, wait: modelWait}
+	for _, tool := range []struct {
+		route, path string
+		cost        int
+		spec        uploadRoute
+		handler     func(http.ResponseWriter, *http.Request, uploadInput)
+	}{
+		{"ocr", "/v1/ocr", costUpload, cpu, s.handleOCR},
+		{"barcode_read", "/v1/barcode/read", costUpload, cpu, s.handleBarcodeRead},
+		{"image_info", "/v1/image/info", costUpload, cpu, s.handleImageInfo},
+		{"image_convert", "/v1/image/convert", costUpload, cpu, s.handleImageConvert},
+		{"image_hash", "/v1/image/hash", costUpload, cpu, s.handlePictureHash},
+		{"image_compare", "/v1/image/compare", costUpload, uploadRoute{maxFiles: 2, limit: 2 * uploadLimit}, s.handlePictureCompare},
+		{"remove_background", "/v1/image/remove-background", costModel, model, s.handleRemoveBackground},
+		{"pdf_info", "/v1/pdf/info", costUpload, cpu, s.handlePDFInfo},
+		{"pdf_text", "/v1/pdf/text", costUpload, cpu, s.handlePDFText},
+		{"pdf_merge", "/v1/pdf/merge", costUpload, uploadRoute{maxFiles: pdfMaxFiles, limit: mergeLimit}, s.handlePDFMerge},
+		{"pdf_pages", "/v1/pdf/pages", costUpload, cpu, s.handlePDFPages},
+		{"pdf_rotate", "/v1/pdf/rotate", costUpload, cpu, s.handlePDFRotate},
+		{"pdf_compress", "/v1/pdf/compress", costUpload, cpu, s.handlePDFCompress},
+		{"pdf_render", "/v1/pdf/render", costUpload, cpu, s.handlePDFRender},
+		{"denoise", "/v1/audio/denoise", costModel, model, s.handleDenoise},
+	} {
+		s.handleUpload(tool.route, tool.cost, "POST "+tool.path, tool.spec, tool.handler)
+	}
+	s.handle("invoice", costHeavy, "POST /v1/invoice", s.handleInvoice)
+	s.handle("typst", costHeavy, "GET /v1/typst", s.handleTypst)
+	s.handle("typst", costHeavy, "POST /v1/typst", s.handleTypst)
+	s.handle("tts", costModel, "GET /v1/tts", s.handleTTS)
+	s.handle("tts", costModel, "POST /v1/tts", s.handleTTS)
+	s.handle("tts_voices", costLight, "GET /v1/tts/voices", s.handleVoices)
+	s.handle("samples", costFree, "GET /samples/{file}", s.handleSampleFile)
+}

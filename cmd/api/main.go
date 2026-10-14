@@ -54,6 +54,8 @@ func run() error {
 		HeavyConcurrency:   envInt("HEAVY_CONCURRENCY", 0),
 		Resvg:              os.Getenv("RESVG"),
 		RenderConcurrency:  envInt("RENDER_CONCURRENCY", 4),
+		ModelConcurrency:   envInt("MODEL_CONCURRENCY", 1),
+		Programs:           programPaths(),
 		PublicOrigin:       strings.TrimRight(os.Getenv("PUBLIC_ORIGIN"), "/"),
 		TrustProxy:         envBool("TRUST_PROXY", false),
 		RateLimitPerMinute: envInt("RATE_LIMIT_PER_MIN", 600),
@@ -103,6 +105,19 @@ func run() error {
 		private.Shutdown(ctx)
 	}
 	return nil
+}
+
+// programPaths reads where outside programs are, for the ones set in the environment:
+// TYPST=/path/to/typst, DEEP_FILTER=..., ONNX_RUN=... Unset ones are looked for next to
+// the binary, then on PATH.
+func programPaths() map[string]string {
+	paths := map[string]string{}
+	for _, name := range []string{"typst", "piper", "deep-filter", "onnx-run", "tesseract", "vips", "vipsheader", "ffmpeg", "pdftotext", "pdftoppm"} {
+		if value := os.Getenv(strings.ToUpper(strings.ReplaceAll(name, "-", "_"))); value != "" {
+			paths[name] = value
+		}
+	}
+	return paths
 }
 
 func env(name, fallback string) string {

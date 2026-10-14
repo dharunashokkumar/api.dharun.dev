@@ -22,7 +22,7 @@ const (
 	productName = "India API"
 	siteName    = "api.dharun.dev"
 	siteTagline = "Free, open source APIs for Indian data"
-	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company logos, UPI QR codes, number to words in lakh and crore, and more. No API key, no sign-up, open CORS, an MCP server for AI assistants. Open source under AGPL-3.0."
+	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company logos, UPI QR codes, number to words in lakh and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, and more. No API key, no sign-up, open CORS, an MCP server for AI assistants. Open source under AGPL-3.0."
 
 	publicOrigin = "https://api.dharun.dev" // where the skill and the registry entry point
 	repoURL      = "https://github.com/dharunashokkumar/api.dharun.dev"
@@ -48,6 +48,7 @@ var siteCategories = []struct{ ID, Title string }{
 	{"dates", "Dates and calendars"},
 	{"language", "Language and text"},
 	{"network", "Network and contact checks"},
+	{"files", "Files, documents and media"},
 	{"developer", "Developer tools"},
 	{"sky", "Sky and radio"},
 }
@@ -389,6 +390,9 @@ func anchor(text string) string {
 
 // codeSamples are the ready-to-paste calls shown for an endpoint.
 func codeSamples(e endpoint, address string) []codeSample {
+	if e.Upload != nil || e.Output != "" {
+		return fileSamples(e, address)
+	}
 	if e.Image {
 		extension := "svg"
 		if strings.Contains(address, "format=png") || (strings.Contains(e.Path, "image") && !strings.Contains(address, "format=svg")) {

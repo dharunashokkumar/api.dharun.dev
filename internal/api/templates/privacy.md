@@ -11,6 +11,7 @@ One line per request: the time, the method, the path with its query, the status,
 - **Your IP address.** It is held in memory for up to a minute to count requests against the rate limit, and never written anywhere.
 - **Personal values.** For these endpoints the path and query are replaced by `(redacted)` in the log, and the answer is marked `private, no-store` so no shared cache keeps it: {{range $i, $e := .Private}}{{if $i}}, {{end}}`{{$e}}`{{end}}. The same holds for the matching MCP tools.
 - **Request bodies.** Text you POST is processed in memory and dropped once the answer is sent.
+- **Files you upload.** Pictures, PDFs, recordings and invoices are held in memory, or in a temporary folder only this service can read, while the answer is made, and deleted as soon as it is sent. They are never kept, never used to train anything, and never sent to another service: OCR, image, PDF, speech and noise removal programs all run on this server. When a program fails on a file, the log records only which program failed, not what it was given.
 
 ## Cookies and tracking
 

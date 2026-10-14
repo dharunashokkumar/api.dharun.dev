@@ -1,8 +1,8 @@
 # QR codes and barcodes API
 
-> QR codes, UPI payment QR codes and barcodes as SVG or PNG.
+> QR codes, UPI payment QR codes and barcodes as SVG or PNG, and reading them from a photo.
 
-Generates codes; it does not read them. What you encode is never logged or kept, and the images are not cached by shared caches.
+Generates codes, and reads them from pictures. What you encode or send is never logged or kept, and the answers are not cached by shared caches.
 
 Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
 
@@ -75,6 +75,18 @@ Parameters:
 - `bg` (query): Light colour, hex, or transparent. Default white.
 
 Example: https://api.dharun.dev/v1/barcode/ean13?text=890123456789 (returns the image itself)
+
+## Read QR codes and barcodes from a picture
+
+`POST /v1/barcode/read`
+
+Finds every QR code in a photo or screenshot, and Data Matrix, Aztec, EAN, UPC, Code 128, Code 39, Code 93, ITF and Codabar codes. Not PDF417. Returns each code's kind, text and position. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/codes.png
+
+What you send is never written to the log, and the answer is not cached.
+
+Example: `POST` https://api.dharun.dev/v1/barcode/read
 
 ## Guides
 

@@ -42,6 +42,24 @@ jobs:
           bash tools/fetch-resvg.sh "$RUNNER_TEMP/tools"
           echo "RESVG=$RUNNER_TEMP/tools/resvg" >> "$GITHUB_ENV"
 
+      # The file tools run outside programs: the server installs some with apt (as
+      # deploy/install.sh does) and the release carries the rest. With all of them here,
+      # REQUIRE_TOOLS makes a missing one a failure instead of a skipped test.
+      - name: Install the programs the file tools run
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends \
+            tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-kan \
+            tesseract-ocr-mal tesseract-ocr-ben tesseract-ocr-guj tesseract-ocr-pan tesseract-ocr-ori tesseract-ocr-mar \
+            libvips-tools libheif-plugin-aomenc ffmpeg poppler-utils
+          bash tools/fetch-tools.sh "$RUNNER_TEMP/tools"
+          {
+            echo "$RUNNER_TEMP/tools"
+            echo "$RUNNER_TEMP/tools/piper"
+          } >> "$GITHUB_PATH"
+          echo "TOOLS=$RUNNER_TEMP/tools" >> "$GITHUB_ENV"
+          echo "REQUIRE_TOOLS=1" >> "$GITHUB_ENV"
+
       - name: Unit, API, refresh and updater tests
         run: go test ./...
 

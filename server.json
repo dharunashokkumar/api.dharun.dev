@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "description": "Free Indian data: pincode, IFSC, GSTIN checks, holidays, RTO, logos, UPI QR. No key.",
+  "description": "Free Indian data and tools: pincode, IFSC, GSTIN, holidays, GST invoice PDF, OCR, UPI QR. No key.",
   "name": "io.github.dharunashokkumar/india-api",
   "remotes": [
     {

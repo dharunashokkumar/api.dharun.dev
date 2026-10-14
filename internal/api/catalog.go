@@ -55,6 +55,12 @@ type endpoint struct {
 	// Live marks an endpoint whose answer depends on the network or on the caller, so
 	// the documentation never runs its example to show a sample response.
 	Live bool
+	// Upload marks an endpoint that takes only POST, with a file (or a JSON document) as
+	// its body. Example is then the address the sample is posted to.
+	Upload *upload
+	// Output names what an endpoint returns when it is not JSON and not an image: "pdf"
+	// or "audio".
+	Output string
 }
 
 // privatePaths holds the paths of the endpoints marked Private. handle reads it when a
@@ -91,7 +97,8 @@ var (
 		Doc: "bank (default; needs state), market (NSE trading), settlement (NSE clearing) or central (central government offices)."}
 )
 
-var catalog = []apiGroup{
+// baseCatalog holds the lookup and compute APIs; catalog_files.go adds the file tools.
+var baseCatalog = []apiGroup{
 	{
 		ID:        "logos",
 		Category:  "money",
@@ -304,8 +311,8 @@ var catalog = []apiGroup{
 		ID:       "codes",
 		Category: "money",
 		Title:    "QR codes and barcodes",
-		Tagline:  "QR codes, UPI payment QR codes and barcodes as SVG or PNG.",
-		Intro:    "Generates codes; it does not read them. What you encode is never logged or kept, and the images are not cached by shared caches.",
+		Tagline:  "QR codes, UPI payment QR codes and barcodes as SVG or PNG, and reading them from a photo.",
+		Intro:    "Generates codes, and reads them from pictures. What you encode or send is never logged or kept, and the answers are not cached by shared caches.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/qr", Summary: "QR code for any text", Image: true, Post: true, Private: true,

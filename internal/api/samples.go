@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"strings"
 	"unicode/utf8"
@@ -29,13 +31,13 @@ type sample struct {
 // sample returns what the endpoint's example answers, or nil when there is nothing to
 // show: images, endpoints marked Live, and examples that fail on this server.
 func (s *Server) sample(host string, e endpoint) *sample {
-	if e.Image || e.Live {
+	if e.Image || e.Live || e.Output != "" {
 		return nil
 	}
 	// Charged to an account of its own, so building the pages never uses up a visitor's
 	// allowance.
 	ctx := context.WithValue(context.Background(), infoKey{}, &requestInfo{internal: true, client: docsSampleKey})
-	inner, err := http.NewRequestWithContext(ctx, http.MethodGet, e.Example, nil)
+	inner, err := exampleRequest(ctx, e)
 	if err != nil {
 		return nil
 	}
@@ -157,4 +159,38 @@ func scalarJSON(value any) string {
 	encoder.SetEscapeHTML(false)
 	encoder.Encode(value)
 	return strings.TrimSuffix(buffer.String(), "\n")
+}
+
+// exampleRequest builds the request an endpoint's documented example makes: a GET, or for
+// an endpoint that takes files, a POST of its sample file (twice for one that takes two).
+func exampleRequest(ctx context.Context, e endpoint) (*http.Request, error) {
+	if e.Upload == nil {
+		return http.NewRequestWithContext(ctx, http.MethodGet, e.Example, nil)
+	}
+	if e.Upload.JSON {
+		request, err := http.NewRequestWithContext(ctx, http.MethodPost, e.Example, strings.NewReader(e.ExampleBody))
+		if err == nil {
+			request.Header.Set("Content-Type", "application/json")
+		}
+		return request, err
+	}
+	data, ok := sampleFile(e.Upload.Sample)
+	if !ok {
+		return nil, errors.New("no sample file " + e.Upload.Sample)
+	}
+	var body bytes.Buffer
+	form := multipart.NewWriter(&body)
+	for i := 0; i < max(1, e.Upload.Files); i++ {
+		part, err := form.CreateFormFile("file", e.Upload.Sample)
+		if err != nil {
+			return nil, err
+		}
+		part.Write(data)
+	}
+	form.Close()
+	request, err := http.NewRequestWithContext(ctx, http.MethodPost, e.Example, &body)
+	if err == nil {
+		request.Header.Set("Content-Type", form.FormDataContentType())
+	}
+	return request, err
 }

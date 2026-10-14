@@ -20,6 +20,25 @@ check() {
   echo "ok   $1"
 }
 
+# <path> <file to post, from the sample files> <content type it is sent as> <expected content-type prefix> [text]
+post_check() {
+  local type body sample
+  body="$(mktemp)"
+  sample="$(mktemp)"
+  curl -fsS -m 30 --retry 2 -o "$sample" "$base/samples/$2" || { echo "FAIL $1: no sample $2" >&2; exit 1; }
+  type="$(curl -fsS -m 60 --retry 2 --retry-delay 3 -H "Content-Type: $3" --data-binary "@$sample" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
+  case "$type" in
+    "$4"*) ;;
+    *) echo "FAIL POST $1: got '$type', want '$4'" >&2; exit 1 ;;
+  esac
+  if [ -n "${5:-}" ] && ! grep -q -- "$5" "$body"; then
+    echo "FAIL POST $1: body does not contain '$5'" >&2
+    exit 1
+  fi
+  rm -f "$body" "$sample"
+  echo "ok   POST $1"
+}
+
 check /healthz application/json
 check / text/html "Free APIs for India."
 check /docs text/html "API reference"
@@ -74,3 +93,9 @@ check "/v1/code-image?language=go&code=package%20main" image/png
 check "/v1/transliterate?to=ascii&text=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D" application/json '"tamizh"'
 check "/v1/sun-moon/2026-10-14?pincode=600001" application/json '"waxing crescent"'
 check "/v1/regex?pattern=%5Cd%2B&text=a1b22" application/json '"count":2'
+check /docs/invoice text/html "CGST"
+check /samples/document.pdf application/pdf
+check /v1/tts/voices application/json '"hi_IN-rohan-medium"'
+check "/v1/typst?text=%3D%20%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D" application/pdf
+post_check /v1/pdf/info document.pdf application/pdf application/json '"pages":2'
+post_check /v1/barcode/read codes.png image/png application/json '"ean13"'

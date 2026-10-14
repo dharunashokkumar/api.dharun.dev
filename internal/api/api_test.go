@@ -52,6 +52,9 @@ func TestMain(m *testing.M) {
 	buildIPDataset(panicker{}, testLive)
 	buildSpaceWeatherDataset(panicker{}, testLive)
 	buildSatelliteDataset(panicker{}, testLive)
+	// The voices and the background removal model are hundreds of megabytes: tests use
+	// them only where a refreshed copy is offered (MODELS_DIR, a live directory).
+	copyModelDatasets(panicker{}, os.Getenv("MODELS_DIR"), testLive)
 	// PNG output of generated images is tested where the renderer is installed.
 	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true,
 		Resvg: os.Getenv("RESVG")})
@@ -158,12 +161,17 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 	documented := map[string]bool{}
 	for _, group := range catalog {
 		for _, e := range group.Endpoints {
+			if e.Upload != nil {
+				documented["POST "+e.Path] = true
+				testUploadExample(t, e)
+				continue
+			}
 			documented["GET "+e.Path] = true
 			if e.Post {
 				documented["POST "+e.Path] = true
 				if e.ExampleBody == "" || e.Body == "" {
 					t.Errorf("%s takes POST but documents no body or example body", e.Path)
-				} else if posted := request(t, http.MethodPost, e.Example, e.ExampleBody, "Content-Type", "text/plain"); posted.status != http.StatusOK && !noRenderer(e, posted) {
+				} else if posted := request(t, http.MethodPost, e.Example, e.ExampleBody, "Content-Type", "text/plain"); posted.status != http.StatusOK && !noRenderer(e, posted) && !missingTool(posted) {
 					t.Errorf("POST %s = %d: %s", e.Example, posted.status, clip(string(posted.body), 200))
 				}
 			}
@@ -172,8 +180,17 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 			if noRenderer(e, got) {
 				continue
 			}
-			if got.status != http.StatusOK {
+			if got.status != http.StatusOK && !missingTool(got) {
 				t.Errorf("GET %s = %d: %s", e.Example, got.status, clip(string(got.body), 200))
+				continue
+			}
+			if e.Output != "" {
+				if missingTool(got) {
+					continue
+				}
+				if want := map[string]string{"pdf": "application/pdf", "audio": "audio/"}[e.Output]; !strings.HasPrefix(got.header.Get("Content-Type"), want) {
+					t.Errorf("%s: content type %q", e.Example, got.header.Get("Content-Type"))
+				}
 				continue
 			}
 			if e.Image {
@@ -728,7 +745,18 @@ func TestMCP(t *testing.T) {
 		_, called := rpc(`{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"` + tool.Name + `","arguments":` + arguments + `}}`)
 		outcome := called["result"].(map[string]any)
 		if outcome["isError"] == true {
+			if message := fmt.Sprint(outcome["content"]); (strings.Contains(message, "not installed") && os.Getenv("REQUIRE_TOOLS") == "") ||
+				(strings.Contains(message, "does not hold") && os.Getenv("REQUIRE_MODELS") == "") {
+				continue
+			}
 			t.Errorf("%s failed: %v", tool.Name, outcome["content"])
+			continue
+		}
+		if tool.send != nil && outcome["structuredContent"] == nil {
+			// A file: an image, audio or embedded resource block.
+			if block := outcome["content"].([]any)[0].(map[string]any); block["type"] == "text" {
+				t.Errorf("%s returned text instead of a file", tool.Name)
+			}
 			continue
 		}
 		if _, ok := outcome["structuredContent"].(map[string]any)["data"]; !ok {

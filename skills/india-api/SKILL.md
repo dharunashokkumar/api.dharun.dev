@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang and more. Use when building an app that needs Indian data, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
+description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech in Indian languages and more. Use when building an app that needs Indian data or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -69,11 +69,12 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/banks/{code}`: Bank for a four-letter code. Example: `/v1/banks/HDFC`
 - `GET /v1/banks`: Search banks. Example: `/v1/banks?q=gramin`
 
-**QR codes and barcodes** ([references/codes.md](references/codes.md)): QR codes, UPI payment QR codes and barcodes as SVG or PNG.
+**QR codes and barcodes** ([references/codes.md](references/codes.md)): QR codes, UPI payment QR codes and barcodes as SVG or PNG, and reading them from a photo.
 
 - `GET /v1/qr`: QR code for any text. Example: `/v1/qr?text=https://api.dharun.dev&format=png&size=256`
 - `GET /v1/upi-qr`: UPI payment QR code. Example: `/v1/upi-qr?pa=shop@okaxis&pn=Sri%20Murugan%20Stores&am=250&tn=Order%2042`
 - `GET /v1/barcode/{type}`: Barcode. Example: `/v1/barcode/ean13?text=890123456789`
+- `GET /v1/barcode/read`: Read QR codes and barcodes from a picture. Example: `/v1/barcode/read`
 
 **HSN and SAC codes** ([references/hsn.md](references/hsn.md)): GST classification codes for goods and services.
 
@@ -93,6 +94,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Format checks** ([references/validate.md](references/validate.md)): Check the format of a GSTIN, PAN or IFSC.
 
 - `GET /v1/validate/{kind}/{value}`: Check an identifier's format. Example: `/v1/validate/gstin/27AAPFU0939F1ZV`
+
+**GST invoice** ([references/invoice.md](references/invoice.md)): A GST tax invoice as a PDF from JSON, with the tax worked out.
+
+- `GET /v1/invoice`: Make a GST tax invoice. Example: `/v1/invoice`
 
 ### Places and transport
 
@@ -174,6 +179,12 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/tamil-font/convert`: Convert Tamil text. Example: `/v1/tamil-font/convert?from=tscii&text=%C2%BE%C3%81%C2%A2%C3%BA+%C3%85%C2%BD%C3%AC%C2%B8%C3%B5`
 - `GET /v1/tamil-font/encodings`: Encodings offered. Example: `/v1/tamil-font/encodings`
 
+**Speech** ([references/speech.md](references/speech.md)): Text to speech in Hindi, Telugu, Malayalam and English, and noise removal for recordings.
+
+- `GET /v1/tts`: Text to speech. Example: `/v1/tts?text=Namaste%2C%20welcome%20to%20India%20API.&voice=en_GB-cori-medium`
+- `GET /v1/tts/voices`: Voices. Example: `/v1/tts/voices`
+- `GET /v1/audio/denoise`: Remove background noise. Example: `/v1/audio/denoise`
+
 ### Network and contact checks
 
 **IP address location** ([references/ip.md](references/ip.md)): IP address to country, state, city and network.
@@ -196,6 +207,34 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Traceroute from India** ([references/mtr.md](references/mtr.md)): The network path from a server in India to any host, with loss and latency per hop.
 
 - `GET /v1/mtr/{host}`: Trace the route to a host. Example: `/v1/mtr/1.1.1.1`
+
+### Files, documents and media
+
+**OCR** ([references/ocr.md](references/ocr.md)): Text from photos, scans and scanned PDFs, in English and ten Indian languages.
+
+- `GET /v1/ocr`: Read the text in a picture or PDF. Example: `/v1/ocr?lang=eng+tam`
+
+**Image tools** ([references/image-tools.md](references/image-tools.md)): Resize and convert pictures, remove backgrounds, and compare pictures by how they look.
+
+- `GET /v1/image/convert`: Resize and convert a picture. Example: `/v1/image/convert?format=webp&width=400`
+- `GET /v1/image/info`: Size, format and metadata of a picture. Example: `/v1/image/info`
+- `GET /v1/image/remove-background`: Remove the background. Example: `/v1/image/remove-background`
+- `GET /v1/image/hash`: Perceptual hash of a picture. Example: `/v1/image/hash`
+- `GET /v1/image/compare`: Compare two pictures. Example: `/v1/image/compare`
+
+**PDF tools** ([references/pdf.md](references/pdf.md)): Merge, split, rotate and compress PDFs, read their text and draw their pages.
+
+- `GET /v1/pdf/info`: Pages, size and details of a PDF. Example: `/v1/pdf/info`
+- `GET /v1/pdf/text`: Text of a PDF, page by page. Example: `/v1/pdf/text`
+- `GET /v1/pdf/merge`: Merge PDFs into one. Example: `/v1/pdf/merge`
+- `GET /v1/pdf/pages`: Pick, reorder or split pages. Example: `/v1/pdf/pages?pages=2,1`
+- `GET /v1/pdf/rotate`: Rotate pages. Example: `/v1/pdf/rotate?angle=90&pages=1`
+- `GET /v1/pdf/compress`: Make a PDF smaller. Example: `/v1/pdf/compress`
+- `GET /v1/pdf/render`: Draw a page as a picture. Example: `/v1/pdf/render?page=1&width=600`
+
+**Typst to PDF** ([references/typst.md](references/typst.md)): Turn a Typst document into a PDF, with Indian scripts set correctly.
+
+- `GET /v1/typst`: Compile Typst to PDF. Example: `/v1/typst?text=%23set%20page%28width%3A%2012cm%2C%20height%3A%20auto%2C%20margin%3A%201cm%29%0A=%20வணக்கம்%2C%20India%20API%0ATypst%20sets%20%2ATamil%2A%2C%20हिन्दी%20and%20English%20on%20one%20page.`
 
 ### Developer tools
 
