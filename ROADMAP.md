@@ -4,7 +4,7 @@ The one place that tracks what `api.dharun.dev` serves, what is being built, wha
 later and what was turned down. Every API lists where its data comes from and how that
 data is refreshed. Update this file in the same change that adds or alters an API.
 
-Last updated: 2026-10-14
+Last updated: 2026-10-15
 
 **Status words:** `Live` released · `Building` in the current round · `Planned` agreed,
 later round · `Open` waiting for a decision · `Not building` turned down, with the reason.
@@ -19,7 +19,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
-| Round 2 | Uploads (section 6): built 2026-10-15, tested on Linux; not released. Needs the server change (packages, memory, disk) before its tools work there |
+| Round 2 | Uploads (section 6): **live 2026-10-15 in `v1.1.18`**, after the server got 10 CPUs, 5 GB, 16 GB disk and the packages. Every tool checked on the live site; speech and background removal answer 503 until the first refresh fetches the voices and the model |
 | Next rounds | Round 3 AI models, round 4 network tools. One round per session |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
@@ -150,7 +150,7 @@ Decided 2026-10-13: the server fetches this itself (section 9).
 
 ## 6. Later rounds
 
-### Round 2: uploads (group B), built 2026-10-15, not released
+### Round 2: uploads (group B), live 2026-10-15 in `v1.1.18`
 
 Started 2026-10-14. Dharun's decisions, 2026-10-14:
 
@@ -184,16 +184,16 @@ Started 2026-10-14. Dharun's decisions, 2026-10-14:
 
 | API | Endpoint | How | Status |
 |---|---|---|---|
-| OCR | `POST /v1/ocr` | Tesseract 5.5 (Apache-2.0), English and ten Indian languages; images, and PDFs up to 10 pages a request through poppler at 300 dpi | Built |
-| Image info and convert | `POST /v1/image/info`, `/v1/image/convert` | libvips 8.16 (`vips`, LGPL, its own process): resize, fit inside, cover or fill, JPEG, PNG, WebP, AVIF, GIF, TIFF out, HEIC and AVIF in, metadata always stripped; info warns of a GPS position | Built |
-| Background removal | `POST /v1/image/remove-background` | IS-Net at 1024 px through ONNX Runtime 1.29 (MIT) in `onnx-run`, a small cgo helper started per job; PNG, WebP or the mask | Built |
-| Perceptual hash | `POST /v1/image/hash`, `/v1/image/compare` | Computed here: average, difference and DCT hashes; similar at 10 bits or fewer of 64 | Built |
-| Barcode reading | `POST /v1/barcode/read` | `gozxing` (Apache-2.0): every QR code, and Data Matrix, Aztec, EAN, UPC, Code 128/39/93, ITF, Codabar. Not PDF417: gozxing has no reader for it | Built |
-| PDF tools | `POST /v1/pdf/info`, `merge`, `pages`, `rotate`, `compress`, `text`, `render` | `pdfcpu` (Apache-2.0) in the server; text and page images by poppler (`pdftotext`, `pdftoppm`). Password-protected PDFs are refused | Built |
-| Typst to PDF | `/v1/typst` | Typst 0.15.1 (Apache-2.0), shipped in the release; empty project folder, no packages (a proxy to nowhere), no system fonts, one thread, 20 s, 2 GB address space; the server's Noto fonts | Built |
-| GST invoice | `POST /v1/invoice` | JSON in, PDF (or PNG, or the worked-out JSON) out: a Typst template here; CGST and SGST, UTGST in union territories without a legislature, or IGST from the GSTINs or place of supply; HSN summary, round-off, amount in words, UPI QR for the total | Built |
-| Text to speech | `/v1/tts`, `/v1/tts/voices` | Piper (MIT, the 2023 release with espeak-ng, GPL-3.0, as its own program); 10 voices; MP3, Ogg Opus or WAV through ffmpeg | Built |
-| Audio denoise | `POST /v1/audio/denoise` | DeepFilterNet 0.5.6 (MIT or Apache-2.0, one static program); ffmpeg reads any audio or video in and writes the result; first five minutes | Built |
+| OCR | `POST /v1/ocr` | Tesseract 5.5 (Apache-2.0), English and ten Indian languages; images, and PDFs up to 10 pages a request through poppler at 300 dpi | Live |
+| Image info and convert | `POST /v1/image/info`, `/v1/image/convert` | libvips 8.16 (`vips`, LGPL, its own process): resize, fit inside, cover or fill, JPEG, PNG, WebP, AVIF, GIF, TIFF out, HEIC and AVIF in, metadata always stripped; info warns of a GPS position | Live |
+| Background removal | `POST /v1/image/remove-background` | IS-Net at 1024 px through ONNX Runtime 1.29 (MIT) in `onnx-run`, a small cgo helper started per job; PNG, WebP or the mask | Live |
+| Perceptual hash | `POST /v1/image/hash`, `/v1/image/compare` | Computed here: average, difference and DCT hashes; similar at 10 bits or fewer of 64 | Live |
+| Barcode reading | `POST /v1/barcode/read` | `gozxing` (Apache-2.0): every QR code, and Data Matrix, Aztec, EAN, UPC, Code 128/39/93, ITF, Codabar. Not PDF417: gozxing has no reader for it | Live |
+| PDF tools | `POST /v1/pdf/info`, `merge`, `pages`, `rotate`, `compress`, `text`, `render` | `pdfcpu` (Apache-2.0) in the server; text and page images by poppler (`pdftotext`, `pdftoppm`). Password-protected PDFs are refused | Live |
+| Typst to PDF | `/v1/typst` | Typst 0.15.1 (Apache-2.0), shipped in the release; empty project folder, no packages (a proxy to nowhere), no system fonts, one thread, 20 s, 2 GB address space; the server's Noto fonts | Live |
+| GST invoice | `POST /v1/invoice` | JSON in, PDF (or PNG, or the worked-out JSON) out: a Typst template here; CGST and SGST, UTGST in union territories without a legislature, or IGST from the GSTINs or place of supply; HSN summary, round-off, amount in words, UPI QR for the total | Live |
+| Text to speech | `/v1/tts`, `/v1/tts/voices` | Piper (MIT, the 2023 release with espeak-ng, GPL-3.0, as its own program); 10 voices; MP3, Ogg Opus or WAV through ffmpeg | Live |
+| Audio denoise | `POST /v1/audio/denoise` | DeepFilterNet 0.5.6 (MIT or Apache-2.0, one static program); ffmpeg reads any audio or video in and writes the result; first five minutes | Live |
 
 Also in this round: sample files for every upload endpoint (`/samples/`, made by
 `tools/samples/make-samples.sh`), MCP tools for invoices, Typst, speech, OCR and barcode
