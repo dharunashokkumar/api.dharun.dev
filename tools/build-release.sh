@@ -6,6 +6,7 @@
 #   apidata    the data tool; on the server it refreshes datasets (apidata refresh)
 #   resvg      the SVG renderer: PNG logos at build time, generated images per request
 #   seed/      every dataset as built from this repository's data/
+#   LICENSE    the GNU AGPL-3.0, under which api and apidata are licensed
 #   NOTICES    licences of the code and fonts compiled in, and of resvg (tools/notices.sh)
 #   VERSION
 #
@@ -35,6 +36,7 @@ ldflags="-s -w -X main.version=$version"
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/api" ./cmd/api
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/apidata" ./cmd/apidata
 install -m 755 "$resvg" "$stage/resvg"
+install -m 644 LICENSE "$stage/LICENSE"
 bash tools/notices.sh > "$stage/NOTICES"
 printf '%s\n' "$version" > "$stage/VERSION"
 

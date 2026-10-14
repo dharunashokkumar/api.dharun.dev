@@ -1,80 +1,139 @@
-# api.dharun.dev
+# India API
 
-Free, open APIs for Indian developers. No API key, no sign-up, CORS enabled.
+**Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
+checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
+and crore, and more: 31 APIs behind one consistent JSON shape. No API key, no sign-up,
+open CORS, and an MCP server so AI assistants can use it too.
+
+[![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dharunashokkumar/api.dharun.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/dharunashokkumar/api.dharun.dev)
+[![Licence: AGPL-3.0](https://img.shields.io/badge/licence-AGPL--3.0-blue)](LICENSE)
+
+**Documentation: [api.dharun.dev](https://api.dharun.dev)** · [API reference](https://api.dharun.dev/docs) · [Guides](https://api.dharun.dev/guides) · [Use with AI](https://api.dharun.dev/ai) · [OpenAPI](https://api.dharun.dev/openapi.json) · [llms.txt](https://api.dharun.dev/llms.txt)
 
 ```bash
 curl https://api.dharun.dev/v1/pincode/637001
 ```
 
-| API | Example | What you get |
-|---|---|---|
-| Company logos | `/v1/logos/TCS` | SVG or PNG logo of an NSE or BSE listed company |
-| Companies | `/v1/companies/RELIANCE` | Sector, industry, ISIN, market cap, index memberships |
-| Pincodes | `/v1/pincode/637001`, `/v1/pincode/near?lat=&lng=` | Post offices, district, state, coordinates; pincodes near a point |
-| IFSC and banks | `/v1/ifsc/SBIN0000001` | Bank, branch, address, MICR, payment systems |
-| RTO codes | `/v1/rto/TN-28` | Transport office for a vehicle registration |
-| Holidays | `/v1/holidays/2026?type=market` | Bank, central government and stock market holidays |
-| Working days | `/v1/working-days/2026-01-16?calendar=bank&state=TN` | Is it a working day, the next one, add N working days, settlement dates; `office=` for one RBI office in states with several |
-| Market status | `/v1/market/status` | Whether NSE is open, and when it next opens or closes |
-| HSN and SAC | `/v1/hsn/0902`, `/v1/hsn?q=tea` | Tariff codes with descriptions and their chapter |
-| Mutual funds | `/v1/mutual-funds/122639` | Latest NAV of a scheme, search by name or fund house |
-| Railway stations | `/v1/stations/MAS` | Station name, zone, state |
-| Airports | `/v1/airports/MAA` | IATA and ICAO codes, city, coordinates |
-| Phone numbers | `/v1/phone/9500112345` | Valid or not, mobile or landline, original operator and circle |
-| Constituency | `/v1/constituency?pincode=637001` | Assembly and parliamentary constituency for a place |
-| Panchang | `/v1/panchang/2026-01-14?pincode=600001` | Tithi, nakshatra, yoga, karana, sunrise, Rahu kalam, Tamil month |
-| Sun and moon | `/v1/sun-moon/today?pincode=600001` | Sunrise, sunset, twilight, moonrise, moon phase and illumination |
-| Satellite passes | `/v1/sat-pass?sat=ISS&pincode=600001` | When the ISS or an amateur radio satellite passes over, and whether it can be seen; where it is now |
-| HF propagation | `/v1/propagation` | Solar flux, K and A index, X-ray class, NOAA scales, and a day and night rating per band |
-| Thirukkural | `/v1/thirukkural/1` | Couplet, transliteration, two English translations; search and random |
-| Transliteration | `/v1/transliterate?to=tamil&text=...` | Between nine Indian scripts, ISO 15919, IAST and ASCII |
-| Tamil legacy encodings | `/v1/tamil-font/convert?from=tscii&text=...` | TSCII text to Unicode and back |
-| IP lookup | `/v1/ip/8.8.8.8`, `/v1/ip` | Country, city and network of an address, or of the caller |
-| Email check | `/v1/email/someone@example.com` | Syntax, disposable domain, whether the domain takes mail |
-| DNS check | `/v1/dns/example.com?type=MX` | Records as several public resolvers see them |
-| Traceroute from India | `/v1/mtr/example.com` | MTR-style path from a server in India: network, loss and latency per hop |
-| QR and UPI QR | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250` | QR codes, and UPI payment QR codes and links |
-| Barcodes | `/v1/barcode/code128?text=AWB1234` | Code 128, EAN, Code 39, ITF, Data Matrix, PDF417 |
-| Social preview image | `/v1/og-image?title=Hello` | A 1200x630 card for link previews, in ten scripts |
-| Code image | `/v1/code-image?language=go&code=...` | A code snippet as a syntax-coloured picture |
-| Text tools | `/v1/text/chunk`, `/redact`, `/tokens`, `/language` | Chunking for retrieval, PII redaction, token counts, language detection |
-| Regex tester | `/v1/regex?pattern=...&text=...` | Every match with its groups, replacement, and the pattern explained; JavaScript or RE2 |
-| Fake Indian data | `/v1/fake/companies?count=5` | Test names, addresses, phone numbers, PAN and GSTIN that pass format checks |
-| Number to words | `/v1/words/1,25,000?lang=ta` | Lakh and crore spelling in English, Hindi, Tamil |
-| Format checks | `/v1/validate/gstin/27AAPFU0939F1ZV` | GSTIN, PAN and IFSC structure checks |
-| States | `/v1/states/TN` | State codes, GST codes, vehicle prefixes |
-
-Full documentation with every parameter is served by the API itself at `/`, and in
-machine-readable form at `/openapi.json`, `/llms.txt` and `/v1`.
-
-## One shape everywhere
-
-Every JSON response is an envelope:
-
 ```json
 {
-  "data": { "code": "TN-28", "office": "Namakkal (North)", "state": "Tamil Nadu" },
-  "meta": { "source": { "name": "...", "licence": "CC BY-SA 4.0", "attribution": "..." } }
+  "data": { "pincode": "637001", "district": "Namakkal", "stateCode": "TN", "state": "Tamil Nadu", "offices": [ ... ] },
+  "meta": { "source": { "name": "...", "licence": "...", "attribution": "..." } }
 }
 ```
 
-- `data` is an object, or an array for list endpoints.
-- `meta.source` names the dataset, its version and the credit its licence asks for.
-- List endpoints add `meta.total`, `meta.limit` and `meta.offset`.
+## APIs
+
+Each name links to its page, with every parameter, a real response and code in curl,
+JavaScript and Python.
+
+| API | Example | What you get |
+|---|---|---|
+| [Company logos](https://api.dharun.dev/docs/logos) | `/v1/logos/TCS`, `/v1/companies/RELIANCE` | SVG or PNG logo of an NSE or BSE listed company; sector, ISIN, market cap, indexes |
+| [Pincodes](https://api.dharun.dev/docs/pincode) | `/v1/pincode/637001`, `/v1/pincode/near?lat=&lng=` | Post offices, district, state, coordinates; pincodes near a point |
+| [IFSC and banks](https://api.dharun.dev/docs/ifsc) | `/v1/ifsc/SBIN0000001` | Bank, branch, address, MICR, payment systems |
+| [RTO codes](https://api.dharun.dev/docs/rto) | `/v1/rto/TN-28` | Transport office for a vehicle registration |
+| [Holidays](https://api.dharun.dev/docs/holidays) | `/v1/holidays/2026?type=market` | Bank, central government and stock market holidays |
+| [Working days](https://api.dharun.dev/docs/working-days) | `/v1/working-days/2026-01-16?calendar=bank&state=TN` | Working day or not, the next one, N working days ahead, T+1 settlement dates; whether NSE is open |
+| [HSN and SAC](https://api.dharun.dev/docs/hsn) | `/v1/hsn/0902`, `/v1/hsn?q=tea` | Tariff codes with descriptions and their chapter |
+| [Mutual funds](https://api.dharun.dev/docs/mutual-funds) | `/v1/mutual-funds/122639` | Latest NAV of a scheme, search by name or fund house |
+| [Railway stations](https://api.dharun.dev/docs/stations) | `/v1/stations/MAS` | Station name, zone, state |
+| [Airports](https://api.dharun.dev/docs/airports) | `/v1/airports/MAA` | IATA and ICAO codes, city, coordinates |
+| [Phone numbers](https://api.dharun.dev/docs/phone) | `/v1/phone/9500112345` | Valid or not, mobile or landline, original operator and circle |
+| [Constituencies](https://api.dharun.dev/docs/constituency) | `/v1/constituency?pincode=637001` | Assembly and parliamentary constituency for a place |
+| [Panchang](https://api.dharun.dev/docs/panchang) | `/v1/panchang/2026-01-14?pincode=600001` | Tithi, nakshatra, yoga, karana, sunrise, Rahu kalam, Tamil month |
+| [Sun and moon](https://api.dharun.dev/docs/sun-moon) | `/v1/sun-moon/today?pincode=600001` | Sunrise, sunset, twilight, moonrise, moon phase and illumination |
+| [Satellite passes](https://api.dharun.dev/docs/satellites) | `/v1/sat-pass?sat=ISS&pincode=600001` | When the ISS or an amateur radio satellite passes over, and whether it can be seen |
+| [HF propagation](https://api.dharun.dev/docs/propagation) | `/v1/propagation` | Solar flux, K and A index, NOAA scales, and a day and night rating per band |
+| [Thirukkural](https://api.dharun.dev/docs/thirukkural) | `/v1/thirukkural/1` | Couplet, transliteration, two English translations; search and random |
+| [Transliteration](https://api.dharun.dev/docs/transliterate) | `/v1/transliterate?to=tamil&text=...` | Between nine Indian scripts, ISO 15919, IAST and ASCII |
+| [Tamil legacy encodings](https://api.dharun.dev/docs/tamil-font) | `/v1/tamil-font/convert?from=tscii&text=...` | TSCII text to Unicode and back |
+| [IP lookup](https://api.dharun.dev/docs/ip) | `/v1/ip/8.8.8.8`, `/v1/ip` | Country, city and network of an address, or of the caller |
+| [Email check](https://api.dharun.dev/docs/email) | `/v1/email/someone@example.com` | Syntax, disposable domain, whether the domain takes mail |
+| [DNS check](https://api.dharun.dev/docs/dns) | `/v1/dns/example.com?type=MX` | Records as several public resolvers see them |
+| [Traceroute from India](https://api.dharun.dev/docs/mtr) | `/v1/mtr/example.com` | MTR-style path from a server in India: network, loss and latency per hop |
+| [QR, UPI QR and barcodes](https://api.dharun.dev/docs/codes) | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250` | QR codes, UPI payment QR codes and links, barcodes |
+| [Generated images](https://api.dharun.dev/docs/images) | `/v1/og-image?title=Hello` | Link preview cards and code images, in ten scripts |
+| [Text tools](https://api.dharun.dev/docs/text) | `/v1/text/chunk`, `/redact`, `/tokens`, `/language` | Chunking for retrieval, PII redaction, token counts, language detection |
+| [Regex tester](https://api.dharun.dev/docs/regex) | `/v1/regex?pattern=...&text=...` | Every match with its groups, replacement, the pattern explained |
+| [Fake Indian data](https://api.dharun.dev/docs/fake) | `/v1/fake/companies?count=5` | Test people and companies with PAN and GSTIN that pass format checks |
+| [Number to words](https://api.dharun.dev/docs/words) | `/v1/words/1,25,000?lang=ta` | Lakh and crore spelling in English, Hindi, Tamil |
+| [Format checks](https://api.dharun.dev/docs/validate) | `/v1/validate/gstin/27AAPFU0939F1ZV` | GSTIN, PAN and IFSC structure and check characters |
+| [States](https://api.dharun.dev/docs/states) | `/v1/states/TN` | State codes, GST codes, vehicle prefixes |
+
+## One shape everywhere
+
+- Every JSON response is `{ "data": ..., "meta": { ... } }`. `data` is an object, or an
+  array for list endpoints, which add `meta.total`, `meta.limit` and `meta.offset`.
+- `meta.source` names the dataset, its version, its licence and the credit it asks for.
 - Errors are `{ "error": { "code", "message" } }` with a matching HTTP status.
-- Each client has an allowance of 600 per minute. A lookup costs 1; a request that takes
-  real CPU work (image rendering, astronomy, live DNS) costs 10.
+- Each client has an allowance of 600 requests a minute. A lookup costs 1; a request that
+  takes real CPU work (image rendering, astronomy, live DNS) costs 10.
 - Text endpoints take `?text=`, or a POST body as `text/plain` or JSON `{"text": "..."}`.
+- Image endpoints return the image itself, ready for an `<img>` tag.
 
-Logo endpoints return the image itself, ready for an `<img>` tag. `?format=png&size=128`
-gives PNG (16 to 512 pixels); `?fallback=monogram` returns an initials tile for unknown
-symbols.
+## Use it from AI assistants
 
-## For AI agents
+One MCP server, one Agent Skill and one Claude Code plugin cover every API.
 
-`POST /mcp` is a Model Context Protocol server (Streamable HTTP, stateless, no
-authentication). It exposes one tool per lookup; each returns exactly what the matching
-REST endpoint returns.
+```bash
+# Claude Code: the MCP server
+claude mcp add --transport http india-api https://api.dharun.dev/mcp
+
+# Claude Code: the plugin (skill and MCP server together)
+/plugin marketplace add dharunashokkumar/api.dharun.dev
+/plugin install india-api@dharun-dev
+
+# Any agent that reads Agent Skills (Claude Code, Codex, Copilot, Cursor, Gemini CLI)
+npx skills add dharunashokkumar/api.dharun.dev
+```
+
+- **MCP server:** `https://api.dharun.dev/mcp`, Streamable HTTP, stateless, no
+  authentication. Each tool returns exactly what the matching REST endpoint returns.
+  Setup for Claude, ChatGPT, VS Code, Cursor, Windsurf, Gemini CLI and Codex:
+  [api.dharun.dev/ai](https://api.dharun.dev/ai). In the MCP Registry as
+  `io.github.dharunashokkumar/india-api`.
+- **Agent Skill:** [`skills/india-api`](skills/india-api/SKILL.md).
+- **Claude Code plugin:** [`plugins/india-api`](plugins/india-api), with the marketplace in
+  [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json).
+- **For crawlers and agents:** [`/llms.txt`](https://api.dharun.dev/llms.txt),
+  [`/llms-full.txt`](https://api.dharun.dev/llms-full.txt), every page as Markdown (add
+  `.md` or send `Accept: text/markdown`), [`/openapi.json`](https://api.dharun.dev/openapi.json),
+  an MCP server card, an AI catalog and an API catalog under `/.well-known/`.
+
+The skill, the plugin and `server.json` are generated from the catalog in
+`internal/api/catalog.go`; a test fails when the committed copies are out of date.
+
+## Licence
+
+- **Calling the API** puts no licence on your app.
+- **The code** is licensed under the [GNU Affero General Public License v3.0](LICENSE)
+  (AGPL-3.0-only). If you run a modified copy as a service for others, you must offer them
+  your changes.
+- **Code examples, the guides' code, the Agent Skill and the Claude Code plugin** are
+  [MIT-0](skills/india-api/LICENSE.txt): use them anywhere, no credit needed.
+- **Data** keeps the licence of its source (below); every response repeats the credit.
+- **Third-party code and fonts** compiled into the server keep their licences, such as the
+  SGP4 code in `internal/orbit` (BSD-2-Clause) and the Noto fonts (OFL-1.1). The release
+  bundle's `NOTICES` lists every one.
+- **Company logos** are trademarks of their owners.
+
+## Security and privacy
+
+Report vulnerabilities privately: see [SECURITY.md](SECURITY.md). Client IP addresses are
+never logged, and endpoints that take personal values never log their input; the full
+list is at [api.dharun.dev/privacy](https://api.dharun.dev/privacy). Each release carries a
+build provenance attestation:
+
+```bash
+gh attestation verify dharun-api-linux-amd64.tar.gz --repo dharunashokkumar/api.dharun.dev
+```
+
+## Contributing
+
+Bug reports, corrections to data and requests for new APIs are welcome as
+[issues](https://github.com/dharunashokkumar/api.dharun.dev/issues). Pull requests are not
+accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Data sources
 
@@ -91,7 +150,7 @@ REST endpoint returns.
 | Railway stations | Wikipedia, "List of railway stations in India" | CC BY-SA 4.0 (shared under the same licence) | 3,975 stations |
 | Airports | [OurAirports](https://ourairports.com/data/) | Public domain | 9,509 airports, 622 in India |
 | Phone series | Wikipedia, "Mobile telephone numbering in India" | CC BY-SA 4.0 (shared under the same licence) | 2,247 series |
-| Constituencies | [DataMeet](https://github.com/datameet/maps) community maps | CC BY 4.0 | 4,182 assembly, 543 parliamentary |
+| Constituencies | [DataMeet](https://github.com/datameet/maps) community maps | Assembly CC BY 2.5 India; parliamentary CC0 | 4,182 assembly, 543 parliamentary |
 | Thirukkural | [tk120404/thirukkural](https://github.com/tk120404/thirukkural); translations by G.U. Pope and by Drew and Lazarus | Public domain text; compilation Apache-2.0 | 1,330 couplets |
 | IP addresses | [DB-IP](https://db-ip.com) Lite | CC BY 4.0 | fetched by each server |
 | Orbit elements | [CelesTrak](https://celestrak.org/NORAD/elements/), from US Space Force data via Space-Track.org; only computed passes and positions are published | None stated; redistribution with credit allowed by USSPACECOM | fetched by each server, 111 satellites |
@@ -144,7 +203,9 @@ Configuration is by environment variable; see
 ```text
 cmd/api            the server
 cmd/apidata        data tool: build, import, refresh, status
-internal/api       routing, endpoints, docs, MCP, metrics
+internal/api       routing, endpoints, the website, MCP, metrics
+internal/api/guides      the guides, in Markdown
+internal/api/templates   the Markdown forms of the pages and the skill
 internal/dataset   one file per dataset: how it is built, fetched and checked
 internal/typeset   text shaping and the fonts for generated images
 internal/panchang  almanac calculations
@@ -156,6 +217,9 @@ internal/words     number to words
 internal/validate  GSTIN, PAN, IFSC and checksum rules
 internal/india     states and their codes
 data/              one folder per dataset (logos included), and sources.json
+skills/            the Agent Skill (generated from the catalog)
+plugins/           the Claude Code plugin (generated); marketplace in .claude-plugin/
+server.json        the MCP Registry entry (generated)
 deploy/            systemd units, installer, self-updater, monitoring
 tools/             release build, smoke test, install test, resvg download, logo scraper
 ```

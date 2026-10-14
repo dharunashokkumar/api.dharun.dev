@@ -3,7 +3,9 @@ name: Production
 # Runs when CI on main has finished. The server installs each release on its own and rolls
 # it back if its health check fails; this is how a push learns the outcome. It records a
 # deployment to "production", waits for the public site to report the release, then checks
-# the same routes as the smoke test against it. Read-only, no credentials.
+# the same routes as the smoke test against it. Once the release is live, it tells IndexNow
+# search engines which pages changed, and publishes the MCP Registry entry if server.json
+# changed (signed in with GitHub's OIDC token). No stored credentials.
 # A workflow of its own, so waiting for the server never holds CI's queue for main.
 on:
   workflow_run:
@@ -37,3 +39,74 @@ jobs:
         env:
           VERSION: 1.1.${{ github.event.workflow_run.run_number }}
         run: bash tools/prod-check.sh https://api.dharun.dev "$VERSION"
+
+  # Tell IndexNow search engines (Bing and others) which pages changed with this release.
+  # The hashes of the last run live in the cache, so unchanged pages are not resubmitted.
+  announce:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - uses: actions/cache/restore@v6
+        with:
+          path: .cache/indexnow-pages.txt
+          key: indexnow-${{ github.run_id }}
+          restore-keys: indexnow-
+
+      - name: Submit changed pages to IndexNow
+        run: |
+          mkdir -p .cache
+          bash tools/indexnow.sh https://api.dharun.dev "$(grep -o 'indexNowKey *= *"[0-9a-f]*"' internal/api/site.go | grep -o '[0-9a-f]\{32\}')" .cache/indexnow-pages.txt
+
+      - uses: actions/cache/save@v6
+        if: always()
+        with:
+          path: .cache/indexnow-pages.txt
+          key: indexnow-${{ github.run_id }}
+
+  # Publish the MCP Registry entry (server.json) when it changed. The registry needs a new
+  # version for every publish, so the release's version is used. Signed in with GitHub's
+  # OIDC token: no secret is stored.
+  registry:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - id: entry
+        name: Fingerprint the entry without its version
+        run: echo "hash=$(jq -S 'del(.version)' server.json | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
+
+      - id: published
+        uses: actions/cache/restore@v6
+        with:
+          path: .cache/registry-published
+          key: mcp-registry-${{ steps.entry.outputs.hash }}
+          lookup-only: true
+
+      - name: Publish to the MCP Registry
+        if: steps.published.outputs.cache-hit != 'true'
+        env:
+          VERSION: 1.1.${{ github.event.workflow_run.run_number }}
+        run: |
+          curl -fsSL https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz | tar xz mcp-publisher
+          jq --arg v "$VERSION" '.version = $v' server.json > server.json.new && mv server.json.new server.json
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
+          mkdir -p .cache && echo "$VERSION" > .cache/registry-published
+
+      - if: steps.published.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: .cache/registry-published
+          key: mcp-registry-${{ steps.entry.outputs.hash }}

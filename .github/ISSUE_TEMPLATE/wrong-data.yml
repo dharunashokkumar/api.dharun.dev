@@ -1,0 +1,24 @@
+name: Wrong or missing data
+description: A value the API returns is wrong, out of date or missing.
+labels: [data]
+body:
+  - type: input
+    id: request
+    attributes:
+      label: Request
+      description: The address you called.
+      placeholder: https://api.dharun.dev/v1/pincode/637001
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What is wrong
+      description: What the API returned, and what the right value is.
+    validations:
+      required: true
+  - type: input
+    id: evidence
+    attributes:
+      label: Where the right value is published
+      description: A link to an official or otherwise reliable source.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/dharunashokkumar/api.dharun.dev/security/advisories/new
+    about: Privately, not as a public issue. See SECURITY.md.
+  - name: Documentation
+    url: https://api.dharun.dev/docs
+    about: Every endpoint with its parameters, a real response and code to copy.

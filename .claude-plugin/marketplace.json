@@ -1,0 +1,36 @@
+{
+  "description": "Plugins from api.dharun.dev: free Indian data for AI agents.",
+  "name": "dharun-dev",
+  "owner": {
+    "name": "Dharun Ashokkumar",
+    "url": "https://dharun.dev"
+  },
+  "plugins": [
+    {
+      "category": "development",
+      "description": "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR and more). Free, no key.",
+      "keywords": [
+        "india",
+        "pincode",
+        "ifsc",
+        "gstin",
+        "pan",
+        "holidays",
+        "rto",
+        "upi",
+        "mcp",
+        "api"
+      ],
+      "name": "india-api",
+      "relevance": {
+        "signals": {
+          "hosts": [
+            "api.dharun.dev"
+          ]
+        },
+        "topic": "Indian data"
+      },
+      "source": "./plugins/india-api"
+    }
+  ]
+}

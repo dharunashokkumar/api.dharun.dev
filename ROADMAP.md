@@ -314,7 +314,39 @@ From the first brainstorm, kept so they are not lost. None has a source or a dec
 
 ## 7. Getting it used
 
-Building it is half the work. From the first brainstorm, none of it done yet:
+Building it is half the work.
+
+### 7.1 Search and AI discoverability (built 2026-10-14, not released)
+
+Goal: builders and AI assistants find the API, understand it, and can show it is safe to
+use. Decisions are in section 12 (2026-10-14). Built in this repository:
+
+| Item | Status |
+|---|---|
+| Licence: code AGPL-3.0; examples, guides' code, skill and plugin MIT-0; data keeps its sources' licences | Built, not released |
+| SECURITY.md, `/.well-known/security.txt` (GitHub private reporting, me@dharun.dev, dharun.dak@gmail.com), CONTRIBUTING.md (issues only, no pull requests), issue forms | Built, not released |
+| Site split into pages, plain white minimal design: short landing page, `/docs` directory, one page per API with real sample responses and curl / JavaScript / Python, `/ai`, `/guides`, `/privacy`, `/security`, `/about` | Built, not released |
+| Name "India API by dharun.dev" in titles, OpenAPI, MCP (`india-api`, was `india-data`) | Built, not released |
+| JSON-LD, share images from our own `/v1/og-image`, sitemap with dates, a Markdown copy of every page, short `llms.txt` plus `llms-full.txt`, robots.txt content signals | Built, not released |
+| Guides, first set of eight (pincode autofill, IFSC, GSTIN and PAN, working days, logos, amount in words, UPI QR, redaction before an LLM); every request in them tested | Built, not released |
+| Agent Skill `skills/india-api` and Claude Code plugin `plugins/india-api` (marketplace in this repo), generated from the catalog and checked by a test | Built, not released |
+| MCP Registry `server.json` (`io.github.dharunashokkumar/india-api`), published from CI; MCP server card at `/mcp/server-card`; `/.well-known/ai-catalog.json` | Built, not released |
+| CI: build provenance attestation on each release, OpenSSF Scorecard, Dependabot (monthly, grouped), IndexNow ping when pages change | Built, not released |
+| README rework; GitHub description, website link and topics | Built, not released |
+
+Done by Dharun, outside the repository:
+
+- [x] Google Search Console property for `api.dharun.dev` (verified through dharun.dev);
+      Bing Webmaster Tools imported from Google. Submit `/sitemap.xml` in both once the
+      new site is live
+- [ ] Turn on GitHub private vulnerability reporting and Dependabot security updates
+      (repository settings, Security)
+- [ ] After the release: submit `/sitemap.xml` in Search Console and Bing; check the first
+      `Production` run published the MCP Registry entry; list the server on Smithery,
+      Glama, mcp.so and PulseMCP; submit the plugin to Anthropic's plugin directory; a pull
+      request to `public-apis/public-apis`
+
+From the first brainstorm, not done yet:
 
 - [ ] List it: `public-apis/public-apis`, free-for.dev, the MCP registries, RapidAPI's free tier
 - [ ] Thin client packages on PyPI and npm, which also show up in code search
@@ -481,3 +513,8 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-14 | Built now: satellite passes, HF propagation, sun and moon, regex tester, traceroute (ahead of round 4), cache purge after a deploy; a design write-up for the sandbox |
 | 2026-10-14 | Satellite passes publish computed results only, never the orbit elements, credited to CelesTrak and USSPACECOM |
 | 2026-10-14 | Regex tester: RE2 and JavaScript. HF propagation: NOAA's indices plus a per-band rule of thumb, labelled as one |
+| 2026-10-14 | Licence: code AGPL-3.0; code examples, guides' code, the skill and the plugin MIT-0. Contributions by issue only, no outside pull requests |
+| 2026-10-14 | Name "India API by dharun.dev"; MCP server and skill `india-api` |
+| 2026-10-14 | Website stays on api.dharun.dev, split into pages; plain white minimal design; guides live under `/guides`. The trust pages say nothing about hosting |
+| 2026-10-14 | AI packaging: Agent Skill, Claude Code plugin (both in this repository), MCP Registry entry, install links. Every API change updates them in the same change |
+| 2026-10-14 | Trust signals: security policy and security.txt, privacy page, release provenance, OpenSSF Scorecard, Dependabot monthly |

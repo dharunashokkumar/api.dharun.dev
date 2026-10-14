@@ -52,6 +52,9 @@ type endpoint struct {
 	// Reference marks an endpoint that answers from a fixed list kept in this code (such
 	// as the railway zones) rather than from the group's dataset, so it credits none.
 	Reference bool
+	// Live marks an endpoint whose answer depends on the network or on the caller, so
+	// the documentation never runs its example to show a sample response.
+	Live bool
 }
 
 // privatePaths holds the paths of the endpoints marked Private. handle reads it when a
@@ -70,6 +73,7 @@ var privatePaths = func() map[string]bool {
 
 type apiGroup struct {
 	ID        string
+	Category  string // a siteCategories ID: where the group sits in the site's directory
 	Title     string
 	Tagline   string
 	Intro     string
@@ -90,6 +94,7 @@ var (
 var catalog = []apiGroup{
 	{
 		ID:        "logos",
+		Category:  "money",
 		Title:     "Company logos",
 		Tagline:   "Logos and details for companies listed on NSE and BSE.",
 		Intro:     "Put a ticker in the URL and get the logo back as SVG or PNG. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO) or an ISIN. A bare ticker prefers NSE.",
@@ -132,6 +137,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "pincode",
+		Category:  "places",
 		Title:     "Pincodes",
 		Tagline:   "Pincode to post office, district and state.",
 		Intro:     "Every post office in the Department of Posts directory, with its district, state, postal division and coordinates.",
@@ -169,6 +175,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "ifsc",
+		Category:  "money",
 		Title:     "IFSC and banks",
 		Tagline:   "IFSC to bank and branch.",
 		Intro:     "Branch details for every IFSC in the Reserve Bank's NEFT and RTGS lists: bank, branch, address, MICR and which payment systems the branch supports.",
@@ -209,6 +216,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "rto",
+		Category:  "places",
 		Title:     "RTO codes",
 		Tagline:   "Vehicle registration code to transport office.",
 		Intro:     "Which Regional Transport Office a number plate belongs to: TN-28 is Namakkal (North). Accepts a code or a whole registration number.",
@@ -232,6 +240,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "holidays",
+		Category:  "dates",
 		Title:     "Holidays",
 		Tagline:   "Bank, government and stock market holidays.",
 		Intro:     "Holidays for a year, filterable by kind and state. Each entry says who observes it.",
@@ -251,6 +260,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "working-days",
+		Category:  "dates",
 		Title:     "Working days",
 		Tagline:   "Bank, market, settlement and government working days.",
 		Intro:     "Is a date a working day, what is the next one, and what date is N working days away. Bank days follow the Reserve Bank's holidays for a state plus Sundays and the second and fourth Saturdays; market and settlement days follow NSE's trading and clearing holidays. Only years with a published holiday list are answered.",
@@ -291,10 +301,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "codes",
-		Title:   "QR codes and barcodes",
-		Tagline: "QR codes, UPI payment QR codes and barcodes as SVG or PNG.",
-		Intro:   "Generates codes; it does not read them. What you encode is never logged or kept, and the images are not cached by shared caches.",
+		ID:       "codes",
+		Category: "money",
+		Title:    "QR codes and barcodes",
+		Tagline:  "QR codes, UPI payment QR codes and barcodes as SVG or PNG.",
+		Intro:    "Generates codes; it does not read them. What you encode is never logged or kept, and the images are not cached by shared caches.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/qr", Summary: "QR code for any text", Image: true, Post: true, Private: true,
@@ -337,6 +348,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "hsn",
+		Category:  "money",
 		Title:     "HSN and SAC codes",
 		Tagline:   "GST classification codes for goods and services.",
 		Intro:     "Every HSN code for goods (from the Customs Tariff Act) and SAC code for services (from the GST services classification) with its description, the codes above it and the codes below it. GST rates are not included.",
@@ -361,6 +373,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "mutual-funds",
+		Category:  "money",
 		Title:     "Mutual fund NAVs",
 		Tagline:   "Latest net asset value of every Indian mutual fund scheme.",
 		Intro:     "Every scheme in AMFI's daily NAV file: fund house, category, plan (direct or regular), option (growth, IDCW or bonus), ISINs and the latest NAV with its date. Refreshed by the server several times a day; AMFI publishes each evening.",
@@ -390,6 +403,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "ip",
+		Category:  "network",
 		Title:     "IP address location",
 		Tagline:   "IP address to country, state, city and network.",
 		Intro:     "Country, region (the state, for Indian addresses), city and network operator of a public IPv4 or IPv6 address, from DB-IP's free databases, refreshed monthly. Addresses are never written to the request log.",
@@ -400,31 +414,33 @@ var catalog = []apiGroup{
 				Example: "/v1/ip/49.204.0.1",
 				Params:  []param{{Name: "address", In: "path", Type: "string", Required: true, Doc: "IPv4 or IPv6 address."}},
 			},
-			{Path: "/v1/ip", Summary: "Location of your own address", Private: true, Example: "/v1/ip"},
+			{Path: "/v1/ip", Summary: "Location of your own address", Private: true, Live: true, Example: "/v1/ip"},
 		},
 	},
 	{
 		ID:        "email",
+		Category:  "network",
 		Title:     "Email checks",
 		Tagline:   "Is an email address well formed, throwaway, and able to receive mail.",
 		Intro:     "Checks the form of an address, whether its domain hands out throwaway mailboxes, whether it is a free provider or a role account such as support@, and whether the domain has mail servers. No mail server is contacted and no mailbox is tried. Addresses are never written to the request log. Counts as 10 requests against the rate limit.",
 		SourceKey: "disposable-email",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/email/{address}", Summary: "Check an email address", Private: true,
+				Path: "/v1/email/{address}", Summary: "Check an email address", Private: true, Live: true,
 				Example: "/v1/email/someone@mailinator.com",
 				Params:  []param{{Name: "address", In: "path", Type: "string", Required: true, Doc: "The email address."}},
 			},
 		},
 	},
 	{
-		ID:      "dns",
-		Title:   "DNS check",
-		Tagline: "A domain's DNS records at four public resolvers at once.",
-		Intro:   "Asks Cloudflare, Google, Quad9 and OpenDNS for the same record and says whether they agree: useful when a change is still spreading. Counts as 10 requests against the rate limit.",
+		ID:       "dns",
+		Category: "network",
+		Title:    "DNS check",
+		Tagline:  "A domain's DNS records at four public resolvers at once.",
+		Intro:    "Asks Cloudflare, Google, Quad9 and OpenDNS for the same record and says whether they agree: useful when a change is still spreading. Counts as 10 requests against the rate limit.",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/dns/{name}", Summary: "Look up DNS records",
+				Path: "/v1/dns/{name}", Summary: "Look up DNS records", Live: true,
 				Example: "/v1/dns/dharun.dev?type=MX",
 				Params: []param{
 					{Name: "name", In: "path", Type: "string", Required: true, Doc: "Domain name (Indian-script names are accepted), or an IP address for PTR."},
@@ -435,6 +451,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "stations",
+		Category:  "places",
 		Title:     "Railway stations",
 		Tagline:   "Indian Railways station codes to stations, and back.",
 		Intro:     "About 4,000 stations with their code, state, railway zone and elevation, from Wikipedia's list of railway stations in India. No official open list exists; this one is kept by volunteers, so some codes are out of date and many entries lack a state or zone.",
@@ -461,6 +478,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "phone",
+		Category:  "network",
 		Title:     "Phone numbers",
 		Tagline:   "Check and format an Indian phone number, and see whose series it is.",
 		Intro:     "Validates an Indian number, tells mobile from toll-free and fixed lines, formats it (E.164 and national), and names the operator and telecom circle a mobile number's series was first given to. With number portability the current operator can differ. Numbers are never written to the request log.",
@@ -475,6 +493,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "constituency",
+		Category:  "places",
 		Title:     "Constituencies",
 		Tagline:   "Which assembly and Lok Sabha constituency a place is in.",
 		Intro:     "The assembly (MLA) and parliamentary (MP) constituency of a point or a pincode, with number, name, reserved category, district and state. From the DataMeet community's maps; boundaries are approximate near their edges, assembly seats in six states predate the latest delimitation, and sitting members are not given.",
@@ -493,6 +512,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "airports",
+		Category:  "places",
 		Title:     "Airports",
 		Tagline:   "Airport codes to airports, and airports by city.",
 		Intro:     "Every airport in the world with an IATA code, plus every Indian airfield and heliport, from OurAirports. Indian airports carry their state code.",
@@ -519,6 +539,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "thirukkural",
+		Category:  "language",
 		Title:     "Thirukkural",
 		Tagline:   "All 1,330 kurals in Tamil with English translations.",
 		Intro:     "Thiruvalluvar's Thirukkural with a transliteration, G.U. Pope's verse translation (1886) and the prose translation by W.H. Drew and John Lazarus (1840, 1885), organised into 3 paals, 13 iyals and 133 chapters. Only text that is free to share is served; modern commentaries are added once their release into the public domain is confirmed.",
@@ -556,10 +577,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "text",
-		Title:   "Text tools",
-		Tagline: "Chunk documents, redact Indian identifiers, count tokens, detect language.",
-		Intro:   "Tools for working with text, especially in AI and retrieval pipelines. Send short text as ?text=, or POST it as text/plain, or as JSON {\"text\": ...} with the options beside it. Nothing you send is logged or kept. Each request counts as 10 against the rate limit.",
+		ID:       "text",
+		Category: "language",
+		Title:    "Text tools",
+		Tagline:  "Chunk documents, redact Indian identifiers, count tokens, detect language.",
+		Intro:    "Tools for working with text, especially in AI and retrieval pipelines. Send short text as ?text=, or POST it as text/plain, or as JSON {\"text\": ...} with the options beside it. Nothing you send is logged or kept. Each request counts as 10 against the rate limit.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/text/chunk", Summary: "Split a document into chunks", Post: true, Private: true,
@@ -608,10 +630,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "regex",
-		Title:   "Regex tester",
-		Tagline: "Run a regular expression against a text and see every match, explained.",
-		Intro:   "Tests a pattern in JavaScript or RE2 (Go) syntax: every match with its groups and their character offsets, an optional replacement, and the pattern taken apart token by token in plain words. JavaScript patterns run under a one-second limit, since nested quantifiers can take exponentially long; RE2 cannot. Patterns and texts are not logged or kept. Each request counts as 10 against the rate limit.",
+		ID:       "regex",
+		Category: "developer",
+		Title:    "Regex tester",
+		Tagline:  "Run a regular expression against a text and see every match, explained.",
+		Intro:    "Tests a pattern in JavaScript or RE2 (Go) syntax: every match with its groups and their character offsets, an optional replacement, and the pattern taken apart token by token in plain words. JavaScript patterns run under a one-second limit, since nested quantifiers can take exponentially long; RE2 cannot. Patterns and texts are not logged or kept. Each request counts as 10 against the rate limit.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/regex", Summary: "Test a regular expression", Post: true, Private: true,
@@ -631,10 +654,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "transliterate",
-		Title:   "Transliteration",
-		Tagline: "Rewrite text between Indian scripts and Roman letters.",
-		Intro:   "Converts by rule between Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam, and to ISO 15919, IAST or plain ASCII. ISO 15919 and IAST can also be turned back into any of the scripts. The spelling changes, not the language: this is not translation. Casual Roman typing (vanakkam) cannot be converted by rule and is not accepted as input.",
+		ID:       "transliterate",
+		Category: "language",
+		Title:    "Transliteration",
+		Tagline:  "Rewrite text between Indian scripts and Roman letters.",
+		Intro:    "Converts by rule between Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam, and to ISO 15919, IAST or plain ASCII. ISO 15919 and IAST can also be turned back into any of the scripts. The spelling changes, not the language: this is not translation. Casual Roman typing (vanakkam) cannot be converted by rule and is not accepted as input.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/transliterate", Summary: "Transliterate text", Post: true, Private: true,
@@ -650,10 +674,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "tamil-font",
-		Title:   "Tamil legacy encodings",
-		Tagline: "Old Tamil text that shows as accented Latin letters, to Unicode and back.",
-		Intro:   "Before Unicode, Tamil was stored in 8-bit encodings that only looked like Tamil in one particular font; anywhere else the same text shows as characters like ¾Á¢ú. This converts such text to Unicode and Unicode back to it, moving the vowel signs that those encodings write before the consonant. TSCII 1.7 is offered now; TAB, TAM and Bamini are planned. The tables are written from the published standard.",
+		ID:       "tamil-font",
+		Category: "language",
+		Title:    "Tamil legacy encodings",
+		Tagline:  "Old Tamil text that shows as accented Latin letters, to Unicode and back.",
+		Intro:    "Before Unicode, Tamil was stored in 8-bit encodings that only looked like Tamil in one particular font; anywhere else the same text shows as characters like ¾Á¢ú. This converts such text to Unicode and Unicode back to it, moving the vowel signs that those encodings write before the consonant. TSCII 1.7 is offered now; TAB, TAM and Bamini are planned. The tables are written from the published standard.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/tamil-font/convert", Summary: "Convert Tamil text", Post: true, Private: true,
@@ -675,10 +700,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "panchang",
-		Title:   "Panchang",
-		Tagline: "Hindu almanac for any date and place: tithi, nakshatra, Rahu kalam and more.",
-		Intro:   "Computed, not looked up, from the positions of the Sun and the Moon (within seconds of NASA JPL Horizons), with the Lahiri ayanamsa. Gives the five elements with the moments they change, sunrise, sunset, moonrise and moonset, Rahu kalam, Yamagandam, Gulika kalam and Abhijit muhurta, the Tamil month and day, the lunar month both ways it is reckoned, and the Shaka and Vikram years. Names come in English transliteration and, where the Tamil calendar has its own, in Tamil. Festival dates are not given. Counts as 10 requests against the rate limit.",
+		ID:       "panchang",
+		Category: "dates",
+		Title:    "Panchang",
+		Tagline:  "Hindu almanac for any date and place: tithi, nakshatra, Rahu kalam and more.",
+		Intro:    "Computed, not looked up, from the positions of the Sun and the Moon (within seconds of NASA JPL Horizons), with the Lahiri ayanamsa. Gives the five elements with the moments they change, sunrise, sunset, moonrise and moonset, Rahu kalam, Yamagandam, Gulika kalam and Abhijit muhurta, the Tamil month and day, the lunar month both ways it is reckoned, and the Shaka and Vikram years. Names come in English transliteration and, where the Tamil calendar has its own, in Tamil. Festival dates are not given. Counts as 10 requests against the rate limit.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/panchang/{date}", Summary: "Panchang for a date",
@@ -695,10 +721,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "sun-moon",
-		Title:   "Sun and moon",
-		Tagline: "Sunrise, sunset, twilight, moonrise and the moon's phase for any date and place.",
-		Intro:   "The astronomy of a day without the almanac: sunrise, sunset, solar noon and day length; civil, nautical and astronomical twilight; moonrise and moonset; the moon's phase, how much of it is lit and its age; and the next new, first quarter, full and last quarter moons. Computed with the same code as the panchang, and checked against NASA's JPL ephemeris.",
+		ID:       "sun-moon",
+		Category: "dates",
+		Title:    "Sun and moon",
+		Tagline:  "Sunrise, sunset, twilight, moonrise and the moon's phase for any date and place.",
+		Intro:    "The astronomy of a day without the almanac: sunrise, sunset, solar noon and day length; civil, nautical and astronomical twilight; moonrise and moonset; the moon's phase, how much of it is lit and its age; and the next new, first quarter, full and last quarter moons. Computed with the same code as the panchang, and checked against NASA's JPL ephemeris.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/sun-moon/{date}", Summary: "Sun and moon for a date",
@@ -716,13 +743,14 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "mtr",
+		Category:  "network",
 		Title:     "Traceroute from India",
 		Tagline:   "The network path from a server in India to any host, with loss and latency per hop.",
 		Intro:     "An MTR-style trace from the server's own connection in India: each hop is probed several times, and every hop comes back with its address, name, network (AS) and country, packet loss and round-trip times. Useful to see how Jio, Airtel, BSNL and the rest reach a site, and where along the way delay or loss starts. Only public addresses can be traced. Hops inside private or shared address space are shown without their address. A trace takes several seconds and counts as 20 requests against the rate limit.",
 		SourceKey: "ip",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/mtr/{host}", Summary: "Trace the route to a host",
+				Path: "/v1/mtr/{host}", Summary: "Trace the route to a host", Live: true,
 				Doc:     "Lists hops up to the one where the host answered, or one past the last router that answered. A hop with 100% loss is common: many routers forward traffic without answering probes. otherAddresses lists further routers seen at the same hop, where traffic is balanced over several paths.",
 				Example: "/v1/mtr/1.1.1.1",
 				Params: []param{
@@ -735,6 +763,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "satellites",
+		Category:  "sky",
 		Title:     "Satellite passes",
 		Tagline:   "When the ISS and amateur radio satellites pass over you, and where they are now.",
 		Intro:     "Pass predictions for the space stations (ISS, Tiangong) and about ninety amateur radio satellites, from any Indian pincode or any latitude and longitude: when each rises, how high it gets and where, when it sets, and whether it can be seen with the eye. Computed with SGP4 from CelesTrak's orbit elements, refreshed a few times a day; the elements themselves are not published here. Pass predictions count as 10 requests against the rate limit.",
@@ -774,6 +803,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "propagation",
+		Category:  "sky",
 		Title:     "HF propagation",
 		Tagline:   "Space weather and a rough rating of shortwave radio bands, day and night.",
 		Intro:     "The numbers amateur radio operators check before getting on the air, from NOAA's Space Weather Prediction Center and refreshed every hour: 10.7 cm solar flux, sunspot number, the planetary K and A indices, the X-ray class and latest flare, solar wind speed and NOAA's radio blackout, radiation and geomagnetic storm scales. From those, each band group gets a good, fair or poor rating for day and for night. The ratings are a rule of thumb, and the rules are returned with them.",
@@ -788,6 +818,7 @@ var catalog = []apiGroup{
 	},
 	{
 		ID:        "fake",
+		Category:  "developer",
 		Title:     "Fake test data",
 		Tagline:   "Made-up Indian people, companies and addresses for testing apps.",
 		Intro:     "Realistic test records that pass format checks: names from nine language regions, addresses at real pincodes with the right district and state, phone numbers, PANs and GSTINs with a correct check character. Every record is marked fake and none describes a real person or business. Give a seed to get the same records every time.",
@@ -807,10 +838,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "images",
-		Title:   "Generated images",
-		Tagline: "Social preview images and code screenshots from a URL.",
-		Intro:   "Pictures made from text, with no browser involved: link-preview (Open Graph) cards and syntax-coloured code images. Latin, Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam are shaped properly (conjuncts, vowel signs) and can be mixed in one line; other scripts come out as empty boxes. PNG by default; format=svg gives the same picture as an SVG whose text is drawn as outlines, so it needs no fonts where it is shown. Text and colours only: no images are fetched from anywhere. Each request counts as 10 against the rate limit.",
+		ID:       "images",
+		Category: "developer",
+		Title:    "Generated images",
+		Tagline:  "Social preview images and code screenshots from a URL.",
+		Intro:    "Pictures made from text, with no browser involved: link-preview (Open Graph) cards and syntax-coloured code images. Latin, Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam are shaped properly (conjuncts, vowel signs) and can be mixed in one line; other scripts come out as empty boxes. PNG by default; format=svg gives the same picture as an SVG whose text is drawn as outlines, so it needs no fonts where it is shown. Text and colours only: no images are fetched from anywhere. Each request counts as 10 against the rate limit.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/og-image", Summary: "Social preview image", Image: true,
@@ -846,10 +878,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "words",
-		Title:   "Number to words",
-		Tagline: "Numbers and rupee amounts in words, the Indian way.",
-		Intro:   "Spells numbers with lakh and crore in English, Hindi or Tamil. 1,00,000 is \"one lakh\". Use style=currency for cheque-style amounts.",
+		ID:       "words",
+		Category: "money",
+		Title:    "Number to words",
+		Tagline:  "Numbers and rupee amounts in words, the Indian way.",
+		Intro:    "Spells numbers with lakh and crore in English, Hindi or Tamil. 1,00,000 is \"one lakh\". Use style=currency for cheque-style amounts.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/words/{number}", Summary: "Spell out a number",
@@ -863,10 +896,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "validate",
-		Title:   "Format checks",
-		Tagline: "Check the format of a GSTIN, PAN or IFSC.",
-		Intro:   "Structural checks only: character pattern, state code and, for GSTIN, the check character. Nothing is looked up with a government system, and these values are never written to the request log.",
+		ID:       "validate",
+		Category: "money",
+		Title:    "Format checks",
+		Tagline:  "Check the format of a GSTIN, PAN or IFSC.",
+		Intro:    "Structural checks only: character pattern, state code and, for GSTIN, the check character. Nothing is looked up with a government system, and these values are never written to the request log.",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/validate/{kind}/{value}", Summary: "Check an identifier's format", Private: true,
@@ -879,10 +913,11 @@ var catalog = []apiGroup{
 		},
 	},
 	{
-		ID:      "states",
-		Title:   "States",
-		Tagline: "States and union territories with their codes.",
-		Intro:   "All 28 states and 8 union territories with the two-letter code, GST state code and vehicle registration prefixes. The other APIs accept these codes in their state filter.",
+		ID:       "states",
+		Category: "places",
+		Title:    "States",
+		Tagline:  "States and union territories with their codes.",
+		Intro:    "All 28 states and 8 union territories with the two-letter code, GST state code and vehicle registration prefixes. The other APIs accept these codes in their state filter.",
 		Endpoints: []endpoint{
 			{Path: "/v1/states", Summary: "All states and union territories", Example: "/v1/states"},
 			{

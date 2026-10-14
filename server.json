@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "description": "Free Indian data: pincode, IFSC, GSTIN checks, holidays, RTO, logos, UPI QR. No key.",
+  "name": "io.github.dharunashokkumar/india-api",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.dharun.dev/mcp"
+    }
+  ],
+  "repository": {
+    "source": "github",
+    "url": "https://github.com/dharunashokkumar/api.dharun.dev"
+  },
+  "title": "India API",
+  "version": "1.1.0",
+  "websiteUrl": "https://api.dharun.dev/ai"
+}

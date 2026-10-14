@@ -19,9 +19,10 @@ notice() { # title, file
 cat <<'EOF'
 Third-party notices for dharun-api
 
-The programs in this bundle (api, apidata) are built from the source at
-https://github.com/dharunashokkumar/api.dharun.dev and include the code listed below, each
-under its own licence. resvg is a separate program, shipped unchanged.
+The programs in this bundle (api, apidata) are free software under the GNU Affero
+General Public License v3.0 (AGPL-3.0-only, in LICENSE), built from the source at
+https://github.com/dharunashokkumar/api.dharun.dev. They include the code listed below,
+each under its own licence. resvg is a separate program, shipped unchanged.
 
 EOF
 

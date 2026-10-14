@@ -21,7 +21,19 @@ check() {
 }
 
 check /healthz application/json
-check / text/html "open APIs for Indian developers"
+check / text/html "Free APIs for India."
+check /docs text/html "API reference"
+check /docs/pincode text/html "Department of Posts"
+check /docs/pincode.md text/markdown '"district"'
+check /guides/pincode-autofill text/html "MIT-0"
+check /ai text/html "india-api"
+check /privacy text/html "never logged"
+check /llms-full.txt text/plain "# Pincodes API"
+check /sitemap.xml application/xml "/guides/"
+check /robots.txt text/plain "Content-Signal"
+check /.well-known/security.txt text/plain "Contact: mailto:me@dharun.dev"
+check /mcp/server-card application/mcp-server-card+json "io.github.dharunashokkumar/india-api"
+check /.well-known/agent-skills/index.json application/json "sha256:"
 check /v1 application/json
 check /openapi.json application/json
 check /llms.txt text/plain

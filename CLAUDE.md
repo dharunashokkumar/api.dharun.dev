@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`api.dharun.dev`: free, open APIs for Indian developers (company logos, pincodes, IFSC,
-RTO codes, holidays, number to words, format checks, and more being added). One Go
-service owns the whole hostname; every API is a path under `/v1`. No API keys, rate
-limit per IP.
+`api.dharun.dev`, named **India API**: free, open source APIs for Indian developers (company
+logos, pincodes, IFSC, RTO codes, holidays, number to words, format checks, and more being
+added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
+same service serves the website, the guides and the files for AI agents. No API keys,
+rate limit per IP. Code AGPL-3.0-only; examples, guides' code, skill and plugin MIT-0.
 
 `ROADMAP.md` tracks what is implemented, what is planned and what was rejected, with the
 data source and refresh method for each API. Read it before adding an API, and update it
@@ -143,10 +144,29 @@ keep the version first. It also lists every dataset with the copy in use.
 
 ### The catalog is the single source for documentation
 
-`catalog.go` describes every endpoint once. The docs site (`/`, `/docs/{group}`),
-`/openapi.json`, `/llms.txt`, `/sitemap.xml` and the `/v1` index are all generated from
-it. `TestEveryDocumentedExampleWorks` requests every `Example` in the catalog, and every
-`GET /v1/...` route must be in the catalog.
+`catalog.go` describes every endpoint once, and each group names its `Category` (one of
+`siteCategories` in `site.go`). Everything people and agents read is generated from it:
+
+- The website (`site.go`, `site_layout.go`, `site_pages.go`): a short landing page, `/docs`,
+  one page per group with a real sample response (`samples.go` runs the `Example` through
+  the router in memory; endpoints marked `Live` are never run), `/ai`, `/guides`, and
+  `/privacy`, `/security`, `/about`, which are written once as Markdown in `templates/`
+  and rendered. Plain white, system fonts, nothing loaded from other hosts.
+- A Markdown form of every page (`.md` address or `Accept: text/markdown`), `/llms.txt`,
+  `/llms-full.txt`, `/openapi.json`, `/sitemap.xml`, `/robots.txt` (content signals) and
+  the discovery files: `/.well-known/security.txt`, `api-catalog`, `ai-catalog.json`,
+  the MCP server card (`/mcp/server-card`) and the Agent Skills index (`site_meta.go`).
+- **One** Agent Skill, **one** Claude Code plugin and **one** MCP Registry entry for the
+  whole API, never one per API (`skill.go`, `templates/skill.md`). They are committed as
+  `skills/india-api/`, `plugins/india-api/`, `.claude-plugin/marketplace.json` and
+  `server.json`; `TestGeneratedFilesAreCurrent` fails when they differ from the catalog.
+  Regenerate with `go test ./internal/api -run TestGeneratedFilesAreCurrent -update`.
+- Guides are Markdown files in `internal/api/guides/` with a small header; every API
+  address in them is requested by `TestGuides`. Their code is MIT-0.
+
+`TestEveryDocumentedExampleWorks` requests every `Example` in the catalog, and every
+`GET /v1/...` route must be in the catalog. CI publishes `server.json` to the MCP Registry
+and pings IndexNow from `production.yml` after a release is live.
 
 ### Generated images (`render.go`, `ogimage.go`, `codeimage.go`, `internal/typeset`)
 
@@ -200,12 +220,18 @@ memory, so a tool returns exactly what the REST endpoint returns.
    `Import` if a program can fetch it; seed files under `data/`; a record in
    `data/sources.json`.
 3. A handler in `internal/api` in its own file, registered in `registerMore`.
-4. A catalog entry with a real `Example`; an MCP tool if an agent would call it.
+4. A catalog entry with a real `Example` and a `Category`; mark it `Live` if its answer
+   depends on the network or the caller, `Private` if its input may be personal. An MCP
+   tool if an agent would call it; update the MCP `instructions` in `mcp.go` if the API
+   is a new kind of data.
 5. Fixture rows in `internal/api/testdata/` (real rows cut from the full data) and tests.
    A test file adds its MCP tool's arguments to `mcpTestCalls` in `init`. Tests never
    touch the network: DNS goes through `fakeDNS`, and the IP database is a fixture built
    in `TestMain`.
-6. A line in `tools/smoke-test.sh` and the README table.
+6. A line in `tools/smoke-checks.sh` and the README table (with its docs link).
+7. Regenerate the skill, plugin and registry entry (`-update`, above) and commit them.
+   Mention the API in the skill's `description` (`skill.go`) and the home page if it is a
+   headline API. A guide for a common task helps both search and AI answers.
 
 ### Deploy
 
@@ -261,4 +287,9 @@ IFSC refresh (`MemoryMax=512M`, separate unit).
   refresh job rather than holding whole datasets in the API's memory. Measure after a
   round and report the numbers.
 - **Commits carry no AI attribution trailer.**
+- **Licence and contributions** (2026-10-14): code AGPL-3.0-only; code examples, guides,
+  skill and plugin MIT-0; data keeps its source's licence. Issues only: outside pull
+  requests are not accepted (keeps relicensing possible).
+- **The trust pages say nothing about hosting** (no server, home or uptime statements).
+  Facts in `/privacy` must stay true: check `logRequest` before changing it.
 - **Line endings are LF everywhere** (`.gitattributes`); CRLF breaks the deploy scripts.

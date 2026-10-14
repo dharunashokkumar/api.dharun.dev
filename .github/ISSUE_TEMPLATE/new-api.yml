@@ -1,0 +1,19 @@
+name: Request an API
+description: Data or a check that Indian apps need and this API does not offer yet.
+labels: [api request]
+body:
+  - type: markdown
+    attributes:
+      value: Check ROADMAP.md first; it lists what is planned and what was turned down, and why.
+  - type: textarea
+    id: need
+    attributes:
+      label: What you need
+      description: What you are building, and the request and response you would like.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Where the data could come from
+      description: A source, and its licence if you know it. Only data that may legally be redistributed can be served.

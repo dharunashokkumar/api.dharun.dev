@@ -560,7 +560,7 @@ func TestStates(t *testing.T) {
 
 func TestDocuments(t *testing.T) {
 	home := expectStatus(t, "/", http.StatusOK)
-	if !strings.Contains(string(home.body), siteTagline) || !strings.Contains(string(home.body), testOrigin+"/v1/pincode/637001") {
+	if !strings.Contains(string(home.body), "Free APIs for India.") || !strings.Contains(string(home.body), testOrigin+"/v1/pincode/637001") {
 		t.Error("home page is missing its headline or example")
 	}
 	page := expectStatus(t, "/docs/pincode", http.StatusOK)
@@ -586,14 +586,14 @@ func TestDocuments(t *testing.T) {
 	}
 
 	llms := string(expectStatus(t, "/llms.txt", http.StatusOK).body)
-	if !strings.HasPrefix(llms, "# "+siteName) || !strings.Contains(llms, testOrigin+"/v1/rto/TN-28") {
+	if !strings.HasPrefix(llms, "# "+productName) || !strings.Contains(llms, testOrigin+"/docs/rto.md") {
 		t.Error("llms.txt is missing its title or an example")
 	}
 	robots := string(expectStatus(t, "/robots.txt", http.StatusOK).body)
 	if !strings.Contains(robots, "User-agent: ClaudeBot") || !strings.Contains(robots, "Sitemap: "+testOrigin+"/sitemap.xml") {
 		t.Error("robots.txt is missing an AI crawler or the sitemap")
 	}
-	if sitemap := string(expectStatus(t, "/sitemap.xml", http.StatusOK).body); strings.Count(sitemap, "<url>") != len(catalog)+1 {
+	if sitemap := string(expectStatus(t, "/sitemap.xml", http.StatusOK).body); strings.Count(sitemap, "<url>") != len(testServer.siteMap()) {
 		t.Errorf("sitemap has %d URLs", strings.Count(sitemap, "<url>"))
 	}
 

@@ -52,6 +52,11 @@ if ! grep -q '^modernc.org/sqlite ' "$dir/NOTICES" || ! grep -q 'SIL Open Font L
   exit 1
 fi
 echo "ok   NOTICES"
+if ! grep -q 'GNU AFFERO GENERAL PUBLIC LICENSE' "$dir/LICENSE"; then
+  echo "FAIL: the bundle has no LICENSE" >&2
+  exit 1
+fi
+echo "ok   LICENSE"
 
 version="$(cat "$dir/VERSION")"
 curl -fsS "$base/healthz" | grep -q "\"version\":\"$version\"" || { echo "FAIL: /healthz does not report $version" >&2; exit 1; }

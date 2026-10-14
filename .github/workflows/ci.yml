@@ -101,6 +101,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      # Signed build provenance: anyone can check that a bundle came from this workflow
+      # and this commit with `gh attestation verify`.
+      id-token: write
+      attestations: write
     concurrency:
       group: publish
       cancel-in-progress: false
@@ -109,6 +113,11 @@ jobs:
         with:
           name: bundle
           path: dist
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-path: dist/dharun-api-linux-amd64.tar.gz
 
       - name: Publish the release
         env:

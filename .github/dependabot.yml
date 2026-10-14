@@ -1,0 +1,19 @@
+# One pull request a month for Go modules and one for GitHub Actions, each grouped.
+# Every merge to main is released and deployed, so review them like any other change.
+# Security updates are not grouped or delayed: they come as soon as a fix exists.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      go-modules:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]

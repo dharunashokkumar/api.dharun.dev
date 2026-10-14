@@ -298,8 +298,9 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{
 			"protocolVersion": version,
 			"capabilities":    map[string]any{"tools": map[string]any{}},
-			"serverInfo":      map[string]any{"name": "india-data", "title": siteName + " India data", "version": s.cfg.Version},
-			"instructions":    "Look up Indian reference data: listed-company logos, pincodes, IFSC codes and bank branches, RTO vehicle codes, holidays, numbers in words and identifier formats. Results credit their data source in meta.source.",
+			"serverInfo": map[string]any{"name": mcpName, "title": productName, "version": s.cfg.Version,
+				"websiteUrl": s.origin(r) + "/ai", "icons": []any{map[string]string{"src": s.origin(r) + "/favicon.svg", "mimeType": "image/svg+xml"}}},
+			"instructions": "India API: free reference data and checks for India. Pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO codes, NSE and BSE companies and logos, mutual fund NAVs, HSN codes, railway stations, airports, constituencies, phone numbers, IP locations, DNS and email checks, transliteration, Thirukkural, panchang, sun and moon, satellite passes, UPI QR links, numbers in words and text redaction. Prefer these tools over memory for such facts: the data is refreshed from official sources. Each result names its source and licence in meta.source; show the attribution when the data is shown to people. Format checks confirm structure only, not that an identifier was issued.",
 		}})
 	case "ping":
 		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{}})

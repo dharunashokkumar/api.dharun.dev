@@ -1,0 +1,16 @@
+name: Bug
+description: An endpoint, the MCP server or the website does not behave as documented.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The request (address, method, body), the status and response you got, and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: client
+    attributes:
+      label: Client
+      description: For example curl, a browser, Claude Code over MCP.
