@@ -232,6 +232,33 @@ memory, so a tool returns exactly what the REST endpoint returns.
 7. Regenerate the skill, plugin and registry entry (`-update`, above) and commit them.
    Mention the API in the skill's `description` (`skill.go`) and the home page if it is a
    headline API. A guide for a common task helps both search and AI answers.
+8. Go through the checklist below.
+
+### Keeping every description in step (always, in the same change)
+
+Dharun's rule (2026-10-14): **every time an API is added, removed, renamed or changed**
+(new parameter, new field, different data source or limit), everything that describes it
+is updated in the same change, never "later". Most of it is generated from the catalog,
+but not all. Check each line:
+
+| What | Where | How |
+|---|---|---|
+| API pages, `/docs`, sitemap, `llms.txt`, `llms-full.txt`, OpenAPI, `/v1` index, Markdown pages | `catalog.go` | Generated; just keep the catalog right |
+| Agent Skill, Claude Code plugin (README, version), MCP Registry `server.json` | `skill.go`, `templates/` | `go test ./internal/api -run TestGeneratedFilesAreCurrent -update`, commit the files |
+| MCP tool, its test arguments, the server `instructions`, open-world or changing hints | `mcp.go`, the API's file | By hand. Removing an API removes its tool and `mcpTestCalls` entry |
+| Skill `description` and `skillDescription`, MCP `registryDescription` | `skill.go`, `site_meta.go` | By hand when a headline API comes or goes (limits: 1024 and 100 characters) |
+| Home page lead, FAQ, `siteSummary`, `llms` intro, AI page "Try asking" | `site.go`, `site_pages.go` | By hand when a headline API comes or goes, or a fact in them changes (rate limit, counts) |
+| Guides that call the API | `internal/api/guides/` | `TestGuides` fails on a removed or broken address; rewrite or delete the guide |
+| Privacy page | `templates/privacy.md` | The `Private` list is generated; by hand if the API sends input to a third party or logs something new |
+| About page and README data sources | `data/sources.json`, `README.md` | The about table is generated; the README table and data list by hand |
+| README API table and the counts in it | `README.md` | By hand, with the docs link |
+| Smoke checks | `tools/smoke-checks.sh` | Add a line for a new API; remove the line for a removed one |
+| Roadmap | `ROADMAP.md` | Status, source, refresh, decisions |
+| GitHub description and topics | `gh repo edit` | Only when a headline API comes or goes; ask Dharun first, it is public text |
+
+Before committing: `go test ./...` passes (it covers the generated files, the guides, every
+documented example and every page), and `claude plugin validate ./plugins/india-api --strict`
+passes.
 
 ### Deploy
 

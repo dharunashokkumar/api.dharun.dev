@@ -15,6 +15,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 |---|---|
 | Released version | Every push to `main` that passes CI is released as `v1.1.<run>` and installed by the server within two minutes; `/healthz` shows the one running |
 | Production | **Live since 2026-10-14** on the homelab (section 11): `v1.1.8` installed by hand, `v1.1.9` the first deploy from a push. the `Production` workflow checks every release on the live site |
+| Search and AI round | Live in `v1.1.14` (section 7.1). Its launch (7.2) is on hold until the next rounds are done |
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
@@ -342,9 +343,33 @@ Done by Dharun, outside the repository:
 - [x] Turn on GitHub private vulnerability reporting and Dependabot security updates
       (repository settings, Security), 2026-10-14
 - [x] Submit `/sitemap.xml` in Search Console and Bing, 2026-10-14
-- [ ] Listings and posts (texts written 2026-10-14): list the server on Smithery,
-      Glama, mcp.so and PulseMCP; submit the plugin to Anthropic's plugin directory; a pull
-      request to `public-apis/public-apis`
+### 7.2 Launch: listings and posts (On hold)
+
+**On hold by Dharun's decision, 2026-10-14:** the launch waits until the remaining
+roadmap rounds are built, so people arrive at the finished set of APIs. Everything is
+written and ready; nothing has been posted. When the rounds are done, refresh the counts
+in the texts (APIs, endpoints, tools) and go in this order, one community a day:
+
+- [ ] Day 1, MCP directories: PulseMCP and Glama (both copy the official registry: search
+      first, claim the listing), Smithery (publish by URL), mcp.so. A Postman public
+      workspace from `/openapi.json` (public-apis needs its Run in Postman link). APIs.guru
+- [ ] Day 2, pull requests: `punkpeye/awesome-remote-mcp-servers` (remote servers go there,
+      not in awesome-mcp-servers), `public-apis/public-apis` twice (the REST API as
+      "India Data" in Open Data, since names may not end in "API"; then the MCP server once
+      Glama or Anthropic lists it), `ripienaar/free-for-dev`
+- [ ] Day 3, r/developersIndia (check the sidebar for the showcase flair and days)
+- [ ] Day 4, Show HN, Tuesday to Thursday evening IST, with the prepared first comment
+- [ ] Day 5, LinkedIn, an X thread, the dev.to article
+- [ ] Week 2, Anthropic's directory: plugin bundle from `plugins/india-api`, and the MCP
+      server as a connector (developer portal, needs a paid claude.ai plan); r/golang (the
+      technical post), r/mcp, r/ClaudeAI, a day apart
+- [ ] Later, Product Hunt; then answer real questions on Stack Overflow and Reddit, saying
+      that you built it
+
+The texts, steps and checklist are in the "India API Launch Kit" page in Dharun's claude.ai
+artifacts (private), with a copy at `.cache/launch-kit.html` on his machine (git-ignored).
+Prepared for the directories already: the plugin README and content version, read-only
+annotations on every MCP tool, `claude plugin validate --strict` passing.
 
 From the first brainstorm, not done yet:
 
@@ -518,3 +543,5 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-14 | Website stays on api.dharun.dev, split into pages; plain white minimal design; guides live under `/guides`. The trust pages say nothing about hosting |
 | 2026-10-14 | AI packaging: Agent Skill, Claude Code plugin (both in this repository), MCP Registry entry, install links. Every API change updates them in the same change |
 | 2026-10-14 | Trust signals: security policy and security.txt, privacy page, release provenance, OpenSSF Scorecard, Dependabot monthly |
+| 2026-10-14 | The launch (listings, pull requests, posts) waits until the remaining roadmap rounds are built |
+| 2026-10-14 | Every API change updates every description of it in the same change: checklist in CLAUDE.md, "Keeping every description in step" |
