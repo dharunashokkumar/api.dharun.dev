@@ -230,7 +230,8 @@ install to be re-run: that is an infrastructure request too.
    end against a fake release server.
 3. `dharun-api-refresh.timer` (hourly) runs `apidata refresh` as the service user; each
    dataset decides whether it is due.
-4. The CI job `verify-production` (`tools/prod-check.sh`) waits for the public `/healthz`
+4. The workflow `production.yml` (`tools/prod-check.sh`) starts when CI on main has
+   finished, so it never holds CI's queue. It waits for the public `/healthz`
    to report the release, then runs `tools/smoke-checks.sh` (the route list shared with
    the smoke test) against the live site. A rollback shows as a failed run. Add a route to
    `smoke-checks.sh` only when the live server answers it the same way as a fresh bundle.

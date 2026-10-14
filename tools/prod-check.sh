@@ -9,7 +9,7 @@ set -euo pipefail
 
 base="${1:?usage: prod-check.sh <origin> <version>}"
 want="${2:?usage: prod-check.sh <origin> <version>}"
-wait_minutes="${PROD_WAIT_MINUTES:-25}"
+wait_minutes="${PROD_WAIT_MINUTES:-20}"
 
 # The build number of a 1.1.<run> release, or nothing for any other version.
 build() { [[ "$1" =~ ^1\.1\.([0-9]+)$ ]] && echo "${BASH_REMATCH[1]}"; }

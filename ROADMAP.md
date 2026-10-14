@@ -14,7 +14,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | | |
 |---|---|
 | Released version | Every push to `main` that passes CI is released as `v1.1.<run>` and installed by the server within two minutes; `/healthz` shows the one running |
-| Production | **Live since 2026-10-14** on the homelab (section 11): `v1.1.8` installed by hand, `v1.1.9` the first deploy from a push. CI checks every release on the live site (`verify-production`) |
+| Production | **Live since 2026-10-14** on the homelab (section 11): `v1.1.8` installed by hand, `v1.1.9` the first deploy from a push. the `Production` workflow checks every release on the live site |
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
@@ -448,7 +448,7 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
       refresh run 2026-10-14: IP database, NAV, satellites and space weather fetched;
       first push deploy 1.1.8 to 1.1.9 the same day, checked live by CI)
 - [x] CI waits for each release to be live on the public site and checks it there
-      (`verify-production`, added 2026-10-14)
+      (`Production` workflow, added 2026-10-14)
 
 ## 12. Decisions
 

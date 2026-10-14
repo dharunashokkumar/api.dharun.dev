@@ -1,0 +1,39 @@
+name: Production
+
+# Runs when CI on main has finished. The server installs each release on its own and rolls
+# it back if its health check fails; this is how a push learns the outcome. It records a
+# deployment to "production", waits for the public site to report the release, then checks
+# the same routes as the smoke test against it. Read-only, no credentials.
+# A workflow of its own, so waiting for the server never holds CI's queue for main.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A newer release makes an older check pointless (prod-check accepts a newer version too).
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    # Only pushes that CI published as v1.1.<run number>.
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: https://api.dharun.dev
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Wait for the release to go live, then check it
+        env:
+          VERSION: 1.1.${{ github.event.workflow_run.run_number }}
+        run: bash tools/prod-check.sh https://api.dharun.dev "$VERSION"

@@ -4,8 +4,8 @@ name: CI
 # a release; servers running deploy/dharun-api-update.sh install it within two minutes.
 # Nothing in this workflow connects to a server, and no dataset is fetched for a release:
 # servers refresh their own. The install test fetches one small list to prove a server can.
-# The last job only reads the public site: it waits until the release is live there and
-# checks it, so a release a server never installed, or rolled back, shows as a failed run.
+# production.yml then waits until the release is live on the public site and checks it,
+# so a release a server never installed, or rolled back, shows as a failed run there.
 on:
   push:
     branches: [main]
@@ -129,23 +129,3 @@ jobs:
             while read -r tag; do
               gh release delete "$tag" --repo "$GITHUB_REPOSITORY" --cleanup-tag --yes
             done
-
-  # The server installs a release on its own and rolls it back if its health check fails;
-  # this job is how a run learns the outcome. It records a deployment to "production" on
-  # GitHub, waits for the public site to report the new version, then checks the same
-  # routes as the smoke test against it. Read-only, no credentials.
-  verify-production:
-    needs: [test, publish]
-    runs-on: ubuntu-latest
-    timeout-minutes: 35
-    environment:
-      name: production
-      url: https://api.dharun.dev
-    concurrency:
-      group: verify-production
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Wait for the release to go live, then check it
-        run: bash tools/prod-check.sh https://api.dharun.dev "${{ needs.test.outputs.version }}"
