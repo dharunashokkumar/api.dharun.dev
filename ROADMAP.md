@@ -589,3 +589,7 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-14 | Trust signals: security policy and security.txt, privacy page, release provenance, OpenSSF Scorecard, Dependabot monthly |
 | 2026-10-14 | The launch (listings, pull requests, posts) waits until the remaining roadmap rounds are built |
 | 2026-10-14 | Every API change updates every description of it in the same change: checklist in CLAUDE.md, "Keeping every description in step" |
+| 2026-10-14 | Round 2 (uploads) builds every tool, model-based ones included: 10 MB uploads, body or multipart, no URL fetching, nothing stored or logged; libvips for images; apt packages plus programs in the release plus server-fetched models; all Piper voices for Indian languages, licence named per voice; IS-Net for background removal |
+| 2026-10-15 | The API container gets 10 CPUs and 5 GB (the host has cores to spare), the service `MemoryMax=3G`; speech keeps a 3,000-character limit. Give more hardware before cutting a feature |
+| 2026-10-15 | The GPL source of the espeak-ng inside Piper is attached to every release (`espeak-ng-source.tar.gz`) rather than offered on request |
+| 2026-10-15 | Infrastructure first, then the round 2 push: the release waits until the server has the packages, memory and disk |

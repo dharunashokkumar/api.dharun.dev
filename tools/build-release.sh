@@ -18,6 +18,9 @@
 # resvg is downloaded by tools/fetch-resvg.sh (pinned version and checksum) unless RESVG
 # points at one already there for linux/amd64; the other programs by tools/fetch-tools.sh
 # into TOOLS (default dist/tools), which also builds onnx-run and so needs a C compiler.
+#
+# Beside the bundle, dist/ gets espeak-ng-source.tar.gz: the GPL source of the espeak-ng
+# that piper/ ships, attached to every release with the bundle.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -57,6 +60,7 @@ printf '%s\n' "$version" > "$stage/VERSION"
 tar -C dist -czf "dist/$name-linux-amd64.tar.gz" "$name"
 (cd dist && sha256sum "$name-linux-amd64.tar.gz" > "$name-linux-amd64.tar.gz.sha256")
 printf '%s\n' "$version" > dist/VERSION
+cp "$tools/espeak-ng-source.tar.gz" dist/espeak-ng-source.tar.gz
 rm -rf "$stage" dist/tools
 
 echo "Built dist/$name-linux-amd64.tar.gz ($version, $(du -h "dist/$name-linux-amd64.tar.gz" | cut -f1))"

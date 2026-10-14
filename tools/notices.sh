@@ -77,10 +77,9 @@ Piper 2023.11.14-2 (https://github.com/rhasspy/piper), shipped unchanged in pipe
 
 Piper is licensed under the MIT licence. Its folder holds libraries it was released with:
 - espeak-ng (libespeak-ng, espeak-ng-data), licensed under the GNU General Public
-  License v3.0 or later. Source: https://github.com/rhasspy/espeak-ng, the fork Piper's
-  release was built from, and https://github.com/espeak-ng/espeak-ng. On request to
-  me@dharun.dev a copy of the corresponding source is sent, for three years from this
-  release.
+  License v3.0 or later. Its source, commit 0f65aa3 of https://github.com/rhasspy/espeak-ng
+  (the fork Piper's release was built from), is attached to every release of this
+  project as espeak-ng-source.tar.gz, beside this bundle.
 - piper-phonemize and its tashkeel model (MIT): https://github.com/rhasspy/piper-phonemize
 - ONNX Runtime 1.14.1 (MIT): https://github.com/microsoft/onnxruntime
 The voices are not part of this bundle; each names its own licence in the API.

@@ -6,12 +6,17 @@
 #   piper/       Piper text to speech with espeak-ng and its own ONNX Runtime (MIT; espeak-ng GPL-3.0)
 #   deep-filter  DeepFilterNet noise removal (MIT or Apache-2.0)
 #   onnx-run     our helper that runs one ONNX model, with libonnxruntime.so beside it (MIT)
+#   espeak-ng-source.tar.gz
+#                the source of the espeak-ng in piper/ (GPL-3.0), which every release carries
 #
 #   bash tools/fetch-tools.sh .cache/tools     # needs Go and a C compiler for onnx-run
 #
 # Checksums: typst and ONNX Runtime match the digests GitHub publishes for their release
 # assets; the 2023 Piper and DeepFilterNet releases predate those digests and are pinned
-# to the files as first downloaded on 2026-10-14. Files already there are kept.
+# to the files as first downloaded on 2026-10-14. Piper's release built espeak-ng from the
+# master branch of rhasspy/espeak-ng without pinning it; 0f65aa3 was master on the day
+# (14 November 2023), and nothing was committed again until the 27th. Files already there
+# are kept.
 set -euo pipefail
 dir="${1:?usage: fetch-tools.sh <dir>}"
 mkdir -p "$dir"
@@ -42,6 +47,9 @@ fi
 fetch https://github.com/Rikorose/DeepFilterNet/releases/download/v0.5.6/deep-filter-0.5.6-x86_64-unknown-linux-musl \
   70775e251eee44c0f2451a1e833326cf8bcbbe304d3e7cd12851e6fce72ef7da deep-filter
 chmod +x "$dir/deep-filter"
+
+fetch https://github.com/rhasspy/espeak-ng/archive/0f65aa301e0d6bae5e172cc74197d32a6182200f.tar.gz \
+  37ebbabb010200be8ec26c61b770e93f964f4503a329d7d74c239a1a40051e43 espeak-ng-source.tar.gz
 
 ort_version=1.29.1
 fetch "https://github.com/microsoft/onnxruntime/releases/download/v$ort_version/onnxruntime-linux-x64-$ort_version.tgz" \

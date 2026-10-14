@@ -144,6 +144,7 @@ jobs:
         run: |
           gh release create "v$VERSION" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --latest \
             dist/dharun-api-linux-amd64.tar.gz dist/dharun-api-linux-amd64.tar.gz.sha256 dist/VERSION \
+            dist/espeak-ng-source.tar.gz \
             --title "v$VERSION" --generate-notes
 
       # Servers only ever need the latest release and the few before it for a rollback.
