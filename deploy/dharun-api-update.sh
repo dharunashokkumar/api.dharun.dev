@@ -71,8 +71,10 @@ work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 
 log "installing $latest (running: ${running:-none})"
-curl -fsSL -m 600 -o "$work/$BUNDLE" "$RELEASE_URL/$BUNDLE"
-curl -fsSL -m 30 -o "$work/$BUNDLE.sha256" "$RELEASE_URL/$BUNDLE.sha256"
+# A download can get stuck on a slow path to GitHub's CDN while a new connection would be
+# fast: below 50 kB/s for 30 s counts as stalled, and is retried on a fresh connection.
+curl -fsSL -m 600 --speed-limit 50000 --speed-time 30 --retry 3 --retry-delay 5 -o "$work/$BUNDLE" "$RELEASE_URL/$BUNDLE"
+curl -fsSL -m 30 --retry 3 -o "$work/$BUNDLE.sha256" "$RELEASE_URL/$BUNDLE.sha256"
 (cd "$work" && sha256sum -c --quiet "$BUNDLE.sha256")
 
 mkdir "$work/release"

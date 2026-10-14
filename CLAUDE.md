@@ -223,7 +223,7 @@ install to be re-run: that is an infrastructure request too.
    NOTICES, VERSION), its `.sha256` and `VERSION`, and prunes automatic releases beyond
    15. `NOTICES` is written by `tools/notices.sh`, which stops the build when a linked
    module has no licence file.
-2. On the server, `dharun-api-update.timer` (every 10 min) runs
+2. On the server, `dharun-api-update.timer` (every 2 min) runs
    `deploy/dharun-api-update.sh`: download, verify checksum, switch the
    `/opt/dharun-api/current` symlink, restart, check `/healthz` reports the new version,
    roll back and mark the release failed if not. `internal/deploytest` tests it end to

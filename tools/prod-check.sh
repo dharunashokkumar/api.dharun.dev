@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run by CI after a release is published. A server installs a release on its own (its
-# updater looks every ten minutes and rolls back when the health check fails), so CI only
+# updater looks every two minutes and rolls back when the health check fails), so CI only
 # knows it is live once the public site reports it. This waits for that, then checks the
 # routes a deploy must not break against the public site, and that the datasets only a
 # server fetches are there. It only reads the public site and needs no credentials.

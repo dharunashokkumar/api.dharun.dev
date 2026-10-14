@@ -13,7 +13,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 
 | | |
 |---|---|
-| Released version | Every push to `main` that passes CI is released as `v1.1.<run>` and installed by the server within ten minutes; `/healthz` shows the one running |
+| Released version | Every push to `main` that passes CI is released as `v1.1.<run>` and installed by the server within two minutes; `/healthz` shows the one running |
 | Production | **Live since 2026-10-14** on the homelab (section 11): `v1.1.8` installed by hand, `v1.1.9` the first deploy from a push. CI checks every release on the live site (`verify-production`) |
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
@@ -41,7 +41,7 @@ the new APIs depend on them.
       age of the data, copy in use); `deploy/monitoring/prometheus-alerts.yml` alerts when
       the API is down, a refresh keeps failing, or a dataset misses three intervals.
 - [x] **Deploy on every push to `main`.** CI passes, a release `v1.1.<run>` is published,
-      the server installs it within 10 minutes and rolls back if the health check fails.
+      the server installs it within 2 minutes and rolls back if the health check fails.
       Automatic releases beyond the newest 15 are deleted.
 - [x] **Text input by POST**, with a size limit (`MAX_BODY_KB`, default 256).
 - [x] **Per-route cost and a queue for CPU-heavy routes**, so a burst waits instead of

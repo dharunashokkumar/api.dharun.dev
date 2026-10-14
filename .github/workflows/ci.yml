@@ -1,7 +1,7 @@
 name: CI
 
 # Every pull request and push is tested. A push to main that passes is also published as
-# a release; servers running deploy/dharun-api-update.sh install it within ten minutes.
+# a release; servers running deploy/dharun-api-update.sh install it within two minutes.
 # Nothing in this workflow connects to a server, and no dataset is fetched for a release:
 # servers refresh their own. The install test fetches one small list to prove a server can.
 # The last job only reads the public site: it waits until the release is live there and

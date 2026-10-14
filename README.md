@@ -188,7 +188,7 @@ Deployment is pull-based: the server fetches releases, nothing connects in to it
 1. Every push to `main` runs CI: tests, shell lint, a full release build, a smoke test of
    the bundle against the full datasets, and an install of it on a fresh Debian 13.
 2. When it passes, the bundle is published as release `v1.1.<run number>`.
-3. On the server, `dharun-api-update.timer` checks every 10 minutes. It downloads the new
+3. On the server, `dharun-api-update.timer` checks every 2 minutes. It downloads the new
    release, verifies the checksum, switches to it, and checks `/healthz`. If the new
    version does not come up, it switches back and marks that release as failed.
 4. Back in CI, the `verify-production` job waits (up to 25 minutes) for the public
