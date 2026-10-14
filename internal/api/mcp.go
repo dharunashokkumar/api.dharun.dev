@@ -305,7 +305,7 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 	case "ping":
 		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{}})
 	case "tools/list":
-		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{"tools": mcpTools}})
+		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{"tools": listedTools()}})
 	case "tools/call":
 		var params struct {
 			Name      string         `json:"name"`
@@ -326,6 +326,31 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 	default:
 		reply(http.StatusOK, rpcResponse{ID: request.ID, Error: &rpcError{-32601, "Method not found: " + request.Method}})
 	}
+}
+
+// Every tool only reads. These reach hosts on the internet named by the caller, and this
+// one answers differently on each call unless it is given a seed.
+var (
+	openWorldTools = map[string]bool{"check_dns": true, "check_email_address": true, "traceroute_from_india": true}
+	changingTools  = map[string]bool{"make_fake_indian_data": true}
+)
+
+// listedTools adds a title and behaviour hints to each tool, as clients and directories
+// read them to decide what a tool may be trusted to do.
+func listedTools() []map[string]any {
+	out := make([]map[string]any, 0, len(mcpTools))
+	for _, tool := range mcpTools {
+		title := strings.ReplaceAll(tool.Name, "_", " ")
+		title = strings.ToUpper(title[:1]) + title[1:]
+		out = append(out, map[string]any{
+			"name": tool.Name, "title": title, "description": tool.Description, "inputSchema": tool.InputSchema,
+			"annotations": map[string]any{
+				"title": title, "readOnlyHint": true, "destructiveHint": false,
+				"idempotentHint": !changingTools[tool.Name], "openWorldHint": openWorldTools[tool.Name],
+			},
+		})
+	}
+	return out
 }
 
 // callTool runs the tool's REST request through the same router in memory and wraps

@@ -29,5 +29,6 @@
   "name": "india-api",
   "privacyPolicyUrl": "https://api.dharun.dev/privacy",
   "repository": "https://github.com/dharunashokkumar/api.dharun.dev",
-  "supportUrl": "https://github.com/dharunashokkumar/api.dharun.dev/issues"
+  "supportUrl": "https://github.com/dharunashokkumar/api.dharun.dev/issues",
+  "version": "1.0.0-12dc8f113b67"
 }

@@ -12,6 +12,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 
@@ -687,6 +688,18 @@ func TestMCP(t *testing.T) {
 	tools := listed["result"].(map[string]any)["tools"].([]any)
 	if len(tools) != len(mcpTools) {
 		t.Fatalf("%d tools listed", len(tools))
+	}
+	for _, listed := range tools {
+		tool := listed.(map[string]any)
+		hints, _ := tool["annotations"].(map[string]any)
+		if hints["readOnlyHint"] != true || hints["destructiveHint"] != false || tool["title"] == "" {
+			t.Errorf("tool %v lacks its annotations", tool["name"])
+		}
+	}
+	for name := range openWorldTools {
+		if !slices.ContainsFunc(mcpTools, func(tool mcpTool) bool { return tool.Name == name }) {
+			t.Errorf("open-world tool %s does not exist", name)
+		}
 	}
 
 	// Every tool, called with sensible arguments, returns the same envelope as its REST endpoint.

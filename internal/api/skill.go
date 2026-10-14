@@ -3,8 +3,11 @@ package api
 import (
 	"archive/zip"
 	"bytes"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"slices"
+	"strings"
 	"sync"
 	"time"
 )
@@ -77,6 +80,19 @@ func fileNames(files map[string][]byte) []string {
 	return names
 }
 
+// contentHash is a short hash of every file under prefix and of extra.
+func contentHash(files map[string][]byte, prefix string, extra []byte) string {
+	sum := sha256.New()
+	for _, name := range fileNames(files) {
+		if strings.HasPrefix(name, prefix) {
+			sum.Write([]byte(name))
+			sum.Write(files[name])
+		}
+	}
+	sum.Write(extra)
+	return hex.EncodeToString(sum.Sum(nil))[:12]
+}
+
 func indentedJSON(value any) []byte {
 	var buffer bytes.Buffer
 	encoder := json.NewEncoder(&buffer)
@@ -96,7 +112,11 @@ func repoFiles() map[string][]byte {
 		files["plugins/"+mcpName+"/skills/"+mcpName+"/"+name] = body
 	}
 	pluginDescription := "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR and more). Free, no key."
-	files["plugins/"+mcpName+"/.claude-plugin/plugin.json"] = indentedJSON(map[string]any{
+	files["plugins/"+mcpName+"/README.md"] = renderMarkdown("plugin-readme", map[string]any{
+		"Count": len(catalog), "Origin": publicOrigin, "Repo": repoSlug, "RepoURL": repoURL, "Name": mcpName, "Market": marketName,
+	})
+	files["plugins/"+mcpName+"/LICENSE.txt"] = []byte(mit0)
+	manifest := map[string]any{
 		"name":             mcpName,
 		"displayName":      productName,
 		"description":      pluginDescription,
@@ -109,8 +129,10 @@ func repoFiles() map[string][]byte {
 		"supportUrl":       repoURL + "/issues",
 		"privacyPolicyUrl": publicOrigin + "/privacy",
 		"mcpServers":       map[string]any{mcpName: map[string]string{"type": "http", "url": publicOrigin + "/mcp"}},
-	})
-	files["plugins/"+mcpName+"/LICENSE.txt"] = []byte(mit0)
+	}
+	// The version follows the plugin's content, so installs update exactly when it changes.
+	manifest["version"] = "1.0.0-" + contentHash(files, "plugins/"+mcpName+"/", indentedJSON(manifest))
+	files["plugins/"+mcpName+"/.claude-plugin/plugin.json"] = indentedJSON(manifest)
 	files[".claude-plugin/marketplace.json"] = indentedJSON(map[string]any{
 		"name":        marketName,
 		"description": "Plugins from " + siteName + ": free Indian data for AI agents.",
