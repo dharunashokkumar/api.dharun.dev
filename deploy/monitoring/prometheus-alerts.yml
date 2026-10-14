@@ -17,10 +17,12 @@ groups:
           summary: api.dharun.dev is not answering its metrics port
           description: Prometheus has not been able to scrape the API for five minutes.
 
+      # At least 20 requests in the window, or one 503 among a handful would count.
       - alert: DharunApiErrors
         expr: |
           sum(rate(api_http_requests_total{job="dharun-api",status=~"5.."}[10m]))
             / sum(rate(api_http_requests_total{job="dharun-api"}[10m])) > 0.05
+          and on() sum(increase(api_http_requests_total{job="dharun-api"}[10m])) >= 20
         for: 10m
         labels:
           severity: warning

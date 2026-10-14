@@ -414,25 +414,24 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 
 ## 11. First production deploy
 
-Waiting for the server: the Proxmox host is back and being set up (2026-10-14). Steps,
-done in a session on the private homelab repository:
+Started 2026-10-14 in a session on the private homelab repository. Steps:
 
-- [ ] Create the container: Debian 13, unprivileged, with `nesting=1` (the service's
+- [x] Create the container: Debian 13, unprivileged, with `nesting=1` (the service's
       systemd sandboxing needs its own mount namespaces), 1 GB of memory (the API's
       `MemoryMax` is 768 MB, the refresh job's 512 MB, and they rarely peak together),
       a few GB of disk for the datasets
-- [ ] Run `deploy/install.sh`. In an unprivileged container it opens ICMP sockets to the
+- [x] Run `deploy/install.sh`. In an unprivileged container it opens ICMP sockets to the
       service's group (`/etc/sysctl.d/60-dharun-api.conf`), which the traceroute needs;
       the install test runs it that way
-- [ ] Put in `/etc/dharun-api/env`: `CLOUDFLARE_API_TOKEN` (with Zone > Cache Purge
+- [x] Put in `/etc/dharun-api/env`: `CLOUDFLARE_API_TOKEN` (with Zone > Cache Purge
       added to it) and `CLOUDFLARE_ZONE_ID`, for the purge after each deploy
-- [ ] Wait for the first refresh run (the timer starts it within minutes of install):
+- [x] Wait for the first refresh run (the timer starts it within minutes of install):
       the IP database, satellites and space weather have no seed, and their endpoints
       answer 503 until then. `apidata status` shows each copy
 - [ ] Try `/v1/mtr/1.1.1.1` from outside: hops on the LAN and the ISP's shared address
       range come back without their address
 - [ ] Tunnel route for `api.dharun.dev` to the service port
-- [ ] Prometheus scrape job, alert rules and Grafana dashboard from `deploy/monitoring/`
+- [x] Prometheus scrape job, alert rules and Grafana dashboard from `deploy/monitoring/`
 - [ ] **Count what Cloudflare serves from its cache.** The server only sees requests that
       reach it, so once a Cache Rule is added the dashboard undercounts. Asked for on
       2026-10-14: show the full picture in Grafana. Plan: the API asks Cloudflare's
@@ -444,9 +443,12 @@ done in a session on the private homelab repository:
       server both go in `/etc/dharun-api/env`. To check first: whether the plan allows
       statistics per hostname and cache status. Not started. Without a Cache Rule
       nothing is cached and the numbers already match.
-- [ ] Ship logs; add an uptime monitor on `/healthz`
-- [ ] Firewall: service port from the tunnel only, metrics port from Prometheus only
-- [ ] Check the first automatic refresh run and the first push-triggered deploy
+- [ ] Ship logs; add an uptime monitor on `/healthz` (logs shipped 2026-10-14)
+- [x] Firewall: service port from the tunnel only, metrics port from Prometheus only
+- [ ] Check the first automatic refresh run and the first push-triggered deploy (first
+      refresh run 2026-10-14: IP database, NAV, satellites and space weather fetched)
+- [ ] CI waits for each release to be live on the public site and checks it there
+      (`verify-production`, added 2026-10-14)
 
 ## 12. Decisions
 

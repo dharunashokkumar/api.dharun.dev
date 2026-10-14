@@ -191,6 +191,10 @@ Deployment is pull-based: the server fetches releases, nothing connects in to it
 3. On the server, `dharun-api-update.timer` checks every 10 minutes. It downloads the new
    release, verifies the checksum, switches to it, and checks `/healthz`. If the new
    version does not come up, it switches back and marks that release as failed.
+4. Back in CI, the `verify-production` job waits (up to 25 minutes) for the public
+   `/healthz` to report the new version, then runs the smoke test's route checks against
+   the live site. A release that was never installed, or was rolled back, fails the run.
+   The run shows on GitHub as a deployment to `production`.
 
 First-time setup on a Debian 12 or 13 machine or container, as root:
 

@@ -44,7 +44,7 @@ builds the real release bundle and smoke-tests it:
 bash tools/fetch-resvg.sh ~/.cache/tools   # Linux only: the pinned SVG renderer
 RESVG=~/.cache/tools/resvg go test ./...   # with RESVG set, PNG output is tested too
 bash tools/build-release.sh 0.0.0-ci       # Linux only: renders PNG logos with resvg
-bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz
+bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz   # route checks: tools/smoke-checks.sh
 bash tools/install-test.sh dist            # needs Docker: installs on a fresh Debian 13 with systemd
 ```
 
@@ -220,6 +220,10 @@ Pull-based: nothing connects in to the server, and GitHub never fetches data.
    end against a fake release server.
 3. `dharun-api-refresh.timer` (hourly) runs `apidata refresh` as the service user; each
    dataset decides whether it is due.
+4. The CI job `verify-production` (`tools/prod-check.sh`) waits for the public `/healthz`
+   to report the release, then runs `tools/smoke-checks.sh` (the route list shared with
+   the smoke test) against the live site. A rollback shows as a failed run. Add a route to
+   `smoke-checks.sh` only when the live server answers it the same way as a fresh bundle.
 
 Measured on Linux: the API idles at 34 MB and peaked at 144 MB under a mixed burst over
 every kind of endpoint; resvg adds 11 to 75 MB per image while it runs (`MemoryMax=768M`,
