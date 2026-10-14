@@ -27,7 +27,8 @@ groups:
         annotations:
           summary: More than 5% of API responses are server errors
 
-      # A failed source is retried after six hours, so this is two failures in a row.
+      # A failed source is retried after six hours (sooner for the hourly space weather),
+      # so this is at least two failures in a row.
       - alert: DharunApiRefreshFailing
         expr: api_dataset_refresh_ok{job="dharun-api"} == 0
         for: 12h

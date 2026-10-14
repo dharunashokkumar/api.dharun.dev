@@ -23,17 +23,22 @@ curl https://api.dharun.dev/v1/pincode/637001
 | Phone numbers | `/v1/phone/9500112345` | Valid or not, mobile or landline, original operator and circle |
 | Constituency | `/v1/constituency?pincode=637001` | Assembly and parliamentary constituency for a place |
 | Panchang | `/v1/panchang/2026-01-14?pincode=600001` | Tithi, nakshatra, yoga, karana, sunrise, Rahu kalam, Tamil month |
+| Sun and moon | `/v1/sun-moon/today?pincode=600001` | Sunrise, sunset, twilight, moonrise, moon phase and illumination |
+| Satellite passes | `/v1/sat-pass?sat=ISS&pincode=600001` | When the ISS or an amateur radio satellite passes over, and whether it can be seen; where it is now |
+| HF propagation | `/v1/propagation` | Solar flux, K and A index, X-ray class, NOAA scales, and a day and night rating per band |
 | Thirukkural | `/v1/thirukkural/1` | Couplet, transliteration, two English translations; search and random |
 | Transliteration | `/v1/transliterate?to=tamil&text=...` | Between nine Indian scripts, ISO 15919, IAST and ASCII |
 | Tamil legacy encodings | `/v1/tamil-font/convert?from=tscii&text=...` | TSCII text to Unicode and back |
 | IP lookup | `/v1/ip/8.8.8.8`, `/v1/ip` | Country, city and network of an address, or of the caller |
 | Email check | `/v1/email/someone@example.com` | Syntax, disposable domain, whether the domain takes mail |
 | DNS check | `/v1/dns/example.com?type=MX` | Records as several public resolvers see them |
+| Traceroute from India | `/v1/mtr/example.com` | MTR-style path from a server in India: network, loss and latency per hop |
 | QR and UPI QR | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250` | QR codes, and UPI payment QR codes and links |
 | Barcodes | `/v1/barcode/code128?text=AWB1234` | Code 128, EAN, Code 39, ITF, Data Matrix, PDF417 |
 | Social preview image | `/v1/og-image?title=Hello` | A 1200x630 card for link previews, in ten scripts |
 | Code image | `/v1/code-image?language=go&code=...` | A code snippet as a syntax-coloured picture |
 | Text tools | `/v1/text/chunk`, `/redact`, `/tokens`, `/language` | Chunking for retrieval, PII redaction, token counts, language detection |
+| Regex tester | `/v1/regex?pattern=...&text=...` | Every match with its groups, replacement, and the pattern explained; JavaScript or RE2 |
 | Fake Indian data | `/v1/fake/companies?count=5` | Test names, addresses, phone numbers, PAN and GSTIN that pass format checks |
 | Number to words | `/v1/words/1,25,000?lang=ta` | Lakh and crore spelling in English, Hindi, Tamil |
 | Format checks | `/v1/validate/gstin/27AAPFU0939F1ZV` | GSTIN, PAN and IFSC structure checks |
@@ -89,6 +94,8 @@ REST endpoint returns.
 | Constituencies | [DataMeet](https://github.com/datameet/maps) community maps | CC BY 4.0 | 4,182 assembly, 543 parliamentary |
 | Thirukkural | [tk120404/thirukkural](https://github.com/tk120404/thirukkural); translations by G.U. Pope and by Drew and Lazarus | Public domain text; compilation Apache-2.0 | 1,330 couplets |
 | IP addresses | [DB-IP](https://db-ip.com) Lite | CC BY 4.0 | fetched by each server |
+| Orbit elements | [CelesTrak](https://celestrak.org/NORAD/elements/), from US Space Force data via Space-Track.org; only computed passes and positions are published | None stated; redistribution with credit allowed by USSPACECOM | fetched by each server, 111 satellites |
+| Space weather | [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/) | Public domain (US government work) | fetched by each server, hourly |
 | Disposable email domains | [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) | CC0 | 9,881 domains |
 | Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 3,156 logos |
 

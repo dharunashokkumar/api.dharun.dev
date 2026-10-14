@@ -14,9 +14,12 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | | |
 |---|---|
 | Released version | `v1.0.0` (2026-10-13), 9 API groups |
-| Production | Not deployed yet. The server is offline; first deploy follows when it is back |
+| Production | Not deployed yet. The Proxmox host is back and being set up (2026-10-14); the first deploy follows section 11 when it is ready. The code is ready for it |
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
+| Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; pushed to `main`, so in the next `v1.1.<run>` release |
+| Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
 | Next rounds | Round 2 uploads, round 3 AI models, round 4 network tools. One round per session |
+| Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
 ## 2. Platform work in round 1
 
@@ -57,6 +60,16 @@ the new APIs depend on them.
       tokenizer vocabulary stays for half a day after its last use, each database
       connection has a 4 MB cache, and four images render at once. The service limit is
       `MemoryMax=768M` with `GOMEMLIMIT=384MiB`.
+- [x] Memory measured after the 2026-10-14 round (Linux, release bundle plus fetched
+      satellite and space weather copies): 37 MB idle, 140 MB after the same burst with
+      the new endpoints added, 140 MB after a traceroute. A ten-day ISS prediction takes
+      66 ms of CPU, a three-round traceroute 4 s of waiting.
+- [x] **Licence notices in the release bundle.** Found missing 2026-10-14. The bundle now
+      carries `NOTICES`, written at build time by `tools/notices.sh`: the Go standard
+      library, every module linked into `api` and `apidata` (the build stops if one has
+      no licence file), go-satellite's SGP4 and the Noto fonts (OFL). resvg is shipped
+      unchanged as its own program; `NOTICES` names its licence (Apache-2.0 or MIT) and
+      points to its releases for the Rust crates inside it. The smoke test checks the file
 
 Already live: single Go binary, read-only SQLite, `{ data, meta }` envelope, per-IP rate
 limit, docs site, OpenAPI, `llms.txt`, MCP server, Prometheus metrics, lifetime request
@@ -158,6 +171,10 @@ with a job ID that the client polls instead of holding a connection open. Rough 
 once loaded: embeddings 300 to 500 MB, reranker 300 MB, IndicXlit 0.5 to 1 GB, Whisper
 small 1 GB, IndicTrans2 distilled 1.5 to 2 GB. Measure before believing them.
 
+Added 2026-10-14, Open: a small general model (about 0.5B parameters, 4-bit, on CPU)
+for classify and extract tasks, about 500 MB loaded. Slow, but free and without keys.
+Which model, and whether its licence allows serving it, is not chosen yet.
+
 ### Round 4: network tools (group D)
 
 Probe from India, TLS check, IPv6 test, logo for any domain, RDAP. Decided 2026-10-13:
@@ -166,6 +183,120 @@ outgoing requests leave from the server's own connection.
 
 Screenshot and HTML to PDF need a headless browser (200 to 500 MB each) and are the last
 candidates; Typst covers most of the PDF need.
+
+Added 2026-10-14. Traceroute was built ahead of the rest of round 4 (Dharun,
+2026-10-14); the TLS fingerprint stays Open:
+
+| API | Endpoint | How | Open points |
+|---|---|---|---|
+| Traceroute from India | `/v1/mtr/{host}` | MTR-style path from the server, showing how Jio, Airtel and others peer: per hop the address, PTR name, network (DB-IP), loss and best, average, worst and spread of round-trip times | **Built, not released.** No raw socket and no `CAP_NET_RAW`: ICMP datagram ("ping") sockets, which systemd and Docker allow every group, with routers' answers read from the error queue (`IP_RECVERR`, as `tracepath` does); Linux only, other systems answer 501. Tried in WSL against 1.1.1.1. Guards: public targets only (a name is resolved through 1.1.1.1, then the address checked), 1 to 10 rounds, 30 hops, two traces at once, 20 against the rate limit, no CPU slot taken. Hops in private or shared space (the homelab's LAN, the ISP's carrier-grade NAT) are returned without their address, so the network the server sits in is not published. The install test checks that the sandboxed service can trace |
+| TLS fingerprint | `/v1/tls-fp` | The caller's JA4 TLS fingerprint and HTTP/2 settings, for scraper and bot-detection developers | **Blocked as things stand**: Cloudflare ends the TLS connection at its edge, so the server never sees the caller's handshake. Would need a hostname that bypasses Cloudflare, which exposes the home address |
+
+### More lookup and compute (built 2026-10-14, not released)
+
+From the brainstorm of 2026-10-14. These run inside the existing server like group A.
+Dharun, 2026-10-14: build all four. Satellite passes return computed passes only, never
+the orbit elements themselves; the regex tester offers RE2 and JavaScript; HF propagation
+returns the indices plus a per-band estimate labelled as a rule of thumb.
+
+| API | Endpoint | Data from, licence | Refresh | Notes | Status |
+|---|---|---|---|---|---|
+| Satellite passes | `/v1/sat-pass?sat=&pincode=` or `?lat=&lng=`, `/v1/satellites`, `/v1/satellites/{id}` (where it is now) | Orbit elements (TLE / GP data) from CelesTrak's `stations` and `amateur` groups, 111 satellites; dataset `satellites`, never in a release | Automatic, every four hours (CelesTrak updates every two and asks for no more than that) | CelesTrak has no redistribution clause; its usage policy only limits how often it is asked (once per two-hour update, stop on any error). The elements come from Space-Track, whose documentation allows redistribution with credit while its user agreement forbids passing on data or analysis; hence passes and positions only, never the elements (a test checks), credited to CelesTrak and USSPACECOM. SGP4 is `joshuaferrara/go-satellite` (BSD-2), copied into `internal/orbit` with its licence, because the original calls `log.Fatal` on a bad element set and truncates the epoch to whole seconds. Checked: positions match Vallado's sgp4 library to under 0.1 m (near-earth, deep space, geostationary); rise, peak and set times match Skyfield within 2 s and peak elevations within 0.05°. 5 ms per day searched; predictions refused when a satellite's elements are over 30 days old | Built, not released |
+| HF propagation | `/v1/propagation` | NOAA Space Weather Prediction Center, US government work, public domain: 10.7 cm flux, planetary K-index (A is the mean of a day's eight a values), daily sunspot number, GOES X-ray class and latest flare, NOAA R/S/G scales, solar wind speed. Dataset `space-weather`, never in a release | Automatic, every 50 minutes so the hourly timer never skips it. A failed fetch is retried after one interval, not six hours (applies to any dataset refreshed more often than six-hourly) | Band ratings (80m-40m, 30m-20m, 17m-15m, 12m-10m, day and night) follow written rules from flux, K and X-ray, returned with the answer as `rules` and labelled a rule of thumb (`internal/spaceweather`) | Built, not released |
+| Sun and moon | `/v1/sun-moon/{date}?pincode=` or `?lat=&lng=` | Computed with the panchang's code (`go-sampa`) | None | Sunrise, sunset, solar noon, day length, three twilights, moonrise and moonset, phase, illumination, age, the next four principal phases. The date is in the path, as for the panchang. Checked against Skyfield with JPL DE421 for Chennai: sun and twilight within 1 s, phases within 8 s, moonrise and moonset within 70 s | Built, not released |
+| Regex tester | `/v1/regex` | Computed: `regexp` (RE2) and `regexp2` (MIT, already a dependency) in ECMAScript mode for JavaScript, with a one-second limit | None | Matches with groups and character offsets, replacement, a token by token explanation. Private. regexp2 numbers groups the .NET way and ignores the `s` flag in ECMAScript mode; both are corrected here, and a test checks it. Left: a backreference like `\1` in a pattern mixing named and unnamed groups counts the .NET way, and the response says so | Built, not released |
+
+### Disposable services and sandboxes (Open)
+
+From the brainstorm of 2026-10-14. Disposable code sandboxes are the most asked-for thing
+here (AI agent developers need a safe place to run code; E2B, built on Firecracker, is
+paid) and also the riskiest thing to give away. **Every one of these is Open**: they would
+reopen settled decisions, listed after the table, and need a decision before any work.
+
+| Service | Endpoint | How | Memory | Risk |
+|---|---|---|---|---|
+| Code sandbox, phase 1 | `/v1/sandbox/run` | Code in, output out. A Firecracker microVM restored from a snapshot (already booted with Python and Node) for each request, then destroyed. Hard limits: 30 s, 1 vCPU, 256 MB, no network | 256 MB per running sandbox, less with shared snapshot pages | High |
+| Code sandbox, phase 2 | `/v1/sandbox` | Kept alive up to 5 minutes, file upload, `pip` and `npm` only through a proxy we control | Same | High |
+| Code sandbox, phase 3 | | Disposable shell over SSH for learners, only with login and strict quotas | Same | High. SSH cannot pass through the Cloudflare tunnel without `cloudflared` on the user's side or Cloudflare's browser-based SSH |
+| Throwaway database | `/v1/db` | One shared Postgres (later Redis); each request gets a new database and user, dropped after an hour. For CI and tests | Almost none per database | Low. Postgres has no per-database size limit, so a watcher must enforce one. **Open**: Postgres is not HTTP, so the tunnel cannot carry it to the public without `cloudflared` on the client; opening a port exposes the home address |
+| Request bin | `/v1/hook` | A URL that records every request sent to it, read back through the API (webhook.site charges for API access) | Tiny | Low. What it records is strangers' data: private, short-lived, returned only as JSON, never shown as a page under the domain |
+| Throwaway Kubernetes | `/v1/k8s` | A k3s cluster in a microVM for 30 minutes | 512 MB or more each | Medium |
+| Try a distribution | `/v1/distro` | Arch, Alpine, Debian or Fedora for 10 minutes, in the browser or over SSH; reuses the sandbox machinery | About 128 MB each | Medium |
+
+**How a sandbox would be hosted.** Firecracker needs KVM. Running it on the Proxmox host
+is ruled out (an escape reaches the whole homelab), and inside an LXC the isolation is
+weak because the host kernel is shared. The safe layout is a dedicated VM with nested
+virtualization on its own isolated network with no access to the LAN or the Proxmox
+interface; microVMs run inside it, so an escape from a microVM still lands in a throwaway
+VM. Each microVM runs under Firecracker's jailer with cgroup limits. With a 3 GB VM that
+is about 8 to 10 sandboxes at once; more requests wait in a queue, as the heavy routes do
+now. Network and VM details belong in the homelab repository, not here.
+
+**Rules a sandbox cannot run without** (free public compute is found by miners and
+spammers within days):
+
+- No internet by default; at most `pip` and `npm` through an allowlisting proxy we run
+- Short lifetime (30 seconds to 5 minutes) and per-VM CPU and memory caps
+- Login and a daily quota per user, plus Turnstile (see Cloudflare automation below)
+- A log of which user ran which sandbox, for abuse reports
+- A kill switch: one command stops every sandbox
+
+**Settled decisions this would reopen:**
+
+| Decision | Why the sandbox conflicts |
+|---|---|
+| Everything runs in one container | Needs a separate VM with nested virtualization |
+| No API keys, rate limit per IP | Needs a login (GitHub) and a quota per user |
+| Go | The notes suggested a FastAPI controller; a Go controller (`firecracker-go-sdk`, Apache-2.0) would keep one language |
+| Memory up to 512 MB or 1 GB | Needs about 3 GB for the sandbox VM |
+
+E2B's own infrastructure is open source and worth reading before designing this.
+
+**Design written 2026-10-14:** `docs/sandbox-design.md` lays out phase 1 (layout, one run
+step by step, limits, login and quota, monitoring, alternatives such as gVisor) and ends
+with the seven decisions it needs. Nothing is built until those are made.
+
+### Monitoring for these services (Open)
+
+Dharun, 2026-10-14: services like these need more advanced monitoring, to watch them and
+to analyse their use. On top of what the API already reports:
+
+- **Per-sandbox resources**: CPU, memory, run time and exit reason of every microVM; pool
+  size, queue length and wait time
+- **Abuse signals with alerts**: CPU pinned at the cap for a whole run (mining), blocked
+  outbound attempts, the same user or address hitting limits again and again
+- **Audit log**: user to sandbox, a hash of the code, limits hit; kept in Loki, never
+  public. Retention period to be decided
+- **Kill switch and its status**: the dashboard shows whether the service is paused and why
+
+### Cloudflare automation (Open)
+
+Applies to the existing API as well as the services above. Dharun's choice, 2026-10-14:
+extend the existing analytics token (section 11) with write permissions rather than
+create a second one, knowing it sits in the API's environment file on the server.
+
+- **Turnstile** before a sandbox starts. A Turnstile check needs a browser, so callers
+  without one (agents, CLI tools) need another path, such as a GitHub login token.
+  Verifying a Turnstile answer uses the widget's own secret, not the API token
+- **Cache purge after a deploy**, once the new release passes its health check.
+  **Built 2026-10-14:** `dharun-api-update.sh` purges by hostname (PUBLIC_ORIGIN's host
+  only, never the whole zone; available on every plan since April 2025) when
+  `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ZONE_ID` are in `/etc/dharun-api/env`. The token
+  is passed to curl on stdin, not on the command line. A failed purge is logged and
+  does not undo the deploy; a failed deploy purges nothing. Tested in
+  `internal/deploytest` against a fake Cloudflare. To do on the server: add the
+  Zone > Cache Purge permission to the token and put both values in the env file
+- **Edge rate limits** for the heavy routes, so bursts stop at Cloudflare
+- **Blocking abusers at the edge**, without over-blocking:
+  - never block hosting and cloud platforms (Vercel, Netlify, Cloudflare Workers, AWS,
+    Google Cloud, Azure, Render, Railway, Fly.io and the like): many apps call the API
+    from them and share their outgoing addresses
+  - block only after repeated, clear abuse, and let every block expire
+  - for sandbox-type services, limit the user and their quota, not the address
+- To check first: how many rate-limiting rules and IP lists the zone's plan allows
+
+Related open point: the API's own per-IP allowance has the same problem. Apps on a
+hosting platform that share an outgoing address share one allowance.
 
 ### Ideas not scheduled yet
 
@@ -207,6 +338,21 @@ Never break `/v1`.
 | Open web search or scraping | Uses the server's connection to scrape third parties; search engines block it |
 | State and district boundary files | Publishing a map of India whose boundary differs from the Survey of India's is an offence; DataMeet already offers the files free |
 
+Turned down on 2026-10-14. The rule behind them: nothing that lets strangers publish
+content under `dharun.dev`, or use the server's address as their own, is built. Anything
+that only returns data to the caller can be.
+
+| Idea | Reason |
+|---|---|
+| Temporary email inbox | Throwaway signups under the domain get it blocklisted |
+| Dynamic DNS subdomains (`*.dyn.dharun.dev`) | Strangers' pages under the domain; phishing |
+| Scheduled URL calls and uptime pings for others | Sends strangers' traffic from the server's address on a timer |
+| Hosted mock APIs from uploaded specs | Strangers' content served at a live URL under the domain |
+| Tunnels (ngrok-style) | Phishing; the domain gets flagged by Google Safe Browsing and Cloudflare |
+| Temporary file sharing | Malware hosting |
+| Free VPN or proxy | Abuse traffic from the server's address |
+| Public speed test server | Uses up the home connection |
+
 ## 9. How data reaches the server
 
 Decided 2026-10-13: GitHub carries the program, the server keeps its own data fresh.
@@ -242,6 +388,8 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 | Airports | OurAirports | Monthly | Server |
 | Railway stations | Wikipedia API | Monthly | Server |
 | Disposable email domains | GitHub | Weekly | Server |
+| Satellite orbit elements | celestrak.org GP data, `stations` and `amateur` groups | Every four hours | Server (never in a release) |
+| Space weather | services.swpc.noaa.gov | Every 50 minutes; a failure is retried after one interval | Server (never in a release) |
 | Pincodes | data.gov.in file saved by hand | When Dharun runs it | Repository seed |
 | Central government holidays | DoPT memorandum, typed in | Yearly, around July | Repository seed |
 | Logos and company details | TradingView scraper | When Dharun runs it | Repository seed |
@@ -266,9 +414,23 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 
 ## 11. First production deploy
 
-Waiting for the server. Steps, done in a session on the private homelab repository:
+Waiting for the server: the Proxmox host is back and being set up (2026-10-14). Steps,
+done in a session on the private homelab repository:
 
-- [ ] Create the container; run `deploy/install.sh`
+- [ ] Create the container: Debian 13, unprivileged, with `nesting=1` (the service's
+      systemd sandboxing needs its own mount namespaces), 1 GB of memory (the API's
+      `MemoryMax` is 768 MB, the refresh job's 512 MB, and they rarely peak together),
+      a few GB of disk for the datasets
+- [ ] Run `deploy/install.sh`. In an unprivileged container it opens ICMP sockets to the
+      service's group (`/etc/sysctl.d/60-dharun-api.conf`), which the traceroute needs;
+      the install test runs it that way
+- [ ] Put in `/etc/dharun-api/env`: `CLOUDFLARE_API_TOKEN` (with Zone > Cache Purge
+      added to it) and `CLOUDFLARE_ZONE_ID`, for the purge after each deploy
+- [ ] Wait for the first refresh run (the timer starts it within minutes of install):
+      the IP database, satellites and space weather have no seed, and their endpoints
+      answer 503 until then. `apidata status` shows each copy
+- [ ] Try `/v1/mtr/1.1.1.1` from outside: hops on the LAN and the ISP's shared address
+      range come back without their address
 - [ ] Tunnel route for `api.dharun.dev` to the service port
 - [ ] Prometheus scrape job, alert rules and Grafana dashboard from `deploy/monitoring/`
 - [ ] **Count what Cloudflare serves from its cache.** The server only sees requests that
@@ -310,3 +472,10 @@ Waiting for the server. Steps, done in a session on the private homelab reposito
 | 2026-10-13 | Railway stations come from Wikipedia, attributed, since no official list has a clear licence |
 | 2026-10-13 | No Aadhaar format check endpoint (redaction still recognises Aadhaar numbers) |
 | 2026-10-14 | Fonts for generated images (Noto, OFL 1.1) are committed and compiled into the server |
+| 2026-10-14 | Brainstorm of new ideas recorded: lookup and compute ideas Open; traceroute and TLS fingerprint join round 4, a small LLM joins round 3; sandboxes and disposable services Open, with the decisions they would reopen listed |
+| 2026-10-14 | Security first. Temporary inbox, dynamic DNS, URL pinger, hosted mocks, tunnels, file sharing, VPN and speed test are not built |
+| 2026-10-14 | Sandbox-type services get their own monitoring: resources, abuse alerts, audit log, kill switch |
+| 2026-10-14 | The Cloudflare analytics token is extended with write permissions (Turnstile, cache purge, edge rate limits, edge blocking). Blocking must not over-block and never targets hosting platforms such as Vercel |
+| 2026-10-14 | Built now: satellite passes, HF propagation, sun and moon, regex tester, traceroute (ahead of round 4), cache purge after a deploy; a design write-up for the sandbox |
+| 2026-10-14 | Satellite passes publish computed results only, never the orbit elements, credited to CelesTrak and USSPACECOM |
+| 2026-10-14 | Regex tester: RE2 and JavaScript. HF propagation: NOAA's indices plus a per-band rule of thumb, labelled as one |

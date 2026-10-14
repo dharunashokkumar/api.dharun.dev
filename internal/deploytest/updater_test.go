@@ -30,6 +30,7 @@ type rig struct {
 	releases  *httptest.Server
 	service   *httptest.Server
 	restart   string // the restart command the updater runs
+	env       []string
 }
 
 func newRig(t *testing.T) *rig {
@@ -108,6 +109,7 @@ func (r *rig) update() (int, string) {
 		"API_RESTART_CMD=" + r.restart,
 		"API_HEALTH_TRIES=2",
 	}
+	command.Env = append(command.Env, r.env...)
 	output, err := command.CombinedOutput()
 	if exit, ok := err.(*exec.ExitError); ok {
 		return exit.ExitCode(), string(output)
@@ -199,5 +201,51 @@ func TestUpdater(t *testing.T) {
 		if entry.Name() == "1.0.0" {
 			t.Error("the oldest release was not pruned")
 		}
+	}
+}
+
+func TestUpdaterPurgesCloudflareCache(t *testing.T) {
+	r := newRig(t)
+	var requests []string
+	answer := `{"success": true, "errors": [], "messages": [], "result": {"id": "x"}}`
+	cloudflare := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		body := new(bytes.Buffer)
+		body.ReadFrom(req.Body)
+		requests = append(requests, req.Method+" "+req.URL.Path+" "+req.Header.Get("Authorization")+" "+body.String())
+		fmt.Fprint(w, answer)
+	}))
+	t.Cleanup(cloudflare.Close)
+
+	// Without credentials nothing is purged.
+	r.publish("1.0.0", false, false)
+	if code, output := r.update(); code != 0 || strings.Contains(output, "purge") || len(requests) != 0 {
+		t.Fatalf("without a token: exit %d, %d requests\n%s", code, len(requests), output)
+	}
+
+	r.env = []string{"CLOUDFLARE_API_TOKEN=secret-token", "CLOUDFLARE_ZONE_ID=zone123",
+		"CLOUDFLARE_API_URL=" + cloudflare.URL, "PUBLIC_ORIGIN=https://api.example.test"}
+	r.publish("1.1.0", false, false)
+	code, output := r.update()
+	if code != 0 || !strings.Contains(output, "purged Cloudflare's cache for api.example.test") {
+		t.Fatalf("exit %d\n%s", code, output)
+	}
+	want := `POST /zones/zone123/purge_cache Bearer secret-token {"hosts":["api.example.test"]}`
+	if len(requests) != 1 || requests[0] != want {
+		t.Fatalf("requests: %q, want %q", requests, want)
+	}
+
+	// A refused purge is reported but the deploy stands.
+	answer = `{"success": false, "errors": [{"code": 10000, "message": "Authentication error"}]}`
+	r.publish("1.2.0", false, false)
+	code, output = r.update()
+	if code != 0 || r.current() != "1.2.0" || !strings.Contains(output, "WARNING: Cloudflare cache purge for api.example.test failed") {
+		t.Fatalf("refused purge: exit %d, running %s\n%s", code, r.current(), output)
+	}
+
+	// No purge after a failed deploy: the old release was never replaced.
+	requests = nil
+	r.publish("1.3.0", true, false)
+	if code, _ := r.update(); code != 1 || len(requests) != 0 {
+		t.Errorf("failed deploy: exit %d, %d purge requests", code, len(requests))
 	}
 }

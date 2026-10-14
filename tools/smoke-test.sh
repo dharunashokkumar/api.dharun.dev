@@ -76,6 +76,16 @@ check "/v1/og-image?title=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE
 check "/v1/og-image?title=Hello&format=svg" image/svg+xml '<use '
 check "/v1/code-image?language=go&code=package%20main" image/png
 check "/v1/transliterate?to=ascii&text=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%AF%8D" application/json '"tamizh"'
+check "/v1/sun-moon/2026-10-14?pincode=600001" application/json '"waxing crescent"'
+check "/v1/regex?pattern=%5Cd%2B&text=a1b22" application/json '"count":2'
+
+# Datasets only a server fetches are not in a release; until its first refresh their
+# endpoints say so rather than fail.
+for path in /v1/propagation "/v1/sat-pass?sat=ISS" /v1/satellites; do
+  code="$(curl -s -o /dev/null -w '%{http_code}' "$base$path")"
+  [ "$code" = 503 ] || { echo "FAIL $path: $code before any refresh, want 503" >&2; exit 1; }
+  echo "ok   $path answers 503 until refreshed"
+done
 
 # Every dataset the repository holds must be in the bundle and served from its seed.
 health="$(curl -fsS "$base/healthz")"
@@ -94,6 +104,11 @@ grep -q '^rto  *seed' <<<"$status" || { echo "FAIL: apidata status does not see 
 echo "ok   apidata status"
 "$dir/resvg" --version >/dev/null || { echo "FAIL: the bundled resvg does not run" >&2; exit 1; }
 echo "ok   resvg"
+if ! grep -q '^modernc.org/sqlite ' "$dir/NOTICES" || ! grep -q 'SIL Open Font License' "$dir/NOTICES"; then
+  echo "FAIL: the bundle has no licence notices" >&2
+  exit 1
+fi
+echo "ok   NOTICES"
 
 version="$(cat "$dir/VERSION")"
 curl -fsS "$base/healthz" | grep -q "\"version\":\"$version\"" || { echo "FAIL: /healthz does not report $version" >&2; exit 1; }

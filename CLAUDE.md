@@ -115,9 +115,12 @@ Never keep a `*sql.DB` or derived data across requests without hooking
 check (GET, HEAD, POST), panic recovery, metrics, one JSON log line. Routes are
 registered in `registerRoutes` (`docs.go`) and `registerMore` (`extras.go`) through
 `s.handle(route, cost, pattern, handler)`: `route` is the metric label, `cost` is what a
-request charges against the per-IP allowance (`costFree`, `costLight`, `costHeavy`). A
-`costHeavy` route also takes one of `HEAVY_CONCURRENCY` slots, so bursts queue instead of
-using more memory.
+request charges against the per-IP allowance (`costFree`, `costLight`, `costHeavy`,
+`costProbe`). A `costHeavy` route also takes one of `HEAVY_CONCURRENCY` slots, so bursts
+queue instead of using more memory. `costProbe` (the traceroute) waits on the network for
+seconds, so it takes no CPU slot and has its own limit of two at a time. Probes from the
+server never target private or reserved addresses (`reserved()` in `ip.go`), and never
+publish the private addresses of the network the server sits in.
 
 Handlers answer through `s.ok` / `s.fail` (`respond.go`), which produce the
 `{ data, meta }` envelope, ETag, 304 and gzip. Do not write JSON to the response
@@ -162,11 +165,23 @@ each file against `SHA256SUMS` there, which also records where they came from.
 ### Logic packages
 
 Endpoints that compute rather than look up keep their logic out of `internal/api`:
-`internal/panchang` (almanac, on `go-sampa`), `internal/translit` (scripts and Roman
-schemes), `internal/tamilfont` (8-bit Tamil encodings; tables are written from the
-published standards, never copied from GPL converters), `internal/textkit` (chunking,
-redaction, token counts with a vocabulary that is loaded on first use and kept while it
-is in use, language detection), `internal/fake`, `internal/words`, `internal/validate`.
+`internal/panchang` (almanac and the plain sun and moon day, on `go-sampa`),
+`internal/translit` (scripts and Roman schemes), `internal/tamilfont` (8-bit Tamil
+encodings; tables are written from the published standards, never copied from GPL
+converters), `internal/textkit` (chunking, redaction, token counts with a vocabulary that
+is loaded on first use and kept while it is in use, language detection), `internal/fake`,
+`internal/words`, `internal/validate`, `internal/regextest` (RE2 and JavaScript via
+regexp2, with fixes for regexp2's group numbering and `s` flag), `internal/spaceweather`
+(the HF band rule of thumb), `internal/orbit` (SGP4 copied from go-satellite with its
+licence and fixed, pass search; checked against Vallado's sgp4 and Skyfield) and
+`internal/trace` (traceroute over unprivileged ICMP sockets and the error queue, Linux
+only).
+
+Two datasets exist only as server copies besides the IP database: `satellites`
+(CelesTrak, four-hourly) and `space-weather` (NOAA, every 50 minutes). Tests build them
+from `internal/api/testdata/data/` into the live directory in `TestMain`; the satellite
+fixture's epochs are moved to the time of the test run. Never return a satellite's orbit
+elements, only what is computed from them.
 
 ### MCP
 
@@ -195,7 +210,9 @@ Pull-based: nothing connects in to the server, and GitHub never fetches data.
 
 1. Every push to `main` runs CI. When it passes, the `publish` job releases it as
    `v1.1.<run number>` with `dharun-api-linux-amd64.tar.gz` (api, apidata, resvg, seed/,
-   VERSION), its `.sha256` and `VERSION`, and prunes automatic releases beyond 15.
+   NOTICES, VERSION), its `.sha256` and `VERSION`, and prunes automatic releases beyond
+   15. `NOTICES` is written by `tools/notices.sh`, which stops the build when a linked
+   module has no licence file.
 2. On the server, `dharun-api-update.timer` (every 10 min) runs
    `deploy/dharun-api-update.sh`: download, verify checksum, switch the
    `/opt/dharun-api/current` symlink, restart, check `/healthz` reports the new version,

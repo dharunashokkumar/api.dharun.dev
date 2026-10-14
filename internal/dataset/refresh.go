@@ -15,8 +15,16 @@ import (
 const StatusFile = "refresh.json"
 
 // retryAfter is how long a dataset waits after a failed refresh before trying again,
-// so a source that is down is not asked every time the timer fires.
+// so a source that is down is not asked every time the timer fires. A dataset refreshed
+// more often than that (space weather, hourly) waits one of its own intervals instead.
 const retryAfter = 6 * time.Hour
+
+func (spec *Spec) retryWait() time.Duration {
+	if spec.Every > 0 && spec.Every < retryAfter {
+		return spec.Every
+	}
+	return retryAfter
+}
 
 // Status is the content of the status file.
 type Status struct {
@@ -224,7 +232,7 @@ func refreshOne(spec *Spec, opts RefreshOptions, last DatasetStatus) RefreshResu
 			result.Outcome = "fresh"
 			return result
 		}
-		if (last.Result == "failed" || last.Result == "held") && opts.Now.Sub(stamp(last.LastAttempt)) < retryAfter {
+		if (last.Result == "failed" || last.Result == "held") && opts.Now.Sub(stamp(last.LastAttempt)) < spec.retryWait() {
 			result.Outcome = "waiting"
 			return result
 		}

@@ -18,6 +18,10 @@ type extras struct {
 	stop   chan struct{}
 	// dns answers DNS queries; nil means the real network. Tests set it.
 	dns dnsExchanger
+	// trace runs a traceroute; nil means the real one. Tests set it.
+	trace tracer
+	// traces holds a slot for each traceroute running.
+	traces chan struct{}
 }
 
 // datasetChanged drops whatever was derived from a dataset that was just replaced.
@@ -27,6 +31,7 @@ func (e *extras) datasetChanged(name string) {}
 func (e *extras) start(cfg Config) {
 	e.tokens = textkit.NewTokenizer()
 	e.render = newRenderer(cfg)
+	e.traces = make(chan struct{}, mtrConcurrency)
 	e.stop = make(chan struct{})
 	go func() {
 		ticker := time.NewTicker(time.Minute)
@@ -88,6 +93,12 @@ func (s *Server) registerMore() {
 	s.handle("station_search", costLight, "GET /v1/stations", s.handleStationSearch)
 	s.handle("station", costLight, "GET /v1/stations/zones", s.handleStationZones)
 	s.handle("panchang", costHeavy, "GET /v1/panchang/{date}", s.handlePanchang)
+	s.handle("sun_moon", costLight, "GET /v1/sun-moon/{date}", s.handleSunMoon)
+	s.handle("propagation", costLight, "GET /v1/propagation", s.handlePropagation)
+	s.handle("satellites", costLight, "GET /v1/satellites", s.handleSatellites)
+	s.handle("satellite", costLight, "GET /v1/satellites/{id}", s.handleSatellite)
+	s.handle("sat_pass", costHeavy, "GET /v1/sat-pass", s.handleSatellitePasses)
+	s.handle("mtr", costProbe, "GET /v1/mtr/{host}", s.handleMTR)
 	s.handle("constituency", costLight, "GET /v1/constituency", s.handleConstituency)
 	s.handle("phone", costLight, "GET /v1/phone/{number}", s.handlePhone)
 	s.handle("fake", costLight, "GET /v1/fake/{kind}", s.handleFake)
@@ -105,6 +116,7 @@ func (s *Server) registerMore() {
 		{"text_redact", "/v1/text/redact", s.handleRedact},
 		{"text_tokens", "/v1/text/tokens", s.handleTokens},
 		{"text_language", "/v1/text/language", s.handleLanguage},
+		{"regex", "/v1/regex", s.handleRegex},
 	} {
 		s.handle(tool.route, costHeavy, "GET "+tool.path, tool.handler)
 		s.handle(tool.route, costHeavy, "POST "+tool.path, tool.handler)

@@ -327,6 +327,10 @@ const (
 	costFree  = 0  // documentation and health checks
 	costLight = 1  // a lookup
 	costHeavy = 10 // real CPU work: rendering, astronomy, live network queries
+	// costProbe is a traceroute: probes sent from the server's own connection for several
+	// seconds. It waits on the network rather than the processor, so it takes no CPU
+	// slot; traceroutes keep their own, smaller limit.
+	costProbe = 20
 )
 
 // heavyWait is how long a CPU-heavy request waits for a free slot before it is refused.
@@ -365,7 +369,7 @@ func (s *Server) handle(route string, cost int, pattern string, handler http.Han
 				fmt.Sprintf("Rate limit is %d requests per minute; this endpoint counts as %d.", s.cfg.RateLimitPerMinute, cost))
 			return
 		}
-		if cost >= costHeavy {
+		if cost == costHeavy {
 			timer := time.NewTimer(heavyWait)
 			defer timer.Stop()
 			select {

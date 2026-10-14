@@ -49,10 +49,13 @@ func TestMain(m *testing.M) {
 	// Datasets that only ever exist as a server's own copy are built into a live directory.
 	testLive = filepath.Join(dir, "live")
 	buildIPDataset(panicker{}, testLive)
+	buildSpaceWeatherDataset(panicker{}, testLive)
+	buildSatelliteDataset(panicker{}, testLive)
 	// PNG output of generated images is tested where the renderer is installed.
 	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true,
 		Resvg: os.Getenv("RESVG")})
 	testServer.extras.dns = fakeDNS{} // tests never touch the network
+	testServer.extras.trace = fakeTrace
 	testHTTP = httptest.NewServer(testServer)
 
 	code := m.Run()

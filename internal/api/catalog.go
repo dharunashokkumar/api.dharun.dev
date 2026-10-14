@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/dharunashokkumar/api.dharun.dev/internal/spaceweather"
 	"github.com/dharunashokkumar/api.dharun.dev/internal/textkit"
 )
 
@@ -17,6 +18,8 @@ const (
 	transliterateExample = "नमस्ते भारत"
 	tamilFontExample     = "¾Á¢ú Å½ì¸õ" // தமிழ் வணக்கம் in TSCII, seen without a TSCII font
 	codeExample          = "package main\n\nimport \"fmt\"\n\nfunc main() {\n\tfmt.Println(\"வணக்கம்\")\n}"
+	regexPatternExample  = `(?<state>[A-Z]{2})[ -]?(\d{2})`
+	regexTextExample     = "Cars TN 37, ka-05 and MH12"
 )
 
 // The catalog describes every public endpoint once. The documentation site, the
@@ -605,6 +608,29 @@ var catalog = []apiGroup{
 		},
 	},
 	{
+		ID:      "regex",
+		Title:   "Regex tester",
+		Tagline: "Run a regular expression against a text and see every match, explained.",
+		Intro:   "Tests a pattern in JavaScript or RE2 (Go) syntax: every match with its groups and their character offsets, an optional replacement, and the pattern taken apart token by token in plain words. JavaScript patterns run under a one-second limit, since nested quantifiers can take exponentially long; RE2 cannot. Patterns and texts are not logged or kept. Each request counts as 10 against the rate limit.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/regex", Summary: "Test a regular expression", Post: true, Private: true,
+				Doc:         "An invalid pattern answers 422 with code invalid_pattern and the engine's message; a JavaScript pattern that runs out of time answers 422 with code timeout. A group that took no part in a match has a null text, which is different from an empty one.",
+				Body:        "The text to test the pattern on (pattern and options in the query), or JSON {\"pattern\": ..., \"text\": ...} with the options beside them.",
+				Example:     "/v1/regex?flags=i&pattern=" + url.QueryEscape(regexPatternExample) + "&text=" + url.QueryEscape(regexTextExample),
+				ExampleBody: regexTextExample,
+				Params: []param{
+					{Name: "pattern", In: "query", Type: "string", Required: true, Doc: "The regular expression, without slashes. Up to 4096 bytes."},
+					{Name: "text", In: "query", Type: "string", Doc: "The text to test it on (or POST it)."},
+					{Name: "flavor", In: "query", Type: "string", Enum: []string{"js", "re2"}, Doc: "js (default): JavaScript syntax, with lookaround and backreferences. re2: Go's syntax, linear time."},
+					{Name: "flags", In: "query", Type: "string", Doc: "Any of i (ignore case), m (^ and $ at line breaks), s (. matches line breaks). Every match is always listed, so g is not needed."},
+					{Name: "replace", In: "query", Type: "string", Doc: "Replace every match with this: $1, $<name>, $& and $$ in js; ${1}, ${name} and $$ in re2."},
+					{Name: "limit", In: "query", Type: "integer", Doc: "Matches listed, 1 to 1000. Default 100; count goes on to the end of the text."},
+				},
+			},
+		},
+	},
+	{
 		ID:      "transliterate",
 		Title:   "Transliteration",
 		Tagline: "Rewrite text between Indian scripts and Roman letters.",
@@ -665,6 +691,98 @@ var catalog = []apiGroup{
 					{Name: "lng", In: "query", Type: "number", Doc: "Longitude, if no pincode."},
 					{Name: "tz", In: "query", Type: "string", Doc: "IANA time zone for the times. Default Asia/Kolkata."},
 				},
+			},
+		},
+	},
+	{
+		ID:      "sun-moon",
+		Title:   "Sun and moon",
+		Tagline: "Sunrise, sunset, twilight, moonrise and the moon's phase for any date and place.",
+		Intro:   "The astronomy of a day without the almanac: sunrise, sunset, solar noon and day length; civil, nautical and astronomical twilight; moonrise and moonset; the moon's phase, how much of it is lit and its age; and the next new, first quarter, full and last quarter moons. Computed with the same code as the panchang, and checked against NASA's JPL ephemeris.",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/sun-moon/{date}", Summary: "Sun and moon for a date",
+				Doc:     "For a pincode, a latitude and longitude, or (by default) New Delhi. A twilight time is null where the sun does not sink that far, and moonrise or moonset is null on the day each month the moon does not rise or set. The phase names a principal phase (new moon, first quarter, full moon, last quarter) for the whole date it falls on.",
+				Example: "/v1/sun-moon/2026-10-14?pincode=600001",
+				Params: []param{
+					{Name: "date", In: "path", Type: "string", Required: true, Doc: "YYYY-MM-DD, 1900 to 2100, or today."},
+					{Name: "pincode", In: "query", Type: "string", Doc: "Indian pincode of the place."},
+					{Name: "lat", In: "query", Type: "number", Doc: "Latitude, -66 to 66, if no pincode."},
+					{Name: "lng", In: "query", Type: "number", Doc: "Longitude, if no pincode."},
+					{Name: "tz", In: "query", Type: "string", Doc: "IANA time zone for the times. Default Asia/Kolkata."},
+				},
+			},
+		},
+	},
+	{
+		ID:        "mtr",
+		Title:     "Traceroute from India",
+		Tagline:   "The network path from a server in India to any host, with loss and latency per hop.",
+		Intro:     "An MTR-style trace from the server's own connection in India: each hop is probed several times, and every hop comes back with its address, name, network (AS) and country, packet loss and round-trip times. Useful to see how Jio, Airtel, BSNL and the rest reach a site, and where along the way delay or loss starts. Only public addresses can be traced. Hops inside private or shared address space are shown without their address. A trace takes several seconds and counts as 20 requests against the rate limit.",
+		SourceKey: "ip",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/mtr/{host}", Summary: "Trace the route to a host",
+				Doc:     "Lists hops up to the one where the host answered, or one past the last router that answered. A hop with 100% loss is common: many routers forward traffic without answering probes. otherAddresses lists further routers seen at the same hop, where traffic is balanced over several paths.",
+				Example: "/v1/mtr/1.1.1.1",
+				Params: []param{
+					{Name: "host", In: "path", Type: "string", Required: true, Doc: "Domain name or public IP address."},
+					{Name: "rounds", In: "query", Type: "integer", Doc: "Probes per hop, 1 to 10. Default 5; a trace takes about a second per round."},
+					{Name: "v", In: "query", Type: "string", Enum: []string{"4", "6"}, Doc: "IP version for a domain name. Default 4."},
+				},
+			},
+		},
+	},
+	{
+		ID:        "satellites",
+		Title:     "Satellite passes",
+		Tagline:   "When the ISS and amateur radio satellites pass over you, and where they are now.",
+		Intro:     "Pass predictions for the space stations (ISS, Tiangong) and about ninety amateur radio satellites, from any Indian pincode or any latitude and longitude: when each rises, how high it gets and where, when it sets, and whether it can be seen with the eye. Computed with SGP4 from CelesTrak's orbit elements, refreshed a few times a day; the elements themselves are not published here. Pass predictions count as 10 requests against the rate limit.",
+		SourceKey: "satellites",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/sat-pass", Summary: "Passes over a place",
+				Doc:     "Passes from now for the next days, soonest first. Directions are compass points and azimuths in degrees from true north; elevations are degrees above the horizon. A satellite can be named by catalogue number, by name, by the designation in its name's brackets (SO-50, AO-7), or as ISS, CSS or QO-100.",
+				Example: "/v1/sat-pass?sat=ISS&pincode=600001",
+				Params: []param{
+					{Name: "sat", In: "query", Type: "string", Doc: "Catalogue number or name. Default ISS (25544)."},
+					{Name: "pincode", In: "query", Type: "string", Doc: "Indian pincode of the observer."},
+					{Name: "lat", In: "query", Type: "number", Doc: "Latitude, if no pincode. Default New Delhi."},
+					{Name: "lng", In: "query", Type: "number", Doc: "Longitude, if no pincode."},
+					{Name: "days", In: "query", Type: "integer", Doc: "How far ahead, 1 to 10. Default 3."},
+					{Name: "minElevation", In: "query", Type: "number", Doc: "Lowest peak elevation listed, in degrees. Default 10; 0 lists every pass."},
+					{Name: "visible", In: "query", Type: "string", Enum: []string{"true", "false"}, Doc: "true lists only passes that can be seen with the eye."},
+					{Name: "tz", In: "query", Type: "string", Doc: "IANA time zone for the times. Default Asia/Kolkata."},
+				},
+			},
+			{
+				Path: "/v1/satellites/{id}", Summary: "Where a satellite is now",
+				Doc:     "The point on Earth below the satellite at the moment of the request, its altitude and speed, whether it is in sunlight, and how old its orbit elements are.",
+				Example: "/v1/satellites/ISS",
+				Params:  []param{{Name: "id", In: "path", Type: "string", Required: true, Doc: "Catalogue number or name."}},
+			},
+			{
+				Path: "/v1/satellites", Summary: "Tracked satellites",
+				Doc:     "Every tracked satellite with its catalogue number, groups, orbital period and inclination.",
+				Example: "/v1/satellites?group=stations",
+				Params: []param{
+					{Name: "q", In: "query", Type: "string", Doc: "Part of a name, or a catalogue number."},
+					{Name: "group", In: "query", Type: "string", Enum: []string{"stations", "amateur"}, Doc: "Limit to one group."},
+				},
+			},
+		},
+	},
+	{
+		ID:        "propagation",
+		Title:     "HF propagation",
+		Tagline:   "Space weather and a rough rating of shortwave radio bands, day and night.",
+		Intro:     "The numbers amateur radio operators check before getting on the air, from NOAA's Space Weather Prediction Center and refreshed every hour: 10.7 cm solar flux, sunspot number, the planetary K and A indices, the X-ray class and latest flare, solar wind speed and NOAA's radio blackout, radiation and geomagnetic storm scales. From those, each band group gets a good, fair or poor rating for day and for night. The ratings are a rule of thumb, and the rules are returned with them.",
+		SourceKey: "space-weather",
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/propagation", Summary: "Space weather and band conditions",
+				Doc:     "Rules behind the band ratings: " + strings.Join(spaceweather.Rules, " ") + " Readings NOAA did not publish at the last fetch are null.",
+				Example: "/v1/propagation",
 			},
 		},
 	},

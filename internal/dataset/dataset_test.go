@@ -625,3 +625,11 @@ func TestZoneOf(t *testing.T) {
 		}
 	}
 }
+
+func TestRetryWaitIsNoLongerThanTheInterval(t *testing.T) {
+	for every, want := range map[time.Duration]time.Duration{0: retryAfter, 50 * time.Minute: 50 * time.Minute, 7 * 24 * time.Hour: retryAfter} {
+		if got := (&Spec{Every: every}).retryWait(); got != want {
+			t.Errorf("every %v: waits %v, want %v", every, got, want)
+		}
+	}
+}

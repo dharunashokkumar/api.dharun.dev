@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"math"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -28,7 +29,8 @@ type panchangView struct {
 const defaultLatitude, defaultLongitude = 28.6139, 77.2090
 
 // panchangPlace reads where the almanac is for: a pincode, or lat and lng, or New Delhi.
-func (s *Server) panchangPlace(w http.ResponseWriter, r *http.Request) (panchang.Place, panchangPlace, bool) {
+// Latitudes are limited to where the sun rises and sets every day, unless anyLatitude.
+func (s *Server) panchangPlace(w http.ResponseWriter, r *http.Request, anyLatitude ...bool) (panchang.Place, panchangPlace, bool) {
 	query := r.URL.Query()
 	zoneName := strings.TrimSpace(query.Get("tz"))
 	if zoneName == "" {
@@ -50,9 +52,13 @@ func (s *Server) panchangPlace(w http.ResponseWriter, r *http.Request) (panchang
 	case query.Get("lat") != "" || query.Get("lng") != "":
 		lat, errLat := strconv.ParseFloat(strings.TrimSpace(query.Get("lat")), 64)
 		lng, errLng := strconv.ParseFloat(strings.TrimSpace(query.Get("lng")), 64)
+		limit, message := 66.0, "Give lat (between -66 and 66, where the sun rises and sets every day) and lng in decimal degrees."
+		if len(anyLatitude) > 0 && anyLatitude[0] {
+			limit, message = 90, "Give lat (-90 to 90) and lng (-180 to 180) in decimal degrees."
+		}
 		// Written as "inside" rather than "outside" so that NaN, which compares false, fails.
-		if errLat != nil || errLng != nil || !(lat >= -66 && lat <= 66 && lng >= -180 && lng <= 180) {
-			s.badRequest(w, r, "Give lat (between -66 and 66, where the sun rises and sets every day) and lng in decimal degrees.")
+		if errLat != nil || errLng != nil || !(lat >= -limit && lat <= limit && lng >= -180 && lng <= 180) {
+			s.badRequest(w, r, message)
 			return panchang.Place{}, panchangPlace{}, false
 		}
 		view = panchangPlace{Latitude: lat, Longitude: lng, TimeZone: zoneName}
@@ -61,11 +67,8 @@ func (s *Server) panchangPlace(w http.ResponseWriter, r *http.Request) (panchang
 }
 
 func round(value float64, places int) float64 {
-	scale := 1.0
-	for i := 0; i < places; i++ {
-		scale *= 10
-	}
-	return float64(int64(value*scale+0.5)) / scale
+	scale := math.Pow(10, float64(places))
+	return math.Round(value*scale) / scale
 }
 
 func (s *Server) handlePanchang(w http.ResponseWriter, r *http.Request) {

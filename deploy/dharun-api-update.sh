@@ -24,6 +24,28 @@ healthy() {
   return 1
 }
 
+# Answers cached at Cloudflare may have come from the release just replaced. Once the new
+# one is healthy, everything cached for the API's hostname (and nothing else in the zone)
+# is purged. Needs CLOUDFLARE_API_TOKEN with the Zone > Cache Purge permission and
+# CLOUDFLARE_ZONE_ID in /etc/dharun-api/env; without them nothing is purged. A purge
+# that fails is reported and does not undo the deploy.
+purge_cache() {
+  if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ZONE_ID:-}" ]; then return 0; fi
+  local host="${PUBLIC_ORIGIN:-https://api.dharun.dev}"
+  host="${host#*://}"
+  host="${host%%/*}"
+  local api="${CLOUDFLARE_API_URL:-https://api.cloudflare.com/client/v4}" answer
+  # The token goes in on stdin, so it never appears in the process list.
+  if answer="$(printf 'header = "Authorization: Bearer %s"\n' "$CLOUDFLARE_API_TOKEN" |
+    curl -sS -m 30 -K - -X POST -H 'Content-Type: application/json' \
+      --data "{\"hosts\":[\"$host\"]}" "$api/zones/$CLOUDFLARE_ZONE_ID/purge_cache")" &&
+    grep -q '"success": *true' <<<"$answer"; then
+    log "purged Cloudflare's cache for $host"
+  else
+    log "WARNING: Cloudflare cache purge for $host failed: ${answer:0:300}"
+  fi
+}
+
 # Atomic switch of the `current` symlink to releases/<name>.
 activate() {
   ln -sfn "releases/$1" "$HOME_DIR/current.new"
@@ -71,6 +93,7 @@ activate "$latest"
 # script here, leaving the new release active and looking deployed to the next run.
 if $RESTART_CMD && healthy "$latest"; then
   log "deployed $latest"
+  purge_cache
   # Keep the newest few releases; the one just replaced is among them, ready for a manual rollback.
   find "$HOME_DIR/releases" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %f\n' | sort -rn |
     tail -n +"$((KEEP_RELEASES + 1))" | while read -r _ old; do

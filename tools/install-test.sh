@@ -55,7 +55,14 @@ run 'systemd-run --quiet --unit=release-server python3 -m http.server 9000 --bin
 run 'install -d /etc/dharun-api && cp /deploy/dharun-api.env.example /etc/dharun-api/env && echo API_RELEASE_URL=http://127.0.0.1:9000 >> /etc/dharun-api/env'
 run 'for _ in $(seq 1 30); do curl -fsS -o /dev/null http://127.0.0.1:9000/VERSION && exit 0; sleep 0.5; done; exit 1' || fail "the release server did not start"
 
-run 'mkdir /root/api-deploy && cp -r /deploy/. /root/api-deploy/ && sh /root/api-deploy/install.sh' | tail -3 || fail "install.sh failed"
+# As in an unprivileged Proxmox container, where systemd cannot open ICMP sockets to
+# every group: no group may, until install.sh opens them to the service's.
+run 'echo "1 0" > /proc/sys/net/ipv4/ping_group_range'
+out="$(run 'mkdir /root/api-deploy && cp -r /deploy/. /root/api-deploy/ && sh /root/api-deploy/install.sh' 2>&1)" ||
+  { echo "$out" | tail -40 >&2; fail "install.sh failed"; }
+echo "$out" | tail -3
+[ "$(run 'cat /etc/sysctl.d/60-dharun-api.conf')" = "net.ipv4.ping_group_range = $(run 'id -g dharun-api') $(run 'id -g dharun-api')" ] ||
+  fail "install.sh did not open ICMP sockets to the service's group"
 echo "ok   install.sh"
 
 health="$(run 'curl -fsS http://127.0.0.1:8080/healthz')" || fail "the service does not answer"
@@ -83,6 +90,11 @@ echo "ok   release is read-only to the service"
 # An image is rendered: resvg runs inside the sandbox.
 run 'curl -fsS -o /tmp/og.png "http://127.0.0.1:8080/v1/og-image?title=Install%20test" && head -c 8 /tmp/og.png | grep -q PNG' || fail "PNG rendering does not work in the service"
 echo "ok   renders PNG"
+
+# A traceroute opens an ICMP datagram socket as the service user, with no added
+# privilege. Outgoing ICMP may be blocked where this runs, so only the answer counts.
+run 'curl -fsS "http://127.0.0.1:8080/v1/mtr/1.1.1.1?rounds=1" | grep -q "\"hops\":"' || fail "traceroute does not work in the service"
+echo "ok   traceroute runs without privileges"
 
 # The refresh job, with the unit's own user, sandbox and limits, limited here to one
 # small dataset so the test does not download the large ones.
