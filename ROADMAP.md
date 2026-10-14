@@ -339,9 +339,10 @@ Done by Dharun, outside the repository:
 - [x] Google Search Console property for `api.dharun.dev` (verified through dharun.dev);
       Bing Webmaster Tools imported from Google. Submit `/sitemap.xml` in both once the
       new site is live
-- [ ] Turn on GitHub private vulnerability reporting and Dependabot security updates
-      (repository settings, Security)
-- [ ] After the release: submit `/sitemap.xml` in Search Console and Bing; list the server on Smithery,
+- [x] Turn on GitHub private vulnerability reporting and Dependabot security updates
+      (repository settings, Security), 2026-10-14
+- [x] Submit `/sitemap.xml` in Search Console and Bing, 2026-10-14
+- [ ] Listings and posts (texts written 2026-10-14): list the server on Smithery,
       Glama, mcp.so and PulseMCP; submit the plugin to Anthropic's plugin directory; a pull
       request to `public-apis/public-apis`
 
