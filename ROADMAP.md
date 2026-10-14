@@ -13,10 +13,10 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 
 | | |
 |---|---|
-| Released version | `v1.0.0` (2026-10-13), 9 API groups |
+| Released version | `v1.1.6` (2026-10-14). Every push to `main` that passes CI is released as `v1.1.<run>` |
 | Production | Not deployed yet. The Proxmox host is back and being set up (2026-10-14); the first deploy follows section 11 when it is ready. The code is ready for it |
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
-| Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; pushed to `main`, so in the next `v1.1.<run>` release |
+| Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
 | Next rounds | Round 2 uploads, round 3 AI models, round 4 network tools. One round per session |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
