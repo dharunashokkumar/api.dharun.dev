@@ -316,23 +316,23 @@ From the first brainstorm, kept so they are not lost. None has a source or a dec
 
 Building it is half the work.
 
-### 7.1 Search and AI discoverability (built 2026-10-14, not released)
+### 7.1 Search and AI discoverability (live 2026-10-14 in `v1.1.14`)
 
 Goal: builders and AI assistants find the API, understand it, and can show it is safe to
 use. Decisions are in section 12 (2026-10-14). Built in this repository:
 
 | Item | Status |
 |---|---|
-| Licence: code AGPL-3.0; examples, guides' code, skill and plugin MIT-0; data keeps its sources' licences | Built, not released |
-| SECURITY.md, `/.well-known/security.txt` (GitHub private reporting, me@dharun.dev, dharun.dak@gmail.com), CONTRIBUTING.md (issues only, no pull requests), issue forms | Built, not released |
-| Site split into pages, plain white minimal design: short landing page, `/docs` directory, one page per API with real sample responses and curl / JavaScript / Python, `/ai`, `/guides`, `/privacy`, `/security`, `/about` | Built, not released |
-| Name "India API by dharun.dev" in titles, OpenAPI, MCP (`india-api`, was `india-data`) | Built, not released |
-| JSON-LD, share images from our own `/v1/og-image`, sitemap with dates, a Markdown copy of every page, short `llms.txt` plus `llms-full.txt`, robots.txt content signals | Built, not released |
-| Guides, first set of eight (pincode autofill, IFSC, GSTIN and PAN, working days, logos, amount in words, UPI QR, redaction before an LLM); every request in them tested | Built, not released |
-| Agent Skill `skills/india-api` and Claude Code plugin `plugins/india-api` (marketplace in this repo), generated from the catalog and checked by a test | Built, not released |
-| MCP Registry `server.json` (`io.github.dharunashokkumar/india-api`), published from CI; MCP server card at `/mcp/server-card`; `/.well-known/ai-catalog.json` | Built, not released |
-| CI: build provenance attestation on each release, OpenSSF Scorecard, Dependabot (monthly, grouped), IndexNow ping when pages change | Built, not released |
-| README rework; GitHub description, website link and topics | Built, not released |
+| Licence: code AGPL-3.0; examples, guides' code, skill and plugin MIT-0; data keeps its sources' licences | Live |
+| SECURITY.md, `/.well-known/security.txt` (GitHub private reporting, me@dharun.dev, dharun.dak@gmail.com), CONTRIBUTING.md (issues only, no pull requests), issue forms | Live |
+| Site split into pages, plain white minimal design: short landing page, `/docs` directory, one page per API with real sample responses and curl / JavaScript / Python, `/ai`, `/guides`, `/privacy`, `/security`, `/about` | Live |
+| Name "India API by dharun.dev" in titles, OpenAPI, MCP (`india-api`, was `india-data`) | Live |
+| JSON-LD, share images from our own `/v1/og-image`, sitemap with dates, a Markdown copy of every page, short `llms.txt` plus `llms-full.txt`, robots.txt content signals | Live |
+| Guides, first set of eight (pincode autofill, IFSC, GSTIN and PAN, working days, logos, amount in words, UPI QR, redaction before an LLM); every request in them tested | Live |
+| Agent Skill `skills/india-api` and Claude Code plugin `plugins/india-api` (marketplace in this repo), generated from the catalog and checked by a test | Live |
+| MCP Registry `server.json` (`io.github.dharunashokkumar/india-api`), published from CI; MCP server card at `/mcp/server-card`; `/.well-known/ai-catalog.json` | Live |
+| CI: build provenance attestation on each release, OpenSSF Scorecard, Dependabot (monthly, grouped), IndexNow ping when pages change | Live |
+| README rework; GitHub description, website link and topics | Live |
 
 Done by Dharun, outside the repository:
 
@@ -341,8 +341,7 @@ Done by Dharun, outside the repository:
       new site is live
 - [ ] Turn on GitHub private vulnerability reporting and Dependabot security updates
       (repository settings, Security)
-- [ ] After the release: submit `/sitemap.xml` in Search Console and Bing; check the first
-      `Production` run published the MCP Registry entry; list the server on Smithery,
+- [ ] After the release: submit `/sitemap.xml` in Search Console and Bing; list the server on Smithery,
       Glama, mcp.so and PulseMCP; submit the plugin to Anthropic's plugin directory; a pull
       request to `public-apis/public-apis`
 
