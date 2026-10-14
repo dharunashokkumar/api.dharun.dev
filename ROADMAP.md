@@ -414,7 +414,7 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 
 ## 11. First production deploy
 
-Started 2026-10-14 in a session on the private homelab repository. Steps:
+Live since 2026-10-14 (set up from the private homelab repository). Steps:
 
 - [x] Create the container: Debian 13, unprivileged, with `nesting=1` (the service's
       systemd sandboxing needs its own mount namespaces), 1 GB of memory (the API's
@@ -428,9 +428,9 @@ Started 2026-10-14 in a session on the private homelab repository. Steps:
 - [x] Wait for the first refresh run (the timer starts it within minutes of install):
       the IP database, satellites and space weather have no seed, and their endpoints
       answer 503 until then. `apidata status` shows each copy
-- [ ] Try `/v1/mtr/1.1.1.1` from outside: hops on the LAN and the ISP's shared address
+- [x] Try `/v1/mtr/1.1.1.1` from outside: hops on the LAN and the ISP's shared address
       range come back without their address
-- [ ] Tunnel route for `api.dharun.dev` to the service port
+- [x] Tunnel route for `api.dharun.dev` to the service port
 - [x] Prometheus scrape job, alert rules and Grafana dashboard from `deploy/monitoring/`
 - [ ] **Count what Cloudflare serves from its cache.** The server only sees requests that
       reach it, so once a Cache Rule is added the dashboard undercounts. Asked for on
@@ -443,11 +443,12 @@ Started 2026-10-14 in a session on the private homelab repository. Steps:
       server both go in `/etc/dharun-api/env`. To check first: whether the plan allows
       statistics per hostname and cache status. Not started. Without a Cache Rule
       nothing is cached and the numbers already match.
-- [ ] Ship logs; add an uptime monitor on `/healthz` (logs shipped 2026-10-14)
+- [x] Ship logs; add an uptime monitor on `/healthz`
 - [x] Firewall: service port from the tunnel only, metrics port from Prometheus only
-- [ ] Check the first automatic refresh run and the first push-triggered deploy (first
-      refresh run 2026-10-14: IP database, NAV, satellites and space weather fetched)
-- [ ] CI waits for each release to be live on the public site and checks it there
+- [x] Check the first automatic refresh run and the first push-triggered deploy (first
+      refresh run 2026-10-14: IP database, NAV, satellites and space weather fetched;
+      first push deploy 1.1.8 to 1.1.9 the same day, checked live by CI)
+- [x] CI waits for each release to be live on the public site and checks it there
       (`verify-production`, added 2026-10-14)
 
 ## 12. Decisions
