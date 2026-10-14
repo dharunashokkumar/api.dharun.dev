@@ -13,8 +13,8 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 
 | | |
 |---|---|
-| Released version | `v1.1.6` (2026-10-14). Every push to `main` that passes CI is released as `v1.1.<run>` |
-| Production | Not deployed yet. The Proxmox host is back and being set up (2026-10-14); the first deploy follows section 11 when it is ready. The code is ready for it |
+| Released version | Every push to `main` that passes CI is released as `v1.1.<run>` and installed by the server within ten minutes; `/healthz` shows the one running |
+| Production | **Live since 2026-10-14** on the homelab (section 11): `v1.1.8` installed by hand, `v1.1.9` the first deploy from a push. CI checks every release on the live site (`verify-production`) |
 | Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
@@ -417,9 +417,8 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 Live since 2026-10-14 (set up from the private homelab repository). Steps:
 
 - [x] Create the container: Debian 13, unprivileged, with `nesting=1` (the service's
-      systemd sandboxing needs its own mount namespaces), 1 GB of memory (the API's
-      `MemoryMax` is 768 MB, the refresh job's 512 MB, and they rarely peak together),
-      a few GB of disk for the datasets
+      systemd sandboxing needs its own mount namespaces), 2 GB of memory (the API's
+      `MemoryMax` is 768 MB, the refresh job's 512 MB), a few GB of disk for the datasets
 - [x] Run `deploy/install.sh`. In an unprivileged container it opens ICMP sockets to the
       service's group (`/etc/sysctl.d/60-dharun-api.conf`), which the traceroute needs;
       the install test runs it that way

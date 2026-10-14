@@ -7,3 +7,5 @@ dist/
 __pycache__/
 .DS_Store
 *.log
+# Private notes about the production server (homelab facts), never published
+*.local.md

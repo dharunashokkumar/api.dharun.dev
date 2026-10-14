@@ -13,6 +13,9 @@ limit per IP.
 data source and refresh method for each API. Read it before adding an API, and update it
 in the same change.
 
+Production (where it runs, how deploys reach it, how to ask for infrastructure changes):
+read the git-ignored `INFRA.local.md` first. See "Deploy" below.
+
 ## Commands
 
 Go 1.26 or newer. The repo is developed on Windows and built and deployed on Linux.
@@ -207,6 +210,13 @@ memory, so a tool returns exactly what the REST endpoint returns.
 ### Deploy
 
 Pull-based: nothing connects in to the server, and GitHub never fetches data.
+
+**Read `INFRA.local.md` before any deploy, server or infrastructure question.** It is
+git-ignored and exists only on Dharun's machine: where production runs, what it depends on
+from this repo, how to check it, and how to ask for an infrastructure change (ask Dharun,
+then write the request in the private homelab repo; infrastructure is never changed from
+here). Releases replace only the bundle, so a change under `deploy/` needs the server-side
+install to be re-run: that is an infrastructure request too.
 
 1. Every push to `main` runs CI. When it passes, the `publish` job releases it as
    `v1.1.<run number>` with `dharun-api-linux-amd64.tar.gz` (api, apidata, resvg, seed/,
