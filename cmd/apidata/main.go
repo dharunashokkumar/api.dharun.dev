@@ -148,7 +148,9 @@ func runImport(name string, args []string) error {
 	if err != nil {
 		return err
 	}
-	source.Retrieved = time.Now().UTC().Format("2006-01-02")
+	// The full moment, so a correction made later the same day still counts as newer
+	// than a copy a server fetched that morning.
+	source.Retrieved = time.Now().UTC().Format(time.RFC3339)
 	if *note != "" {
 		source.Notes = *note
 	} else if source.Notes == "" {
@@ -212,7 +214,7 @@ func runStatus(args []string) error {
 		}
 		refresh := "by hand"
 		if spec.Every > 0 {
-			refresh = fmt.Sprintf("every %dd", int(spec.Every.Hours()/24))
+			refresh = "every " + interval(spec.Every)
 		}
 		fmt.Printf("%-18s %-6s %-22s %-9s %s\n", spec.Name, origin, fetched, refresh, records)
 		if entry := status.Datasets[spec.Name]; entry.Result == "failed" || entry.Result == "held" {
@@ -220,6 +222,14 @@ func runStatus(args []string) error {
 		}
 	}
 	return nil
+}
+
+// interval writes a refresh interval in whole days, or hours when shorter than a day.
+func interval(every time.Duration) string {
+	if every%(24*time.Hour) == 0 {
+		return fmt.Sprintf("%dd", int(every/(24*time.Hour)))
+	}
+	return fmt.Sprintf("%dh", int(every.Round(time.Hour)/time.Hour))
 }
 
 func envOr(name, fallback string) string {

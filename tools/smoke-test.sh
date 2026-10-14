@@ -55,6 +55,7 @@ check /v1/states/TN application/json '"Tamil Nadu"'
 check "/v1/pincode/near?lat=11.2189&lng=78.1674" application/json '"distanceKm"'
 check "/v1/working-days/2026-01-16?calendar=bank&state=TN" application/json '"working":false'
 check "/v1/working-days/2026-02-18?calendar=settlement&add=1" application/json '"shifted":"2026-02-20"'
+check "/v1/working-days/2026-03-04?state=JK&office=Srinagar" application/json '"working":true'
 check "/v1/market/status?at=2026-01-26T10:00:00%2B05:30" application/json 'Republic Day'
 check "/v1/qr?text=hello&format=png" image/png
 check "/v1/upi-qr?pa=shop@okaxis&am=250&format=json" application/json 'upi://pay?pa=shop@okaxis'

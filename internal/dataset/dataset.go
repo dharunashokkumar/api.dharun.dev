@@ -28,8 +28,8 @@ type Source struct {
 	Licence    string `json:"licence"`
 	LicenceURL string `json:"licenceUrl,omitempty"`
 	Version    string `json:"version,omitempty"`
-	// Retrieved is when the source was fetched: a date, or a full timestamp for copies a
-	// server fetched itself. Between a seed and a server copy, the later one is served.
+	// Retrieved is when the source was fetched: a full UTC timestamp, or a date in older
+	// entries of sources.json. Between a seed and a server copy, the later one is served.
 	Retrieved   string `json:"retrieved"`
 	SHA256      string `json:"sha256,omitempty"`
 	Attribution string `json:"attribution,omitempty"`

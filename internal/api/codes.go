@@ -133,9 +133,18 @@ func readDrawing(get func(string) string, linear bool, defaultMargin int) (drawi
 	return d, nil
 }
 
+// The largest code image drawn. A barcode's width grows with its text, and the PNG is
+// held in memory as one byte per pixel: unchecked, a long text at a large scale asks
+// for gigabytes. Nothing scannable comes near these limits.
+const (
+	maxCodeSide   = 10000
+	maxCodePixels = 16 << 20
+)
+
 // render draws a grid. For a 2D code the cell size is the largest whole number of
-// pixels that keeps the image within the asked size, at least one.
-func (d drawing) render(grid modules) ([]byte, string) {
+// pixels that keeps the image within the asked size, at least one. It refuses an image
+// larger than the limits above, before drawing anything.
+func (d drawing) render(grid modules) ([]byte, string, error) {
 	cellsWide := grid.width + 2*d.margin
 	cellsHigh := grid.height + 2*d.margin
 	scaleX, scaleY := d.scale, d.scale
@@ -146,23 +155,28 @@ func (d drawing) render(grid modules) ([]byte, string) {
 		scaleX = max(1, d.scale/cellsWide)
 		scaleY = scaleX
 	}
-	if d.format == "png" {
-		return d.png(grid, cellsWide, cellsHigh, scaleX, scaleY), typePNG
+	wide, high := cellsWide*scaleX, cellsHigh*scaleY
+	if wide > maxCodeSide || high > maxCodeSide || wide*high > maxCodePixels {
+		return nil, "", fmt.Errorf("the image would be %d by %d pixels, larger than this API draws (at most %d pixels a side); use shorter text or a smaller scale", wide, high, maxCodeSide)
 	}
-	return d.svg(grid, cellsWide, cellsHigh, scaleX, scaleY), typeSVG
+	if d.format == "png" {
+		return d.png(grid, cellsWide, cellsHigh, scaleX, scaleY), typePNG, nil
+	}
+	return d.svg(grid, cellsWide, cellsHigh, scaleX, scaleY), typeSVG, nil
 }
 
 func (d drawing) svg(grid modules, cellsWide, cellsHigh, scaleX, scaleY int) []byte {
 	var out bytes.Buffer
-	// In SVG units a cell is 1 wide; a 1D code's single row is as tall as asked.
-	unitHigh := cellsHigh
+	// In SVG units a cell is 1 wide; a 1D code's single row is as tall as asked, which
+	// need not be a whole number of cells.
+	unitHigh := strconv.Itoa(cellsHigh)
 	if grid.linear {
-		unitHigh = max(1, scaleY/scaleX)
+		unitHigh = strconv.FormatFloat(float64(scaleY)/float64(scaleX), 'f', -1, 64)
 	}
-	fmt.Fprintf(&out, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d" shape-rendering="crispEdges">`,
-		cellsWide, unitHigh, cellsWide*scaleX, unitHigh*scaleX)
+	fmt.Fprintf(&out, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %s" width="%d" height="%d" shape-rendering="crispEdges">`,
+		cellsWide, unitHigh, cellsWide*scaleX, cellsHigh*scaleY)
 	if d.background.A != 0 {
-		fmt.Fprintf(&out, `<rect width="%d" height="%d" fill="%s"/>`, cellsWide, unitHigh, cssColor(d.background))
+		fmt.Fprintf(&out, `<rect width="%d" height="%s" fill="%s"/>`, cellsWide, unitHigh, cssColor(d.background))
 	}
 	fmt.Fprintf(&out, `<path fill="%s" d="`, cssColor(d.foreground))
 	for y, row := range grid.cells {
@@ -176,7 +190,7 @@ func (d drawing) svg(grid modules, cellsWide, cellsHigh, scaleX, scaleY int) []b
 				run++
 			}
 			if grid.linear {
-				fmt.Fprintf(&out, "M%d 0h%dv%dh-%dz", x+d.margin, run, unitHigh, run)
+				fmt.Fprintf(&out, "M%d 0h%dv%sh-%dz", x+d.margin, run, unitHigh, run)
 			} else {
 				fmt.Fprintf(&out, "M%d %dh%dv1h-%dz", x+d.margin, y+d.margin, run, run)
 			}
@@ -256,7 +270,11 @@ func (s *Server) handleQR(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, err.Error()+".")
 		return
 	}
-	body, contentType := d.render(readModules(code))
+	body, contentType, err := d.render(readModules(code))
+	if err != nil {
+		s.badRequest(w, r, err.Error()+".")
+		return
+	}
 	s.sendCode(w, r, body, contentType)
 }
 
@@ -356,7 +374,11 @@ func (s *Server) handleUPIQR(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, err.Error()+".")
 		return
 	}
-	body, contentType := d.render(readModules(code))
+	body, contentType, err := d.render(readModules(code))
+	if err != nil {
+		s.badRequest(w, r, err.Error()+".")
+		return
+	}
 	s.sendCode(w, r, body, contentType)
 }
 
@@ -425,7 +447,11 @@ func (s *Server) handleBarcode(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, err.Error()+".")
 		return
 	}
-	body, contentType := d.render(grid)
+	body, contentType, err := d.render(grid)
+	if err != nil {
+		s.badRequest(w, r, err.Error()+".")
+		return
+	}
 	s.sendCode(w, r, body, contentType)
 }
 

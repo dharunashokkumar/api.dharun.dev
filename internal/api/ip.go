@@ -1,11 +1,9 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"net/netip"
 	"net/url"
-	"os"
 	"strings"
 	"time"
 
@@ -26,25 +24,26 @@ func (readers *ipReaders) close() {
 
 // openIP maps the files of a newly swapped-in ip dataset. The previous files stay mapped
 // for a minute so lookups already running can finish.
-func (s *Server) openIP() {
+func (s *Server) openIP() error {
 	set := s.data("ip")
 	if set == nil {
-		return
+		return nil
 	}
 	city, err := maxminddb.Open(set.attachment("city"))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, `{"msg":"error","error":"opening the IP city database: %s"}`+"\n", err)
-		return
+		logError("opening the IP city database", err)
+		return err
 	}
 	asn, err := maxminddb.Open(set.attachment("asn"))
 	if err != nil {
 		city.Close()
-		fmt.Fprintf(os.Stderr, `{"msg":"error","error":"opening the IP network database: %s"}`+"\n", err)
-		return
+		logError("opening the IP network database", err)
+		return err
 	}
 	if old := s.extras.ip.Swap(&ipReaders{city: city, asn: asn}); old != nil {
 		time.AfterFunc(time.Minute, old.close)
 	}
+	return nil
 }
 
 type ipPlace struct {

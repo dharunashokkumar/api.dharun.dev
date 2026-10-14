@@ -178,6 +178,10 @@ func (s *Server) handleKuralSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		kurals = append(kurals, view)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	m := paging(total, limit, offset)
 	m.Source, m.Note = s.source("thirukkural"), kuralNote
 	s.ok(w, r, kurals, m, cacheLong)

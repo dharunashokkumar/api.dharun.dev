@@ -120,7 +120,7 @@ func officeType(code string) string {
 // coordinate keeps a latitude or longitude only when it is a number inside India's bounds.
 func coordinate(value string, min, max float64) any {
 	number, err := strconv.ParseFloat(strings.TrimSpace(value), 64)
-	if err != nil || number < min || number > max {
+	if err != nil || !(number >= min && number <= max) { // written so NaN fails too
 		return nil
 	}
 	return number

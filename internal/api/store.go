@@ -102,12 +102,15 @@ func (h *handle) close() {
 type store struct {
 	seedDir, liveDir string
 	handles          map[string]*atomic.Pointer[handle]
-	// changed is called with a dataset's name after its handle was swapped.
-	changed func(name string)
+	// changed is called with a dataset's name after its handle was swapped. An error
+	// means something built from the dataset could not be loaded; it is tried again at
+	// the next check.
+	changed func(name string) error
 
 	mu          sync.Mutex
 	listing     string
-	retired     []*handle // replaced copies, closed a minute after the swap or at shutdown
+	pending     map[string]bool // datasets whose changed call failed
+	retired     []*handle       // replaced copies, closed a minute after the swap or at shutdown
 	status      dataset.Status
 	statusStamp string
 	stop        chan struct{}
@@ -115,7 +118,7 @@ type store struct {
 }
 
 func newStore(seedDir, liveDir string) *store {
-	st := &store{seedDir: seedDir, liveDir: liveDir, handles: map[string]*atomic.Pointer[handle]{},
+	st := &store{seedDir: seedDir, liveDir: liveDir, handles: map[string]*atomic.Pointer[handle]{}, pending: map[string]bool{},
 		status: dataset.Status{Datasets: map[string]dataset.DatasetStatus{}}}
 	for _, spec := range dataset.Specs() {
 		st.handles[spec.Name] = &atomic.Pointer[handle]{}
@@ -190,18 +193,32 @@ func (st *store) reload() []string {
 		}
 		db, err := dataset.Open(path)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, `{"msg":"error","error":"opening dataset %s: %s"}`+"\n", spec.Name, err)
+			logError("opening dataset "+spec.Name, err)
+			st.listing = "" // look again at the next check, though nothing on disk changed
 			continue
 		}
 		pointer.Store(&handle{db: db, meta: meta, path: path, dir: filepath.Dir(path), live: live, fingerprint: mark, statements: map[string]*sql.Stmt{}})
 		if current != nil {
 			// Requests already running finish against the old copy; the write timeout bounds them.
-			time.AfterFunc(time.Minute, current.close)
 			st.retired = append(st.retired, current)
+			time.AfterFunc(time.Minute, func() { st.retire(current) })
 		}
 		swapped = append(swapped, spec.Name)
 	}
 	return swapped
+}
+
+// retire closes a replaced copy and forgets it.
+func (st *store) retire(old *handle) {
+	old.close()
+	st.mu.Lock()
+	defer st.mu.Unlock()
+	for i, h := range st.retired {
+		if h == old {
+			st.retired = append(st.retired[:i], st.retired[i+1:]...)
+			break
+		}
+	}
 }
 
 func (st *store) loadStatus() {
@@ -212,8 +229,42 @@ func (st *store) loadStatus() {
 	if mark == st.statusStamp {
 		return
 	}
+	status, err := dataset.ReadStatusFile(st.liveDir)
+	if err != nil {
+		// Keep the last status read and try again at the next check.
+		if !os.IsNotExist(err) {
+			logError("reading the refresh status", err)
+		}
+		return
+	}
 	st.statusStamp = mark
-	st.status = dataset.ReadStatus(st.liveDir)
+	st.status = status
+}
+
+// notify tells the server a dataset changed, and remembers to try again if what the
+// server builds from it could not be loaded.
+func (st *store) notify(name string) {
+	if st.changed == nil || st.changed(name) == nil {
+		return
+	}
+	st.mu.Lock()
+	st.pending[name] = true
+	st.mu.Unlock()
+}
+
+// retryPending repeats the changed calls that failed.
+func (st *store) retryPending() {
+	st.mu.Lock()
+	names := make([]string, 0, len(st.pending))
+	for name := range st.pending {
+		names = append(names, name)
+	}
+	st.pending = map[string]bool{}
+	st.mu.Unlock()
+	sort.Strings(names)
+	for _, name := range names {
+		st.notify(name)
+	}
 }
 
 // watch checks for new copies until the store is closed.
@@ -226,11 +277,10 @@ func (st *store) watch(every time.Duration) {
 		for {
 			select {
 			case <-ticker.C:
+				st.retryPending()
 				for _, name := range st.reload() {
 					fmt.Fprintf(os.Stdout, `{"msg":"dataset","dataset":%q,"fetched":%q}`+"\n", name, st.get(name).meta.Fetched())
-					if st.changed != nil {
-						st.changed(name)
-					}
+					st.notify(name)
 				}
 			case <-st.stop:
 				return

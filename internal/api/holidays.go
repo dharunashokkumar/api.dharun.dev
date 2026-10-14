@@ -40,6 +40,13 @@ func holidayTypeNames() []string {
 
 var holidayDatasets = []string{"holidays-bank", "holidays-central", "holidays-market"}
 
+// holidayListNames says what each holiday dataset is, for notes about missing years.
+var holidayListNames = map[string]string{
+	"holidays-bank":    "bank",
+	"holidays-central": "central government",
+	"holidays-market":  "NSE market",
+}
+
 // holidayYears lists the years any holiday dataset covers. Builders store a count per
 // year, so this reads no table.
 func (s *Server) holidayYears(datasets ...string) []int {
@@ -136,12 +143,26 @@ func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if years := s.holidayYears(); !hasYear(years, year) {
+	// Each list answers only for the years it covers: an empty answer from a list that
+	// has no data for the year would read as "no holidays".
+	var asked, covered, missing []string
+	for _, name := range holidayDatasets {
+		if wanted[name] {
+			asked = append(asked, name)
+			if hasYear(s.holidayYears(name), year) {
+				covered = append(covered, name)
+			} else {
+				missing = append(missing, holidayListNames[name])
+			}
+		}
+	}
+	if len(covered) == 0 {
+		years := s.holidayYears(asked...)
 		if len(years) == 0 {
-			s.need(w, r, "holidays-central")
+			s.need(w, r, asked[0])
 			return
 		}
-		s.notFound(w, r, fmt.Sprintf("No holiday data for %d. Years available: %s.", year, joinInts(years)))
+		s.notFound(w, r, fmt.Sprintf("No %s holiday list for %d. Years available: %s.", joinWords(missing), year, joinInts(years)))
 		return
 	}
 
@@ -163,9 +184,9 @@ func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
 
 	holidays := []holidayView{}
 	var used []string
-	for _, name := range holidayDatasets {
+	for _, name := range covered {
 		set := s.data(name)
-		if !wanted[name] || set == nil {
+		if set == nil {
 			continue
 		}
 		used = append(used, name)
@@ -189,6 +210,10 @@ func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
 			holidays = append(holidays, view)
 		}
 		rows.Close()
+		if rows.Err() != nil {
+			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+			return
+		}
 	}
 	sort.SliceStable(holidays, func(a, b int) bool {
 		if holidays[a].Date != holidays[b].Date {
@@ -201,8 +226,19 @@ func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
 	})
 
 	total := len(holidays)
-	s.ok(w, r, holidays, meta{Total: &total, Source: s.holidaySource(used),
-		Note: "Compiled from official notifications. Dates of festivals fixed by moon sighting can change; check the issuing authority before relying on a date."}, cacheAPI)
+	note := "Compiled from official notifications. Dates of festivals fixed by moon sighting can change; check the issuing authority before relying on a date."
+	if len(missing) > 0 {
+		note = fmt.Sprintf("The %s holiday list for %d is not out yet, so those holidays are not included. ", joinWords(missing), year) + note
+	}
+	s.ok(w, r, holidays, meta{Total: &total, Source: s.holidaySource(used), Note: note}, cacheAPI)
+}
+
+// joinWords joins names as prose: "a", "a and b", "a, b and c".
+func joinWords(words []string) string {
+	if len(words) <= 1 {
+		return strings.Join(words, "")
+	}
+	return strings.Join(words[:len(words)-1], ", ") + " and " + words[len(words)-1]
 }
 
 func joinInts(values []int) string {

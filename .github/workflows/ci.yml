@@ -43,6 +43,11 @@ jobs:
       - name: Unit, API, refresh and updater tests
         run: go test ./...
 
+      # Hot reload, caches, the tokenizer's lazy vocabulary and the counters are shared
+      # between requests; the race detector watches them under the same tests.
+      - name: Race detector
+        run: go test -race ./internal/...
+
       - name: Lint shell scripts
         run: shellcheck deploy/*.sh tools/*.sh
 
@@ -73,6 +78,20 @@ jobs:
           name: bundle
           path: dist/
           retention-days: 3
+
+  # Known vulnerabilities in the code paths the program actually calls, in Go itself or
+  # a dependency. Reported on every run; it does not hold back a release, since a fix may
+  # need a Go or dependency upgrade first.
+  vulncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - run: go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
 
   publish:
     needs: test

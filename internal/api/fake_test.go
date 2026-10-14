@@ -56,6 +56,14 @@ func TestFakeData(t *testing.T) {
 	if addresses := expectStatus(t, "/v1/fake/addresses?count=5", http.StatusOK); len(addresses.list(t)) != 5 || addresses.header.Get("Cache-Control") != cacheNone {
 		t.Errorf("unseeded addresses: %d, cached %q", len(addresses.list(t)), addresses.header.Get("Cache-Control"))
 	}
+	// A real state with no post offices in the data gets an answer, not an empty body.
+	if none := expectStatus(t, "/v1/fake/addresses?state=KL", http.StatusNotFound); !strings.Contains(string(none.body), "No post offices") {
+		t.Errorf("addresses for a state without offices: %s", none.body)
+	}
+	// Many nationwide addresses draw row numbers near the end of the table too.
+	if many := expectStatus(t, "/v1/fake/addresses?count=100&seed=7", http.StatusOK); len(many.list(t)) != 100 {
+		t.Errorf("100 addresses gave %d", len(many.list(t)))
+	}
 	expectStatus(t, "/v1/fake/pets", http.StatusNotFound)
 	expectStatus(t, "/v1/fake/people?count=500", http.StatusBadRequest)
 	expectStatus(t, "/v1/fake/people?seed=abc", http.StatusBadRequest)

@@ -41,7 +41,7 @@ func TestPhone(t *testing.T) {
 	if fixed := check("044 2345 6789"); fixed["type"] != "fixed_or_unknown" || fixed["valid"] != true || fixed["e164"] != "+914423456789" {
 		t.Errorf("Chennai landline: %v", fixed)
 	}
-	for _, bad := range []string{"12345", "95001123456789", "9500ABCDEF"} {
+	for _, bad := range []string{"12345", "95001123456789", "9500ABCDEF", "0000000000", "98765+43210", "+91+9876543210"} {
 		if result := check(bad); result["valid"] != false || result["problem"] == "" {
 			t.Errorf("%q should be invalid: %v", bad, result)
 		}

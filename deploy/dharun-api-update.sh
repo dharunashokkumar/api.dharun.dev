@@ -66,9 +66,10 @@ mv "$work/release" "$HOME_DIR/releases/$latest"
 chmod -R a+rX "$HOME_DIR/releases/$latest"
 
 activate "$latest"
-$RESTART_CMD
 
-if healthy "$latest"; then
+# A restart that fails counts like a failed health check: under `set -e` it would end the
+# script here, leaving the new release active and looking deployed to the next run.
+if $RESTART_CMD && healthy "$latest"; then
   log "deployed $latest"
   # Keep the newest few releases; the one just replaced is among them, ready for a manual rollback.
   find "$HOME_DIR/releases" -mindepth 1 -maxdepth 1 -type d -printf '%T@ %f\n' | sort -rn |
@@ -78,12 +79,11 @@ if healthy "$latest"; then
   exit 0
 fi
 
-log "ERROR: $latest did not pass its health check"
+log "ERROR: $latest did not restart or did not pass its health check"
 touch "$HOME_DIR/failed/$latest"
 if [ -n "$running" ] && [ -d "$HOME_DIR/releases/$running" ]; then
   activate "$running"
-  $RESTART_CMD
-  if healthy "$running"; then
+  if $RESTART_CMD && healthy "$running"; then
     log "rolled back to $running"
   else
     log "ERROR: rollback to $running is not healthy either"

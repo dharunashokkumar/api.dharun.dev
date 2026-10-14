@@ -16,7 +16,9 @@ import (
 // Labels are a small fixed set on purpose: what was looked up belongs in the request
 // log, not in metric cardinality.
 
-var durationBuckets = []float64{0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1}
+// The buckets run past a second: a heavy request may wait 10 s for a slot, a DNS or
+// email check waits on resolvers, and the write timeout is 45 s.
+var durationBuckets = []float64{0.001, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30}
 
 type histogram struct {
 	buckets []uint64
@@ -107,12 +109,16 @@ func (m *metrics) save() {
 	m.mu.Unlock()
 
 	tmp := m.statePath + ".tmp"
-	if err := os.WriteFile(tmp, append(encoded, '\n'), 0o644); err != nil {
-		fmt.Fprintf(os.Stderr, `{"msg":"error","error":"saving totals: %s"}`+"\n", err)
-		return
+	err := os.WriteFile(tmp, append(encoded, '\n'), 0o644)
+	if err == nil {
+		err = os.Rename(tmp, m.statePath)
 	}
-	if err := os.Rename(tmp, m.statePath); err != nil {
-		fmt.Fprintf(os.Stderr, `{"msg":"error","error":"saving totals: %s"}`+"\n", err)
+	if err != nil {
+		logError("saving totals", err)
+		// Not saved: the next save must write them even if nothing else is counted.
+		m.mu.Lock()
+		m.totalsDirty = true
+		m.mu.Unlock()
 	}
 }
 

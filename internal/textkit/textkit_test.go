@@ -149,6 +149,20 @@ func TestRedact(t *testing.T) {
 		}
 	}
 
+	// Offsets count characters, not bytes, across Tamil text between the findings.
+	mixed := "அஞ்சல் ravi@example.com தொலைபேசி 98765 43210 முடிவு ABCPK1234F"
+	mixedRunes := []rune(mixed)
+	found := Redact(mixed, nil, false).Findings
+	wantValues := []string{"ravi@example.com", "98765 43210", "ABCPK1234F"}
+	if len(found) != len(wantValues) {
+		t.Fatalf("mixed-script findings: %+v", found)
+	}
+	for i, finding := range found {
+		if value := string(mixedRunes[finding.Start:finding.End]); value != wantValues[i] {
+			t.Errorf("finding %d points at %q, want %q", i, value, wantValues[i])
+		}
+	}
+
 	partial := Redact("card 4111 1111 1111 1111, Aadhaar 2341-2341-2346, PAN ABCPK1234F", nil, true).Text
 	if partial != "card XXXX XXXX XXXX 1111, Aadhaar XXXX-XXXX-2346, PAN XXXXXXXX4F" {
 		t.Errorf("partial masking: %q", partial)
@@ -175,6 +189,9 @@ func TestTokenCountsMatchTiktoken(t *testing.T) {
 		strings.Repeat("abc ", 300) + strings.Repeat("ஆ", 100),
 		"   leading and trailing spaces   ",
 		"",
+		// Single pieces longer than longPiece, merged through the heap.
+		longWord(9000, "abcdefghijklmnopqrstuvwxyz"),
+		longWord(2500, "கஙசஞடணதநபமயரலவழளறன"),
 	}
 	counter := NewTokenizer()
 	for _, name := range []string{"o200k_base", "cl100k_base", "p50k_base"} {
@@ -240,5 +257,37 @@ func TestDetectLanguage(t *testing.T) {
 	}
 	if _, ok := Detect("12345 !!! ..."); ok {
 		t.Error("text without letters has no language")
+	}
+}
+
+// longWord is a deterministic run of n characters from an alphabet, with no spaces.
+func longWord(n int, alphabet string) string {
+	letters := []rune(alphabet)
+	var out strings.Builder
+	seed := uint32(7)
+	for range n {
+		seed = seed*1664525 + 1013904223
+		out.WriteRune(letters[int(seed>>16)%len(letters)])
+	}
+	return out.String()
+}
+
+// The heap merge used for long pieces gives the same count as the plain merge.
+func TestLongMergeMatchesPlainMerge(t *testing.T) {
+	counter := NewTokenizer()
+	for _, name := range []string{"o200k_base", "cl100k_base"} {
+		encoding, _ := EncodingFor(name)
+		v, err := counter.vocabulary(encoding)
+		if err != nil {
+			t.Fatal(err)
+		}
+		for _, n := range []int{2, 3, 17, 300, 2000} {
+			for _, alphabet := range []string{"ab", "abcdefghijklmnopqrstuvwxyz0123456789", "கஙசஞடணதநபமயரலவழளறன்ா", "aaaaaaab"} {
+				piece := []byte(longWord(n, alphabet))
+				if plain, long := v.merge(piece), v.mergeLong(piece); plain != long {
+					t.Errorf("%s, %d of %q: plain %d, heap %d", name, n, alphabet, plain, long)
+				}
+			}
+		}
 	}
 }

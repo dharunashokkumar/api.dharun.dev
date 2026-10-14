@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -155,5 +156,25 @@ func TestMissingDatasetAnswers503(t *testing.T) {
 	}
 	if recorder := serve(server, http.MethodGet, "/v1/logos/TCS?fallback=monogram"); recorder.Code != http.StatusOK {
 		t.Errorf("placeholder without the dataset: %d", recorder.Code)
+	}
+}
+
+// What the server builds from a dataset (the IP readers, the company index) is loaded
+// again at the next check when it failed, though no file changed.
+func TestFailedDatasetLoadsAreRetried(t *testing.T) {
+	st := newStore("", "")
+	calls := 0
+	st.changed = func(name string) error {
+		calls++
+		if calls == 1 {
+			return errors.New("not readable yet")
+		}
+		return nil
+	}
+	st.notify("ip")
+	st.retryPending()
+	st.retryPending()
+	if calls != 2 {
+		t.Errorf("a failed load was tried %d times, want 2 (once, then once more)", calls)
 	}
 }

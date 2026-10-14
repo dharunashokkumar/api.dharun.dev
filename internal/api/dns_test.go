@@ -32,12 +32,17 @@ var fakeZone = map[string][]string{
 	"split.in. A 1.1.1.1":       {"split.in. 60 IN A 198.51.100.2"},
 	"xn--h2brj9c.in. A":         {"xn--h2brj9c.in. 300 IN A 203.0.113.20"},
 	"8.8.8.8.in-addr.arpa. PTR": {"8.8.8.8.in-addr.arpa. 300 IN PTR dns.google."},
+	"dangling.in. A":            {"dangling.in. 300 IN CNAME gone.example."},
+	"flaky.in. MX":              {}, // exists, no MX; its address lookups time out
 }
 
 func (fakeDNS) Exchange(ctx context.Context, server string, query *dns.Msg) (*dns.Msg, time.Duration, error) {
 	question := query.Question[0]
 	key := question.Name + " " + dns.TypeToString[question.Qtype]
 	if question.Name == "slow.in." && server == "9.9.9.9" {
+		return nil, 3 * time.Second, errors.New("i/o timeout")
+	}
+	if question.Name == "flaky.in." && question.Qtype != dns.TypeMX {
 		return nil, 3 * time.Second, errors.New("i/o timeout")
 	}
 	reply := new(dns.Msg)
@@ -142,6 +147,14 @@ func TestEmailCheck(t *testing.T) {
 	}
 	if gone := check("a@nothing-here.in"); gone["verdict"] != "no_mail_server" {
 		t.Errorf("a domain that does not exist: %v", gone)
+	}
+	// A name that only points elsewhere has no address to take mail.
+	if dangling := check("a@dangling.in"); dangling["verdict"] != "no_mail_server" {
+		t.Errorf("a CNAME with no address behind it: %v", dangling)
+	}
+	// No MX and the address lookups failed: nobody knows, so the answer says so.
+	if flaky := check("a@flaky.in"); flaky["verdict"] != "unknown" {
+		t.Errorf("address lookups that failed: %v", flaky)
 	}
 	for _, bad := range []string{"plainaddress", "@gmail.com", "a@", "a..b@gmail.com", ".a@gmail.com", "a b@gmail.com", "a@localhost", "a@gmail..com", strings.Repeat("a", 65) + "@gmail.com"} {
 		if result := check(bad); result["validSyntax"] != false || result["verdict"] != "invalid" || result["problem"] == "" {

@@ -148,7 +148,12 @@ func buildIFSC(b *Builder) error {
 		); err != nil {
 			return err
 		}
-		b.Add("branches", 1)
+		b.Add("rows", 1)
+	}
+	// The refresh checks this count, so it is what the table holds: a file full of
+	// repeated codes must not pass for a full list.
+	if err := countRows(b, "branches", "ifsc", "rows"); err != nil {
+		return err
 	}
 	if len(unknownStates) > 0 {
 		b.Warnf("%d branches have a state name that is not a state: %s", sumValues(unknownStates), topKeys(unknownStates, 8))

@@ -152,7 +152,10 @@ func buildMutualFunds(b *Builder) error {
 			return fmt.Errorf("scheme %d: %w", number, err)
 		}
 		amcs[amc] = true
-		b.Add("schemes", 1)
+		b.Add("rows", 1)
+	}
+	if err := countRows(b, "schemes", "schemes", "rows"); err != nil {
+		return err
 	}
 	if err := scanner.Err(); err != nil {
 		return err

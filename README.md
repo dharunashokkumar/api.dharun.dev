@@ -14,7 +14,7 @@ curl https://api.dharun.dev/v1/pincode/637001
 | IFSC and banks | `/v1/ifsc/SBIN0000001` | Bank, branch, address, MICR, payment systems |
 | RTO codes | `/v1/rto/TN-28` | Transport office for a vehicle registration |
 | Holidays | `/v1/holidays/2026?type=market` | Bank, central government and stock market holidays |
-| Working days | `/v1/working-days/2026-01-16?calendar=bank&state=TN` | Is it a working day, the next one, add N working days, settlement dates |
+| Working days | `/v1/working-days/2026-01-16?calendar=bank&state=TN` | Is it a working day, the next one, add N working days, settlement dates; `office=` for one RBI office in states with several |
 | Market status | `/v1/market/status` | Whether NSE is open, and when it next opens or closes |
 | HSN and SAC | `/v1/hsn/0902`, `/v1/hsn?q=tea` | Tariff codes with descriptions and their chapter |
 | Mutual funds | `/v1/mutual-funds/122639` | Latest NAV of a scheme, search by name or fund house |

@@ -97,7 +97,7 @@ func (s *Server) fail(w http.ResponseWriter, r *http.Request, status int, code, 
 	body.Error.Message = message
 	encoded, _ := json.Marshal(body)
 	cacheControl := cacheNone
-	if status == http.StatusNotFound {
+	if status == http.StatusNotFound && !info(r).private {
 		cacheControl = "public, max-age=60"
 	}
 	writeBody(w, r, status, append(encoded, '\n'), typeJSON, cacheControl, false)
@@ -112,32 +112,39 @@ func (s *Server) badRequest(w http.ResponseWriter, r *http.Request, message stri
 }
 
 // writeBody sends a complete body with validators. Successful responses get an ETag
-// and answer If-None-Match; text bodies over a kilobyte are gzipped when accepted.
+// and answer If-None-Match on GET and HEAD; text bodies over a kilobyte are gzipped when
+// accepted. A gzipped body carries the weak form of the same ETag, as it is the same
+// content in another encoding.
 func writeBody(w http.ResponseWriter, r *http.Request, status int, body []byte, contentType, cacheControl string, compressible bool) {
 	header := w.Header()
 	header.Set("Content-Type", contentType)
 	header.Set("Cache-Control", cacheControl)
 
+	compress := compressible && len(body) > 1024
+	if compress {
+		header.Set("Vary", "Accept-Encoding")
+		compress = acceptsGzip(r.Header.Get("Accept-Encoding"))
+	}
 	if status == http.StatusOK {
 		sum := sha1.Sum(body)
 		etag := `"` + base64.RawURLEncoding.EncodeToString(sum[:15]) + `"`
+		if compress {
+			etag = "W/" + etag
+		}
 		header.Set("ETag", etag)
-		if r.Header.Get("If-None-Match") == etag {
+		if (r.Method == http.MethodGet || r.Method == http.MethodHead) && noneMatch(r.Header.Get("If-None-Match"), etag) {
 			w.WriteHeader(http.StatusNotModified)
 			return
 		}
 	}
 
-	if compressible && len(body) > 1024 {
-		header.Set("Vary", "Accept-Encoding")
-		if strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
-			var buffer bytes.Buffer
-			writer, _ := gzip.NewWriterLevel(&buffer, gzip.BestSpeed)
-			writer.Write(body)
-			writer.Close()
-			body = buffer.Bytes()
-			header.Set("Content-Encoding", "gzip")
-		}
+	if compress {
+		var buffer bytes.Buffer
+		writer, _ := gzip.NewWriterLevel(&buffer, gzip.BestSpeed)
+		writer.Write(body)
+		writer.Close()
+		body = buffer.Bytes()
+		header.Set("Content-Encoding", "gzip")
 	}
 
 	header.Set("Content-Length", strconv.Itoa(len(body)))
@@ -145,4 +152,45 @@ func writeBody(w http.ResponseWriter, r *http.Request, status int, body []byte, 
 	if r.Method != http.MethodHead {
 		w.Write(body)
 	}
+}
+
+// acceptsGzip reads Accept-Encoding: gzip (or *) with a quality above zero.
+func acceptsGzip(accept string) bool {
+	gzipQ, starQ := -1.0, -1.0
+	for _, part := range strings.Split(accept, ",") {
+		coding, params, _ := strings.Cut(strings.TrimSpace(part), ";")
+		q := 1.0
+		for _, param := range strings.Split(params, ";") {
+			if name, value, ok := strings.Cut(strings.TrimSpace(param), "="); ok && strings.EqualFold(strings.TrimSpace(name), "q") {
+				if parsed, err := strconv.ParseFloat(strings.TrimSpace(value), 64); err == nil {
+					q = parsed
+				}
+			}
+		}
+		switch strings.ToLower(strings.TrimSpace(coding)) {
+		case "gzip", "x-gzip":
+			gzipQ = q
+		case "*":
+			starQ = q
+		}
+	}
+	if gzipQ >= 0 {
+		return gzipQ > 0
+	}
+	return starQ > 0
+}
+
+// noneMatch reports whether If-None-Match names the ETag, compared weakly as RFC 9110
+// asks for this header: W/"x" and "x" match.
+func noneMatch(header, etag string) bool {
+	if strings.TrimSpace(header) == "*" {
+		return true
+	}
+	want := strings.TrimPrefix(etag, "W/")
+	for _, tag := range strings.Split(header, ",") {
+		if strings.TrimPrefix(strings.TrimSpace(tag), "W/") == want {
+			return true
+		}
+	}
+	return false
 }

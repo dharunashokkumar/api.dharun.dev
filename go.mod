@@ -1,6 +1,6 @@
 module github.com/dharunashokkumar/api.dharun.dev
 
-go 1.26.5
+go 1.26.9
 
 require (
 	github.com/abadojack/whatlanggo v1.0.1

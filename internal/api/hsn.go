@@ -92,6 +92,10 @@ func (s *Server) handleHSN(w http.ResponseWriter, r *http.Request) {
 		}
 		view.Children = append(view.Children, child)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	s.ok(w, r, view, meta{Source: s.source("hsn"), Note: hsnNote}, cacheLong)
 }
 
@@ -153,6 +157,10 @@ func (s *Server) handleHSNSearch(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		codes = append(codes, c)
+	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
 	}
 	m := paging(total, limit, offset)
 	m.Source, m.Note = s.source("hsn"), hsnNote

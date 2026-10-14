@@ -91,44 +91,47 @@ func Redact(text string, kinds []string, partial bool) RedactResult {
 		start, end int
 		kind       *Kind
 	}
+	// hits never overlap and stay sorted, so an overlap check is a binary search. A
+	// kind's own matches never overlap each other, so they join the list after the kind.
 	var hits []hit
 	taken := func(start, end int) bool {
-		for _, h := range hits {
-			if start < h.end && end > h.start {
-				return true
-			}
-		}
-		return false
+		i := sort.Search(len(hits), func(i int) bool { return hits[i].end > start })
+		return i < len(hits) && hits[i].start < end
 	}
+	compact := strings.NewReplacer(" ", "", "-", "")
 	for i := range Kinds {
 		kind := &Kinds[i]
 		if len(wanted) > 0 && !wanted[kind.ID] {
 			continue
 		}
+		var added []hit
 		for _, match := range kind.find.FindAllStringIndex(text, -1) {
 			value := text[match[0]:match[1]]
-			if kind.accept != nil && !kind.accept(strings.NewReplacer(" ", "", "-", "").Replace(value)) {
+			if kind.accept != nil && !kind.accept(compact.Replace(value)) {
 				continue
 			}
 			// An email address is not also a UPI ID, nor a card number also an Aadhaar.
 			if taken(match[0], match[1]) {
 				continue
 			}
-			hits = append(hits, hit{match[0], match[1], kind})
+			added = append(added, hit{match[0], match[1], kind})
+		}
+		if len(added) > 0 {
+			hits = append(hits, added...)
+			sort.Slice(hits, func(a, b int) bool { return hits[a].start < hits[b].start })
 		}
 	}
-	sort.Slice(hits, func(a, b int) bool { return hits[a].start < hits[b].start })
 
 	result := RedactResult{Findings: []Finding{}, Counts: map[string]int{}}
 	var out strings.Builder
-	last := 0
+	last, runes := 0, 0 // runes counts the characters in text[:last]
 	for _, h := range hits {
 		out.WriteString(text[last:h.start])
 		out.WriteString(mask(text[h.start:h.end], h.kind, partial))
-		last = h.end
-		result.Findings = append(result.Findings, Finding{
-			Type: h.kind.ID, Start: utf8.RuneCountInString(text[:h.start]), End: utf8.RuneCountInString(text[:h.end]),
-		})
+		start := runes + utf8.RuneCountInString(text[last:h.start])
+		end := start + utf8.RuneCountInString(text[h.start:h.end])
+		last, runes = h.end, end
+		result.Findings = append(result.Findings, Finding{Type: h.kind.ID, Start: start, End: end})
 		result.Counts[h.kind.ID]++
 	}
 	out.WriteString(text[last:])

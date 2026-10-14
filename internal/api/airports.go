@@ -166,6 +166,10 @@ func (s *Server) handleAirportSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		airports = append(airports, view)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	m := paging(total, limit, offset)
 	m.Source = s.source("airports")
 	s.ok(w, r, airports, m, cacheAPI)

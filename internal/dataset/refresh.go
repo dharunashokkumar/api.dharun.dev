@@ -36,15 +36,27 @@ type DatasetStatus struct {
 
 // ReadStatus loads the status file; a missing or unreadable file is an empty status.
 func ReadStatus(liveDir string) Status {
-	status := Status{Datasets: map[string]DatasetStatus{}}
-	raw, err := os.ReadFile(filepath.Join(liveDir, StatusFile))
+	status, err := ReadStatusFile(liveDir)
 	if err != nil {
-		return status
-	}
-	if json.Unmarshal(raw, &status) != nil || status.Datasets == nil {
 		return Status{Datasets: map[string]DatasetStatus{}}
 	}
 	return status
+}
+
+// ReadStatusFile loads the status file and says why it could not.
+func ReadStatusFile(liveDir string) (Status, error) {
+	status := Status{Datasets: map[string]DatasetStatus{}}
+	raw, err := os.ReadFile(filepath.Join(liveDir, StatusFile))
+	if err != nil {
+		return status, err
+	}
+	if err := json.Unmarshal(raw, &status); err != nil {
+		return Status{Datasets: map[string]DatasetStatus{}}, err
+	}
+	if status.Datasets == nil {
+		status.Datasets = map[string]DatasetStatus{}
+	}
+	return status, nil
 }
 
 func writeStatus(liveDir string, status Status) error {
@@ -200,7 +212,9 @@ func refreshOne(spec *Spec, opts RefreshOptions, last DatasetStatus) RefreshResu
 	if !opts.Force {
 		// After a release changed a dataset's tables, the server's own copies no longer
 		// fit and the seed is served. Rebuild at once rather than when the seed falls due.
-		outdated := !live && len(LiveFiles(opts.LiveDir, spec.Name)) > 0
+		// A seed served because it is newer than a copy that still fits is not a reason:
+		// the seed's own date says when the dataset is due.
+		outdated := !live && hasUnfitCopy(spec, opts.LiveDir)
 		// A source found unchanged at the last check counts as fetched then.
 		age := Age(currentMeta, opts.Now)
 		if last.Result == "unchanged" && last.LastSuccess != "" {
@@ -246,21 +260,53 @@ func refreshOne(spec *Spec, opts RefreshOptions, last DatasetStatus) RefreshResu
 	}
 	source.Retrieved = opts.Now.UTC().Format(time.RFC3339)
 
-	out := filepath.Join(opts.LiveDir, LiveName(spec.Name, opts.Now))
-	meta, _, err := Build(spec, BuildOptions{Dir: work, Out: out, Source: source, Log: opts.Log})
+	// The new copy is built and checked in the work directory, where the API does not
+	// look, and moved into the live directory only once it passed.
+	staging := filepath.Join(work, ".staged")
+	name := LiveName(spec.Name, opts.Now)
+	staged := filepath.Join(staging, name)
+	meta, _, err := Build(spec, BuildOptions{Dir: work, Out: staged, Source: source, Log: opts.Log})
 	if err != nil {
 		return fail("failed", fmt.Errorf("building: %w", err))
 	}
 
 	if have && !opts.Force {
-		if err := plausible(spec, current, currentMeta, out, meta); err != nil {
-			os.Remove(out)
-			removeAttachment(opts.LiveDir, meta)
+		if err := plausible(spec, current, currentMeta, staged, meta); err != nil {
 			return fail("held", err)
 		}
 	}
+	if err := publish(staging, opts.LiveDir, name, meta); err != nil {
+		return fail("failed", fmt.Errorf("publishing: %w", err))
+	}
 	result.Outcome, result.Meta = "updated", meta
 	return result
+}
+
+// publish moves a checked copy into the live directory: its attached files first and
+// the database last, so a database the API finds always has its files beside it.
+func publish(staging, liveDir, name string, meta Meta) error {
+	var moved []string
+	for _, file := range append(append([]string{}, meta.Files...), name) {
+		if err := os.Rename(filepath.Join(staging, file), filepath.Join(liveDir, file)); err != nil {
+			for _, done := range moved {
+				os.Remove(filepath.Join(liveDir, done))
+			}
+			return err
+		}
+		moved = append(moved, file)
+	}
+	return nil
+}
+
+// hasUnfitCopy reports whether the live directory holds a copy of the dataset built for
+// other tables than this program's.
+func hasUnfitCopy(spec *Spec, liveDir string) bool {
+	for _, copy := range LiveFiles(liveDir, spec.Name) {
+		if meta, err := ReadMetaFile(copy); err != nil || meta.Schema != spec.Schema {
+			return true
+		}
+	}
+	return false
 }
 
 // plausible refuses a fresh copy that looks like the product of a broken source.

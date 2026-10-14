@@ -189,6 +189,23 @@ func TestBarcodes(t *testing.T) {
 		t.Errorf("POST barcode: %d", posted.status)
 	}
 
+	// The SVG is as tall as asked even when the height is not a multiple of the scale.
+	svg := string(expectStatus(t, "/v1/barcode/code128?text=abc&scale=10&height=81", http.StatusOK).body)
+	if !strings.Contains(svg, `height="81"`) || !strings.Contains(svg, " 8.1\"") {
+		t.Errorf("an SVG barcode 81 pixels high at scale 10 starts %.200s", svg)
+	}
+
+	// A long text at a large scale would need gigabytes as a PNG: refused before drawing.
+	// Code 39 has no length limit of its own.
+	long := strings.Repeat("A", 20000)
+	tooBig := request(t, http.MethodPost, "/v1/barcode/code39?format=png&scale=10&height=600", long, "Content-Type", "text/plain")
+	if tooBig.status != http.StatusBadRequest || !strings.Contains(string(tooBig.body), "pixels") {
+		t.Errorf("an oversized barcode: %d %s", tooBig.status, tooBig.body)
+	}
+	if fits := request(t, http.MethodPost, "/v1/barcode/code39?format=png&scale=1&height=10", strings.Repeat("A", 300), "Content-Type", "text/plain"); fits.status != http.StatusOK {
+		t.Errorf("a long barcode within the limits: %d %s", fits.status, fits.body)
+	}
+
 	expectStatus(t, "/v1/barcode/upc?text=1", http.StatusNotFound)
 	for _, bad := range []string{
 		"/v1/barcode/ean13?text=12345", "/v1/barcode/ean13?text=89012345678X", "/v1/barcode/itf?text=123",

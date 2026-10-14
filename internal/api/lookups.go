@@ -121,6 +121,10 @@ func (s *Server) handlePincode(w http.ResponseWriter, r *http.Request) {
 		office.Latitude, office.Longitude = number(lat), number(lng)
 		view.Offices = append(view.Offices, office)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	if len(view.Offices) == 0 {
 		s.notFound(w, r, "No post office found for pincode "+pincode+".")
 		return
@@ -201,6 +205,10 @@ func (s *Server) handlePincodeSearch(w http.ResponseWriter, r *http.Request) {
 		office.District, office.StateCode, office.State = str(districtName), str(code), str(state)
 		office.Latitude, office.Longitude = number(lat), number(lng)
 		offices = append(offices, office)
+	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
 	}
 	m := paging(total, limit, offset)
 	m.Source = s.source("pincode")
@@ -339,6 +347,10 @@ func (s *Server) handleIFSCSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		branches = append(branches, view)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	m := paging(total, limit, offset)
 	m.Source = s.source("ifsc")
 	s.ok(w, r, branches, m, cacheAPI)
@@ -411,6 +423,10 @@ func (s *Server) handleBankSearch(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		banks = append(banks, view)
+	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
 	}
 	m := paging(total, limit, offset)
 	m.Source = s.source("ifsc")
@@ -530,6 +546,10 @@ func (s *Server) handleRTOSearch(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		offices = append(offices, view)
+	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
 	}
 	m := paging(total, limit, offset)
 	m.Source = s.source("rto")

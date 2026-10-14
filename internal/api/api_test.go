@@ -460,6 +460,22 @@ func TestHolidays(t *testing.T) {
 		t.Error("Pongal missing from Tamil Nadu bank holidays")
 	}
 
+	// The central list covers 2027 and the others do not. A list without the year is a
+	// 404 when asked for alone, and named in a note when the lists are combined.
+	notOut := expectStatus(t, "/v1/holidays/2027?type=market", http.StatusNotFound)
+	if !strings.Contains(string(notOut.body), "NSE market") || !strings.Contains(string(notOut.body), "2026") {
+		t.Errorf("2027 market holidays: %s", notOut.body)
+	}
+	expectStatus(t, "/v1/holidays/2027?type=bank", http.StatusNotFound)
+	combined := expectStatus(t, "/v1/holidays/2027", http.StatusOK)
+	note, _ := combined.json(t)["meta"].(map[string]any)["note"].(string)
+	if len(combined.list(t)) == 0 || !strings.Contains(note, "bank and NSE market holiday list for 2027 is not out yet") {
+		t.Errorf("2027 combined: %d holidays, note %q", len(combined.list(t)), note)
+	}
+	if central := expectStatus(t, "/v1/holidays/2027?type=central_gazetted", http.StatusOK); strings.Contains(string(central.body), "not out yet") {
+		t.Errorf("a list that covers the year carries a missing-year note: %s", central.body)
+	}
+
 	missing := expectStatus(t, "/v1/holidays/1999", http.StatusNotFound)
 	if !strings.Contains(string(missing.body), "2026") {
 		t.Errorf("404 should list the years available: %s", missing.body)
@@ -592,6 +608,32 @@ func TestDocuments(t *testing.T) {
 	gz := request(t, http.MethodGet, "/openapi.json", "", "Accept-Encoding", "gzip")
 	if gz.header.Get("Content-Encoding") != "gzip" {
 		t.Error("large JSON was not compressed")
+	}
+	for accept, want := range map[string]bool{
+		"gzip;q=0": false, "gzip; q=0.0, identity": false, "br, GZIP;q=0.5": true, "*": true,
+		"*;q=0": false, "gzip;q=0, *": false, "identity": false, "x-gzip": true, "notgzip": false,
+	} {
+		if got := request(t, http.MethodGet, "/openapi.json", "", "Accept-Encoding", accept).header.Get("Content-Encoding") == "gzip"; got != want {
+			t.Errorf("Accept-Encoding %q: gzipped %v, want %v", accept, got, want)
+		}
+	}
+	// The gzipped body has the weak form of the plain body's ETag; either revalidates.
+	plain := request(t, http.MethodGet, "/openapi.json", "", "Accept-Encoding", "identity").header.Get("ETag")
+	if gz.header.Get("ETag") != "W/"+plain {
+		t.Errorf("ETags: gzip %q, plain %q", gz.header.Get("ETag"), plain)
+	}
+	for _, tag := range []string{plain, gz.header.Get("ETag"), `"other", ` + plain, "*"} {
+		if got := request(t, http.MethodGet, "/openapi.json", "", "If-None-Match", tag, "Accept-Encoding", "gzip"); got.status != http.StatusNotModified || got.header.Get("Vary") != "Accept-Encoding" {
+			t.Errorf("If-None-Match %s: %d, Vary %q", tag, got.status, got.header.Get("Vary"))
+		}
+	}
+	if got := request(t, http.MethodGet, "/openapi.json", "", "If-None-Match", `"other"`); got.status != http.StatusOK {
+		t.Errorf("a different ETag must not revalidate: %d", got.status)
+	}
+	// A POST is never answered 304.
+	posted := request(t, http.MethodPost, "/v1/text/language", "hello world", "Content-Type", "text/plain")
+	if again := request(t, http.MethodPost, "/v1/text/language", "hello world", "Content-Type", "text/plain", "If-None-Match", posted.header.Get("ETag")); again.status != http.StatusOK {
+		t.Errorf("POST with a matching ETag: %d", again.status)
 	}
 }
 
@@ -781,6 +823,76 @@ func TestRateLimit(t *testing.T) {
 	// Another client, and the pages a throttled client needs, are unaffected.
 	if hit("/v1/logos/TCS", "203.0.113.6:1000") != http.StatusOK || hit("/", "203.0.113.5:1000") != http.StatusOK || hit("/healthz", "203.0.113.5:1000") != http.StatusOK {
 		t.Error("the limit leaked beyond the throttled client's data requests")
+	}
+}
+
+// A private route's input stays out of the log however the request ends: answered,
+// refused by the rate limit, preflighted, sent with the wrong method or not found.
+func TestPrivateRoutesStayOutOfTheLog(t *testing.T) {
+	server := newTestServer(Config{Version: "t", RateLimitPerMinute: 1, LogRequests: true})
+	defer server.Close()
+	var logged bytes.Buffer
+	server.logOut = &logged
+	send := func(method, path string) *httptest.ResponseRecorder {
+		req := httptest.NewRequest(method, path, nil)
+		req.RemoteAddr = "203.0.113.5:1000"
+		req.Header.Set("Referer", "https://example.com/page")
+		recorder := httptest.NewRecorder()
+		server.ServeHTTP(recorder, req)
+		return recorder
+	}
+	paths := []string{
+		"/v1/email/secretperson@example.com", "/v1/phone/9876501234", "/v1/validate/pan/ABCPK1234F",
+		"/v1/qr?text=SECRETQR", "/v1/barcode/code128?text=SECRETBAR", "/v1/text/redact?text=SECRETTEXT",
+		"/v1/ip/49.204.0.1",
+	}
+	statuses := map[int]bool{}
+	for _, path := range paths {
+		for _, method := range []string{http.MethodGet, http.MethodGet, http.MethodOptions, http.MethodPut, http.MethodDelete} {
+			statuses[send(method, path).Code] = true
+		}
+	}
+	// POST to a GET-only private path is a 405 from the unmatched handler.
+	statuses[send(http.MethodPost, "/v1/phone/9876501234").Code] = true
+	for _, want := range []int{http.StatusTooManyRequests, http.StatusNoContent, http.StatusMethodNotAllowed} {
+		if !statuses[want] {
+			t.Errorf("no request ended with %d, so that path went untested: %v", want, statuses)
+		}
+	}
+	for _, secret := range []string{"secretperson", "9876501234", "ABCPK1234F", "SECRETQR", "SECRETBAR", "SECRETTEXT", "49.204.0.1"} {
+		if strings.Contains(logged.String(), secret) {
+			t.Errorf("%s reached the log:\n%s", secret, logged.String())
+		}
+	}
+
+	// A not-found answer on a private route is not cached by shared caches either.
+	if got := send(http.MethodGet, "/v1/barcode/nonsense?text=x").Header().Get("Cache-Control"); got != "private, no-store" && got != cacheNone {
+		t.Errorf("a private 404 has Cache-Control %q", got)
+	}
+	// A handler that marks itself private must be Private in the catalog too: only the
+	// catalog's mark protects requests the handler never sees.
+	open := newTestServer(Config{Version: "t", LogRequests: true})
+	defer open.Close()
+	var line bytes.Buffer
+	open.logOut = &line
+	for _, group := range catalog {
+		for _, endpoint := range group.Endpoints {
+			if endpoint.Example == "" || endpoint.Private {
+				continue
+			}
+			line.Reset()
+			open.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest(http.MethodGet, endpoint.Example, nil))
+			if strings.Contains(line.String(), "(redacted)") {
+				t.Errorf("%s keeps itself out of the log but is not Private in the catalog", endpoint.Path)
+			}
+		}
+	}
+
+	// An unmatched path is logged without its query.
+	logged.Reset()
+	send(http.MethodGet, "/v1/no-such-thing?token=SECRETQUERY")
+	if strings.Contains(logged.String(), "SECRETQUERY") || !strings.Contains(logged.String(), "/v1/no-such-thing") {
+		t.Errorf("unmatched request logged as %s", logged.String())
 	}
 }
 

@@ -42,7 +42,7 @@ func scanScheme(scan func(...any) error) (schemeView, error) {
 
 var isinInput = regexp.MustCompile(`^IN[A-Z0-9]{10}$`)
 
-const navNote = "NAV as published by AMFI for the date given. A scheme is active when AMFI published its NAV in the last 30 days."
+const navNote = "NAV as published by AMFI for the date given. A scheme is active when its NAV is no more than 30 days older than the newest NAV in AMFI's file (see meta.source.retrieved for when the file was fetched)."
 
 func (s *Server) handleScheme(w http.ResponseWriter, r *http.Request) {
 	set := s.need(w, r, "mutual-funds")
@@ -152,6 +152,10 @@ func (s *Server) handleSchemeSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		schemes = append(schemes, view)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	m := paging(total, limit, offset)
 	m.Source, m.Note = s.source("mutual-funds"), navNote
 	s.ok(w, r, schemes, m, "public, max-age=900")
@@ -182,6 +186,10 @@ func (s *Server) handleFundHouses(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		houses = append(houses, house)
+	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
 	}
 	total := len(houses)
 	s.ok(w, r, houses, meta{Total: &total, Source: s.source("mutual-funds")}, cacheAPI)

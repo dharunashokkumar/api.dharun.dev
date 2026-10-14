@@ -88,7 +88,7 @@ All of these run inside the existing server. "Memory" is what the API adds while
 
 | API | Endpoint | How | Status |
 |---|---|---|---|
-| Working days | `/v1/working-days/...` | Holidays already held, plus Sundays and second/fourth Saturdays for banks. "Is this a working day", "next working day", "add N working days", settlement date T+1. Needs NSE *clearing* holidays too (same NSE source, different list). Only answers for years with holiday data | Live |
+| Working days | `/v1/working-days/...` | Holidays already held, plus Sundays and second/fourth Saturdays for banks. "Is this a working day", "next working day", "add N working days", settlement date T+1. Needs NSE *clearing* holidays too (same NSE source, different list). Only answers for years with holiday data. Maharashtra, Uttar Pradesh, Jammu and Kashmir and Kerala have several RBI offices with their own lists: by default a day off at any of them counts and names those offices; `office=` gives one office's list | Live |
 | Market status | `/v1/market/status` | Trading holidays plus exchange hours. Special sessions (Muhurat, budget-day Saturdays) come from the notes in the NSE list | Live |
 | Pincodes nearby | `/v1/pincode/near?lat=&lng=` | Coordinates in the pincode file, spatial index in SQLite | Live |
 
@@ -118,7 +118,7 @@ All of these run inside the existing server. "Memory" is what the API adds while
 | Transliteration | `/v1/transliterate` | Rule-based: between nine Indian scripts, to ISO 15919, IAST and plain ASCII, and from ISO 15919 and IAST back to a script. This is not "type English, get Tamil" guessing; that needs a model and is round 3 | Live |
 | Fake Indian data | `/v1/fake/{kind}` | Generated: names, addresses with real pincode and city pairs, phone-shaped numbers, PAN and GSTIN that pass format checks. Seeded so results repeat. Every response marked as fake | Live |
 | Text chunking | `/v1/text/chunk` | Splits text or Markdown into overlap-aware chunks for retrieval | Live |
-| PII redaction | `/v1/text/redact` | Patterns with checksums: Aadhaar (Verhoeff), PAN, GSTIN, cards (Luhn), phone, email, UPI ID, IFSC, vehicle number, passport, voter ID. No name detection; that needs a model and is round 3. Private | Live |
+| PII redaction | `/v1/text/redact` | Patterns with checksums: Aadhaar (Verhoeff), PAN, GSTIN, cards (Luhn), phone, email, UPI ID, vehicle number, passport, voter ID, IP address. IFSC is not redacted: it names a bank branch, not a person. No name detection; that needs a model and is round 3. Private | Live |
 | Token count | `/v1/text/tokens` | OpenAI encodings (`o200k_base`, `cl100k_base`, `p50k_base`), counted by our own byte-pair merger over the published vocabularies (MIT), which holds 8 MB while in use against 22 MB for `tiktoken-go`; tests check it gives the same counts. Loaded on first use, dropped after half a day unused | Live. Claude and Llama tokenizers are not openly licensed for this, so not offered |
 | Language detection | `/v1/text/language` | Script detection plus `whatlanggo` (MIT) trigram model; about 80 languages, 12 Indian. Weak on short or Romanised text, and the response carries a confidence value | Live |
 | Social preview image | `/v1/og-image` | A 1200x630 card. Text is shaped here with `go-text/typesetting` (BSD) and Noto fonts (OFL 1.1, compiled into the server) for Latin and nine Indian scripts, and drawn as glyph outlines; `resvg` then only fills paths. Text and colours only, no remote images | Live. PNG needs `resvg` (in every release); SVG works anywhere |

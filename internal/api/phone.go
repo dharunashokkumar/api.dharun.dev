@@ -34,6 +34,10 @@ type phoneView struct {
 // nationalNumber strips what people put around an Indian number: spaces, dashes,
 // brackets, a leading +91, 91, 0 or 0091.
 func nationalNumber(raw string) string {
+	raw = strings.TrimSpace(raw)
+	if strings.LastIndex(raw, "+") > 0 {
+		return "x" // a plus anywhere but in front
+	}
 	digits := strings.Map(func(r rune) rune {
 		switch {
 		case r >= '0' && r <= '9':
@@ -42,7 +46,7 @@ func nationalNumber(raw string) string {
 			return -1
 		}
 		return 'x'
-	}, strings.TrimSpace(raw))
+	}, raw)
 	for _, prefix := range []string{"0091", "91", "0"} {
 		if len(digits) > 10 && strings.HasPrefix(digits, prefix) {
 			digits = strings.TrimPrefix(digits, prefix)
@@ -72,6 +76,8 @@ func (s *Server) handlePhone(w http.ResponseWriter, r *http.Request) {
 		}
 	case len(number) != 10:
 		view.Problem = "An Indian phone number has 10 digits after the country code."
+	case number[0] == '0':
+		view.Problem = "After the country code or the leading 0, an Indian number does not start with 0."
 	case number[0] >= '6' && number[0] <= '9':
 		view.Type, view.Valid = "mobile", true
 		view.E164 = "+91" + number

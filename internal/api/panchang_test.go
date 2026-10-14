@@ -38,7 +38,7 @@ func TestPanchang(t *testing.T) {
 	expectStatus(t, "/v1/panchang/today", http.StatusOK)
 	for _, bad := range []string{
 		"/v1/panchang/14-01-2026", "/v1/panchang/1800-01-01", "/v1/panchang/2026-01-14?tz=Mars/Base",
-		"/v1/panchang/2026-01-14?lat=80&lng=10", "/v1/panchang/2026-01-14?lat=13", "/v1/panchang/2026-01-14?pincode=12345",
+		"/v1/panchang/2026-01-14?lat=80&lng=10", "/v1/panchang/2026-01-14?lat=13", "/v1/panchang/2026-01-14?lat=NaN&lng=78", "/v1/panchang/2026-01-14?lat=13&lng=nan", "/v1/panchang/2026-01-14?pincode=12345",
 	} {
 		expectStatus(t, bad, http.StatusBadRequest)
 	}

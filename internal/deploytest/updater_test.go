@@ -29,10 +29,11 @@ type rig struct {
 	home      string // the install directory the updater manages
 	releases  *httptest.Server
 	service   *httptest.Server
+	restart   string // the restart command the updater runs
 }
 
 func newRig(t *testing.T) *rig {
-	r := &rig{t: t, published: t.TempDir(), home: t.TempDir()}
+	r := &rig{t: t, published: t.TempDir(), home: t.TempDir(), restart: "true"}
 	r.releases = httptest.NewServer(http.FileServer(http.Dir(r.published)))
 	t.Cleanup(r.releases.Close)
 
@@ -57,6 +58,16 @@ func newRig(t *testing.T) *rig {
 // publish lays out a release the way the release workflow does.
 func (r *rig) publish(version string, broken, corruptChecksum bool) {
 	r.t.Helper()
+	var markers []string
+	if broken {
+		markers = append(markers, "BROKEN")
+	}
+	r.publishWith(version, corruptChecksum, markers...)
+}
+
+// publishWith publishes a release holding empty marker files beside VERSION.
+func (r *rig) publishWith(version string, corruptChecksum bool, markers ...string) {
+	r.t.Helper()
 	var archive bytes.Buffer
 	zipped := gzip.NewWriter(&archive)
 	files := tar.NewWriter(zipped)
@@ -65,8 +76,8 @@ func (r *rig) publish(version string, broken, corruptChecksum bool) {
 		files.Write([]byte(content))
 	}
 	add("VERSION", version+"\n")
-	if broken {
-		add("BROKEN", "")
+	for _, marker := range markers {
+		add(marker, "")
 	}
 	files.Close()
 	zipped.Close()
@@ -94,7 +105,7 @@ func (r *rig) update() (int, string) {
 		"API_RELEASE_URL=" + r.releases.URL,
 		"API_HOME=" + r.home,
 		"API_HEALTH_URL=" + r.service.URL + "/healthz",
-		"API_RESTART_CMD=true",
+		"API_RESTART_CMD=" + r.restart,
 		"API_HEALTH_TRIES=2",
 	}
 	output, err := command.CombinedOutput()
@@ -150,6 +161,17 @@ func TestUpdater(t *testing.T) {
 		t.Error("the failed release should be remembered")
 	}
 	expect("failed release is not retried", 0, "1.1.0", "skipping 1.2.0")
+
+	// A restart that fails is a failed deploy too: rolled back and remembered, not left
+	// running the new release for the next run to mistake for a finished deploy.
+	r.restart = "test ! -e " + filepath.Join(r.home, "current", "NORESTART")
+	r.publishWith("1.2.5", false, "NORESTART")
+	expect("restart fails", 1, "1.1.0", "rolled back to 1.1.0")
+	if _, err := os.Stat(filepath.Join(r.home, "failed", "1.2.5")); err != nil {
+		t.Error("a release whose restart failed should be remembered")
+	}
+	expect("restart failure is not retried", 0, "1.1.0", "skipping 1.2.5")
+	r.restart = "true"
 
 	r.publish("1.3.0", false, true)
 	if code, _ := r.update(); code == 0 {

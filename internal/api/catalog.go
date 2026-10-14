@@ -51,6 +51,20 @@ type endpoint struct {
 	Reference bool
 }
 
+// privatePaths holds the paths of the endpoints marked Private. handle reads it when a
+// route is registered, so the catalog decides what is kept out of the log.
+var privatePaths = func() map[string]bool {
+	paths := map[string]bool{}
+	for _, group := range catalog {
+		for _, endpoint := range group.Endpoints {
+			if endpoint.Private {
+				paths[endpoint.Path] = true
+			}
+		}
+	}
+	return paths
+}()
+
 type apiGroup struct {
 	ID        string
 	Title     string
@@ -247,6 +261,7 @@ var catalog = []apiGroup{
 					{Name: "date", In: "path", Type: "string", Required: true, Doc: "Date, YYYY-MM-DD."},
 					calendarParamDoc,
 					{Name: "state", In: "query", Type: "string", Doc: "State code or name. Required for the bank calendar."},
+					{Name: "office", In: "query", Type: "string", Doc: "Bank calendar only. One Reserve Bank office's list, such as Srinagar or Kochi, for a state with several offices (Maharashtra, Uttar Pradesh, Jammu and Kashmir, Kerala). Without it, a day off at any of the state's offices counts."},
 					{Name: "add", In: "query", Type: "integer", Doc: "Working days to add, -366 to 366."},
 				},
 			},
@@ -259,6 +274,7 @@ var catalog = []apiGroup{
 					{Name: "to", In: "query", Type: "string", Required: true, Doc: "Last date, YYYY-MM-DD."},
 					calendarParamDoc,
 					{Name: "state", In: "query", Type: "string", Doc: "State code or name. Required for the bank calendar."},
+					{Name: "office", In: "query", Type: "string", Doc: "Bank calendar only. One Reserve Bank office's list, such as Srinagar or Kochi, for a state with several offices (Maharashtra, Uttar Pradesh, Jammu and Kashmir, Kerala). Without it, a day off at any of the state's offices counts."},
 				},
 			},
 			{
@@ -735,7 +751,7 @@ var catalog = []apiGroup{
 		Intro:   "Structural checks only: character pattern, state code and, for GSTIN, the check character. Nothing is looked up with a government system, and these values are never written to the request log.",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/validate/{kind}/{value}", Summary: "Check an identifier's format",
+				Path: "/v1/validate/{kind}/{value}", Summary: "Check an identifier's format", Private: true,
 				Example: "/v1/validate/gstin/27AAPFU0939F1ZV",
 				Params: []param{
 					{Name: "kind", In: "path", Type: "string", Required: true, Enum: []string{"gstin", "pan", "ifsc"}, Doc: "Which identifier."},

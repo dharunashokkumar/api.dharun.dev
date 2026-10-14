@@ -156,15 +156,35 @@ func (s *Server) mailServers(ctx context.Context, domain string) (*mailServerVie
 		view.Hosts = append(view.Hosts, record.host)
 	}
 	if len(view.Hosts) == 0 && !view.NullMX && reply.Rcode == dns.RcodeSuccess {
-		// No MX record: mail goes to the domain's own address, if it has one.
+		// No MX record: mail goes to the domain's own address, if it has one. A name that
+		// only points elsewhere (a CNAME with no address behind it) has none.
+		uncertain := false
 		for _, kind := range []uint16{dns.TypeA, dns.TypeAAAA} {
-			if address, ok := s.firstAnswer(ctx, domain, kind); ok && len(address.Answer) > 0 {
+			address, ok := s.firstAnswer(ctx, domain, kind)
+			if !ok {
+				uncertain = true
+				continue
+			}
+			if hasAddress(address.Answer) {
 				view.Hosts, view.Implicit = []string{domain}, true
 				break
 			}
 		}
+		if len(view.Hosts) == 0 && uncertain {
+			return nil, false
+		}
 	}
 	return view, true
+}
+
+func hasAddress(records []dns.RR) bool {
+	for _, record := range records {
+		switch record.(type) {
+		case *dns.A, *dns.AAAA:
+			return true
+		}
+	}
+	return false
 }
 
 // firstAnswer asks the public resolvers in turn until one answers.

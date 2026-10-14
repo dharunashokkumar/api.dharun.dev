@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -50,6 +51,38 @@ func TestWorkingDayBank(t *testing.T) {
 	expectStatus(t, "/v1/working-days/2026-02-30?state=TN", http.StatusBadRequest)      // no such day
 	expectStatus(t, "/v1/working-days/2026-01-16?calendar=school&state=TN", http.StatusBadRequest)
 	expectStatus(t, "/v1/working-days/2026-01-16?state=TN&add=400", http.StatusBadRequest)
+}
+
+// Jammu and Kashmir has two Reserve Bank offices. On 2026-03-04 only Jammu is closed;
+// on 2026-03-13 both are, and the holiday is listed once.
+func TestWorkingDayBankOffices(t *testing.T) {
+	merged := expectStatus(t, "/v1/working-days/2026-03-04?state=JK", http.StatusOK)
+	day := merged.data(t)
+	if day["working"] != false || !strings.Contains(fmt.Sprint(day["reasons"]), "(Jammu office only)") {
+		t.Errorf("merged state answer: %v", day)
+	}
+	if note := merged.json(t)["meta"].(map[string]any)["note"].(string); !strings.Contains(note, "Jammu and Srinagar") {
+		t.Errorf("the note should name the offices: %s", note)
+	}
+	srinagar := expectStatus(t, "/v1/working-days/2026-03-04?state=JK&office=Srinagar", http.StatusOK).data(t)
+	if srinagar["working"] != true || srinagar["office"] != "Srinagar" {
+		t.Errorf("Srinagar on 2026-03-04: %v", srinagar)
+	}
+	jammu := expectStatus(t, "/v1/working-days/2026-03-04?state=JK&office=rbi%20jammu", http.StatusOK).data(t)
+	if jammu["working"] != false || jammu["office"] != "Jammu" || strings.Contains(fmt.Sprint(jammu["reasons"]), "office only") {
+		t.Errorf("Jammu on 2026-03-04: %v", jammu)
+	}
+	both := expectStatus(t, "/v1/working-days/2026-03-13?state=JK", http.StatusOK).data(t)
+	if reasons := both["reasons"].([]any); len(reasons) != 1 || strings.Contains(fmt.Sprint(reasons), "office") {
+		t.Errorf("a holiday both offices keep: %v", reasons)
+	}
+	span := expectStatus(t, "/v1/working-days?from=2026-03-02&to=2026-03-06&state=JK&office=Srinagar", http.StatusOK).data(t)
+	if span["workingDays"] != float64(5) || span["office"] != "Srinagar" {
+		t.Errorf("Srinagar's week: %v", span)
+	}
+
+	expectStatus(t, "/v1/working-days/2026-03-04?state=JK&office=Kochi", http.StatusBadRequest)
+	expectStatus(t, "/v1/working-days/2026-03-04?calendar=market&office=Jammu", http.StatusBadRequest)
 }
 
 func TestWorkingDayMarketAndSettlement(t *testing.T) {

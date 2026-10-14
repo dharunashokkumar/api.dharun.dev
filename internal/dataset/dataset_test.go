@@ -1,6 +1,7 @@
 package dataset
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -115,6 +116,35 @@ func TestBuildSeedsStrictness(t *testing.T) {
 	}
 	if _, _, err := BuildSeeds(SeedOptions{DataDir: empty, OutDir: out, Only: []string{"nonsense"}}); err == nil {
 		t.Error("an unknown dataset name should be an error")
+	}
+}
+
+// Every dataset the repository ships credits its source: a release build fails without.
+func TestEverySeedDatasetHasASource(t *testing.T) {
+	sources, err := ReadSources(filepath.Join("..", "..", "data"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, spec := range Specs() {
+		if _, ok := sources[spec.Name]; !ok && !spec.NoSeed {
+			t.Errorf("%s has no entry in data/sources.json", spec.Name)
+		}
+	}
+
+	// A strict build stops on a missing entry; a lenient one reports it.
+	data := t.TempDir()
+	os.MkdirAll(filepath.Join(data, "rto"), 0o755)
+	raw, _ := os.ReadFile(filepath.Join(fixtureData, "rto", "rto.json"))
+	os.WriteFile(filepath.Join(data, "rto", "rto.json"), raw, 0o644)
+	os.WriteFile(filepath.Join(data, sourcesFile), []byte("{}"), 0o644)
+	if _, _, err := BuildSeeds(SeedOptions{DataDir: data, OutDir: t.TempDir(), Strict: true, Only: []string{"rto"}}); err == nil || !strings.Contains(err.Error(), "source credit") {
+		t.Errorf("a strict build without a source entry: %v", err)
+	}
+	var logged []string
+	_, warnings, err := BuildSeeds(SeedOptions{DataDir: data, OutDir: t.TempDir(), Only: []string{"rto"},
+		Log: func(format string, args ...any) { logged = append(logged, fmt.Sprintf(format, args...)) }})
+	if err != nil || len(warnings) != 1 || !strings.Contains(strings.Join(logged, " "), "no entry in sources.json") {
+		t.Errorf("a lenient build without a source entry: %v, warnings %v, logged %v", err, warnings, logged)
 	}
 }
 
@@ -515,6 +545,71 @@ func TestRefreshOfAnUnchangedSource(t *testing.T) {
 	now = now.Add(time.Hour)
 	if result := run(); result.Outcome != "fresh" || source.calls != calls {
 		t.Errorf("checked an hour ago, so not due: %s, %d calls", result.Outcome, source.calls-calls)
+	}
+}
+
+// A newer seed beside a server copy that still fits is not a reason to ask the source
+// every hour: the seed's own date says when the dataset is due.
+func TestRefreshWithANewerSeedWaitsForItsInterval(t *testing.T) {
+	spec := mustSpec(t, "rto")
+	seed, live := t.TempDir(), t.TempDir()
+	now := time.Date(2026, 10, 13, 6, 0, 0, 0, time.UTC)
+	buildRTOCopy(t, filepath.Join(live, LiveName("rto", now.Add(-20*24*time.Hour))), now.Add(-20*24*time.Hour).Format(time.RFC3339), spec.Schema)
+	buildRTOCopy(t, SeedPath(seed, "rto"), "2026-10-12", spec.Schema)
+	source := &fakeRTOSource{}
+	source.install(t)
+	for hour := 0; hour < 3; hour++ {
+		results, err := Refresh(RefreshOptions{SeedDir: seed, LiveDir: live, Only: []string{"rto"}, Now: now.Add(time.Duration(hour) * time.Hour)})
+		if err != nil || results[0].Outcome != "fresh" {
+			t.Fatalf("hour %d: %v %+v", hour, err, results)
+		}
+	}
+	if source.calls != 0 {
+		t.Errorf("the source was asked %d times for a dataset that is not due", source.calls)
+	}
+}
+
+// A refreshed copy is checked before the API can see it: while the check runs, and after
+// it rejects the copy, the live directory holds only the copy in use.
+func TestRefreshChecksBeforePublishing(t *testing.T) {
+	spec := mustSpec(t, "rto")
+	seed, live := t.TempDir(), t.TempDir()
+	now := time.Date(2026, 10, 13, 6, 0, 0, 0, time.UTC)
+	old := now.Add(-40 * 24 * time.Hour)
+	buildRTOCopy(t, filepath.Join(live, LiveName("rto", old)), old.Format(time.RFC3339), spec.Schema)
+	source := &fakeRTOSource{}
+	source.install(t)
+	original := spec.Check
+	t.Cleanup(func() { spec.Check = original })
+
+	var visible []string
+	verdict := errors.New("looks wrong")
+	spec.Check = func(current, fresh *sql.DB) error {
+		visible = LiveFiles(live, "rto")
+		return verdict
+	}
+	results, err := Refresh(RefreshOptions{SeedDir: seed, LiveDir: live, Only: []string{"rto"}, Now: now})
+	if err != nil || results[0].Outcome != "held" {
+		t.Fatalf("a rejected copy should be held: %v %+v", err, results)
+	}
+	if len(visible) != 1 {
+		t.Errorf("during the check the live directory showed %v", visible)
+	}
+	entries, _ := os.ReadDir(live)
+	for _, entry := range entries {
+		if entry.Name() != filepath.Base(LiveName("rto", old)) && entry.Name() != StatusFile {
+			t.Errorf("a held refresh left %s behind", entry.Name())
+		}
+	}
+
+	verdict = nil
+	now = now.Add(retryAfter + time.Hour)
+	results, err = Refresh(RefreshOptions{SeedDir: seed, LiveDir: live, Only: []string{"rto"}, Now: now})
+	if err != nil || results[0].Outcome != "updated" {
+		t.Fatalf("an accepted copy should be published: %v %+v", err, results)
+	}
+	if copies := LiveFiles(live, "rto"); len(visible) != 1 || len(copies) != 2 {
+		t.Errorf("checked with %v visible, published %v", visible, copies)
 	}
 }
 

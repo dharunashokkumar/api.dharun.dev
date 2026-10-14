@@ -2,6 +2,7 @@ package textkit
 
 import (
 	"bytes"
+	"container/heap"
 	"encoding/base64"
 	"errors"
 	"fmt"
@@ -10,7 +11,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"unicode/utf8"
 
 	"github.com/dlclark/regexp2"
 	"github.com/pkoukk/tiktoken-go-loader/assets"
@@ -183,9 +183,9 @@ func (t *Tokenizer) Count(encoding Encoding, text string) (int, error) {
 	return count, nil
 }
 
-// longPiece is where exact merging stops: merging is quadratic in the length of a piece,
-// and only machine-made text has a single "word" this long. Longer pieces are counted in
-// parts, which can differ from the exact count by a token per part.
+// longPiece is the length from which a piece is merged through a heap. The plain merge
+// is quadratic in the length of a piece, and only machine-made text (a base64 blob, a
+// minified line) has a single "word" this long; both give the same tokens.
 const longPiece = 4096
 
 func (v *vocabulary) pieceTokens(piece []byte) int {
@@ -193,16 +193,7 @@ func (v *vocabulary) pieceTokens(piece []byte) int {
 		return 1
 	}
 	if len(piece) > longPiece {
-		count := 0
-		for len(piece) > longPiece {
-			cut := longPiece
-			for cut > 0 && !utf8.RuneStart(piece[cut]) {
-				cut--
-			}
-			count += v.pieceTokens(piece[:cut])
-			piece = piece[cut:]
-		}
-		return count + v.pieceTokens(piece)
+		return v.mergeLong(piece)
 	}
 	return v.merge(piece)
 }
@@ -252,4 +243,69 @@ func (v *vocabulary) merge(piece []byte) int {
 		parts = append(parts[:at+1], parts[at+2:]...)
 	}
 	return len(parts) - 1
+}
+
+// mergeLong is the same merge in O(n log n). Every adjacent pair that has a rank waits
+// in a heap ordered by rank and then position, so the pair taken is the one the plain
+// loop takes: the lowest rank, the leftmost first. A merge makes the entries for the
+// pairs it touched stale; they are skipped when they come up.
+func (v *vocabulary) mergeLong(piece []byte) int {
+	n := len(piece)
+	// The parts alive form a list by start offset: next[i] is where the part at i ends,
+	// prev[i] where the part before it starts.
+	next, prev, alive := make([]int, n), make([]int, n), make([]bool, n)
+	for i := range n {
+		next[i], prev[i], alive[i] = i+1, i-1, true
+	}
+	pairs := &pairHeap{}
+	push := func(i int) {
+		if i < 0 || next[i] >= n {
+			return
+		}
+		end := next[next[i]]
+		if rank, ok := v.ranks[string(piece[i:end])]; ok {
+			heap.Push(pairs, pair{rank, i, end})
+		}
+	}
+	for i := 0; i < n-1; i++ {
+		push(i)
+	}
+	count := n
+	for pairs.Len() > 0 {
+		p := heap.Pop(pairs).(pair)
+		i := p.start
+		if !alive[i] || next[i] >= n || next[next[i]] != p.end {
+			continue // a merge since this entry was made changed one of its parts
+		}
+		joined := next[i]
+		alive[joined] = false
+		next[i] = next[joined]
+		if next[i] < n {
+			prev[next[i]] = i
+		}
+		count--
+		push(prev[i])
+		push(i)
+	}
+	return count
+}
+
+type pair struct {
+	rank       uint32
+	start, end int
+}
+
+type pairHeap []pair
+
+func (h pairHeap) Len() int { return len(h) }
+func (h pairHeap) Less(a, b int) bool {
+	return h[a].rank < h[b].rank || (h[a].rank == h[b].rank && h[a].start < h[b].start)
+}
+func (h pairHeap) Swap(a, b int) { h[a], h[b] = h[b], h[a] }
+func (h *pairHeap) Push(x any)   { *h = append(*h, x.(pair)) }
+func (h *pairHeap) Pop() any {
+	old := *h
+	last := old[len(old)-1]
+	*h = old[:len(old)-1]
+	return last
 }

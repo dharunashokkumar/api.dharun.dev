@@ -1,6 +1,8 @@
 package api
 
 import (
+	"database/sql"
+	"errors"
 	"math/rand/v2"
 	"net/http"
 	"strconv"
@@ -22,8 +24,14 @@ func (s *Server) fakePlace(set *handle, counts map[string]int) func(string, func
 			if total == 0 {
 				return place, false
 			}
-			err = set.row(`SELECT pincode, office, COALESCE(district, ''), COALESCE(state_code, ''), COALESCE(state, '') FROM pincodes
-				WHERE rowid >= ? AND state_code IS NOT NULL LIMIT 1`, 1+pick(total)).Scan(&place.Pincode, &place.PostOffice, &place.District, &place.StateCode, &place.State)
+			// The first row with a state at or after a random row number; past the last
+			// one, start again from the top.
+			const anyOffice = `SELECT pincode, office, COALESCE(district, ''), COALESCE(state_code, ''), COALESCE(state, '') FROM pincodes
+				WHERE rowid >= ? AND state_code IS NOT NULL ORDER BY rowid LIMIT 1`
+			err = set.row(anyOffice, 1+pick(total)).Scan(&place.Pincode, &place.PostOffice, &place.District, &place.StateCode, &place.State)
+			if errors.Is(err, sql.ErrNoRows) {
+				err = set.row(anyOffice, 1).Scan(&place.Pincode, &place.PostOffice, &place.District, &place.StateCode, &place.State)
+			}
 		} else {
 			total, known := counts[stateCode]
 			if !known {
@@ -82,6 +90,9 @@ func (s *Server) handleFake(w http.ResponseWriter, r *http.Request) {
 					generator.PhoneSeries = append(generator.PhoneSeries, series)
 				}
 			}
+			if rows.Err() != nil {
+				generator.PhoneSeries = nil // a partial list would skew the numbers made
+			}
 			rows.Close()
 		}
 	}
@@ -96,7 +107,14 @@ func (s *Server) handleFake(w http.ResponseWriter, r *http.Request) {
 		case "addresses":
 			address := generator.Address()
 			if address == nil {
-				s.need(w, r, "pincode")
+				switch {
+				case s.data("pincode") == nil:
+					s.need(w, r, "pincode")
+				case stateCode != "":
+					s.notFound(w, r, "No post offices are listed for "+stateCode+", so no addresses can be made there.")
+				default:
+					s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+				}
 				return
 			}
 			records = append(records, address)

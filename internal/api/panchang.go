@@ -50,7 +50,8 @@ func (s *Server) panchangPlace(w http.ResponseWriter, r *http.Request) (panchang
 	case query.Get("lat") != "" || query.Get("lng") != "":
 		lat, errLat := strconv.ParseFloat(strings.TrimSpace(query.Get("lat")), 64)
 		lng, errLng := strconv.ParseFloat(strings.TrimSpace(query.Get("lng")), 64)
-		if errLat != nil || errLng != nil || lat < -66 || lat > 66 || lng < -180 || lng > 180 {
+		// Written as "inside" rather than "outside" so that NaN, which compares false, fails.
+		if errLat != nil || errLng != nil || !(lat >= -66 && lat <= 66 && lng >= -180 && lng <= 180) {
 			s.badRequest(w, r, "Give lat (between -66 and 66, where the sun rises and sets every day) and lng in decimal degrees.")
 			return panchang.Place{}, panchangPlace{}, false
 		}

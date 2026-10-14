@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"sort"
 	"strings"
 	"time"
 )
@@ -64,8 +65,25 @@ func workCalendarIDs() []string {
 type workBook struct {
 	calendar workCalendar
 	state    string
-	holidays map[string][]string // date -> names
-	years    map[int]bool        // years the list covers
+	office   string // one Reserve Bank office's list, or "" for every office in the state
+	offices  []string
+	holidays map[string][]dayHoliday // date -> holidays, each name once
+	years    map[int]bool            // years the list covers
+}
+
+// dayHoliday is one holiday on a date, with the Reserve Bank offices that list it.
+type dayHoliday struct {
+	name    string
+	offices []string
+}
+
+// rbiOffice turns a holiday's region ("RBI Jammu") into the office name ("Jammu").
+func rbiOffice(region string) string {
+	region = strings.TrimSpace(region)
+	if len(region) > 4 && strings.EqualFold(region[:4], "RBI ") {
+		region = region[4:]
+	}
+	return strings.TrimSpace(region)
 }
 
 const isoDay = "2006-01-02"
@@ -95,22 +113,28 @@ func (s *Server) openWorkBook(w http.ResponseWriter, r *http.Request, id string,
 	if !calendar.needState {
 		state = ""
 	}
+	office := rbiOffice(r.URL.Query().Get("office"))
+	if office != "" && !calendar.needState {
+		s.badRequest(w, r, "office is only for the bank calendar.")
+		return nil
+	}
 	set := s.need(w, r, calendar.dataset)
 	if set == nil {
 		return nil
 	}
 
-	book := &workBook{calendar: *calendar, state: state, holidays: map[string][]string{}, years: map[int]bool{}}
-	rows, err := set.rows(`SELECT year, date, name, states FROM holidays WHERE type = ? AND year BETWEEN ? AND ?`, calendar.kind, from, to)
+	book := &workBook{calendar: *calendar, state: state, holidays: map[string][]dayHoliday{}, years: map[int]bool{}}
+	rows, err := set.rows(`SELECT year, date, name, states, region FROM holidays WHERE type = ? AND year BETWEEN ? AND ?`, calendar.kind, from, to)
 	if err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return nil
 	}
 	defer rows.Close()
+	seen := map[string]bool{}
 	for rows.Next() {
 		var year int
-		var date, name, states string
-		if err := rows.Scan(&year, &date, &name, &states); err != nil {
+		var date, name, states, region string
+		if err := rows.Scan(&year, &date, &name, &states, &region); err != nil {
 			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 			return nil
 		}
@@ -119,15 +143,58 @@ func (s *Server) openWorkBook(w http.ResponseWriter, r *http.Request, id string,
 		if state != "" && states != ",*," && !strings.Contains(states, ","+state+",") {
 			continue
 		}
+		listedBy := ""
+		if calendar.needState {
+			listedBy = rbiOffice(region)
+			if !seen[listedBy] {
+				seen[listedBy] = true
+				book.offices = append(book.offices, listedBy)
+			}
+			if office != "" && !strings.EqualFold(listedBy, office) {
+				continue
+			}
+		}
 		book.years[year] = true
-		book.holidays[date] = append(book.holidays[date], name)
+		book.add(date, name, listedBy)
 	}
 	if err := rows.Err(); err != nil {
 		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
 		return nil
 	}
+	sort.Strings(book.offices)
+	if office != "" {
+		for _, known := range book.offices {
+			if strings.EqualFold(known, office) {
+				book.office = known
+			}
+		}
+		if book.office == "" {
+			s.badRequest(w, r, fmt.Sprintf("%s has no Reserve Bank office called %s. Offices: %s.", state, office, joinWords(book.offices)))
+			return nil
+		}
+	}
 	return book
 }
+
+// add records a holiday on a date once, however many offices list it.
+func (b *workBook) add(date, name, office string) {
+	for i := range b.holidays[date] {
+		if held := &b.holidays[date][i]; held.name == name {
+			if office != "" {
+				held.offices = append(held.offices, office)
+			}
+			return
+		}
+	}
+	entry := dayHoliday{name: name}
+	if office != "" {
+		entry.offices = []string{office}
+	}
+	b.holidays[date] = append(b.holidays[date], entry)
+}
+
+// splitState reports whether the book merges several Reserve Bank offices' lists.
+func (b *workBook) splitState() bool { return b.office == "" && len(b.offices) > 1 }
 
 // covers reports whether the book can answer for a date's year.
 func (b *workBook) covers(day time.Time) bool { return b.years[day.Year()] }
@@ -140,13 +207,27 @@ func (b *workBook) uncovered(day time.Time) string {
 	return fmt.Sprintf("No holiday list for %s in %d, so working days cannot be worked out for that year.", scope, day.Year())
 }
 
-// reasons says why a day is not a working day; nil means it is one.
+// reasons says why a day is not a working day; nil means it is one. Where a state has
+// several Reserve Bank offices, a holiday only some of them keep names those offices.
 func (b *workBook) reasons(day time.Time) []string {
 	var why []string
 	if rule := b.calendar.offDay(day); rule != "" {
 		why = append(why, rule)
 	}
-	return append(why, b.holidays[day.Format(isoDay)]...)
+	for _, holiday := range b.holidays[day.Format(isoDay)] {
+		name := holiday.name
+		if b.splitState() && len(holiday.offices) < len(b.offices) {
+			offices := append([]string{}, holiday.offices...)
+			sort.Strings(offices)
+			plural := " office only)"
+			if len(offices) > 1 {
+				plural = " offices only)"
+			}
+			name += " (" + joinWords(offices) + plural
+		}
+		why = append(why, name)
+	}
+	return why
 }
 
 // step moves from a day by n working days (n may be negative). It fails when the walk
@@ -173,6 +254,7 @@ type workDayView struct {
 	Weekday  string   `json:"weekday"`
 	Calendar string   `json:"calendar"`
 	State    string   `json:"state,omitempty"`
+	Office   string   `json:"office,omitempty"`
 	Working  bool     `json:"working"`
 	Reasons  []string `json:"reasons"`
 	Previous string   `json:"previousWorkingDay"`
@@ -222,7 +304,7 @@ func (s *Server) handleWorkingDay(w http.ResponseWriter, r *http.Request) {
 	reasons := book.reasons(day)
 	view := workDayView{
 		Date: day.Format(isoDay), Weekday: day.Weekday().String(), Calendar: book.calendar.ID, State: book.state,
-		Working: len(reasons) == 0, Reasons: append([]string{}, reasons...),
+		Office: book.office, Working: len(reasons) == 0, Reasons: append([]string{}, reasons...),
 	}
 	if previous, ok := book.step(day, -1); ok {
 		view.Previous = previous.Format(isoDay)
@@ -238,7 +320,19 @@ func (s *Server) handleWorkingDay(w http.ResponseWriter, r *http.Request) {
 		}
 		view.Add, view.Shifted = &add, shifted.Format(isoDay)
 	}
-	s.ok(w, r, view, meta{Source: s.source(book.calendar.dataset), Note: workDayNote(book.calendar.ID)}, cacheAPI)
+	s.ok(w, r, view, meta{Source: s.source(book.calendar.dataset), Note: book.note()}, cacheAPI)
+}
+
+func (b *workBook) note() string {
+	switch {
+	case b.office != "":
+		return "Sundays, the second and fourth Saturdays, and the holidays of the Reserve Bank's " + b.office + " office."
+	case b.splitState():
+		return fmt.Sprintf("Sundays, the second and fourth Saturdays, and the Reserve Bank's holidays for %s. The state has %d Reserve Bank offices (%s) with their own lists: "+
+			"a day off at only some of them counts as a day off here and names those offices. Add office= for one office's list.",
+			b.state, len(b.offices), joinWords(b.offices))
+	}
+	return workDayNote(b.calendar.ID)
 }
 
 func workDayNote(calendar string) string {
@@ -258,6 +352,7 @@ type workRangeView struct {
 	To          string           `json:"to"`
 	Calendar    string           `json:"calendar"`
 	State       string           `json:"state,omitempty"`
+	Office      string           `json:"office,omitempty"`
 	Days        int              `json:"days"`
 	WorkingDays int              `json:"workingDays"`
 	DaysOff     []workDayOffView `json:"daysOff"`
@@ -297,7 +392,7 @@ func (s *Server) workingDaysBetween(w http.ResponseWriter, r *http.Request, from
 	if book == nil {
 		return
 	}
-	view := workRangeView{From: from.Format(isoDay), To: to.Format(isoDay), Calendar: book.calendar.ID, State: book.state, DaysOff: []workDayOffView{}}
+	view := workRangeView{From: from.Format(isoDay), To: to.Format(isoDay), Calendar: book.calendar.ID, State: book.state, Office: book.office, DaysOff: []workDayOffView{}}
 	for day := from; !day.After(to); day = day.AddDate(0, 0, 1) {
 		if !book.covers(day) {
 			s.notFound(w, r, book.uncovered(day))
@@ -310,7 +405,7 @@ func (s *Server) workingDaysBetween(w http.ResponseWriter, r *http.Request, from
 			view.WorkingDays++
 		}
 	}
-	s.ok(w, r, view, meta{Source: s.source(book.calendar.dataset), Note: workDayNote(book.calendar.ID)}, cacheAPI)
+	s.ok(w, r, view, meta{Source: s.source(book.calendar.dataset), Note: book.note()}, cacheAPI)
 }
 
 // ---- market status ----
@@ -417,6 +512,7 @@ func (s *Server) marketDayNotes(day time.Time) string {
 
 func init() {
 	calendarArg := oneOf("bank (needs state), market (NSE trading), settlement (NSE clearing) or central (central government offices).", workCalendarIDs()...)
+	officeArg := text("Bank calendar only: one Reserve Bank office's list, such as Srinagar, for a state with several offices (Maharashtra, Uttar Pradesh, Jammu and Kashmir, Kerala).")
 	mcpTools = append(mcpTools,
 		mcpTool{
 			Name:        "check_working_day",
@@ -425,11 +521,12 @@ func init() {
 				"date":     text("Date, YYYY-MM-DD."),
 				"calendar": calendarArg,
 				"state":    stateArg,
+				"office":   officeArg,
 				"add":      map[string]any{"type": "integer", "minimum": -366, "maximum": 366, "description": "Working days to add."},
 			}),
 			path: func(args map[string]any) (string, error) {
 				date, err := required(args, "date")
-				return "/v1/working-days/" + url.PathEscape(date) + query(args, map[string]string{"calendar": "calendar", "state": "state", "add": "add"}), err
+				return "/v1/working-days/" + url.PathEscape(date) + query(args, map[string]string{"calendar": "calendar", "state": "state", "office": "office", "add": "add"}), err
 			},
 		},
 		mcpTool{
@@ -437,14 +534,14 @@ func init() {
 			Description: "Count Indian working days between two dates (both included) for a calendar, and list each day off with its reason.",
 			InputSchema: schema([]string{"from", "to"}, map[string]any{
 				"from": text("First date, YYYY-MM-DD."), "to": text("Last date, YYYY-MM-DD."),
-				"calendar": calendarArg, "state": stateArg,
+				"calendar": calendarArg, "state": stateArg, "office": officeArg,
 			}),
 			path: func(args map[string]any) (string, error) {
 				if _, err := required(args, "from"); err != nil {
 					return "", err
 				}
 				_, err := required(args, "to")
-				return "/v1/working-days" + query(args, map[string]string{"from": "from", "to": "to", "calendar": "calendar", "state": "state"}), err
+				return "/v1/working-days" + query(args, map[string]string{"from": "from", "to": "to", "calendar": "calendar", "state": "state", "office": "office"}), err
 			},
 		},
 		mcpTool{

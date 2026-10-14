@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"net/http"
@@ -63,9 +64,11 @@ type Server struct {
 	png       *pngCache
 	mux       *http.ServeMux
 	routes    map[string]bool
-	documents sync.Map // rendered docs, keyed by name and origin
+	private   map[string]bool // route patterns whose input may be personal
+	documents sync.Map        // rendered docs, keyed by name and origin
 	heavy     chan struct{}
 	extras    extras
+	logOut    io.Writer // where request log lines go; standard output when nil
 }
 
 // New opens the datasets and prepares a server.
@@ -86,12 +89,13 @@ func New(cfg Config) (*Server, error) {
 		png:     newPNGCache(cfg.PNGCacheBytes),
 		mux:     http.NewServeMux(),
 		routes:  map[string]bool{},
+		private: map[string]bool{},
 		heavy:   make(chan struct{}, cfg.HeavyConcurrency),
 	}
 	s.extras.start(cfg)
 	s.store.changed = s.datasetChanged
 	for _, name := range s.store.reload() {
-		s.datasetChanged(name)
+		s.store.notify(name)
 	}
 	if s.companies.Load() == nil {
 		s.companies.Store(newCompanyIndex())
@@ -105,20 +109,29 @@ func New(cfg Config) (*Server, error) {
 }
 
 // datasetChanged rebuilds whatever is derived from a dataset that was just swapped.
-func (s *Server) datasetChanged(name string) {
+func (s *Server) datasetChanged(name string) error {
+	var err error
 	if name == "ip" {
-		s.openIP()
+		err = s.openIP()
 	}
 	if name == "logos" {
-		if index, err := loadCompanies(s.store.get("logos")); err == nil {
+		var index *companyIndex
+		if index, err = loadCompanies(s.store.get("logos")); err == nil {
 			s.companies.Store(index)
 		} else {
-			fmt.Fprintf(os.Stderr, `{"msg":"error","error":"loading companies: %s"}`+"\n", err)
+			logError("loading companies", err)
 		}
 	}
 	// Rendered pages quote record counts and source versions.
 	s.documents.Clear()
 	s.extras.datasetChanged(name)
+	return err
+}
+
+// logError writes an error as one JSON line on standard error.
+func logError(what string, err error) {
+	encoded, _ := json.Marshal(map[string]string{"msg": "error", "error": what + ": " + err.Error()})
+	fmt.Fprintln(os.Stderr, string(encoded))
 }
 
 // data returns the copy in use of a dataset, or nil.
@@ -232,6 +245,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodOptions:
 		details.route = "preflight"
+		details.private = s.privatePath(r)
 		header.Set("Access-Control-Allow-Methods", "GET, HEAD, POST, OPTIONS")
 		header.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Mcp-Session-Id, Mcp-Protocol-Version")
 		header.Set("Access-Control-Max-Age", "86400")
@@ -239,8 +253,22 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet, http.MethodHead, http.MethodPost:
 		s.mux.ServeHTTP(writer, r)
 	default:
+		details.private = s.privatePath(r)
 		s.fail(writer, r, http.StatusMethodNotAllowed, "method_not_allowed", "Use GET, or POST where the documentation says so.")
 	}
+}
+
+// privatePath reports whether a request's path belongs to a private route under GET or
+// POST, for requests that reach no handler (preflight, other methods, wrong method).
+func (s *Server) privatePath(r *http.Request) bool {
+	for _, method := range []string{http.MethodGet, http.MethodPost} {
+		probe := r.Clone(r.Context())
+		probe.Method = method
+		if _, pattern := s.mux.Handler(probe); s.private[pattern] {
+			return true
+		}
+	}
+	return false
 }
 
 // handleUnmatched answers a request no route took: 405 when the path exists under the
@@ -253,6 +281,7 @@ func (s *Server) handleUnmatched(w http.ResponseWriter, r *http.Request) {
 	probe := r.Clone(r.Context())
 	probe.Method = other
 	if _, pattern := s.mux.Handler(probe); pattern != "/" && pattern != "" {
+		info(r).private = s.private[pattern]
 		w.Header().Set("Allow", other)
 		s.fail(w, r, http.StatusMethodNotAllowed, "method_not_allowed", "This endpoint takes "+other+".")
 		return
@@ -262,8 +291,12 @@ func (s *Server) handleUnmatched(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) logRequest(r *http.Request, details *requestInfo, status int, elapsed time.Duration) {
 	path := r.URL.RequestURI()
-	if details.private {
+	switch {
+	case details.private:
 		path = "(redacted)"
+	case details.route == "other":
+		// No route took it, so nothing says what the query holds: keep only the path.
+		path = r.URL.EscapedPath()
 	}
 	entry := map[string]any{
 		"msg":    "request",
@@ -282,7 +315,11 @@ func (s *Server) logRequest(r *http.Request, details *requestInfo, status int, e
 		}
 	}
 	encoded, _ := json.Marshal(entry)
-	fmt.Fprintln(os.Stdout, string(encoded))
+	out := s.logOut
+	if out == nil {
+		out = os.Stdout
+	}
+	fmt.Fprintln(out, string(encoded))
 }
 
 // A route's cost is how many units of the per-minute allowance one request uses.
@@ -299,11 +336,21 @@ const heavyWait = 10 * time.Second
 // a request charges against the per-client rate limit. A route with costHeavy also
 // takes one of a fixed number of slots, so a burst waits in line instead of running all
 // at once: more load means more waiting, not more memory.
+//
+// A route the catalog marks Private is private from the first moment, so a request
+// refused by the rate limit or the slots is kept out of the log and shared caches too.
 func (s *Server) handle(route string, cost int, pattern string, handler http.HandlerFunc) {
 	s.routes[pattern] = true
+	_, path, _ := strings.Cut(pattern, " ")
+	if path == "" {
+		path = pattern
+	}
+	private := privatePaths[path]
+	s.private[pattern] = private
 	s.mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 		details := info(r)
 		details.route = route
+		details.private = details.private || private
 		charge, client := cost, ""
 		if details.internal {
 			charge, client = cost-costLight, details.client

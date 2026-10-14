@@ -43,6 +43,21 @@ func (b *Builder) Logf(format string, args ...any) { b.log(format, args...) }
 // Warnf reports something a maintainer should look at; it does not stop the build.
 func (b *Builder) Warnf(format string, args ...any) { b.warn(format, args...) }
 
+// countRows sets a count to the rows a table holds, warns about input rows that were
+// repeats of others, and drops the count of input rows.
+func countRows(b *Builder, name, table, inputCount string) error {
+	var stored int
+	if err := b.Tx.QueryRow(`SELECT COUNT(*) FROM ` + table).Scan(&stored); err != nil {
+		return err
+	}
+	if repeated := b.counts[inputCount] - stored; repeated > 0 {
+		b.Warnf("%d rows repeat a code already read and were not stored again", repeated)
+	}
+	delete(b.counts, inputCount)
+	b.Count(name, stored)
+	return nil
+}
+
 // Path joins a name onto the source directory.
 func (b *Builder) Path(parts ...string) string {
 	return filepath.Join(append([]string{b.Dir}, parts...)...)
@@ -164,8 +179,14 @@ func Build(spec *Spec, opts BuildOptions) (Meta, []string, error) {
 	if err := db.Close(); err != nil {
 		return meta, warnings, err
 	}
-	os.Remove(opts.Out)
-	return meta, warnings, os.Rename(tmp, opts.Out)
+	if err := os.Rename(tmp, opts.Out); err != nil {
+		// Windows will not rename over an existing file; elsewhere the rename replaces it.
+		if os.Remove(opts.Out) != nil {
+			return meta, warnings, err
+		}
+		return meta, warnings, os.Rename(tmp, opts.Out)
+	}
+	return meta, warnings, nil
 }
 
 // SeedOptions says how to build the repository's copies.
@@ -173,7 +194,8 @@ type SeedOptions struct {
 	DataDir string // holds sources.json and every dataset's source files
 	OutDir  string
 	Resvg   string
-	// Strict makes a missing dataset an error instead of a warning.
+	// Strict makes a missing dataset, or one without an entry in sources.json, an error
+	// instead of a warning.
 	Strict bool
 	// Only limits the build to these datasets; empty builds all.
 	Only []string
@@ -199,13 +221,20 @@ func BuildSeeds(opts SeedOptions) ([]Meta, []string, error) {
 
 	var built []Meta
 	var warnings []string
+	warn := func(message string) {
+		warnings = append(warnings, message)
+		opts.Log("warning: %s", message)
+	}
 	for _, spec := range Specs() {
 		if spec.NoSeed || (len(wanted) > 0 && !wanted[spec.Name]) {
 			continue
 		}
 		source, credited := sources[spec.Name]
 		if !credited {
-			warnings = append(warnings, spec.Name+": no entry in "+sourcesFile+", responses will carry no source credit")
+			if opts.Strict {
+				return built, warnings, fmt.Errorf("%s: no entry in %s, so responses would carry no source credit", spec.Name, sourcesFile)
+			}
+			warn(spec.Name + ": no entry in " + sourcesFile + ", responses will carry no source credit")
 			source.Retrieved = "1970-01-01"
 		}
 		meta, notes, err := Build(spec, BuildOptions{
@@ -216,7 +245,7 @@ func BuildSeeds(opts SeedOptions) ([]Meta, []string, error) {
 			warnings = append(warnings, spec.Name+": "+note)
 		}
 		if errors.Is(err, os.ErrNotExist) && !opts.Strict {
-			warnings = append(warnings, fmt.Sprintf("%s: source file missing, dataset not built (%v)", spec.Name, err))
+			warn(fmt.Sprintf("%s: source file missing, dataset not built (%v)", spec.Name, err))
 			continue
 		}
 		if err != nil {

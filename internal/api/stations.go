@@ -159,6 +159,10 @@ func (s *Server) handleStationSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		stations = append(stations, view)
 	}
+	if rows.Err() != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+		return
+	}
 	m := paging(total, limit, offset)
 	m.Source, m.Note = s.source("stations"), stationNote
 	s.ok(w, r, stations, m, cacheAPI)

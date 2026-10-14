@@ -79,7 +79,7 @@ There are two copies of a dataset, built by the same code:
   it.
 
 `dataset.Current` decides which one is served: the newer one by `Source.Retrieved`
-(a date for seeds, a timestamp for server copies), ignoring any file built for a
+(a UTC timestamp; older `sources.json` entries are plain dates), ignoring any file built for a
 different `Schema` number. So a correction committed to `data/` reaches the server, and
 an old seed never replaces fresher server data. **Bump a spec's `Schema` whenever its
 tables or their meaning change**; the server then serves the seed and rebuilds its own
@@ -126,7 +126,10 @@ POST body as text/plain or JSON, capped at `MAX_BODY_KB`.
 
 Each handler fills `info(r)` (a `requestInfo`): `subject` is what gets logged as the
 thing looked up, and `private = true` keeps the value out of logs and caches. Use
-`private` for anything that could be personal (validators, email checks, redaction).
+`private` for anything that could be personal (validators, email checks, redaction),
+and mark the endpoint `Private` in the catalog: `handle` reads that mark, so a request
+refused before the handler runs (rate limit, busy, wrong method, preflight) stays out of
+the log too. A test fails when a handler marks itself private and the catalog does not.
 Client IP addresses are never logged.
 
 `/healthz` starts with `{"status":"ok","version":"X",`; the updater greps for that, so
