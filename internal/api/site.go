@@ -94,8 +94,10 @@ func (s *Server) registerSite() {
 	s.handle("docs", costFree, "GET /{$}", s.handleHome)
 	s.handle("docs", costFree, "GET /index.md", s.handleHome)
 	s.handle("docs", costFree, "GET /docs", s.handleDocsIndex)
+	s.handle("docs", costFree, "GET /docs.md", s.handleDocsIndex)
 	s.handle("docs", costFree, "GET /docs/{group}", s.handleGroupPage)
 	s.handle("docs", costFree, "GET /guides", s.handleGuides)
+	s.handle("docs", costFree, "GET /guides.md", s.handleGuides)
 	s.handle("docs", costFree, "GET /guides/{slug}", s.handleGuide)
 	s.handle("docs", costFree, "GET /ai", s.handleAIPage)
 	s.handle("docs", costFree, "GET /ai.md", s.handleAIPage)
@@ -282,7 +284,7 @@ func (s *Server) handleHome(w http.ResponseWriter, r *http.Request) {
 func (s *Server) handleDocsIndex(w http.ResponseWriter, r *http.Request) {
 	s.sendPage(w, r, "docs", func(origin string) []byte {
 		p := page{
-			Origin: origin, Path: "/docs", Nav: "docs",
+			Origin: origin, Path: "/docs", Nav: "docs", Markdown: "/docs.md",
 			Title:       "API reference: every endpoint | " + productName,
 			Heading:     "API reference",
 			Description: fmt.Sprintf("All %d APIs of %s with their endpoints: pincodes, IFSC, GSTIN, holidays, RTO codes, logos, UPI QR and more. Free, no key.", len(catalog), productName),
@@ -290,7 +292,28 @@ func (s *Server) handleDocsIndex(w http.ResponseWriter, r *http.Request) {
 		}
 		p.JSONLD = jsonLD(breadcrumbs(origin, [2]string{"Docs", "/docs"}))
 		return s.renderHTML("docs", p)
-	}, nil)
+	}, s.docsIndexMarkdown)
+}
+
+// docsIndexMarkdown is the Markdown form of /docs: every API with each of its endpoints.
+func (s *Server) docsIndexMarkdown(origin string) []byte {
+	var out strings.Builder
+	fmt.Fprintf(&out, "# API reference\n\nAll %d APIs of %s, with every endpoint. Each name links to its full page: parameters, a real response and code in curl, JavaScript and Python. Base URL: %s. No API key; %d requests a minute per client.\n\n", len(catalog), productName, origin, s.cfg.RateLimitPerMinute)
+	for _, category := range categorised() {
+		fmt.Fprintf(&out, "## %s\n\n", category.Title)
+		for _, group := range category.Groups {
+			fmt.Fprintf(&out, "### [%s](%s/docs/%s.md)\n\n%s\n\n", group.Title, origin, group.ID, group.Tagline)
+			for _, e := range group.Endpoints {
+				method := e.Method()
+				if e.Post && e.Upload == nil {
+					method = "GET or POST"
+				}
+				fmt.Fprintf(&out, "- `%s %s`: %s\n", method, e.Path, e.Summary)
+			}
+			out.WriteString("\n")
+		}
+	}
+	return []byte(out.String())
 }
 
 type docEndpoint struct {

@@ -1,8 +1,9 @@
 ---
-title: Remove Aadhaar, PAN and phone numbers before sending text to an LLM
+title: Mask Aadhaar, PAN and phone numbers before an LLM sees them
 description: Mask Indian personal identifiers in text before it reaches a language model or a log, with check-digit validation so ordinary numbers are left alone.
 apis: text
 published: 2026-10-14
+updated: 2026-10-15
 ---
 
 Support tickets, chat messages and documents often carry Aadhaar numbers, PANs, phone numbers and bank card numbers. Masking them before the text goes to a language model, a vector store or a log keeps them out of places they should not be.

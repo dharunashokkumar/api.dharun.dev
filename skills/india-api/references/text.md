@@ -97,4 +97,4 @@ Example: https://api.dharun.dev/v1/text/moderate?text=tu+bahut+bakwas+aadmi+hai
 
 ## Guides
 
-- [Remove Aadhaar, PAN and phone numbers before sending text to an LLM](https://api.dharun.dev/guides/redact-before-llm.md): Mask Indian personal identifiers in text before it reaches a language model or a log, with check-digit validation so ordinary numbers are left alone.
+- [Mask Aadhaar, PAN and phone numbers before an LLM sees them](https://api.dharun.dev/guides/redact-before-llm.md): Mask Indian personal identifiers in text before it reaches a language model or a log, with check-digit validation so ordinary numbers are left alone.

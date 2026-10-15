@@ -22,9 +22,9 @@ func base64Std(data []byte) string { return base64.StdEncoding.EncodeToString(da
 func (s *Server) llmsIntro(origin string) string {
 	var out strings.Builder
 	fmt.Fprintf(&out, "# %s (%s)\n\n> %s\n\n", productName, siteName, siteSummary)
-	fmt.Fprintf(&out, "Base URL: %s. Every endpoint is a plain GET under `/v1`; endpoints that take text also accept it as a POST body (text/plain, or JSON `{\"text\": ...}`). No API key and no sign-up. CORS is open, so browsers can call it directly.\n\n", origin)
+	fmt.Fprintf(&out, "Base URL: %s. Every endpoint is under `/v1`. Lookups are plain GETs; endpoints that take text also accept it as a POST body (text/plain, or JSON `{\"text\": ...}`); endpoints that take a file or a JSON document (OCR, image, PDF and audio tools, speech to text, the GST invoice) are POST only. No API key and no sign-up. CORS is open, so browsers can call it directly.\n\n", origin)
 	out.WriteString("JSON responses share one shape: `{ \"data\": ..., \"meta\": { ... } }`. `meta.source` names the dataset, its licence, version and the credit it asks for. Lists add `meta.total`, `meta.limit` and `meta.offset`. Errors are `{ \"error\": { \"code\", \"message\" } }` with a matching HTTP status: 400 for bad input, 404 when nothing matches, 429 over the rate limit, 503 while a dataset is not loaded.\n\n")
-	fmt.Fprintf(&out, "Rate limit: %d requests per minute per client; endpoints that do heavy work (images, astronomy, live DNS) count as 10, file uploads as 15 and neural-network jobs (speech, background removal, denoise) as 30. Image, PDF and audio endpoints return the file itself. Uploads are POSTed as the body or as multipart/form-data, up to 10 MB.\n\n", s.cfg.RateLimitPerMinute)
+	fmt.Fprintf(&out, "Rate limit: %d requests per minute per client; endpoints that do heavy work (images, astronomy, live DNS) count as 10, file uploads as 15 and neural-network jobs (text to speech, speech to text, translation, background removal, denoise) as 30. Image, PDF and audio endpoints return the file itself. Uploads are POSTed as the body or as multipart/form-data, up to 10 MB a file (25 MB in all for a PDF merge).\n\n", s.cfg.RateLimitPerMinute)
 	return out.String()
 }
 
@@ -113,9 +113,12 @@ func (s *Server) handleRobots(w http.ResponseWriter, r *http.Request) {
 
 type sitemapEntry struct{ Path, Modified string }
 
-// siteMap lists every page. An API page's date is when its data was last retrieved.
+// siteMap lists every page. An API page's date is when its data was last retrieved; a
+// page that lists others takes the newest of theirs. Pages with no data behind them have
+// no date rather than an invented one.
 func (s *Server) siteMap() []sitemapEntry {
 	entries := []sitemapEntry{{Path: "/"}, {Path: "/docs"}}
+	newestAPI, newestGuide := "", ""
 	for _, category := range categorised() {
 		for _, group := range category.Groups {
 			modified := ""
@@ -125,13 +128,20 @@ func (s *Server) siteMap() []sitemapEntry {
 				}
 			}
 			entries = append(entries, sitemapEntry{"/docs/" + group.ID, modified})
+			newestAPI = max(newestAPI, modified)
 		}
 	}
+	entries[0].Modified, entries[1].Modified = newestAPI, newestAPI
 	entries = append(entries, sitemapEntry{Path: "/ai"}, sitemapEntry{Path: "/guides"})
+	guidesIndex := len(entries) - 1
 	for _, g := range guides {
 		entries = append(entries, sitemapEntry{"/guides/" + g.Slug, g.Updated})
+		newestGuide = max(newestGuide, g.Updated)
 	}
-	return append(entries, sitemapEntry{Path: "/privacy"}, sitemapEntry{Path: "/security"}, sitemapEntry{Path: "/about"})
+	entries[guidesIndex].Modified = newestGuide
+	entries[0].Modified = max(newestAPI, newestGuide) // the home page lists both
+	// The about page lists every data source with its date.
+	return append(entries, sitemapEntry{Path: "/privacy"}, sitemapEntry{Path: "/security"}, sitemapEntry{Path: "/about", Modified: newestAPI})
 }
 
 func (s *Server) handleSitemap(w http.ResponseWriter, r *http.Request) {

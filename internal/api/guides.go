@@ -3,6 +3,7 @@ package api
 import (
 	"bytes"
 	"embed"
+	"fmt"
 	"html/template"
 	"net/http"
 	"path"
@@ -123,7 +124,7 @@ func guideBySlug(slug string) (guide, bool) {
 func (s *Server) handleGuides(w http.ResponseWriter, r *http.Request) {
 	s.sendPage(w, r, "guides", func(origin string) []byte {
 		p := page{
-			Origin: origin, Path: "/guides", Nav: "guides",
+			Origin: origin, Path: "/guides", Nav: "guides", Markdown: "/guides.md",
 			Title:       "Guides: real tasks with free Indian data APIs | " + productName,
 			Heading:     "Guides",
 			Description: "Short, tested guides: fill city and state from a pincode, look up IFSC codes, check GSTIN and PAN, count working days, make UPI QR codes and more.",
@@ -135,7 +136,14 @@ func (s *Server) handleGuides(w http.ResponseWriter, r *http.Request) {
 		}
 		p.JSONLD = jsonLD(breadcrumbs(origin, [2]string{"Guides", "/guides"}), map[string]any{"@type": "ItemList", "itemListElement": items})
 		return s.renderHTML("guides", p)
-	}, nil)
+	}, func(origin string) []byte {
+		var out strings.Builder
+		out.WriteString("# Guides\n\nShort guides for common tasks with India API. Every request in them is tested; their code is MIT-0.\n\n")
+		for _, g := range guides {
+			fmt.Fprintf(&out, "- [%s](%s/guides/%s.md): %s\n", g.Title, origin, g.Slug, g.Description)
+		}
+		return []byte(out.String())
+	})
 }
 
 func (s *Server) handleGuide(w http.ResponseWriter, r *http.Request) {

@@ -33,7 +33,7 @@ JavaScript and Python.
 |---|---|---|
 | [Company logos](https://api.dharun.dev/docs/logos) | `/v1/logos/TCS`, `/v1/companies/RELIANCE` | SVG or PNG logo of an NSE or BSE listed company, REITs and InvITs included; sector, ISIN, market cap, indexes; old tickers still work |
 | [Pincodes](https://api.dharun.dev/docs/pincode) | `/v1/pincode/637001`, `/v1/pincode/near?lat=&lng=` | Post offices, district, state, coordinates; pincodes near a point |
-| [IFSC and banks](https://api.dharun.dev/docs/ifsc) | `/v1/ifsc/SBIN0000001` | Bank, branch, address, MICR, payment systems |
+| [IFSC and banks](https://api.dharun.dev/docs/ifsc) | `/v1/ifsc/SBIN0000001`, `/v1/banks?q=gramin` | Bank, branch, address, MICR, payment systems; banks and their codes by name |
 | [RTO codes](https://api.dharun.dev/docs/rto) | `/v1/rto/TN-28` | Transport office for a vehicle registration |
 | [Holidays](https://api.dharun.dev/docs/holidays) | `/v1/holidays/2026?type=market` | Bank, central government and stock market holidays |
 | [Working days](https://api.dharun.dev/docs/working-days) | `/v1/working-days/2026-01-16?calendar=bank&state=TN` | Working day or not, the next one, N working days ahead, T+1 settlement dates; whether NSE is open |

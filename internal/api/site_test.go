@@ -60,7 +60,9 @@ func TestSitePages(t *testing.T) {
 			t.Errorf("%s: description is %d characters", entry.Path, utf8.RuneCountInString(description[1]))
 		}
 
+		// Every page has a Markdown form: the site and llms.txt say so.
 		if !strings.Contains(body, `<link rel="alternate" type="text/markdown"`) {
+			t.Errorf("%s has no Markdown form", entry.Path)
 			continue
 		}
 		for _, markdown := range []result{

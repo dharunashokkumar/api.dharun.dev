@@ -788,17 +788,22 @@ func TestMCP(t *testing.T) {
 			t.Errorf("no test call for tool %s", tool.Name)
 			continue
 		}
-		_, called := rpc(`{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"` + tool.Name + `","arguments":` + arguments + `}}`)
-		outcome := called["result"].(map[string]any)
+		status, called := rpc(`{"jsonrpc":"2.0","id":9,"method":"tools/call","params":{"name":"` + tool.Name + `","arguments":` + arguments + `}}`)
+		outcome, ok := called["result"].(map[string]any)
+		if !ok {
+			t.Errorf("%s: %d %v", tool.Name, status, called)
+			continue
+		}
 		if outcome["isError"] == true {
 			if message := fmt.Sprint(outcome["content"]); (strings.Contains(message, "not installed") && os.Getenv("REQUIRE_TOOLS") == "") ||
-				(strings.Contains(message, "does not hold") && os.Getenv("REQUIRE_MODELS") == "") {
+				(strings.Contains(message, "does not hold") && os.Getenv("REQUIRE_MODELS") == "") ||
+				(strings.Contains(message, "no image renderer") && os.Getenv("RESVG") == "") {
 				continue
 			}
 			t.Errorf("%s failed: %v", tool.Name, outcome["content"])
 			continue
 		}
-		if tool.send != nil && outcome["structuredContent"] == nil {
+		if outcome["structuredContent"] == nil {
 			// A file: an image, audio or embedded resource block.
 			if block := outcome["content"].([]any)[0].(map[string]any); block["type"] == "text" {
 				t.Errorf("%s returned text instead of a file", tool.Name)

@@ -16,11 +16,11 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Released version | Every push to `main` that passes CI is released as `v1.1.<run>` and installed by the server within two minutes; `/healthz` shows the one running |
 | Production | **Live since 2026-10-14** on the homelab (section 11): `v1.1.8` installed by hand, `v1.1.9` the first deploy from a push. the `Production` workflow checks every release on the live site |
 | Search and AI round | Live in `v1.1.14` (section 7.1). Its launch (7.2) is on hold until the next rounds are done |
-| Current round | Round 1 is built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
+| Round 1 | Built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
 | Round 2 | Uploads (section 6): **live 2026-10-15 in `v1.1.18`**, after the server got 10 CPUs, 5 GB, 16 GB disk and the packages. Every tool checked on the live site; speech and background removal answer 503 until the first refresh fetches the voices and the model |
-| Round 3 | AI models (section 6): built 2026-10-15, models published in the `models-2026-10` release |
+| Round 3 | AI models (section 6): **live 2026-10-15**, models published in the `models-2026-10` release; every endpoint checked on the live site |
 | Next rounds | Round 4 network tools. One round per session |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
@@ -202,7 +202,7 @@ reading (files as base64), a downloader that gives up on a stalled transfer inst
 after ten minutes (a 179 MB model on a slow line took longer), and the docs, OpenAPI,
 skill and plugin describing uploads.
 
-### Round 3: AI models (group C), built 2026-10-15
+### Round 3: AI models (group C), live 2026-10-15
 
 Dharun's decisions, 2026-10-15:
 
@@ -234,13 +234,13 @@ Dharun's decisions, 2026-10-15:
 
 | API | Endpoint | How | Status |
 |---|---|---|---|
-| Embeddings | `/v1/embed` | multilingual-e5-small, int8 (MIT): 384 numbers per text, query and passage prefixes, mean pooling, unit length; up to 64 texts | Built |
+| Embeddings | `/v1/embed` | multilingual-e5-small, int8 (MIT): 384 numbers per text, query and passage prefixes, mean pooling, unit length; up to 64 texts | Live |
 | Reranking | `/v1/rerank` | bge-reranker-v2-m3, uint8 (Apache-2.0), up to 100 documents. The int8 file gave wrong scores on the server's processor (no VNNI: int8 weights with uint8 activations overflow in ONNX Runtime); the uint8 file matches the reference. Embeddings and moderation were checked against the reference on the server and match | Live |
-| Speech to text | `POST /v1/stt` | Whisper small q5_1 through whisper.cpp 1.9.4 (MIT), every CPU variant of ggml; JSON with segments, SRT, WebVTT or text; `task=translate` for English | Built |
-| Moderation | `/v1/text/moderate` | Three classifiers, scores 0 to 1, `flagged` at a threshold (0.5) | Built |
-| Names in redaction | `/v1/text/redact?names=true` | IndicNER (MIT) for Indian scripts, bert-base-NER (MIT) for the rest; people only | Built |
-| Translation | `/v1/translate`, `/v1/translate/languages` | IndicTrans2 distilled 200M, int8 (MIT), English to and from 22 languages; Indian to Indian through English; IndicProcessor's steps rewritten in Go (`internal/indictrans`); greedy decoding | Built |
-| Roman typing to a script | `/v1/transliterate/suggest` | IndicXlit en-indic v1.0 (MIT), beam search, up to eight guesses a word, 21 languages | Built |
+| Speech to text | `POST /v1/stt` | Whisper small q5_1 through whisper.cpp 1.9.4 (MIT), every CPU variant of ggml; JSON with segments, SRT, WebVTT or text; `task=translate` for English | Live |
+| Moderation | `/v1/text/moderate` | Three classifiers, scores 0 to 1, `flagged` at a threshold (0.5) | Live |
+| Names in redaction | `/v1/text/redact?names=true` | IndicNER (MIT) for Indian scripts, bert-base-NER (MIT) for the rest; people only | Live |
+| Translation | `/v1/translate`, `/v1/translate/languages` | IndicTrans2 distilled 200M, int8 (MIT), English to and from 22 languages; Indian to Indian through English; IndicProcessor's steps rewritten in Go (`internal/indictrans`); greedy decoding | Live |
+| Roman typing to a script | `/v1/transliterate/suggest` | IndicXlit en-indic v1.0 (MIT), beam search, up to eight guesses a word, 21 languages | Live |
 
 Left for later: beam search for translation (greedy now), the indic-indic IndicTrans2 model
 instead of going through English, IndicXlit's word-frequency rescoring, a Tamil Whisper
@@ -420,6 +420,7 @@ use. Decisions are in section 12 (2026-10-14). Built in this repository:
 | CI: build provenance attestation on each release, OpenSSF Scorecard, Dependabot (monthly, grouped), IndexNow ping when pages change | Live |
 | Scorecard round: actions pinned to commits, CodeQL (Go, workflows, Python), Go fuzz tests for the parsers that take caller text, the provenance attached to each release as `.intoto.jsonl`, no checkout of a `workflow_run` commit, `osv-scanner.toml` for an advisory on a package not used; OpenSSF Best Practices passing badge (project 15520) | Live |
 | README rework; GitHub description, website link and topics | Live |
+| Docs check, 2026-10-15: MCP tools for every API group (QR codes, barcodes, link preview and code images, chunking, embeddings, Tamil encodings, states, image tools, PDF tools, noise removal: 75 tools in all), `/docs.md` and `/guides.md`, sitemap dates for the index pages, smoke checks for chunking, language, banks, zones, OCR, image info and convert, PDF text and the invoice | Live |
 
 Done by Dharun, outside the repository:
 

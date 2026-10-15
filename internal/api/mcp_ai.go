@@ -6,8 +6,7 @@ import (
 )
 
 // MCP tools for the AI model endpoints: translation, transliteration of Roman typing,
-// moderation, speech to text and reranking. Embeddings have no tool: an agent has no use
-// for 384 numbers in its context.
+// moderation, speech to text and reranking. Embeddings are in mcp_more.go.
 
 func init() {
 	for _, name := range []string{"translate_text", "transliterate_roman_typing", "moderate_text", "transcribe_audio", "rerank_documents"} {

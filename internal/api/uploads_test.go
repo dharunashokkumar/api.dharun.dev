@@ -33,6 +33,32 @@ func init() {
 	codes, _ := sampleFile("codes.png")
 	mcpTestCalls["read_text_in_image"] = `{"file":"` + base64.StdEncoding.EncodeToString(receipt) + `","lang":"eng+tam"}`
 	mcpTestCalls["read_barcodes"] = `{"file":"data:image/png;base64,` + base64.StdEncoding.EncodeToString(codes) + `"}`
+	photo, _ := sampleFile("photo.jpg")
+	document, _ := sampleFile("document.pdf")
+	noisy, _ := sampleFile("noisy.mp3")
+	picture := `{"file":"` + base64.StdEncoding.EncodeToString(photo) + `"}`
+	pdf := base64.StdEncoding.EncodeToString(document)
+	mcpTestCalls["convert_image"] = `{"file":"` + base64.StdEncoding.EncodeToString(photo) + `","format":"png","width":200}`
+	mcpTestCalls["get_image_info"] = picture
+	mcpTestCalls["remove_image_background"] = picture
+	mcpTestCalls["hash_image"] = picture
+	mcpTestCalls["compare_images"] = `{"files":["` + base64.StdEncoding.EncodeToString(photo) + `","` + base64.StdEncoding.EncodeToString(photo) + `"]}`
+	mcpTestCalls["read_pdf_text"] = `{"file":"` + pdf + `"}`
+	mcpTestCalls["get_pdf_info"] = `{"file":"` + pdf + `"}`
+	mcpTestCalls["render_pdf_page"] = `{"file":"` + pdf + `","width":300}`
+	mcpTestCalls["select_pdf_pages"] = `{"file":"` + pdf + `","pages":"2,1"}`
+	mcpTestCalls["rotate_pdf_pages"] = `{"file":"` + pdf + `","angle":"90","pages":"1"}`
+	mcpTestCalls["compress_pdf"] = `{"file":"` + pdf + `"}`
+	mcpTestCalls["merge_pdfs"] = `{"files":["` + pdf + `","` + pdf + `"]}`
+	mcpTestCalls["remove_audio_noise"] = `{"file":"` + base64.StdEncoding.EncodeToString(noisy) + `"}`
+	mcpTestCalls["make_qr_code"] = `{"text":"https://api.dharun.dev","size":128}`
+	mcpTestCalls["make_barcode"] = `{"type":"code128","text":"AWB1234"}`
+	mcpTestCalls["make_code_image"] = `{"code":"package main","language":"go"}`
+	mcpTestCalls["make_social_preview_image"] = `{"title":"வணக்கம்","site":"api.dharun.dev"}`
+	mcpTestCalls["chunk_text"] = `{"text":"# Title\n\nFirst paragraph.\n\n## Part\n\nSecond paragraph.","size":100}`
+	mcpTestCalls["embed_texts"] = `{"texts":["capital of Tamil Nadu"],"type":"query"}`
+	mcpTestCalls["convert_tamil_legacy_text"] = `{"text":"¾Á¢ú","from":"tscii"}`
+	mcpTestCalls["get_indian_states"] = `{"state":"TN"}`
 }
 
 // missingTool reports an answer that only says this machine lacks a program or model.
