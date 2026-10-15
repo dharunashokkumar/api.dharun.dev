@@ -156,14 +156,15 @@
    "targets": [
     {
      "refId": "A",
-     "expr": "sum(increase(api_logo_requests_total{job=\"dharun-api\",result!=\"found\"}[$__range]))",
+     "expr": "sum(increase(api_logo_requests_total{job=\"dharun-api\",result!=\"found\"}[$__range])) or vector(0)",
      "legendFormat": "",
      "datasource": {
       "type": "prometheus",
       "uid": "${datasource}"
      }
     }
-   ]
+   ],
+   "description": "Logo lookups in this time range whose symbol was not in the logo set (a fallback image or a 404). 0 when there were none."
   },
   {
    "id": 4,
@@ -265,7 +266,11 @@
    "fieldConfig": {
     "defaults": {
      "unit": "short",
-     "min": 0
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
     },
     "overrides": []
    },
@@ -1018,7 +1023,11 @@
    },
    "fieldConfig": {
     "defaults": {
-     "unit": "short"
+     "unit": "short",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
     },
     "overrides": []
    },
@@ -1291,7 +1300,11 @@
    "fieldConfig": {
     "defaults": {
      "unit": "short",
-     "min": 0
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
     },
     "overrides": []
    },
@@ -1423,7 +1436,11 @@
    "fieldConfig": {
     "defaults": {
      "unit": "short",
-     "min": 0
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
     },
     "overrides": []
    },
@@ -1469,7 +1486,11 @@
    "fieldConfig": {
     "defaults": {
      "unit": "short",
-     "min": 0
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
     },
     "overrides": []
    },
