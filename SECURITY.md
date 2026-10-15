@@ -43,15 +43,19 @@ in the Reserve Bank's lists) are welcome as ordinary issues.
 - Image endpoints draw from text alone and never fetch from an address a caller gives.
 - Client IP addresses are never logged; endpoints that take personal values keep their
   input out of logs and shared caches.
-- CI runs the tests, the race detector, `govulncheck` and `shellcheck` on every change;
-  OpenSSF Scorecard and Dependabot watch the repository.
+- CI runs the tests, the race detector, `govulncheck` and `shellcheck` on every change,
+  and CodeQL scans the code; the parsers that take caller text have Go fuzz tests.
+  Workflow actions are pinned to commits. OpenSSF Scorecard and Dependabot watch the
+  repository.
 
 ## Verifying a release
 
 Each release bundle is built by GitHub Actions from a public commit and carries a signed
-build provenance attestation:
+build provenance attestation, also attached to the release as `.intoto.jsonl`:
 
 ```bash
 gh attestation verify dharun-api-linux-amd64.tar.gz --repo dharunashokkumar/api.dharun.dev
+# or with the attestation file downloaded from the release
+gh attestation verify dharun-api-linux-amd64.tar.gz --repo dharunashokkumar/api.dharun.dev   --bundle dharun-api-linux-amd64.tar.gz.intoto.jsonl
 sha256sum -c dharun-api-linux-amd64.tar.gz.sha256
 ```

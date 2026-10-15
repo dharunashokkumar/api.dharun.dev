@@ -7,6 +7,8 @@ name: Production
 # search engines which pages changed, and publishes the MCP Registry entry if server.json
 # changed (signed in with GitHub's OIDC token). No stored credentials.
 # A workflow of its own, so waiting for the server never holds CI's queue for main.
+# Jobs check out the newest main, not the commit CI ran on (checking out a workflow_run's
+# head_sha is flagged as running untrusted code); prod-check accepts a newer version.
 on:
   workflow_run:
     workflows: [CI]
@@ -31,9 +33,7 @@ jobs:
       name: production
       url: https://api.dharun.dev
     steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Wait for the release to go live, then check it
         env:
@@ -47,11 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/cache/restore@v6
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .cache/indexnow-pages.txt
           key: indexnow-${{ github.run_id }}
@@ -62,7 +60,7 @@ jobs:
           mkdir -p .cache
           bash tools/indexnow.sh https://api.dharun.dev "$(grep -o 'indexNowKey *= *"[0-9a-f]*"' internal/api/site.go | grep -o '[0-9a-f]\{32\}')" .cache/indexnow-pages.txt
 
-      - uses: actions/cache/save@v6
+      - uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         if: always()
         with:
           path: .cache/indexnow-pages.txt
@@ -79,16 +77,14 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - id: entry
         name: Fingerprint the entry without its version
         run: echo "hash=$(jq -S 'del(.version)' server.json | sha256sum | cut -c1-16)" >> "$GITHUB_OUTPUT"
 
       - id: published
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .cache/registry-published
           key: mcp-registry-${{ steps.entry.outputs.hash }}
@@ -106,7 +102,7 @@ jobs:
           mkdir -p .cache && echo "$VERSION" > .cache/registry-published
 
       - if: steps.published.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .cache/registry-published
           key: mcp-registry-${{ steps.entry.outputs.hash }}

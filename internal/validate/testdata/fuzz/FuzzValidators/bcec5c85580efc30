@@ -1,0 +1,2 @@
+go test fuzz v1
+string("\xe2 \x80\x86")

@@ -25,9 +25,9 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-go@v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
 
@@ -94,7 +94,7 @@ jobs:
       - name: Install the bundle on a fresh Debian 13
         run: bash tools/install-test.sh dist
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: bundle
           path: dist/
@@ -106,9 +106,9 @@ jobs:
   vulncheck:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-go@v7
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version-file: go.mod
 
@@ -121,20 +121,22 @@ jobs:
     permissions:
       contents: write
       # Signed build provenance: anyone can check that a bundle came from this workflow
-      # and this commit with `gh attestation verify`.
+      # and this commit with `gh attestation verify`. The same signed attestation is attached
+      # to the release as .intoto.jsonl, so it can be checked offline with --bundle.
       id-token: write
       attestations: write
     concurrency:
       group: publish
       cancel-in-progress: false
     steps:
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: bundle
           path: dist
 
       - name: Attest build provenance
-        uses: actions/attest-build-provenance@v4
+        id: provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: dist/dharun-api-linux-amd64.tar.gz
 
@@ -142,10 +144,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ needs.test.outputs.version }}
+          BUNDLE: ${{ steps.provenance.outputs.bundle-path }}
         run: |
+          jq -c . "$BUNDLE" > dist/dharun-api-linux-amd64.tar.gz.intoto.jsonl
           gh release create "v$VERSION" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --latest \
             dist/dharun-api-linux-amd64.tar.gz dist/dharun-api-linux-amd64.tar.gz.sha256 dist/VERSION \
-            dist/espeak-ng-source.tar.gz \
+            dist/espeak-ng-source.tar.gz dist/dharun-api-linux-amd64.tar.gz.intoto.jsonl \
             --title "v$VERSION" --generate-notes
 
       # Servers only ever need the latest release and the few before it for a rollback.

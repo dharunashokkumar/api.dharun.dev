@@ -37,8 +37,9 @@ var panHolderTypes = map[byte]string{
 	'G': "Government",
 }
 
+// Invalid bytes become U+FFFD first, so removing spaces cannot join them into a character.
 func normalize(input string) string {
-	return strings.ToUpper(strings.Join(strings.Fields(input), ""))
+	return strings.ToUpper(strings.Join(strings.Fields(strings.ToValidUTF8(input, "�")), ""))
 }
 
 // PAN checks a Permanent Account Number: five letters, four digits, one letter, with

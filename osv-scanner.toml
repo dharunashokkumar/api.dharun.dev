@@ -1,0 +1,10 @@
+# Advisories that osv-scanner (and OpenSSF Scorecard, which runs it) reports for a module
+# this program does not use the affected part of. govulncheck in CI checks the code paths
+# actually called and would report any of these if that changed.
+
+# golang.org/x/crypto/openpgp is deprecated and has no fix, so every version of x/crypto
+# matches. Only x/crypto/ocsp is linked (through pdfcpu's signature reader); `go mod why
+# -m golang.org/x/crypto` shows the path.
+[[IgnoredVulns]]
+id = "GO-2026-5932"
+reason = "Only golang.org/x/crypto/ocsp is used; the openpgp package is never imported."

@@ -52,6 +52,13 @@ bash tools/smoke-test.sh dist/dharun-api-linux-amd64.tar.gz   # route checks: to
 bash tools/install-test.sh dist            # needs Docker: installs on a fresh Debian 13 with systemd
 ```
 
+Workflow actions are pinned to a commit SHA with the version in a comment (Dependabot
+updates both); pin any new one the same way. `codeql.yml` scans Go, the workflows and the
+Python tools. Code that parses caller text has a Go fuzz test (`fuzz_test.go`); `go test`
+runs its seeds, and `go test ./internal/textkit -run '^$' -fuzz FuzzRedact -fuzztime 1m`
+fuzzes one. Keep failing inputs the fuzzer writes under `testdata/fuzz/`. An advisory for
+a part of a module the code never calls goes in `osv-scanner.toml` with the reason.
+
 resvg has no Windows build. Without `RESVG` the PNG tests skip themselves and the image
 endpoints are tested as SVG only, so run the suite on Linux before trusting a change to
 rendering.

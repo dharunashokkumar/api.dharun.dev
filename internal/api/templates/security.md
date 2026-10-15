@@ -17,16 +17,18 @@ Report it privately through [GitHub's vulnerability form]({{.Repo}}/security/adv
 
 ## Check the code
 
-All of it is open source on [GitHub]({{.Repo}}). Every change runs the tests, Go's race detector, `govulncheck` against the Go vulnerability database and `shellcheck` before it can be released. [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/{{.RepoSlug}}) grades the repository's security practices every week, and Dependabot proposes dependency updates.
+All of it is open source on [GitHub]({{.Repo}}). Every change runs the tests, Go's race detector, `govulncheck` against the Go vulnerability database and `shellcheck` before it can be released, and CodeQL scans the code. The parsers that take your text have fuzz tests. [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/{{.RepoSlug}}) grades the repository's security practices every week, and Dependabot proposes dependency updates.
 
 ## Verify a release
 
-Each release is built by GitHub Actions from a public commit and carries a signed build provenance attestation. To check a downloaded bundle:
+Each release is built by GitHub Actions from a public commit and carries a signed build provenance attestation, also attached to the release as `.intoto.jsonl`. To check a downloaded bundle:
 
 ```
 gh attestation verify dharun-api-linux-amd64.tar.gz --repo {{.RepoSlug}}
 sha256sum -c dharun-api-linux-amd64.tar.gz.sha256
 ```
+
+Add `--bundle dharun-api-linux-amd64.tar.gz.intoto.jsonl` to check against the attestation file from the release instead of fetching it from GitHub.
 
 ## Using it safely
 

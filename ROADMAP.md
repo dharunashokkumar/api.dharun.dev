@@ -403,6 +403,7 @@ use. Decisions are in section 12 (2026-10-14). Built in this repository:
 | Agent Skill `skills/india-api` and Claude Code plugin `plugins/india-api` (marketplace in this repo), generated from the catalog and checked by a test | Live |
 | MCP Registry `server.json` (`io.github.dharunashokkumar/india-api`), published from CI; MCP server card at `/mcp/server-card`; `/.well-known/ai-catalog.json` | Live |
 | CI: build provenance attestation on each release, OpenSSF Scorecard, Dependabot (monthly, grouped), IndexNow ping when pages change | Live |
+| Scorecard round: actions pinned to commits, CodeQL (Go, workflows, Python), Go fuzz tests for the parsers that take caller text, the provenance attached to each release as `.intoto.jsonl`, no checkout of a `workflow_run` commit, `osv-scanner.toml` for an advisory on a package not used | Built |
 | README rework; GitHub description, website link and topics | Live |
 
 Done by Dharun, outside the repository:
@@ -628,5 +629,6 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-14 | Round 2 (uploads) builds every tool, model-based ones included: 10 MB uploads, body or multipart, no URL fetching, nothing stored or logged; libvips for images; apt packages plus programs in the release plus server-fetched models; all Piper voices for Indian languages, licence named per voice; IS-Net for background removal |
 | 2026-10-15 | The API container gets 10 CPUs and 5 GB (the host has cores to spare), the service `MemoryMax=3G`; speech keeps a 3,000-character limit. Give more hardware before cutting a feature |
 | 2026-10-15 | The GPL source of the espeak-ng inside Piper is attached to every release (`espeak-ng-source.tar.gz`) rather than offered on request |
+| 2026-10-15 | Raise the OpenSSF Scorecard with the fixes that keep push-to-main deploys: no pull request reviews or branch rules that require them |
 | 2026-10-15 | Infrastructure first, then the round 2 push: the release waits until the server has the packages, memory and disk |
 | 2026-10-15 | Monitoring shows where requests come from (country, Indian state, city, network) and unique visitors per day, month and country per day. Addresses are still never written; the visitor sketches and their period keys are saved so deploys do not reset the counts |
