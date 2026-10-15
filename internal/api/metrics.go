@@ -37,6 +37,9 @@ type metrics struct {
 	logos       map[string]uint64 // format|result
 	rateLimits  uint64
 	busyCount   uint64
+	countries   map[string]uint64 // requests by country code
+	states      map[string]uint64 // requests from India by state
+	visitors    *visitors
 	totals      lifetimeTotals
 	totalsDirty bool
 
@@ -61,6 +64,9 @@ func newMetrics(version, stateDir string, datasets func() []datasetState) *metri
 		requests:  map[string]uint64{},
 		durations: map[string]*histogram{},
 		logos:     map[string]uint64{},
+		countries: map[string]uint64{},
+		states:    map[string]uint64{},
+		visitors:  newVisitors(stateDir),
 		totals:    lifetimeTotals{Since: time.Now().UTC().Format("2006-01-02"), Requests: map[string]uint64{}},
 		stop:      make(chan struct{}),
 		done:      make(chan struct{}),
@@ -93,33 +99,51 @@ func (m *metrics) saveLoop() {
 	}
 }
 
-// save writes the totals through a temporary file, so a power cut mid-write leaves
-// the previous totals intact.
+// save writes the totals and the visitor sketches.
 func (m *metrics) save() {
 	if m.statePath == "" {
 		return
 	}
 	m.mu.Lock()
-	if !m.totalsDirty {
-		m.mu.Unlock()
-		return
+	var totals []byte
+	if m.totalsDirty {
+		totals, _ = json.MarshalIndent(m.totals, "", "  ")
+		m.totalsDirty = false
 	}
-	encoded, _ := json.MarshalIndent(m.totals, "", "  ")
-	m.totalsDirty = false
+	visitors := m.visitors.encode()
 	m.mu.Unlock()
 
-	tmp := m.statePath + ".tmp"
-	err := os.WriteFile(tmp, append(encoded, '\n'), 0o644)
+	if totals != nil {
+		if err := writeState(m.statePath, append(totals, '\n'), 0o644); err != nil {
+			logError("saving totals", err)
+			// Not saved: the next save must write them even if nothing else is counted.
+			m.mu.Lock()
+			m.totalsDirty = true
+			m.mu.Unlock()
+		}
+	}
+	if visitors != nil {
+		if err := writeState(m.visitors.path, visitors, 0o600); err != nil {
+			logError("saving visitor counts", err)
+			m.mu.Lock()
+			m.visitors.dirty = true
+			m.mu.Unlock()
+		}
+	}
+}
+
+// writeState writes a file through a temporary one, so a power cut mid-write leaves the
+// previous version intact.
+func writeState(path string, content []byte, mode os.FileMode) error {
+	tmp := path + ".tmp"
+	err := os.WriteFile(tmp, content, mode)
 	if err == nil {
-		err = os.Rename(tmp, m.statePath)
+		err = os.Chmod(tmp, mode)
 	}
-	if err != nil {
-		logError("saving totals", err)
-		// Not saved: the next save must write them even if nothing else is counted.
-		m.mu.Lock()
-		m.totalsDirty = true
-		m.mu.Unlock()
+	if err == nil {
+		err = os.Rename(tmp, path)
 	}
+	return err
 }
 
 func (m *metrics) close() {
@@ -159,6 +183,25 @@ func (m *metrics) observe(route, method string, status int, elapsed time.Duratio
 		m.totals.Total++
 		m.totalsDirty = true
 	}
+}
+
+// visit counts a request by where it came from, and its client among the unique
+// visitors. Health checks and preflights are not visits.
+func (m *metrics) visit(client string, place clientPlace) {
+	country, state := place.country, place.state
+	if country == "" {
+		country = "unknown"
+	}
+	if country == "IN" && state == "" {
+		state = "unknown"
+	}
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.countries[country]++
+	if state != "" {
+		m.states[state]++
+	}
+	m.visitors.add(client, place.country)
 }
 
 // observeLogo records a logo lookup. result is found, fallback or not_found.
@@ -284,6 +327,33 @@ func (m *metrics) render() string {
 	family("api_busy_total", "counter", "CPU-heavy requests refused because every slot stayed taken.")
 	fmt.Fprintf(&out, "api_busy_total %d\n", m.busyCount)
 
+	family("api_requests_by_country_total", "counter", "Requests since start by the country they came from (two-letter code, or unknown). Health checks and preflights are left out.")
+	for _, country := range sortedKeys(m.countries) {
+		fmt.Fprintf(&out, "api_requests_by_country_total{country=%q} %d\n", country, m.countries[country])
+	}
+	family("api_requests_by_state_total", "counter", "Requests since start from India, by state or union territory (or unknown).")
+	for _, state := range sortedKeys(m.states) {
+		fmt.Fprintf(&out, "api_requests_by_state_total{state=%q} %d\n", state, m.states[state])
+	}
+
+	m.visitors.roll()
+	family("api_unique_visitors", "gauge", "Distinct client addresses so far this day or month, India time (estimated, within about 1%).")
+	fmt.Fprintf(&out, "api_unique_visitors{period=\"day\"} %d\n", m.visitors.Day.All.estimate())
+	fmt.Fprintf(&out, "api_unique_visitors{period=\"month\"} %d\n", m.visitors.Month.All.estimate())
+	family("api_unique_visitors_previous", "gauge", "Distinct client addresses over the whole previous day or month, India time, when the server counted it to the end.")
+	for _, period := range []struct {
+		name  string
+		value *visitorPeriod
+	}{{"day", m.visitors.Day}, {"month", m.visitors.Month}} {
+		if period.value.PreviousKey != "" {
+			fmt.Fprintf(&out, "api_unique_visitors_previous{period=%q} %d\n", period.name, period.value.Previous)
+		}
+	}
+	family("api_unique_visitors_by_country", "gauge", "Distinct client addresses so far today (India time), by country (estimated, within about 3%).")
+	for _, country := range sortedSketchKeys(m.visitors.Day.Countries) {
+		fmt.Fprintf(&out, "api_unique_visitors_by_country{country=%q} %d\n", country, m.visitors.Day.Countries[country].estimate())
+	}
+
 	family("api_lifetime_requests_total", "counter", "Requests served since the service first ran, kept across restarts, by route.")
 	for _, route := range sortedKeys(m.totals.Requests) {
 		fmt.Fprintf(&out, "api_lifetime_requests_total{route=%q} %d\n", route, m.totals.Requests[route])
@@ -320,6 +390,15 @@ func residentMemory(fallback uint64) uint64 {
 func sortedKeys(counts map[string]uint64) []string {
 	keys := make([]string, 0, len(counts))
 	for key := range counts {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	return keys
+}
+
+func sortedSketchKeys(sketches map[string]sketch) []string {
+	keys := make([]string, 0, len(sketches))
+	for key := range sketches {
 		keys = append(keys, key)
 	}
 	sort.Strings(keys)

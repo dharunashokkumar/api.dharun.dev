@@ -532,6 +532,16 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
       range come back without their address
 - [x] Tunnel route for `api.dharun.dev` to the service port
 - [x] Prometheus scrape job, alert rules and Grafana dashboard from `deploy/monitoring/`
+- [x] **Where requests come from, and unique visitors** (2026-10-15). Each request's
+      address is looked up in the IP database (Cloudflare's country header when it has no
+      answer) and then dropped. Metrics: requests by country and, for India, by state;
+      unique visitors per day, per month and per country and day (India time), counted
+      with HyperLogLog sketches over addresses hashed with a key replaced each period.
+      The sketches and current keys are kept in `STATE_DIR/visitors.json` (mode 600) so a
+      deploy does not reset the count. The request log gains country, region, city with
+      its coordinates, AS number and network; Grafana reads cities and networks from Loki.
+      New "Visitors and where they come from" row on the dashboard; `/privacy` and the FAQ
+      say what is logged and counted. Dashboard install: request in the homelab.
 - [ ] **Count what Cloudflare serves from its cache.** The server only sees requests that
       reach it, so once a Cache Rule is added the dashboard undercounts. Asked for on
       2026-10-14: show the full picture in Grafana. Plan: the API asks Cloudflare's
@@ -593,3 +603,4 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-15 | The API container gets 10 CPUs and 5 GB (the host has cores to spare), the service `MemoryMax=3G`; speech keeps a 3,000-character limit. Give more hardware before cutting a feature |
 | 2026-10-15 | The GPL source of the espeak-ng inside Piper is attached to every release (`espeak-ng-source.tar.gz`) rather than offered on request |
 | 2026-10-15 | Infrastructure first, then the round 2 push: the release waits until the server has the packages, memory and disk |
+| 2026-10-15 | Monitoring shows where requests come from (country, Indian state, city, network) and unique visitors per day, month and country per day. Addresses are still never written; the visitor sketches and their period keys are saved so deploys do not reset the counts |

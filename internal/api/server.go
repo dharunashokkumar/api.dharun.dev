@@ -244,8 +244,17 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		elapsed := time.Since(started)
 		s.metrics.observe(details.route, r.Method, writer.status, elapsed)
-		if s.cfg.LogRequests && details.route != "health" {
-			s.logRequest(r, details, writer.status, elapsed)
+		if details.route == "health" {
+			return
+		}
+		// Where the request came from stands in for its address, which goes no further.
+		client := s.clientKey(r)
+		place := s.locate(r, client)
+		if details.route != "preflight" {
+			s.metrics.visit(client, place)
+		}
+		if s.cfg.LogRequests {
+			s.logRequest(r, details, place, writer.status, elapsed)
 		}
 	}()
 
@@ -303,7 +312,7 @@ func (s *Server) handleUnmatched(w http.ResponseWriter, r *http.Request) {
 	s.notFound(w, r, "Not found. The API index is at /v1 and the documentation at /.")
 }
 
-func (s *Server) logRequest(r *http.Request, details *requestInfo, status int, elapsed time.Duration) {
+func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientPlace, status int, elapsed time.Duration) {
 	path := r.URL.RequestURI()
 	switch {
 	case details.private:
@@ -323,7 +332,8 @@ func (s *Server) logRequest(r *http.Request, details *requestInfo, status int, e
 	if details.subject != "" && !details.private {
 		entry["subject"] = clip(details.subject, 80)
 	}
-	for field, name := range map[string]string{"country": "CF-IPCountry", "ua": "User-Agent", "referer": "Referer"} {
+	place.addTo(entry)
+	for field, name := range map[string]string{"ua": "User-Agent", "referer": "Referer"} {
 		if value := r.Header.Get(name); value != "" {
 			entry[field] = clip(value, 200)
 		}

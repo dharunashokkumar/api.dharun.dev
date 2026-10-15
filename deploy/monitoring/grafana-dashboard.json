@@ -20,6 +20,24 @@
     "type": "datasource",
     "query": "prometheus",
     "current": {}
+   },
+   {
+    "name": "logs",
+    "label": "Logs",
+    "type": "datasource",
+    "query": "loki",
+    "current": {}
+   },
+   {
+    "name": "log_stream",
+    "label": "Log stream",
+    "type": "textbox",
+    "query": "{host=\"api\"}",
+    "current": {
+     "text": "{host=\"api\"}",
+     "value": "{host=\"api\"}"
+    },
+    "description": "Loki stream selector for the API's journal (one JSON line per request)."
    }
   ]
  },
@@ -1024,6 +1042,816 @@
      }
     }
    ]
+  },
+  {
+   "id": 30,
+   "type": "row",
+   "title": "Visitors and where they come from",
+   "gridPos": {
+    "x": 0,
+    "y": 57,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false,
+   "panels": []
+  },
+  {
+   "type": "stat",
+   "title": "Unique visitors today",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Distinct client addresses since midnight India time, estimated within about 1%. Kept across restarts.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "none",
+    "graphMode": "area"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "api_unique_visitors{job=\"dharun-api\",period=\"day\"}",
+     "legendFormat": "",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 31,
+   "gridPos": {
+    "x": 0,
+    "y": 58,
+    "w": 6,
+    "h": 4
+   }
+  },
+  {
+   "type": "stat",
+   "title": "Unique visitors yesterday",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Distinct client addresses over the whole previous day, India time. Empty when the server was not running at midnight.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "none",
+    "graphMode": "area"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "api_unique_visitors_previous{job=\"dharun-api\",period=\"day\"}",
+     "legendFormat": "",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 32,
+   "gridPos": {
+    "x": 6,
+    "y": 58,
+    "w": 6,
+    "h": 4
+   }
+  },
+  {
+   "type": "stat",
+   "title": "Unique visitors this month",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Distinct client addresses since the 1st, India time.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "none",
+    "graphMode": "area"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "api_unique_visitors{job=\"dharun-api\",period=\"month\"}",
+     "legendFormat": "",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 33,
+   "gridPos": {
+    "x": 12,
+    "y": 58,
+    "w": 6,
+    "h": 4
+   }
+  },
+  {
+   "type": "stat",
+   "title": "Unique visitors last month",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Distinct client addresses over the whole previous month, India time.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "none",
+    "graphMode": "area"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "api_unique_visitors_previous{job=\"dharun-api\",period=\"month\"}",
+     "legendFormat": "",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 34,
+   "gridPos": {
+    "x": 18,
+    "y": 58,
+    "w": 6,
+    "h": 4
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "Unique visitors per day",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "The running count for today (it starts again at midnight India time) and each finished day's total.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "max(api_unique_visitors{job=\"dharun-api\",period=\"day\"})",
+     "legendFormat": "today so far",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "max(api_unique_visitors_previous{job=\"dharun-api\",period=\"day\"})",
+     "legendFormat": "previous day, final",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 35,
+   "gridPos": {
+    "x": 0,
+    "y": 62,
+    "w": 12,
+    "h": 8
+   }
+  },
+  {
+   "type": "bargauge",
+   "title": "Unique visitors today, by country",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Distinct client addresses since midnight India time, by country, estimated within about 3%.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0
+    },
+    "overrides": []
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "values": false
+    },
+    "showUnfilled": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(20, api_unique_visitors_by_country{job=\"dharun-api\"})",
+     "legendFormat": "{{country}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true
+    }
+   ],
+   "id": 36,
+   "gridPos": {
+    "x": 12,
+    "y": 62,
+    "w": 12,
+    "h": 8
+   }
+  },
+  {
+   "type": "geomap",
+   "title": "Requests by country, in this time range",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Countries from the IP database (Cloudflare's country when the address is unknown to it).",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "color": {
+      "mode": "continuous-BlPu"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "view": {
+     "id": "coords",
+     "lat": 22,
+     "lon": 40,
+     "zoom": 1.6
+    },
+    "controls": {
+     "showZoom": true,
+     "mouseWheelZoom": true,
+     "showAttribution": true
+    },
+    "basemap": {
+     "type": "default",
+     "name": "Basemap"
+    },
+    "layers": [
+     {
+      "type": "markers",
+      "name": "Requests",
+      "tooltip": true,
+      "config": {
+       "showLegend": true,
+       "style": {
+        "size": {
+         "field": "Value",
+         "min": 4,
+         "max": 30,
+         "fixed": 6
+        },
+        "color": {
+         "field": "Value"
+        },
+        "opacity": 0.6
+       }
+      },
+      "location": {
+       "mode": "lookup",
+       "lookup": "country",
+       "gazetteer": "public/gazetteer/countries.json"
+      }
+     }
+    ],
+    "tooltip": {
+     "mode": "details"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (country) (increase(api_requests_by_country_total{job=\"dharun-api\",country!=\"unknown\"}[$__range]))",
+     "legendFormat": "",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true,
+     "format": "table"
+    }
+   ],
+   "transformations": [],
+   "id": 37,
+   "gridPos": {
+    "x": 0,
+    "y": 70,
+    "w": 12,
+    "h": 11
+   }
+  },
+  {
+   "type": "bargauge",
+   "title": "Top countries, in this time range",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Requests by country. Requests whose country is unknown are left out.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0
+    },
+    "overrides": []
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "values": false
+    },
+    "showUnfilled": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(20, sum by (country) (increase(api_requests_by_country_total{job=\"dharun-api\",country!=\"unknown\"}[$__range])))",
+     "legendFormat": "{{country}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true
+    }
+   ],
+   "id": 38,
+   "gridPos": {
+    "x": 12,
+    "y": 70,
+    "w": 12,
+    "h": 11
+   }
+  },
+  {
+   "type": "bargauge",
+   "title": "Requests from India by state, in this time range",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "From the IP database. Mobile networks often route a state's users through addresses registered elsewhere (often Mumbai or Delhi), so read this as rough.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0
+    },
+    "overrides": []
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "values": false
+    },
+    "showUnfilled": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sort_desc(sum by (state) (increase(api_requests_by_state_total{job=\"dharun-api\"}[$__range])))",
+     "legendFormat": "{{state}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true
+    }
+   ],
+   "id": 39,
+   "gridPos": {
+    "x": 0,
+    "y": 81,
+    "w": 12,
+    "h": 12
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "Requests per second by country (top 8)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(8, sum by (country) (rate(api_requests_by_country_total{job=\"dharun-api\"}[5m])))",
+     "legendFormat": "{{country}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 40,
+   "gridPos": {
+    "x": 12,
+    "y": 81,
+    "w": 12,
+    "h": 12
+   }
+  },
+  {
+   "type": "geomap",
+   "title": "Cities, in this time range (from the logs)",
+   "datasource": {
+    "type": "loki",
+    "uid": "${logs}"
+   },
+   "description": "The city of each address range, from the IP database. Often the provider's city rather than the visitor's.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "color": {
+      "mode": "continuous-BlPu"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "view": {
+     "id": "coords",
+     "lat": 22,
+     "lon": 40,
+     "zoom": 1.6
+    },
+    "controls": {
+     "showZoom": true,
+     "mouseWheelZoom": true,
+     "showAttribution": true
+    },
+    "basemap": {
+     "type": "default",
+     "name": "Basemap"
+    },
+    "layers": [
+     {
+      "type": "markers",
+      "name": "Requests",
+      "tooltip": true,
+      "config": {
+       "showLegend": true,
+       "style": {
+        "size": {
+         "field": "Value",
+         "min": 4,
+         "max": 30,
+         "fixed": 6
+        },
+        "color": {
+         "field": "Value"
+        },
+        "opacity": 0.6
+       }
+      },
+      "location": {
+       "mode": "coords",
+       "latitude": "lat",
+       "longitude": "lon"
+      }
+     }
+    ],
+    "tooltip": {
+     "mode": "details"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (city, lat, lon) (count_over_time(${log_stream:raw} |= \"\\\"msg\\\":\\\"request\\\"\" | json | __error__=\"\" | lat != \"\" [$__range]))",
+     "queryType": "instant",
+     "datasource": {
+      "type": "loki",
+      "uid": "${logs}"
+     }
+    }
+   ],
+   "transformations": [
+    {
+     "id": "labelsToFields",
+     "options": {
+      "mode": "columns"
+     }
+    },
+    {
+     "id": "merge",
+     "options": {}
+    },
+    {
+     "id": "convertFieldType",
+     "options": {
+      "conversions": [
+       {
+        "targetField": "lat",
+        "destinationType": "number"
+       },
+       {
+        "targetField": "lon",
+        "destinationType": "number"
+       }
+      ],
+      "fields": {}
+     }
+    },
+    {
+     "id": "organize",
+     "options": {
+      "renameByName": {
+       "Value #A": "Value"
+      }
+     }
+    }
+   ],
+   "id": 41,
+   "gridPos": {
+    "x": 0,
+    "y": 93,
+    "w": 12,
+    "h": 12
+   }
+  },
+  {
+   "type": "table",
+   "title": "Top cities, in this time range",
+   "datasource": {
+    "type": "loki",
+    "uid": "${logs}"
+   },
+   "description": "From the request log.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "showHeader": true,
+    "sortBy": [
+     {
+      "displayName": "Requests",
+      "desc": true
+     }
+    ]
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(30, sum by (country, region, city) (count_over_time(${log_stream:raw} |= \"\\\"msg\\\":\\\"request\\\"\" | json | __error__=\"\" | city != \"\" [$__range])))",
+     "queryType": "instant",
+     "datasource": {
+      "type": "loki",
+      "uid": "${logs}"
+     }
+    }
+   ],
+   "transformations": [
+    {
+     "id": "labelsToFields",
+     "options": {
+      "mode": "columns"
+     }
+    },
+    {
+     "id": "merge",
+     "options": {}
+    },
+    {
+     "id": "organize",
+     "options": {
+      "excludeByName": {
+       "Time": true
+      },
+      "indexByName": {
+       "country": 0,
+       "region": 1,
+       "city": 2,
+       "Value": 3,
+       "Value #A": 4
+      },
+      "renameByName": {
+       "Value": "Requests",
+       "Value #A": "Requests",
+       "country": "Country",
+       "region": "State or region",
+       "city": "City"
+      }
+     }
+    }
+   ],
+   "id": 42,
+   "gridPos": {
+    "x": 12,
+    "y": 93,
+    "w": 12,
+    "h": 12
+   }
+  },
+  {
+   "type": "table",
+   "title": "Top networks (internet providers), in this time range",
+   "datasource": {
+    "type": "loki",
+    "uid": "${logs}"
+   },
+   "description": "The organisation the address belongs to: an internet provider, a mobile network, a cloud or a company.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "showHeader": true,
+    "sortBy": [
+     {
+      "displayName": "Requests",
+      "desc": true
+     }
+    ]
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(30, sum by (network, asn, country) (count_over_time(${log_stream:raw} |= \"\\\"msg\\\":\\\"request\\\"\" | json | __error__=\"\" | network != \"\" [$__range])))",
+     "queryType": "instant",
+     "datasource": {
+      "type": "loki",
+      "uid": "${logs}"
+     }
+    }
+   ],
+   "transformations": [
+    {
+     "id": "labelsToFields",
+     "options": {
+      "mode": "columns"
+     }
+    },
+    {
+     "id": "merge",
+     "options": {}
+    },
+    {
+     "id": "organize",
+     "options": {
+      "excludeByName": {
+       "Time": true
+      },
+      "indexByName": {
+       "network": 0,
+       "asn": 1,
+       "country": 2,
+       "Value": 3,
+       "Value #A": 4
+      },
+      "renameByName": {
+       "Value": "Requests",
+       "Value #A": "Requests",
+       "network": "Network",
+       "asn": "AS number",
+       "country": "Country"
+      }
+     }
+    }
+   ],
+   "id": 43,
+   "gridPos": {
+    "x": 0,
+    "y": 105,
+    "w": 12,
+    "h": 12
+   }
+  },
+  {
+   "type": "logs",
+   "title": "Latest requests and where they came from",
+   "datasource": {
+    "type": "loki",
+    "uid": "${logs}"
+   },
+   "options": {
+    "showTime": true,
+    "wrapLogMessage": false,
+    "sortOrder": "Descending",
+    "enableLogDetails": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "datasource": {
+      "type": "loki",
+      "uid": "${logs}"
+     },
+     "queryType": "range",
+     "expr": "${log_stream:raw} |= \"\\\"msg\\\":\\\"request\\\"\" | json | __error__=\"\" | route != \"health\" | line_format \"{{.status}} {{.method}} {{.path}}  ·  {{.city}}, {{.region}}, {{.country}}  ·  {{.network}}\""
+    }
+   ],
+   "id": 44,
+   "gridPos": {
+    "x": 12,
+    "y": 105,
+    "w": 12,
+    "h": 12
+   }
   }
  ]
 }

@@ -4,11 +4,11 @@ India API is built to know as little about you as possible.
 
 ## What is logged
 
-One line per request: the time, the method, the path with its query, the status, how long it took, the country of the request, the browser or program name (user agent) and the referring page. This is used to find faults and abuse. Logs are deleted on a rolling basis.
+One line per request: the time, the method, the path with its query, the status, how long it took, the browser or program name (user agent), the referring page, and roughly where the request came from: country, state or region, city with that city's coordinates, and the network (internet provider) the address belongs to. The place is looked up from your IP address in DB-IP's free database on this server, before the address is dropped; it is the city of the address range, often not where you are. This is used to find faults and abuse and to see where the API is used. Logs are deleted on a rolling basis.
 
 ## What is never logged
 
-- **Your IP address.** It is held in memory for up to a minute to count requests against the rate limit, and never written anywhere.
+- **Your IP address.** It is held in memory for up to a minute to count requests against the rate limit, and never written anywhere. To count how many different visitors come each day and each month, the address is also turned into a one-way hash with a random key that is replaced every day (and, for the monthly count, every month), and the hash is folded into a statistical counter (a HyperLogLog sketch). The counter estimates how many distinct addresses it has seen; no address or hash can be read back out of it. The counters and the current keys are kept on the server so a restart does not reset the count, and each is thrown away when its day or month ends.
 - **Personal values.** For these endpoints the path and query are replaced by `(redacted)` in the log, and the answer is marked `private, no-store` so no shared cache keeps it: {{range $i, $e := .Private}}{{if $i}}, {{end}}`{{$e}}`{{end}}. The same holds for the matching MCP tools.
 - **Request bodies.** Text you POST is processed in memory and dropped once the answer is sent.
 - **Files you upload.** Pictures, PDFs, recordings and invoices are held in memory, or in a temporary folder only this service can read, while the answer is made, and deleted as soon as it is sent. They are never kept, never used to train anything, and never sent to another service: OCR, image, PDF, speech and noise removal programs all run on this server. When a program fails on a file, the log records only which program failed, not what it was given.

@@ -1,6 +1,7 @@
 package api
 
 import (
+	"math"
 	"net/http"
 	"net/netip"
 	"net/url"
@@ -194,4 +195,77 @@ func init() {
 			return "/v1/ip/" + url.PathEscape(ip), err
 		},
 	})
+}
+
+// clientPlace is roughly where a request came from, as far as its address tells: what
+// the access log and the visitor metrics record instead of the address itself.
+type clientPlace struct {
+	country, region, city, network string
+	state                          string // the Indian state's official name, when in India
+	asn                            uint
+	latitude, longitude            *float64
+}
+
+// locate looks up a client address in the IP databases. Without them, or for an address
+// they do not know, the country comes from Cloudflare's header when the server sits
+// behind it.
+func (s *Server) locate(r *http.Request, client string) clientPlace {
+	var place clientPlace
+	addr, err := netip.ParseAddr(client)
+	readers := s.extras.ip.Load()
+	if err == nil && readers != nil && !reserved(addr.Unmap()) {
+		addr = addr.Unmap().WithZone("")
+		var city dbipCity
+		if readers.city.Lookup(addr).Decode(&city) == nil {
+			place.country, place.city = countryCode(city.Country.ISOCode), city.City.Names["en"]
+			if len(city.Subdivisions) > 0 {
+				place.region = city.Subdivisions[0].Names["en"]
+			}
+			place.latitude, place.longitude = city.Location.Latitude, city.Location.Longitude
+		}
+		var network dbipASN
+		if readers.asn.Lookup(addr).Decode(&network) == nil && network.Number != 0 {
+			place.asn, place.network = network.Number, strings.TrimRight(network.Organization, ", ")
+		}
+	}
+	if place.country == "" && s.cfg.TrustProxy {
+		place.country = countryCode(r.Header.Get("CF-IPCountry"))
+	}
+	if place.country == "IN" {
+		if state, ok := india.Lookup(place.region); ok {
+			place.state = state.Name
+		}
+	}
+	return place
+}
+
+// countryCode keeps a two-letter country code and drops anything else, such as
+// Cloudflare's XX (unknown) and T1 (Tor), so metric labels stay a known small set.
+func countryCode(value string) string {
+	if len(value) != 2 || value == "XX" || value == "ZZ" {
+		return ""
+	}
+	for _, letter := range []byte(value) {
+		if letter < 'A' || letter > 'Z' {
+			return ""
+		}
+	}
+	return value
+}
+
+// addTo writes the place into a log entry. Coordinates are those of the city the
+// address range is in, rounded to about a kilometre.
+func (place clientPlace) addTo(entry map[string]any) {
+	for field, value := range map[string]string{"country": place.country, "region": place.region, "city": place.city, "network": place.network} {
+		if value != "" {
+			entry[field] = clip(value, 100)
+		}
+	}
+	if place.asn != 0 {
+		entry["asn"] = place.asn
+	}
+	if place.latitude != nil && place.longitude != nil {
+		entry["lat"] = math.Round(*place.latitude*100) / 100
+		entry["lon"] = math.Round(*place.longitude*100) / 100
+	}
 }
