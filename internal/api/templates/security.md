@@ -17,7 +17,7 @@ Report it privately through [GitHub's vulnerability form]({{.Repo}}/security/adv
 
 ## Check the code
 
-All of it is open source on [GitHub]({{.Repo}}). Every change runs the tests, Go's race detector, `govulncheck` against the Go vulnerability database and `shellcheck` before it can be released, and CodeQL scans the code. The parsers that take your text have fuzz tests. [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/{{.RepoSlug}}) grades the repository's security practices every week, and Dependabot proposes dependency updates.
+All of it is open source on [GitHub]({{.Repo}}). Every change runs the tests, Go's race detector, `govulncheck` against the Go vulnerability database and `shellcheck` before it can be released, and CodeQL scans the code. The parsers that take your text have fuzz tests. [OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/{{.RepoSlug}}) grades the repository's security practices every week, the project holds the [OpenSSF Best Practices](https://www.bestpractices.dev/projects/15520) passing badge, and Dependabot proposes dependency updates.
 
 ## Verify a release
 

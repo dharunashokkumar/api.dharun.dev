@@ -8,6 +8,7 @@ CORS, and an MCP server so AI assistants can use it too.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dharunashokkumar/api.dharun.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/dharunashokkumar/api.dharun.dev)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15520/badge)](https://www.bestpractices.dev/projects/15520)
 [![Licence: AGPL-3.0](https://img.shields.io/badge/licence-AGPL--3.0-blue)](LICENSE)
 
 **Documentation: [api.dharun.dev](https://api.dharun.dev)** · [API reference](https://api.dharun.dev/docs) · [Guides](https://api.dharun.dev/guides) · [Use with AI](https://api.dharun.dev/ai) · [OpenAPI](https://api.dharun.dev/openapi.json) · [llms.txt](https://api.dharun.dev/llms.txt)

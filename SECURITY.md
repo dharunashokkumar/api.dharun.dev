@@ -46,7 +46,8 @@ in the Reserve Bank's lists) are welcome as ordinary issues.
 - CI runs the tests, the race detector, `govulncheck` and `shellcheck` on every change,
   and CodeQL scans the code; the parsers that take caller text have Go fuzz tests.
   Workflow actions are pinned to commits. OpenSSF Scorecard and Dependabot watch the
-  repository.
+  repository, which holds the OpenSSF Best Practices passing badge
+  ([project 15520](https://www.bestpractices.dev/projects/15520)).
 
 ## Verifying a release
 
