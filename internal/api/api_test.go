@@ -258,6 +258,23 @@ func TestLogos(t *testing.T) {
 		t.Errorf("monogram echoed markup: %s", hostile.body)
 	}
 
+	// A renamed company answers to its old ticker; a delisted one keeps its logo.
+	renamed := expectStatus(t, "/v1/logos/GUJENERGY", http.StatusOK)
+	for _, symbol := range []string{"GUJGASLTD", "NSE:GUJGASLTD", "gujgasltd.ns"} {
+		if got := expectStatus(t, "/v1/logos/"+symbol, http.StatusOK); !bytes.Equal(got.body, renamed.body) {
+			t.Errorf("%s did not resolve to the renamed company's logo", symbol)
+		}
+	}
+	if delisted := expectStatus(t, "/v1/logos/GSPL", http.StatusOK); !bytes.HasPrefix(delisted.body, []byte("<svg")) || delisted.header.Get("X-Logo-Fallback") != "" {
+		t.Errorf("delisted company lost its logo: %s", clip(string(delisted.body), 80))
+	}
+	// A listed company without a logo gets the tile without asking for it.
+	for _, path := range []string{"/v1/logos/SBIFUNDS", "/v1/logos/SBIFUNDS?fallback=monogram"} {
+		if tile := expectStatus(t, path, http.StatusOK); tile.header.Get("X-Logo-Fallback") != "monogram" || !bytes.Contains(tile.body, []byte(">SB</text>")) {
+			t.Errorf("%s: unexpected answer %q %s", path, tile.header.Get("X-Logo-Fallback"), clip(string(tile.body), 80))
+		}
+	}
+
 	for _, path := range []string{
 		"/v1/logos/TCS?format=gif", "/v1/logos/TCS?format=png&size=8", "/v1/logos/TCS?format=png&size=4096",
 		"/v1/logos/TCS?format=png&size=abc", "/v1/logos/TCS?fallback=blank", "/v1/logos/TCS?exchange=nyse",
@@ -334,6 +351,35 @@ func TestCompanies(t *testing.T) {
 			t.Errorf("exchange filter leaked %v", c.(map[string]any)["id"])
 		}
 	}
+	// Renamed, delisted and logo-less companies.
+	renamed := expectStatus(t, "/v1/companies/GUJGASLTD", http.StatusOK).data(t)
+	if renamed["id"] != "NSE:GUJENERGY" || renamed["listed"] != true || fmt.Sprint(renamed["aliases"]) != "[GUJGASLTD]" || renamed["delistedOn"] != nil {
+		t.Errorf("renamed company: %v", renamed)
+	}
+	delisted := expectStatus(t, "/v1/companies/INE246F01010", http.StatusOK).data(t)
+	if delisted["id"] != "NSE:GSPL" || delisted["listed"] != false || delisted["delistedOn"] == nil || delisted["marketCap"] != nil || delisted["hasLogo"] != true {
+		t.Errorf("delisted company: %v", delisted)
+	}
+	if noLogo := expectStatus(t, "/v1/companies/SBIFUNDS", http.StatusOK).data(t); noLogo["hasLogo"] != false || noLogo["listed"] != true {
+		t.Errorf("company without a logo: %v", noLogo)
+	}
+	ids := func(path string) (found []string) {
+		for _, c := range expectStatus(t, path, http.StatusOK).list(t) {
+			found = append(found, c.(map[string]any)["id"].(string))
+		}
+		return found
+	}
+	if got := ids("/v1/companies?q=gujarat"); fmt.Sprint(got) != "[NSE:GUJENERGY]" {
+		t.Errorf("search should hide delisted companies, got %v", got)
+	}
+	if got := ids("/v1/companies?q=gujarat&delisted=true"); fmt.Sprint(got) != "[NSE:GUJENERGY NSE:GSPL]" {
+		t.Errorf("delisted=true should include them, got %v", got)
+	}
+	if got := ids("/v1/companies?q=gujgasltd"); fmt.Sprint(got) != "[NSE:GUJENERGY]" {
+		t.Errorf("search by old ticker: %v", got)
+	}
+	expectStatus(t, "/v1/companies?delisted=maybe", http.StatusBadRequest)
+
 	expectStatus(t, "/v1/companies?limit=0", http.StatusBadRequest)
 	expectStatus(t, "/v1/companies?limit=101", http.StatusBadRequest)
 	expectStatus(t, "/v1/companies?offset=-1", http.StatusBadRequest)

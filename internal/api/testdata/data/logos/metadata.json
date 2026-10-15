@@ -1479,6 +1479,76 @@
    "logo_id": "akar-auto-industries-limited",
    "source": "tradingview",
    "source_symbol": "BSE:AAIL"
+  },
+  {
+   "id": "NSE:GUJENERGY",
+   "exchange": "NSE",
+   "ticker": "GUJENERGY",
+   "file": "nse/NSE_GUJENERGY.svg",
+   "company_name": "Gujarat Energy Ltd",
+   "sector": "Utilities",
+   "industry": "Gas Distributors",
+   "one_liner": "Gujarat Energy Ltd operates in the Gas Distributors industry within the Utilities sector.",
+   "isin": "INE844O01030",
+   "currency": "INR",
+   "market_cap": 210961222691,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "is_index_constituent": false,
+   "indexes": [],
+   "listed": true,
+   "delisted_on": null,
+   "aliases": [
+    "GUJGASLTD"
+   ],
+   "logo_id": "gujarat-gas"
+  },
+  {
+   "id": "NSE:GSPL",
+   "exchange": "NSE",
+   "ticker": "GSPL",
+   "file": "nse/NSE_GSPL.svg",
+   "company_name": "Gujarat State Petronet Limited",
+   "sector": "Utilities",
+   "industry": "Gas Distributors",
+   "one_liner": "Gujarat State Petronet Limited operates in the Gas Distributors industry within the Utilities sector.",
+   "isin": "INE246F01010",
+   "currency": "INR",
+   "market_cap": null,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "is_index_constituent": false,
+   "indexes": [],
+   "listed": false,
+   "delisted_on": "2026-10-15",
+   "aliases": [],
+   "logo_id": "gujarat-state-petronet"
+  },
+  {
+   "id": "NSE:SBIFUNDS",
+   "exchange": "NSE",
+   "ticker": "SBIFUNDS",
+   "file": null,
+   "company_name": "SBI Funds Management Limited",
+   "sector": "Finance",
+   "industry": "Investment Managers",
+   "one_liner": "SBI Funds Management Limited operates in the Investment Managers industry within the Finance sector.",
+   "isin": "INE640G01020",
+   "currency": "INR",
+   "market_cap": 1057317176493,
+   "security_type": "stock",
+   "security_subtype": "common",
+   "is_index_constituent": true,
+   "indexes": [
+    {
+     "name": "Nifty IPO",
+     "symbol": "NSE:NIFTY_IPO"
+    }
+   ],
+   "listed": true,
+   "delisted_on": null,
+   "aliases": [],
+   "logo_id": null
   }
  ]
 }

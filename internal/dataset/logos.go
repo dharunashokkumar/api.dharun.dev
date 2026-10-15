@@ -21,13 +21,18 @@ const PNGMasterSize = 512
 func init() {
 	register(&Spec{
 		Name:   "logos",
-		Schema: 1,
+		Schema: 2,
 		DDL: `
 CREATE TABLE logos (
   id TEXT PRIMARY KEY, exchange TEXT NOT NULL, ticker TEXT NOT NULL, company TEXT, sector TEXT,
   industry TEXT, one_line TEXT, isin TEXT, currency TEXT, market_cap REAL,
   is_index_constituent INTEGER NOT NULL DEFAULT 0, indexes TEXT NOT NULL DEFAULT '[]',
-  svg BLOB NOT NULL, png BLOB
+  listed INTEGER NOT NULL DEFAULT 1, delisted_on TEXT, svg BLOB, png BLOB
+) WITHOUT ROWID;
+-- Earlier tickers of renamed companies.
+CREATE TABLE logo_aliases (
+  exchange TEXT NOT NULL, alias TEXT NOT NULL, id TEXT NOT NULL REFERENCES logos(id),
+  PRIMARY KEY (exchange, alias)
 ) WITHOUT ROWID;`,
 		Build: buildLogos,
 	})
@@ -57,7 +62,10 @@ type logoMetadata struct {
 		ID                 string   `json:"id"`
 		Exchange           string   `json:"exchange"`
 		Ticker             string   `json:"ticker"`
-		File               string   `json:"file"`
+		File               string   `json:"file"` // empty when the source has no logo
+		Listed             *bool    `json:"listed"`
+		DelistedOn         string   `json:"delisted_on"`
+		Aliases            []string `json:"aliases"`
 		Company            string   `json:"company_name"`
 		Sector             string   `json:"sector"`
 		Industry           string   `json:"industry"`
@@ -83,7 +91,12 @@ func buildLogos(b *Builder) error {
 	}
 
 	svgs := make([][]byte, len(metadata.Logos))
+	withLogo := 0
 	for i, logo := range metadata.Logos {
+		if logo.File == "" {
+			continue
+		}
+		withLogo++
 		svg, err := os.ReadFile(b.Path("logos", filepath.FromSlash(logo.File)))
 		if err != nil {
 			return err
@@ -97,17 +110,23 @@ func buildLogos(b *Builder) error {
 
 	pngs := make([][]byte, len(svgs))
 	if b.Resvg != "" {
-		b.Logf("rendering %d PNG masters with %s", len(svgs), b.Resvg)
+		b.Logf("rendering %d PNG masters with %s", withLogo, b.Resvg)
 		if err := renderPNGs(b.Resvg, svgs, pngs); err != nil {
 			return err
 		}
 	}
 
-	insert, err := b.Tx.Prepare(`INSERT INTO logos VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+	insert, err := b.Tx.Prepare(`INSERT INTO logos (id, exchange, ticker, company, sector, industry, one_line, isin,
+  currency, market_cap, is_index_constituent, indexes, listed, delisted_on, svg, png) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
 	if err != nil {
 		return err
 	}
 	defer insert.Close()
+	alias, err := b.Tx.Prepare(`INSERT INTO logo_aliases VALUES (?,?,?)`)
+	if err != nil {
+		return err
+	}
+	defer alias.Close()
 	for i, logo := range metadata.Logos {
 		names := []string{}
 		for _, index := range logo.Indexes {
@@ -116,14 +135,25 @@ func buildLogos(b *Builder) error {
 			}
 		}
 		indexes, _ := json.Marshal(names)
-		var png any
+		var svg, png any
+		if svgs[i] != nil {
+			svg = svgs[i]
+		}
 		if pngs[i] != nil {
 			png = pngs[i]
 			b.Add("logos_png", 1)
 		}
+		listed := logo.Listed == nil || *logo.Listed
 		if _, err := insert.Exec(logo.ID, logo.Exchange, logo.Ticker, logo.Company, logo.Sector, logo.Industry,
-			logo.OneLine, nullable(logo.ISIN), logo.Currency, logo.MarketCap, logo.IsIndexConstituent, string(indexes), svgs[i], png); err != nil {
+			logo.OneLine, nullable(logo.ISIN), logo.Currency, logo.MarketCap, logo.IsIndexConstituent, string(indexes),
+			listed, nullable(logo.DelistedOn), svg, png); err != nil {
 			return fmt.Errorf("%s: %w", logo.ID, err)
+		}
+		for _, old := range logo.Aliases {
+			if _, err := alias.Exec(logo.Exchange, strings.ToUpper(old), logo.ID); err != nil {
+				return fmt.Errorf("%s: alias %s: %w", logo.ID, old, err)
+			}
+			b.Add("logo_aliases", 1)
 		}
 		b.Add("logos", 1)
 	}
@@ -191,8 +221,10 @@ func renderPNGs(resvg string, svgs, pngs [][]byte) error {
 			}
 		}(w)
 	}
-	for i := range svgs {
-		jobs <- i
+	for i, svg := range svgs {
+		if svg != nil {
+			jobs <- i
+		}
 	}
 	close(jobs)
 	wg.Wait()

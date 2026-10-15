@@ -30,7 +30,7 @@ JavaScript and Python.
 
 | API | Example | What you get |
 |---|---|---|
-| [Company logos](https://api.dharun.dev/docs/logos) | `/v1/logos/TCS`, `/v1/companies/RELIANCE` | SVG or PNG logo of an NSE or BSE listed company; sector, ISIN, market cap, indexes |
+| [Company logos](https://api.dharun.dev/docs/logos) | `/v1/logos/TCS`, `/v1/companies/RELIANCE` | SVG or PNG logo of an NSE or BSE listed company, REITs and InvITs included; sector, ISIN, market cap, indexes; old tickers still work |
 | [Pincodes](https://api.dharun.dev/docs/pincode) | `/v1/pincode/637001`, `/v1/pincode/near?lat=&lng=` | Post offices, district, state, coordinates; pincodes near a point |
 | [IFSC and banks](https://api.dharun.dev/docs/ifsc) | `/v1/ifsc/SBIN0000001` | Bank, branch, address, MICR, payment systems |
 | [RTO codes](https://api.dharun.dev/docs/rto) | `/v1/rto/TN-28` | Transport office for a vehicle registration |
@@ -178,7 +178,7 @@ accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 | Name detection | [IndicNER](https://huggingface.co/ai4bharat/IndicNER) (AI4Bharat); [bert-base-NER](https://huggingface.co/dslim/bert-base-NER) | MIT | fetched by each server |
 | Moderation | [Detoxify multilingual](https://huggingface.co/unitary/multilingual-toxic-xlm-roberta) (Unitary); [Hinglish toxicity](https://huggingface.co/darelphilip/hinglish-toxicity-classifier) (Darel Philip, on L3Cube HingRoBERTa, CC BY 4.0); [Tanglish offensive language](https://huggingface.co/seanbenhur/tanglish-offensive-language-identification) (Sean Benhur) | Apache-2.0; MIT; Apache-2.0 | fetched by each server |
 | Disposable email domains | [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) | CC0 | 9,881 domains |
-| Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 3,156 logos |
+| Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 5,599 companies, 5,354 with a logo |
 
 Exact versions, retrieval dates and checksums are in [`data/sources.json`](data/sources.json)
 (the models: pinned by revision and checksum in `internal/dataset/aimodels.go`), and every
@@ -263,7 +263,8 @@ Datasets that cannot be fetched by a program are updated by hand and ship with a
 
 ```bash
 go run ./cmd/apidata import pincode -file pincode.csv    # CSV saved from data.gov.in
-python tools/scrape_logo_metadata.py --refresh           # logo metadata
+python tools/scrape_logos.py --dry-run                   # logos: see new, renamed and delisted companies
+python tools/scrape_logos.py                             # then download and write them
 go run ./cmd/apidata status                              # which copy of each dataset is in use
 ```
 

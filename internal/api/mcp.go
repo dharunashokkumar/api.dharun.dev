@@ -92,9 +92,9 @@ var stateArg = text("State code or name, for example TN or Tamil Nadu.")
 var mcpTools = []mcpTool{
 	{
 		Name:        "get_company_logo",
-		Description: "Get the logo URLs (SVG and PNG) and details of a company listed on India's NSE or BSE. Accepts a ticker (TCS), exchange-qualified ticker (NSE:TCS), Yahoo symbol (TCS.NS) or ISIN.",
+		Description: "Get the logo URLs (SVG and PNG) and details of a company listed on India's NSE or BSE. Accepts a ticker (TCS), exchange-qualified ticker (NSE:TCS), Yahoo symbol (TCS.NS), ISIN or the old ticker of a renamed company. listed is false for a delisted company.",
 		InputSchema: schema([]string{"symbol"}, map[string]any{
-			"symbol":   text("Ticker, exchange-qualified ticker, Yahoo symbol or ISIN."),
+			"symbol":   text("Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or earlier ticker."),
 			"exchange": oneOf("Force an exchange. A bare ticker prefers NSE.", "nse", "bse"),
 		}),
 		path: func(args map[string]any) (string, error) {
@@ -104,7 +104,7 @@ var mcpTools = []mcpTool{
 	},
 	{
 		Name:        "search_companies",
-		Description: "Search Indian listed companies by ticker, name, sector, industry, ISIN or index name (for example 'Nifty 50'). Returns details with logo URLs.",
+		Description: "Search Indian listed companies by ticker, earlier ticker, name, sector, industry, ISIN or index name (for example 'Nifty 50'). Returns details with logo URLs. Only companies listed today.",
 		InputSchema: schema([]string{"query"}, map[string]any{
 			"query":    text("Search text."),
 			"exchange": oneOf("Limit to one exchange.", "nse", "bse"),

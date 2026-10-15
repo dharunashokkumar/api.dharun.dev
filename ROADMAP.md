@@ -82,8 +82,8 @@ totals, pull-based updater with rollback.
 
 | API | Endpoint | Data from | Refresh |
 |---|---|---|---|
-| Company logos | `/v1/logos/{symbol}` | Collected from TradingView; logos are company trademarks | Manual (scraper) |
-| Companies | `/v1/companies/{symbol}` | Same collection | Manual (scraper) |
+| Company logos | `/v1/logos/{symbol}` | Collected from TradingView; logos are company trademarks | Manual: `tools/scrape_logos.py` |
+| Companies | `/v1/companies/{symbol}` | Same collection | Manual: `tools/scrape_logos.py` |
 | Pincodes | `/v1/pincode/{pincode}` | All India Pincode Directory, Department of Posts (data.gov.in), GODL-India | Manual: the portal refuses scripted downloads |
 | IFSC and banks | `/v1/ifsc/{code}`, `/v1/banks` | `razorpay/ifsc` releases, compiled from RBI and NPCI lists | Moves to automatic, weekly |
 | RTO codes | `/v1/rto/{code}` | Wikipedia, CC BY-SA 4.0 | Moves to automatic, monthly, held back if many rows change at once |
@@ -369,6 +369,21 @@ create a second one, knowing it sits in the API's environment file on the server
 Related open point: the API's own per-IP allowance has the same problem. Apps on a
 hosting platform that share an outgoing address share one allowance.
 
+### Logo and company update (built 2026-10-15)
+
+The set was last collected on 2026-04-29 (3,156 logos, by hand from the browser) and had
+missed half a year of IPOs. Dharun, 2026-10-15: add every company listed on NSE, those
+listed only on BSE, and REITs and InvITs; keep old tickers working; keep delisted
+companies and mark them; give listed companies without a logo the initials tile; keep
+the update a script run by hand (the server never fetches from TradingView).
+
+| Part | What | Status |
+|---|---|---|
+| `tools/scrape_logos.py` | Replaces the browser console script and `scrape_logo_metadata.py`. Reads every NSE and BSE listing from the TradingView scanner (shares, plus closed-end funds named as REITs or InvITs, never ETFs or fixed-maturity plans), skips BSE rows whose ISIN is on NSE unless that BSE row was already held, downloads `s3-symbol-logo.tradingview.com/<logoid>.svg` for new or changed logos (`--recheck` for all), strips TradingView's comment and applies the build's SVG checks. Companies are followed by ISIN, or by issuer code (the first seven characters) when a split or bonus gave the share a new ISIN: a new ticker for a known company is a rename and the old ticker becomes an alias; a company whose ISIN is gone is kept with `listed: false` and the date it was first missed. `--dry-run` reports added, renamed, relisted, delisted and dropped before anything is written | Done |
+| Run of 2026-10-15 | 5,599 companies (NSE 3,207, BSE 2,392), 5,575 listed, 5,354 with a logo. 2,443 added, 16 renamed (for example `GUJGASLTD` to `GUJENERGY`, `HEG` to `HEGAM`), 24 delisted (for example `GSPL`, `CIGNITITEC`, `JBCHEPHARM`), 245 listed without a logo on TradingView (often recent IPOs such as `SBIFUNDS`). Every existing company's details refreshed and every logo checked again: about 380 logos had new artwork | Done |
+| Dataset `logos`, schema 2 | `svg` and `png` may be empty; `listed`, `delisted_on`; table `logo_aliases` | Done |
+| API | Old tickers resolve (after the tickers in use today). A company without a logo gets the monogram without `fallback`, with `X-Logo-Fallback: monogram`. `/v1/companies` adds `listed`, `delistedOn`, `aliases`, `hasLogo`; search leaves delisted companies out unless `delisted=true`; a lookup by ticker, old ticker or ISIN always finds them | Done |
+
 ### Ideas not scheduled yet
 
 From the first brainstorm, kept so they are not lost. None has a source or a decision yet.
@@ -520,7 +535,7 @@ server:  release/seed/<dataset>.db      replaced on every deploy
 | Space weather | services.swpc.noaa.gov | Every 50 minutes; a failure is retried after one interval | Server (never in a release) |
 | Pincodes | data.gov.in file saved by hand | When Dharun runs it | Repository seed |
 | Central government holidays | DoPT memorandum, typed in | Yearly, around July | Repository seed |
-| Logos and company details | TradingView scraper | When Dharun runs it | Repository seed |
+| Logos and company details | TradingView scanner and logo files, `tools/scrape_logos.py` | When Dharun runs it (last 2026-10-15) | Repository seed |
 | Thirukkural, phone series, constituencies | See section 4 | Rarely | Repository seed |
 
 ## 10. Questions settled on 2026-10-13
@@ -627,6 +642,7 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-14 | The launch (listings, pull requests, posts) waits until the remaining roadmap rounds are built |
 | 2026-10-14 | Every API change updates every description of it in the same change: checklist in CLAUDE.md, "Keeping every description in step" |
 | 2026-10-14 | Round 2 (uploads) builds every tool, model-based ones included: 10 MB uploads, body or multipart, no URL fetching, nothing stored or logged; libvips for images; apt packages plus programs in the release plus server-fetched models; all Piper voices for Indian languages, licence named per voice; IS-Net for background removal |
+| 2026-10-15 | Logos: every NSE company plus BSE-only companies, REITs and InvITs; old tickers stay as aliases; delisted companies kept and marked, hidden from search unless asked; companies without a logo get the monogram; updates stay a script run by hand |
 | 2026-10-15 | The API container gets 10 CPUs and 5 GB (the host has cores to spare), the service `MemoryMax=3G`; speech keeps a 3,000-character limit. Give more hardware before cutting a feature |
 | 2026-10-15 | The GPL source of the espeak-ng inside Piper is attached to every release (`espeak-ng-source.tar.gz`) rather than offered on request |
 | 2026-10-15 | Raise the OpenSSF Scorecard with the fixes that keep push-to-main deploys: no pull request reviews or branch rules that require them |

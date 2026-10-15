@@ -89,22 +89,12 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 			s.notFound(w, r, `No logo found for "`+symbol+`". Add ?fallback=monogram for a placeholder.`)
 			return
 		}
-		s.metrics.observeLogo(format, "fallback")
-		letters, background := monogram(symbol)
-		w.Header().Set("X-Logo-Fallback", "monogram")
-		if format == "svg" {
-			w.Header().Set("Content-Security-Policy", svgPolicy)
-			writeBody(w, r, http.StatusOK, monogramSVG(letters, background), typeSVG, cacheShort, false)
-			return
-		}
-		image, err := s.png.get("monogram:"+letters+"|"+strconv.Itoa(size), func() ([]byte, error) {
-			return monogramPNG(letters, background, size)
-		})
-		if err != nil {
-			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Could not draw the placeholder.")
-			return
-		}
-		writeBody(w, r, http.StatusOK, image, typePNG, cacheShort, false)
+		s.serveMonogram(w, r, symbol, format, size)
+		return
+	}
+	if !c.HasLogo {
+		// A listed company the source has no logo for: always the tile, so its logo URL never breaks.
+		s.serveMonogram(w, r, c.Ticker, format, size)
 		return
 	}
 
@@ -148,6 +138,26 @@ func (s *Server) handleLogo(w http.ResponseWriter, r *http.Request) {
 }
 
 var errNoPNG = errors.New("no PNG master")
+
+// serveMonogram answers with the initials tile for symbol, marked with X-Logo-Fallback.
+func (s *Server) serveMonogram(w http.ResponseWriter, r *http.Request, symbol, format string, size int) {
+	s.metrics.observeLogo(format, "fallback")
+	letters, background := monogram(symbol)
+	w.Header().Set("X-Logo-Fallback", "monogram")
+	if format == "svg" {
+		w.Header().Set("Content-Security-Policy", svgPolicy)
+		writeBody(w, r, http.StatusOK, monogramSVG(letters, background), typeSVG, cacheShort, false)
+		return
+	}
+	image, err := s.png.get("monogram:"+letters+"|"+strconv.Itoa(size), func() ([]byte, error) {
+		return monogramPNG(letters, background, size)
+	})
+	if err != nil {
+		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Could not draw the placeholder.")
+		return
+	}
+	writeBody(w, r, http.StatusOK, image, typePNG, cacheShort, false)
+}
 
 // resizePNG scales the stored master down to the requested edge length.
 func resizePNG(master []byte, size int) ([]byte, error) {

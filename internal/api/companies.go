@@ -29,6 +29,10 @@ type company struct {
 	MarketCap          *float64 `json:"marketCap"`
 	IsIndexConstituent bool     `json:"isIndexConstituent"`
 	Indexes            []string `json:"indexes"`
+	Listed             bool     `json:"listed"`
+	DelistedOn         *string  `json:"delistedOn"`
+	Aliases            []string `json:"aliases"`
+	HasLogo            bool     `json:"hasLogo"`
 
 	marketCap float64
 	search    string
@@ -39,6 +43,7 @@ type companyIndex struct {
 	byExact    map[string][]*company
 	byLoose    map[string][]*company
 	byISIN     map[string][]*company
+	byAlias    map[string][]*company // earlier tickers, exact and punctuation-insensitive
 	sectors    []string
 	indexNames []string
 }
@@ -52,14 +57,34 @@ var (
 )
 
 func newCompanyIndex() *companyIndex {
-	return &companyIndex{byExact: map[string][]*company{}, byLoose: map[string][]*company{}, byISIN: map[string][]*company{}}
+	return &companyIndex{byExact: map[string][]*company{}, byLoose: map[string][]*company{}, byISIN: map[string][]*company{},
+		byAlias: map[string][]*company{}}
 }
 
 func loadCompanies(logos *handle) (*companyIndex, error) {
 	if logos == nil {
 		return newCompanyIndex(), nil
 	}
-	rows, err := logos.db.Query(`SELECT id, exchange, ticker, company, sector, industry, one_line, isin, currency, market_cap, is_index_constituent, indexes FROM logos`)
+	aliases := map[string][]string{}
+	aliasRows, err := logos.db.Query(`SELECT id, alias FROM logo_aliases ORDER BY alias`)
+	if err != nil {
+		return nil, err
+	}
+	for aliasRows.Next() {
+		var id, alias string
+		if err := aliasRows.Scan(&id, &alias); err != nil {
+			aliasRows.Close()
+			return nil, err
+		}
+		aliases[id] = append(aliases[id], alias)
+	}
+	aliasRows.Close()
+	if err := aliasRows.Err(); err != nil {
+		return nil, err
+	}
+
+	rows, err := logos.db.Query(`SELECT id, exchange, ticker, company, sector, industry, one_line, isin, currency, market_cap,
+  is_index_constituent, indexes, listed, delisted_on, svg IS NOT NULL FROM logos`)
 	if err != nil {
 		return nil, err
 	}
@@ -69,11 +94,19 @@ func loadCompanies(logos *handle) (*companyIndex, error) {
 	sectors, indexNames := map[string]bool{}, map[string]bool{}
 	for rows.Next() {
 		var c company
-		var name, sector, industry, oneLine, isin, currency sql.NullString
+		var name, sector, industry, oneLine, isin, currency, delistedOn sql.NullString
 		var marketCap sql.NullFloat64
 		var indexes string
-		if err := rows.Scan(&c.ID, &c.Exchange, &c.Ticker, &name, &sector, &industry, &oneLine, &isin, &currency, &marketCap, &c.IsIndexConstituent, &indexes); err != nil {
+		if err := rows.Scan(&c.ID, &c.Exchange, &c.Ticker, &name, &sector, &industry, &oneLine, &isin, &currency, &marketCap,
+			&c.IsIndexConstituent, &indexes, &c.Listed, &delistedOn, &c.HasLogo); err != nil {
 			return nil, err
+		}
+		if delistedOn.Valid {
+			c.DelistedOn = &delistedOn.String
+		}
+		c.Aliases = aliases[c.ID]
+		if c.Aliases == nil {
+			c.Aliases = []string{}
 		}
 		c.Company, c.Sector, c.Industry, c.OneLine, c.ISIN, c.Currency = name.String, sector.String, industry.String, oneLine.String, isin.String, currency.String
 		if marketCap.Valid {
@@ -82,7 +115,7 @@ func loadCompanies(logos *handle) (*companyIndex, error) {
 		if err := json.Unmarshal([]byte(indexes), &c.Indexes); err != nil {
 			return nil, err
 		}
-		c.search = fold(strings.Join(append([]string{c.ID, c.Ticker, c.Company, c.Sector, c.Industry, c.ISIN}, c.Indexes...), " "))
+		c.search = fold(strings.Join(append(append([]string{c.ID, c.Ticker, c.Company, c.Sector, c.Industry, c.ISIN}, c.Indexes...), c.Aliases...), " "))
 
 		entry := &c
 		index.all = append(index.all, entry)
@@ -90,6 +123,12 @@ func loadCompanies(logos *handle) (*companyIndex, error) {
 		index.byLoose[looseKey(c.Ticker)] = append(index.byLoose[looseKey(c.Ticker)], entry)
 		if c.ISIN != "" {
 			index.byISIN[strings.ToUpper(c.ISIN)] = append(index.byISIN[strings.ToUpper(c.ISIN)], entry)
+		}
+		for _, alias := range c.Aliases {
+			index.byAlias[alias] = append(index.byAlias[alias], entry)
+			if loose := looseKey(alias); loose != alias {
+				index.byAlias[loose] = append(index.byAlias[loose], entry)
+			}
 		}
 		if c.Sector != "" {
 			sectors[c.Sector] = true
@@ -102,8 +141,8 @@ func loadCompanies(logos *handle) (*companyIndex, error) {
 		return nil, err
 	}
 
-	// NSE first, then the larger company, so a bare ticker resolves the way most callers expect.
-	for _, group := range []map[string][]*company{index.byExact, index.byLoose, index.byISIN} {
+	// Listed first, then NSE, then the larger company, so a bare ticker resolves the way most callers expect.
+	for _, group := range []map[string][]*company{index.byExact, index.byLoose, index.byISIN, index.byAlias} {
 		for _, matches := range group {
 			sort.SliceStable(matches, func(a, b int) bool { return preferred(matches[a], matches[b]) })
 		}
@@ -113,14 +152,17 @@ func loadCompanies(logos *handle) (*companyIndex, error) {
 }
 
 func preferred(a, b *company) bool {
+	if a.Listed != b.Listed {
+		return a.Listed
+	}
 	if a.Exchange != b.Exchange {
 		return a.Exchange == "NSE"
 	}
 	return a.marketCap > b.marketCap
 }
 
-// resolve accepts TCS, NSE:TCS, NSE_TCS, TCS.NS / TCS.BO, an ISIN, and punctuation
-// variants such as M&M / MM or BAJAJ-AUTO / BAJAJ_AUTO.
+// resolve accepts TCS, NSE:TCS, NSE_TCS, TCS.NS / TCS.BO, an ISIN, an earlier ticker of a
+// renamed company, and punctuation variants such as M&M / MM or BAJAJ-AUTO / BAJAJ_AUTO.
 func (index *companyIndex) resolve(symbol, exchangeHint string) (*company, error) {
 	ticker, exchange := parseSymbol(symbol)
 	if hint, err := parseExchange(exchangeHint); err != nil {
@@ -132,12 +174,13 @@ func (index *companyIndex) resolve(symbol, exchangeHint string) (*company, error
 		return nil, nil
 	}
 
-	// Exact spelling wins over an ISIN, which wins over the punctuation-insensitive match.
+	// Exact spelling wins over an ISIN, then an earlier ticker, then the punctuation-insensitive
+	// matches, so a ticker in use today always beats a company's old name for it.
 	candidates := [][]*company{index.byExact[ticker]}
 	if isinPattern.MatchString(ticker) {
 		candidates = append(candidates, index.byISIN[ticker])
 	}
-	candidates = append(candidates, index.byLoose[looseKey(ticker)])
+	candidates = append(candidates, index.byAlias[ticker], index.byLoose[looseKey(ticker)], index.byAlias[looseKey(ticker)])
 	for _, list := range candidates {
 		for _, c := range list {
 			if exchange == "" || c.Exchange == exchange {
@@ -174,6 +217,7 @@ func parseExchange(value string) (string, error) {
 
 type companyQuery struct {
 	text, exchange, sector, index string
+	delisted                      bool
 	limit, offset                 int
 }
 
@@ -188,6 +232,9 @@ func (index *companyIndex) searchCompanies(q companyQuery) (total int, results [
 	var matches []scored
 next:
 	for _, c := range index.all {
+		if !c.Listed && !q.delisted {
+			continue
+		}
 		if q.exchange != "" && c.Exchange != q.exchange {
 			continue
 		}
@@ -350,11 +397,20 @@ func (s *Server) handleCompanySearch(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, err.Error())
 		return
 	}
+	var delisted bool
+	switch strings.ToLower(strings.TrimSpace(query.Get("delisted"))) {
+	case "", "false":
+	case "true":
+		delisted = true
+	default:
+		s.badRequest(w, r, "delisted must be true or false.")
+		return
+	}
 	info(r).subject = query.Get("q")
 
 	total, found := s.companies.Load().searchCompanies(companyQuery{
 		text: query.Get("q"), exchange: exchange, sector: query.Get("sector"), index: query.Get("index"),
-		limit: limit, offset: offset,
+		delisted: delisted, limit: limit, offset: offset,
 	})
 	views := make([]companyView, len(found))
 	for i, c := range found {

@@ -13,7 +13,11 @@ A watchlist or portfolio screen reads much faster with logos. The logo endpoint 
 <img src="https://api.dharun.dev/v1/logos/TCS" alt="TCS" width="32" height="32">
 ```
 
-A symbol can be a bare ticker (`TCS`, NSE is preferred), an exchange-qualified ticker (`NSE:TCS`), a Yahoo Finance symbol (`TCS.NS`) or an ISIN (`INE467B01029`).
+A symbol can be a bare ticker (`TCS`, NSE is preferred), an exchange-qualified ticker (`NSE:TCS`), a Yahoo Finance symbol (`TCS.NS`) or an ISIN (`INE467B01029`). The set covers every company listed on NSE, those listed only on BSE, and REITs and InvITs.
+
+## Renamed and delisted companies
+
+When a company changes its ticker, the old one keeps working, so a watchlist saved years ago still shows the right logo. A delisted company keeps its logo too; `/v1/companies/{symbol}` says `"listed": false` with the date it was first missed, and search leaves it out unless you add `delisted=true`.
 
 ## PNG at a set size
 
@@ -27,7 +31,9 @@ Asking for twice the size you display keeps it sharp on high-density screens.
 
 ## When there is no logo
 
-An unknown symbol answers `404`, which shows as a broken image. With `fallback=monogram` it answers with a tile of the company's initials instead, and sets the `X-Logo-Fallback` header so you can tell:
+A listed company that has no published logo yet, often a recent IPO, always gets a tile of its initials, with the `X-Logo-Fallback: monogram` header. `/v1/companies/{symbol}` shows this as `"hasLogo": false`.
+
+An unknown symbol answers `404`, which shows as a broken image. With `fallback=monogram` it answers with the initials tile instead, and sets the same header so you can tell:
 
 ```html
 <img src="https://api.dharun.dev/v1/logos/NEWCO?fallback=monogram" alt="NewCo" width="32" height="32">

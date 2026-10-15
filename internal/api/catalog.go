@@ -104,15 +104,15 @@ var baseCatalog = []apiGroup{
 		Category:  "money",
 		Title:     "Company logos",
 		Tagline:   "Logos and details for companies listed on NSE and BSE.",
-		Intro:     "Put a ticker in the URL and get the logo back as SVG or PNG. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO) or an ISIN. A bare ticker prefers NSE.",
+		Intro:     "Put a ticker in the URL and get the logo back as SVG or PNG. Every company listed on NSE, those listed only on BSE, and REITs and InvITs. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO), an ISIN, or the old ticker of a renamed company. A bare ticker prefers NSE. Delisted companies are kept and marked.",
 		SourceKey: "logos",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/logos/{symbol}", Summary: "Logo image for a listed company", Image: true,
-				Doc:     "Returns the image itself, ready for an <img> tag. Unknown symbols return 404 unless fallback=monogram is set.",
+				Doc:     "Returns the image itself, ready for an <img> tag. A listed company without a published logo gets an initials tile, marked with the X-Logo-Fallback: monogram header. Unknown symbols return 404 unless fallback=monogram is set.",
 				Example: "/v1/logos/TCS",
 				Params: []param{
-					{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Ticker, exchange-qualified ticker, Yahoo symbol or ISIN. A .svg or .png suffix selects the format."},
+					{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or earlier ticker. A .svg or .png suffix selects the format."},
 					{Name: "format", In: "query", Type: "string", Enum: []string{"svg", "png"}, Doc: "Image format. Default svg."},
 					{Name: "size", In: "query", Type: "integer", Doc: "PNG width and height in pixels, " + strconv.Itoa(pngMinSize) + " to " + strconv.Itoa(pngMaxSize) + ". Default " + strconv.Itoa(pngDefaultSize) + "."},
 					{Name: "fallback", In: "query", Type: "string", Enum: []string{"monogram"}, Doc: "Return an initials tile instead of 404 for unknown symbols."},
@@ -121,22 +121,23 @@ var baseCatalog = []apiGroup{
 			},
 			{
 				Path: "/v1/companies/{symbol}", Summary: "Details of a listed company",
-				Doc:     "Name, sector, industry, ISIN, market capitalisation, index memberships and logo URLs.",
+				Doc:     "Name, sector, industry, ISIN, market capitalisation, index memberships and logo URLs. listed is false for a delisted company (with delistedOn, the date it was first missed); aliases holds earlier tickers; hasLogo is false when the logo URL serves an initials tile.",
 				Example: "/v1/companies/RELIANCE",
 				Params: []param{
-					{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Ticker, exchange-qualified ticker, Yahoo symbol or ISIN."},
+					{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or earlier ticker."},
 					{Name: "exchange", In: "query", Type: "string", Enum: []string{"nse", "bse"}, Doc: "Force an exchange."},
 				},
 			},
 			{
 				Path: "/v1/companies", Summary: "Search listed companies",
-				Doc:     "Searches ticker, company name, sector, industry, ISIN and index names. Best match first.",
+				Doc:     "Searches ticker, earlier tickers, company name, sector, industry, ISIN and index names. Best match first. Delisted companies are left out unless delisted=true.",
 				Example: "/v1/companies?q=tata&limit=5",
 				Params: []param{
 					{Name: "q", In: "query", Type: "string", Doc: "Search text."},
 					{Name: "exchange", In: "query", Type: "string", Enum: []string{"nse", "bse"}, Doc: "Limit to one exchange."},
 					{Name: "sector", In: "query", Type: "string", Doc: "Exact sector name."},
 					{Name: "index", In: "query", Type: "string", Doc: "Index name, for example Nifty 50."},
+					{Name: "delisted", In: "query", Type: "string", Enum: []string{"true", "false"}, Doc: "Include delisted companies. Default false."},
 					limitParam, offsetParam,
 				},
 			},

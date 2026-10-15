@@ -73,7 +73,7 @@ jobs:
         run: shellcheck deploy/*.sh tools/*.sh
 
       - name: Check the logo scraper compiles
-        run: python3 -m py_compile tools/scrape_logo_metadata.py
+        run: python3 -m py_compile tools/scrape_logos.py
 
       # Releases from main are numbered 1.1.<run>; anything else builds as a test version.
       - id: version
