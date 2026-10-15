@@ -108,16 +108,19 @@ func init() {
 			Attribution: "Embeddings by multilingual-e5-small (Wang et al., Multilingual E5 Text Embeddings, 2024), MIT.",
 		},
 	})
+	// The uint8 file, not int8: int8 weights with uint8 activations can overflow in ONNX
+	// Runtime on processors without VNNI, and on the server the int8 file scored a
+	// matching Tamil passage 0.001 where the reference gives 0.997.
 	registerModelPack(modelPack{
 		name:    "reranker",
-		version: "bge-reranker-v2-m3@" + rerankerRevision[:7],
+		version: "bge-reranker-v2-m3-uint8@" + rerankerRevision[:7],
 		models:  1,
 		files: []modelFile{
-			{"model", hf("onnx-community/bge-reranker-v2-m3-ONNX", rerankerRevision, "onnx/model_int8.onnx"), "912fc1215c2dbff6499700534bd8d31253af01573861abbfc43afd1fab6cce5d", ".onnx"},
+			{"model", hf("onnx-community/bge-reranker-v2-m3-ONNX", rerankerRevision, "onnx/model_uint8.onnx"), "753fd4a83b13c66f06c3cdc8734397399b7301274900f34a36afa68589a4c1f9", ".onnx"},
 			{"tokenizer", hf("onnx-community/bge-reranker-v2-m3-ONNX", rerankerRevision, "tokenizer.json"), "8bf8afbfd11306bd872018c53bfdf2e160a56f8edbcf49933324404791c148d3", ".json"},
 		},
 		source: Source{
-			Name:        "bge-reranker-v2-m3 (int8)",
+			Name:        "bge-reranker-v2-m3 (uint8)",
 			Publisher:   "BAAI; ONNX export by onnx-community",
 			URL:         "https://huggingface.co/BAAI/bge-reranker-v2-m3",
 			Licence:     "Apache-2.0",

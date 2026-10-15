@@ -235,7 +235,7 @@ Dharun's decisions, 2026-10-15:
 | API | Endpoint | How | Status |
 |---|---|---|---|
 | Embeddings | `/v1/embed` | multilingual-e5-small, int8 (MIT): 384 numbers per text, query and passage prefixes, mean pooling, unit length; up to 64 texts | Built |
-| Reranking | `/v1/rerank` | bge-reranker-v2-m3, int8 (Apache-2.0), up to 100 documents | Built |
+| Reranking | `/v1/rerank` | bge-reranker-v2-m3, uint8 (Apache-2.0), up to 100 documents. The int8 file gave wrong scores on the server's processor (no VNNI: int8 weights with uint8 activations overflow in ONNX Runtime); the uint8 file matches the reference. Embeddings and moderation were checked against the reference on the server and match | Live |
 | Speech to text | `POST /v1/stt` | Whisper small q5_1 through whisper.cpp 1.9.4 (MIT), every CPU variant of ggml; JSON with segments, SRT, WebVTT or text; `task=translate` for English | Built |
 | Moderation | `/v1/text/moderate` | Three classifiers, scores 0 to 1, `flagged` at a threshold (0.5) | Built |
 | Names in redaction | `/v1/text/redact?names=true` | IndicNER (MIT) for Indian scripts, bert-base-NER (MIT) for the rest; people only | Built |
