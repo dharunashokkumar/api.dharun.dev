@@ -24,8 +24,11 @@ const (
 	// Some official sites answer only what looks like a browser.
 	browserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
 
-	// No source file is anywhere near this size; a response that is means something is wrong.
+	// No source read into memory is anywhere near this size; a response that is means
+	// something is wrong.
 	maxDownload = 512 << 20
+	// maxFileDownload caps a file streamed to disk (Download): model files reach 570 MB.
+	maxFileDownload = 2 << 30
 	// downloadStall is how long a download may go without receiving a byte.
 	downloadStall = 2 * time.Minute
 )
@@ -190,15 +193,15 @@ func (im *Importer) Download(address, name string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	written, err := io.Copy(file, io.LimitReader(response.Body, maxDownload+1))
+	written, err := io.Copy(file, io.LimitReader(response.Body, maxFileDownload+1))
 	if closeErr := file.Close(); err == nil {
 		err = closeErr
 	}
 	if err != nil {
 		return "", fmt.Errorf("GET %s: %w", address, err)
 	}
-	if written > maxDownload {
-		return "", fmt.Errorf("GET %s: larger than %d MB", address, maxDownload>>20)
+	if written > maxFileDownload {
+		return "", fmt.Errorf("GET %s: larger than %d MB", address, maxFileDownload>>20)
 	}
 	return path, nil
 }
