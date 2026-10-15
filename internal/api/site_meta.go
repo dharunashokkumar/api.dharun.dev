@@ -194,7 +194,7 @@ func (s *Server) handleAPICatalog(w http.ResponseWriter, r *http.Request) {
 	writeBody(w, r, http.StatusOK, encoded, `application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"`, cacheAPI, false)
 }
 
-const registryDescription = "Free Indian data and tools: pincode, IFSC, GSTIN, holidays, GST invoice PDF, OCR, UPI QR. No key."
+const registryDescription = "Free Indian data and AI: pincode, IFSC, GSTIN, holidays, GST invoice, OCR, translation. No key."
 
 // serverCard describes the MCP server before anyone connects (MCP Server Cards, SEP-2127).
 func (s *Server) serverCard(origin string) map[string]any {

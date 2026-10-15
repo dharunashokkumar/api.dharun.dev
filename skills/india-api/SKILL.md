@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech in Indian languages and more. Use when building an app that needs Indian data or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
+description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -163,27 +163,40 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/thirukkural/chapters`: All 133 chapters. Example: `/v1/thirukkural/chapters`
 - `GET /v1/thirukkural/chapters/{number}`: One chapter. Example: `/v1/thirukkural/chapters/2`
 
-**Text tools** ([references/text.md](references/text.md)): Chunk documents, redact Indian identifiers, count tokens, detect language.
+**Text tools** ([references/text.md](references/text.md)): Chunk documents, redact identifiers and names, moderate, count tokens, detect language.
 
 - `GET /v1/text/chunk`: Split a document into chunks. Example: `/v1/text/chunk?size=200&overlap=20&text=%23+Setup%0A%0AInstall+Go.+Clone+the+repository.%0A%0A%23+Deploy%0A%0APush+to+main.`
 - `GET /v1/text/redact`: Redact Indian personal identifiers. Example: `/v1/text/redact?text=Call+98765+43210%2C+PAN+ABCPK1234F`
 - `GET /v1/text/tokens`: Count tokens. Example: `/v1/text/tokens?model=gpt-4o&text=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%2C+how+many+tokens+is+this%3F`
 - `GET /v1/text/language`: Detect the language. Example: `/v1/text/language?text=%E0%AE%85%E0%AE%95%E0%AE%B0+%E0%AE%AE%E0%AF%81%E0%AE%A4%E0%AE%B2+%E0%AE%8E%E0%AE%B4%E0%AF%81%E0%AE%A4%E0%AF%8D%E0%AE%A4%E0%AF%86%E0%AE%B2%E0%AF%8D%E0%AE%B2%E0%AE%BE%E0%AE%AE%E0%AF%8D+%E0%AE%86%E0%AE%A4%E0%AE%BF+%E0%AE%AA%E0%AE%95%E0%AE%B5%E0%AE%A9%E0%AF%8D+%E0%AE%AE%E0%AF%81%E0%AE%A4%E0%AE%B1%E0%AF%8D%E0%AE%B1%E0%AF%87+%E0%AE%89%E0%AE%B2%E0%AE%95%E0%AF%81`
+- `GET /v1/text/moderate`: Score text for abuse, Hinglish and Tanglish included. Example: `/v1/text/moderate?text=tu+bahut+bakwas+aadmi+hai`
 
-**Transliteration** ([references/transliterate.md](references/transliterate.md)): Rewrite text between Indian scripts and Roman letters.
+**Transliteration** ([references/transliterate.md](references/transliterate.md)): Rewrite text between Indian scripts and Roman letters, or turn Roman typing into an Indian script.
 
 - `GET /v1/transliterate`: Transliterate text. Example: `/v1/transliterate?to=tamil&text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87+%E0%A4%AD%E0%A4%BE%E0%A4%B0%E0%A4%A4`
+- `GET /v1/transliterate/suggest`: Roman typing to an Indian script (type English, get Tamil). Example: `/v1/transliterate/suggest?lang=ta&text=vanakkam+chennai`
 
 **Tamil legacy encodings** ([references/tamil-font.md](references/tamil-font.md)): Old Tamil text that shows as accented Latin letters, to Unicode and back.
 
 - `GET /v1/tamil-font/convert`: Convert Tamil text. Example: `/v1/tamil-font/convert?from=tscii&text=%C2%BE%C3%81%C2%A2%C3%BA+%C3%85%C2%BD%C3%AC%C2%B8%C3%B5`
 - `GET /v1/tamil-font/encodings`: Encodings offered. Example: `/v1/tamil-font/encodings`
 
-**Speech** ([references/speech.md](references/speech.md)): Text to speech in Hindi, Telugu, Malayalam and English, and noise removal for recordings.
+**Speech** ([references/speech.md](references/speech.md)): Speech to text, text to speech in Hindi, Telugu, Malayalam and English, and noise removal.
 
+- `GET /v1/stt`: Speech to text, with subtitles. Example: `/v1/stt`
 - `GET /v1/tts`: Text to speech. Example: `/v1/tts?text=Namaste%2C%20welcome%20to%20India%20API.&voice=en_GB-cori-medium`
 - `GET /v1/tts/voices`: Voices. Example: `/v1/tts/voices`
 - `GET /v1/audio/denoise`: Remove background noise. Example: `/v1/audio/denoise`
+
+**Embeddings and reranking** ([references/embeddings.md](references/embeddings.md)): Vectors for semantic search in Indian languages and English, and a reranker to order results.
+
+- `GET /v1/embed`: Text embeddings. Example: `/v1/embed?type=query&text=How+do+I+renew+my+passport%3F`
+- `GET /v1/rerank`: Rerank documents for a query. Example: `/v1/rerank?query=capital+of+Tamil+Nadu&document=Chennai+is+the+capital+of+Tamil+Nadu.&document=Mumbai+is+the+financial+capital+of+India.`
+
+**Translation** ([references/translate.md](references/translate.md)): Translate between English and 22 Indian languages with IndicTrans2.
+
+- `GET /v1/translate`: Translate text. Example: `/v1/translate?from=en&to=ta&text=The+train+to+Chennai+leaves+at+6+pm.+Please+reach+the+station+early.`
+- `GET /v1/translate/languages`: Languages. Example: `/v1/translate/languages`
 
 ### Network and contact checks
 

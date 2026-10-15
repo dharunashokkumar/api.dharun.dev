@@ -55,6 +55,13 @@ type Config struct {
 	// ModelConcurrency is how many jobs that run a neural network (speech, denoise,
 	// background removal) run at once. Each takes a few hundred megabytes. Zero means one.
 	ModelConcurrency int
+	// TextModelMemory is how much memory the text model helpers (embeddings, reranking,
+	// names, moderation, translation) may hold together, in bytes; an idle one is stopped
+	// to make room. Zero means 2 GB. TextModelIdle is how long an unused helper is kept
+	// (zero: ten minutes) and TextModelThreads the threads each uses (zero: four).
+	TextModelMemory  int64
+	TextModelIdle    time.Duration
+	TextModelThreads int
 	// Programs overrides where an outside program is found, by name (typst, piper, ...).
 	// A program not named here is looked for next to the server binary, then on PATH.
 	Programs map[string]string

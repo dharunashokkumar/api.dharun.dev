@@ -60,6 +60,29 @@ if ! [ -f "$dir/libonnxruntime.so.$ort_version" ]; then
   mv "$dir/LICENSE" "$dir/onnxruntime-LICENSE"
   mv "$dir/ThirdPartyNotices.txt" "$dir/onnxruntime-ThirdPartyNotices.txt"
 fi
+# whisper.cpp (MIT), speech to text, built from its release source with every CPU variant
+# of ggml, which picks the fastest one the server's processor runs at start. Needs cmake
+# and a C++ compiler.
+whisper_version=1.9.4
+fetch "https://github.com/ggml-org/whisper.cpp/archive/refs/tags/v$whisper_version.tar.gz" \
+  57e280cee375ab02425b806ad5146b99f6eb9357e3c2b31357c8a6af2e2e44ae whisper-source.tar.gz
+if ! [ -x "$dir/whisper/whisper-cli" ]; then
+  build="$(mktemp -d)"
+  tar -xzf "$dir/whisper-source.tar.gz" -C "$build" --strip-components=1
+  # $ORIGIN is for the linker, not the shell: the libraries are found beside whisper-cli.
+  # shellcheck disable=SC2016
+  cmake -S "$build" -B "$build/out" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON \
+    -DGGML_NATIVE=OFF -DGGML_BACKEND_DL=ON -DGGML_CPU_ALL_VARIANTS=ON -DGGML_OPENMP=OFF \
+    -DWHISPER_BUILD_TESTS=OFF -DWHISPER_BUILD_SERVER=OFF -DWHISPER_SDL2=OFF \
+    -DCMAKE_INSTALL_RPATH='$ORIGIN' -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON >/dev/null
+  cmake --build "$build/out" --config Release -j "$(nproc)" --target whisper-cli >/dev/null
+  mkdir -p "$dir/whisper"
+  cp "$build/out/bin/whisper-cli" "$dir/whisper/"
+  find "$build/out" -name '*.so*' -exec cp -P {} "$dir/whisper/" \;
+  cp "$build/LICENSE" "$dir/whisper/LICENSE"
+  rm -rf "$build"
+fi
+
 # onnx-run loads the library at run time, so building it needs only cgo.
 (cd "$repo" && CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -trimpath -o "$dir/onnx-run" ./cmd/onnx-run)
 

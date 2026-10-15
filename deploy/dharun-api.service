@@ -27,9 +27,11 @@ RestartSec=3
 # The Go runtime collects harder as it nears this, trading processor time for memory.
 # It is a target for the server itself; the programs it runs come on top, within
 # MemoryMax. Measured (2026-10-15): a background removal peaks at 1 GB with the API, one
-# at a time (MODEL_CONCURRENCY); other file jobs 60 to 320 MB each, one per CPU at once.
-Environment=GOMEMLIMIT=384MiB
-MemoryMax=3G
+# at a time (MODEL_CONCURRENCY), Whisper 0.5 GB the same way; other file jobs 60 to 320 MB
+# each, one per CPU at once. The text model helpers (onnx-run serve) hold up to
+# TEXT_MODEL_MEMORY_MB, 2 GB by default, and the API about 400 MB of their tokenizers.
+Environment=GOMEMLIMIT=768MiB
+MemoryMax=6G
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=yes

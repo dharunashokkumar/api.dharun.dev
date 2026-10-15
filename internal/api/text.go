@@ -91,8 +91,36 @@ func (s *Server) handleRedact(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, "style must be label or partial.")
 		return
 	}
-	result := textkit.Redact(in.Text, kinds, style == "partial")
-	s.ok(w, r, result, meta{Note: "Finds identifiers by their structure and check digits. Names and street addresses are not detected."}, "private, no-store")
+	note := "Finds identifiers by their structure and check digits. Names are found only with names=true; street addresses are not detected."
+	var names [][2]int
+	switch strings.ToLower(strings.TrimSpace(in.option(r, "names"))) {
+	case "", "false":
+	case "true":
+		if utf8.RuneCountInString(in.Text) > redactNamesMaxChars {
+			s.badRequest(w, r, "With names=true the text may be at most 20,000 characters.")
+			return
+		}
+		set := s.need(w, r, "names")
+		if set == nil {
+			return
+		}
+		found, err := s.findNames(r.Context(), set, in.Text)
+		if err != nil {
+			s.modelFailed(w, r, err, "find names")
+			return
+		}
+		names = found
+		note = "Finds identifiers by their structure and check digits, and people's names with a model: IndicNER for Indian scripts, bert-base-NER (trained on English news) for the rest. A model misses some names and marks some words that are not; read the result before relying on it. Street addresses are not detected."
+	default:
+		s.badRequest(w, r, "names must be true or false.")
+		return
+	}
+	result := textkit.RedactWithNames(in.Text, kinds, style == "partial", names)
+	m := meta{Note: note}
+	if names != nil {
+		m.Source = s.source("names")
+	}
+	s.ok(w, r, result, m, "private, no-store")
 }
 
 type tokensView struct {

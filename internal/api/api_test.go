@@ -184,10 +184,10 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 				t.Errorf("GET %s = %d: %s", e.Example, got.status, clip(string(got.body), 200))
 				continue
 			}
+			if missingTool(got) {
+				continue
+			}
 			if e.Output != "" {
-				if missingTool(got) {
-					continue
-				}
 				if want := map[string]string{"pdf": "application/pdf", "audio": "audio/"}[e.Output]; !strings.HasPrefix(got.header.Get("Content-Type"), want) {
 					t.Errorf("%s: content type %q", e.Example, got.header.Get("Content-Type"))
 				}

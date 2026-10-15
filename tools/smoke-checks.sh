@@ -96,6 +96,9 @@ check "/v1/regex?pattern=%5Cd%2B&text=a1b22" application/json '"count":2'
 check /docs/invoice text/html "CGST"
 check /samples/document.pdf application/pdf
 check /v1/tts/voices application/json '"hi_IN-rohan-medium"'
+# The AI models are fetched by each server, so a fresh bundle answers their endpoints 503;
+# only the language list, which needs no model, is checked.
+check /v1/translate/languages application/json '"tam_Taml"'
 check "/v1/typst?text=%3D%20%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D" application/pdf
 post_check /v1/pdf/info document.pdf application/pdf application/json '"pages":2'
 post_check /v1/barcode/read codes.png image/png application/json '"ean13"'

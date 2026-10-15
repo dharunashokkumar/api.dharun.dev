@@ -5,7 +5,7 @@
 #   api        the server
 #   apidata    the data tool; on the server it refreshes datasets (apidata refresh)
 #   resvg      the SVG renderer: PNG logos at build time, generated images per request
-#   typst, piper/, deep-filter, onnx-run, libonnxruntime.so.*
+#   typst, piper/, whisper/, deep-filter, onnx-run, libonnxruntime.so.*
 #              programs the file tools run (tools/fetch-tools.sh); OCR, image, PDF and
 #              audio conversion use programs the server installs (deploy/install.sh)
 #   seed/      every dataset as built from this repository's data/
@@ -53,6 +53,7 @@ install -m 644 "$tools"/libonnxruntime.so.* "$stage/"
 install -m 644 "$tools/onnxruntime-ThirdPartyNotices.txt" "$stage/"
 cp -a "$tools/piper" "$stage/piper"
 rm -rf "$stage/piper/pkgconfig"
+cp -a "$tools/whisper" "$stage/whisper"
 install -m 644 LICENSE "$stage/LICENSE"
 TOOLS_DIR="$tools" bash tools/notices.sh > "$stage/NOTICES"
 printf '%s\n' "$version" > "$stage/VERSION"

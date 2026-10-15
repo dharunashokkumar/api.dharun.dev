@@ -145,7 +145,23 @@ var ErrNotChanged = errors.New("the source has not changed")
 // A large file over a slow connection can take longer than the client's overall time
 // limit, so a download has none: it is given up only when no byte arrives for
 // downloadStall.
+//
+// DOWNLOAD_MIRROR names a directory laid out as host/path (huggingface.co/owner/repo/...)
+// holding files already fetched; a file found there is copied instead of downloaded.
+// Tests use it, and so can a server on a slow line. Checksums are checked either way.
 func (im *Importer) Download(address, name string) (string, error) {
+	if mirror := os.Getenv("DOWNLOAD_MIRROR"); mirror != "" {
+		if parsed, err := url.Parse(address); err == nil {
+			local := filepath.Join(mirror, parsed.Host, filepath.FromSlash(parsed.Path))
+			if info, err := os.Stat(local); err == nil && info.Mode().IsRegular() {
+				path := im.Path(filepath.FromSlash(name))
+				if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+					return "", err
+				}
+				return path, copyFile(local, path)
+			}
+		}
+	}
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	request, err := http.NewRequestWithContext(ctx, http.MethodGet, address, nil)

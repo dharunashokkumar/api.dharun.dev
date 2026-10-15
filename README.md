@@ -2,8 +2,8 @@
 
 **Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
 checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
-and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, text to
-speech, and more: 37 APIs behind one consistent JSON shape. No API key, no sign-up, open
+and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation,
+speech to text and text to speech, and more: 39 APIs behind one consistent JSON shape. No API key, no sign-up, open
 CORS, and an MCP server so AI assistants can use it too.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
@@ -47,7 +47,9 @@ JavaScript and Python.
 | [Satellite passes](https://api.dharun.dev/docs/satellites) | `/v1/sat-pass?sat=ISS&pincode=600001` | When the ISS or an amateur radio satellite passes over, and whether it can be seen |
 | [HF propagation](https://api.dharun.dev/docs/propagation) | `/v1/propagation` | Solar flux, K and A index, NOAA scales, and a day and night rating per band |
 | [Thirukkural](https://api.dharun.dev/docs/thirukkural) | `/v1/thirukkural/1` | Couplet, transliteration, two English translations; search and random |
-| [Transliteration](https://api.dharun.dev/docs/transliterate) | `/v1/transliterate?to=tamil&text=...` | Between nine Indian scripts, ISO 15919, IAST and ASCII |
+| [Transliteration](https://api.dharun.dev/docs/transliterate) | `/v1/transliterate?to=tamil&text=...`, `/v1/transliterate/suggest?lang=ta&text=vanakkam` | Between nine Indian scripts, ISO 15919, IAST and ASCII; Roman typing to 21 Indian scripts with a model |
+| [Translation](https://api.dharun.dev/docs/translate) | `/v1/translate?from=en&to=ta&text=...` | Between English and 22 Indian languages with IndicTrans2 |
+| [Embeddings and reranking](https://api.dharun.dev/docs/embeddings) | `/v1/embed?text=...`, `POST /v1/rerank` | Multilingual vectors for semantic search, and a reranker to order results |
 | [Tamil legacy encodings](https://api.dharun.dev/docs/tamil-font) | `/v1/tamil-font/convert?from=tscii&text=...` | TSCII text to Unicode and back |
 | [IP lookup](https://api.dharun.dev/docs/ip) | `/v1/ip/8.8.8.8`, `/v1/ip` | Country, city and network of an address, or of the caller |
 | [Email check](https://api.dharun.dev/docs/email) | `/v1/email/someone@example.com` | Syntax, disposable domain, whether the domain takes mail |
@@ -59,9 +61,9 @@ JavaScript and Python.
 | [Image tools](https://api.dharun.dev/docs/image-tools) | `POST /v1/image/convert?format=webp&width=800` | Resize and convert (WebP, AVIF, HEIC in), remove backgrounds, perceptual hashes |
 | [PDF tools](https://api.dharun.dev/docs/pdf) | `POST /v1/pdf/merge`, `/pages`, `/rotate`, `/compress`, `/text`, `/render` | Merge, split, rotate, compress, read text, draw pages |
 | [Typst to PDF](https://api.dharun.dev/docs/typst) | `/v1/typst?text=...` | Typst documents to PDF or PNG, with Indian scripts |
-| [Speech](https://api.dharun.dev/docs/speech) | `/v1/tts?text=...&voice=hi`, `POST /v1/audio/denoise` | Text to speech in Hindi, Telugu, Malayalam and English; noise removal |
+| [Speech](https://api.dharun.dev/docs/speech) | `POST /v1/stt`, `/v1/tts?text=...&voice=hi`, `POST /v1/audio/denoise` | Speech to text and subtitles with Whisper; text to speech in Hindi, Telugu, Malayalam and English; noise removal |
 | [Generated images](https://api.dharun.dev/docs/images) | `/v1/og-image?title=Hello` | Link preview cards and code images, in ten scripts |
-| [Text tools](https://api.dharun.dev/docs/text) | `/v1/text/chunk`, `/redact`, `/tokens`, `/language` | Chunking for retrieval, PII redaction, token counts, language detection |
+| [Text tools](https://api.dharun.dev/docs/text) | `/v1/text/chunk`, `/redact`, `/moderate`, `/tokens`, `/language` | Chunking for retrieval, PII and name redaction, moderation with Hinglish and Tanglish, token counts, language detection |
 | [Regex tester](https://api.dharun.dev/docs/regex) | `/v1/regex?pattern=...&text=...` | Every match with its groups, replacement, the pattern explained |
 | [Fake Indian data](https://api.dharun.dev/docs/fake) | `/v1/fake/companies?count=5` | Test people and companies with PAN and GSTIN that pass format checks |
 | [Number to words](https://api.dharun.dev/docs/words) | `/v1/words/1,25,000?lang=ta` | Lakh and crore spelling in English, Hindi, Tamil |
@@ -76,7 +78,8 @@ JavaScript and Python.
 - Errors are `{ "error": { "code", "message" } }` with a matching HTTP status.
 - Each client has an allowance of 600 requests a minute. A lookup costs 1; a request that
   takes real CPU work (image rendering, astronomy, live DNS) costs 10, a file upload 15,
-  and a neural network job (speech, background removal, denoise) 30.
+  and a neural network job (speech, speech to text, translation, background removal,
+  denoise) 30. Embeddings, reranking and moderation count as CPU work.
 - Text endpoints take `?text=`, or a POST body as `text/plain` or JSON `{"text": "..."}`.
 - Image endpoints return the image itself, ready for an `<img>` tag; PDF and audio
   endpoints return the file.
@@ -168,11 +171,20 @@ accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 | Space weather | [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/) | Public domain (US government work) | fetched by each server, hourly |
 | Speech voices | [Piper voices](https://huggingface.co/rhasspy/piper-voices), each trained on its own recordings | Per voice: public domain, CC BY 4.0, IIT Madras Indic TTS licence, or CC BY-NC-SA 4.0 (two Hindi voices, non-commercial) | fetched by each server, 10 voices |
 | Background removal model | [IS-Net](https://github.com/xuebinqin/DIS) (Qin et al.), ONNX export by rembg | Apache-2.0 | fetched by each server |
+| Embeddings and reranking | [multilingual-e5-small](https://huggingface.co/intfloat/multilingual-e5-small) (Microsoft); [bge-reranker-v2-m3](https://huggingface.co/BAAI/bge-reranker-v2-m3) (BAAI) | MIT; Apache-2.0 | fetched by each server |
+| Speech recognition | [Whisper](https://github.com/openai/whisper) small (OpenAI), through whisper.cpp | MIT | fetched by each server |
+| Translation | [IndicTrans2](https://github.com/AI4Bharat/IndicTrans2) distilled 200M (AI4Bharat) | MIT | fetched by each server |
+| Transliteration model | [IndicXlit](https://github.com/AI4Bharat/IndicXlit) (AI4Bharat), converted to ONNX here | MIT | fetched by each server |
+| Name detection | [IndicNER](https://huggingface.co/ai4bharat/IndicNER) (AI4Bharat); [bert-base-NER](https://huggingface.co/dslim/bert-base-NER) | MIT | fetched by each server |
+| Moderation | [Detoxify multilingual](https://huggingface.co/unitary/multilingual-toxic-xlm-roberta) (Unitary); [Hinglish toxicity](https://huggingface.co/darelphilip/hinglish-toxicity-classifier) (Darel Philip, on L3Cube HingRoBERTa, CC BY 4.0); [Tanglish offensive language](https://huggingface.co/seanbenhur/tanglish-offensive-language-identification) (Sean Benhur) | Apache-2.0; MIT; Apache-2.0 | fetched by each server |
 | Disposable email domains | [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) | CC0 | 9,881 domains |
 | Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 3,156 logos |
 
-Exact versions, retrieval dates and checksums are in [`data/sources.json`](data/sources.json),
-and every response repeats the credit in `meta.source`.
+Exact versions, retrieval dates and checksums are in [`data/sources.json`](data/sources.json)
+(the models: pinned by revision and checksum in `internal/dataset/aimodels.go`), and every
+response repeats the credit in `meta.source`. Models published only as PyTorch weights or in
+full precision were converted to ONNX and int8 by [`tools/models/convert.py`](tools/models/convert.py)
+and attached to the `models-2026-10` release.
 
 Known gaps:
 

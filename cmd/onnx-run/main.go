@@ -1,11 +1,18 @@
 //go:build cgo
 
-// Command onnx-run runs one ONNX model once: it reads a float32 tensor (little-endian,
-// in the shape given) on standard input and writes the model's first output, also as
-// little-endian float32, on standard output. The API starts it for each job that needs a
-// neural network, so the memory a model takes is given back as soon as the job ends.
+// Command onnx-run runs ONNX models for the API. By default it runs one model once: it
+// reads a float32 tensor (little-endian, in the shape given) on standard input and writes
+// the model's first output, also as little-endian float32, on standard output. The API
+// starts it for each job of that kind, so the memory a model takes is given back as soon
+// as the job ends.
 //
 //	onnx-run --model isnet.onnx --shape 1,3,1024,1024 --threads 2 < in.f32 > out.f32
+//
+// "onnx-run serve" instead keeps the models it is asked for loaded and answers requests
+// (internal/onnxwire) until its input closes; the API uses it for text models, which are
+// asked many small questions, and stops it when it has been idle for a while.
+//
+//	onnx-run serve --threads 4
 //
 // It links ONNX Runtime (MIT) at run time from libonnxruntime.so, found next to this
 // program or named by ONNXRUNTIME_LIB.
@@ -35,6 +42,12 @@ func main() {
 }
 
 func run() error {
+	if len(os.Args) > 1 && os.Args[1] == "serve" {
+		flags := flag.NewFlagSet("serve", flag.ExitOnError)
+		threads := flags.Int("threads", 1, "threads used inside one operation")
+		flags.Parse(os.Args[2:])
+		return serve(*threads)
+	}
 	model := flag.String("model", "", "the .onnx file")
 	shapeText := flag.String("shape", "", "the input's shape, such as 1,3,1024,1024")
 	threads := flag.Int("threads", 1, "threads used inside one operation")
@@ -69,20 +82,7 @@ func run() error {
 	}
 	raw = nil
 
-	library := os.Getenv("ONNXRUNTIME_LIB")
-	if library == "" {
-		self, err := os.Executable()
-		if err != nil {
-			return err
-		}
-		matches, _ := filepath.Glob(filepath.Join(filepath.Dir(self), "libonnxruntime.so*"))
-		if len(matches) == 0 {
-			return errors.New("libonnxruntime.so not found next to onnx-run; set ONNXRUNTIME_LIB")
-		}
-		library = matches[0]
-	}
-	ort.SetSharedLibraryPath(library)
-	if err := ort.InitializeEnvironment(); err != nil {
+	if err := initRuntime(); err != nil {
 		return err
 	}
 	defer ort.DestroyEnvironment()
@@ -134,4 +134,22 @@ func run() error {
 		out.Write(word[:])
 	}
 	return out.Flush()
+}
+
+// initRuntime loads ONNX Runtime from the library next to this program.
+func initRuntime() error {
+	library := os.Getenv("ONNXRUNTIME_LIB")
+	if library == "" {
+		self, err := os.Executable()
+		if err != nil {
+			return err
+		}
+		matches, _ := filepath.Glob(filepath.Join(filepath.Dir(self), "libonnxruntime.so*"))
+		if len(matches) == 0 {
+			return errors.New("libonnxruntime.so not found next to onnx-run; set ONNXRUNTIME_LIB")
+		}
+		library = matches[0]
+	}
+	ort.SetSharedLibraryPath(library)
+	return ort.InitializeEnvironment()
 }

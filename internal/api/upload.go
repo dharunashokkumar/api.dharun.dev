@@ -210,6 +210,10 @@ type programs struct {
 	found    map[string]string
 }
 
+// programFolders names the folder of the release a program lives in, when that is not
+// the program's own name.
+var programFolders = map[string]string{"whisper-cli": "whisper"}
+
 func newPrograms(override map[string]string) *programs {
 	return &programs{override: override, found: map[string]string{}}
 }
@@ -229,8 +233,12 @@ func (p *programs) path(name string) string {
 	} else {
 		if self, err := os.Executable(); err == nil {
 			dir := filepath.Dir(self)
-			// piper comes in its own folder, with its libraries and voice rules beside it.
-			for _, candidate := range []string{filepath.Join(dir, name), filepath.Join(dir, name, name)} {
+			// piper and whisper come in their own folders, with their libraries beside them.
+			candidates := []string{filepath.Join(dir, name), filepath.Join(dir, name, name)}
+			if folder, ok := programFolders[name]; ok {
+				candidates = append(candidates, filepath.Join(dir, folder, name))
+			}
+			for _, candidate := range candidates {
 				if isFile(candidate) {
 					path = candidate
 					break

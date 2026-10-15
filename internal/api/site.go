@@ -22,7 +22,7 @@ const (
 	productName = "India API"
 	siteName    = "api.dharun.dev"
 	siteTagline = "Free, open source APIs for Indian data"
-	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company logos, UPI QR codes, number to words in lakh and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, and more. No API key, no sign-up, open CORS, an MCP server for AI assistants. Open source under AGPL-3.0."
+	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company logos, UPI QR codes, number to words in lakh and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation and speech to text in Indian languages, embeddings, moderation and more. No API key, no sign-up, open CORS, an MCP server for AI assistants. Open source under AGPL-3.0."
 
 	publicOrigin = "https://api.dharun.dev" // where the skill and the registry entry point
 	repoURL      = "https://github.com/dharunashokkumar/api.dharun.dev"
@@ -228,6 +228,7 @@ func (s *Server) faqs() []faq {
 		{"Can I use it in a commercial app?", "Yes. Calling the API puts no licence on your app. The data keeps the licence of its source, named in every response under meta.source; a few sources ask for a credit line. The code examples on this site are MIT-0, so you can paste them anywhere."},
 		{"Where does the data come from?", "From official publications such as the Reserve Bank of India, India Post, NSE and the GST council, and from open datasets such as OurAirports and Wikipedia. Every response says which source it used, its version and when it was retrieved."},
 		{"What do you log?", "One line per request with the path, the status, the time taken and roughly where it came from (country, state, city and internet provider, looked up from the address). IP addresses are never written to the log, and endpoints that take personal values (phone numbers, email addresses, text you send) leave their input out of the log entirely."},
+		{"Is my text sent to an AI company?", "No. Translation, speech to text, moderation, name detection, embeddings and the other model-based APIs run open models on this server itself. What you send is not passed to any other service, not kept and not used to train anything."},
 		{"Can I run it myself?", "Yes. The whole service is open source under AGPL-3.0: one Go program and its datasets. The README explains how to build and run it."},
 		{"Does it work with AI assistants?", "Yes. There is an MCP server at /mcp with no authentication, an Agent Skill, a Claude Code plugin, an OpenAPI description and llms.txt."},
 	}

@@ -59,11 +59,13 @@ rendering.
 The file tools run outside programs. On Windows most are missing and their tests skip;
 on Linux install them as CI does (apt: tesseract and its language packs, libvips-tools,
 libheif-plugin-aomenc, ffmpeg, poppler-utils; then `bash tools/fetch-tools.sh <dir>` for
-typst, piper, deep-filter and onnx-run, and put `<dir>` and `<dir>/piper` on `PATH`).
-`REQUIRE_TOOLS=1` turns a missing program into a failure. The speech and background
-removal tests also need the server-only `voices` and `matting` datasets: fetch them once
-with `go run ./cmd/apidata refresh -live <dir> voices matting` (about 900 MB) and set
-`MODELS_DIR=<dir>`; `REQUIRE_MODELS=1` makes their absence a failure. The sample files the
+typst, piper, whisper.cpp (needs cmake and g++), deep-filter and onnx-run, and put `<dir>`,
+`<dir>/piper` and `<dir>/whisper` on `PATH`).
+`REQUIRE_TOOLS=1` turns a missing program into a failure. The speech, background
+removal and AI model tests also need the server-only model datasets: fetch them once
+with `go run ./cmd/apidata refresh -live <dir> voices matting embeddings reranker whisper
+names moderation translation xlit` (about 3.7 GB) and set `MODELS_DIR=<dir>`;
+`REQUIRE_MODELS=1` makes their absence a failure. The sample files the
 docs and tests post are made by `tools/samples/make-samples.sh`.
 
 Linux-only steps (release build, shellcheck, `internal/deploytest`, which has a
@@ -246,6 +248,25 @@ and SHA-256, checked monthly and downloaded only when the pinned set changes.
 In the catalog an endpoint that takes files has `Upload` (what it accepts, a sample file
 under `internal/api/samples/` that the docs and `TestEveryDocumentedExampleWorks` post)
 and is POST only; `Output` marks one that returns a PDF or audio.
+
+### AI models (round 3: `textmodels.go`, `onnx-run serve`, `internal/subword`)
+
+Embeddings, reranking, moderation, name detection (`/v1/text/redact?names=true`),
+translation and Roman-typing transliteration run in `onnx-run serve` helpers, one per
+kind (dataset), started on first use and stopped after `TEXT_MODEL_IDLE_MINUTES` (10).
+Together they stay under `TEXT_MODEL_MEMORY_MB` (2048): starting one that does not fit
+stops the idle one used longest ago. They speak `internal/onnxwire` over stdin and stdout;
+a generation (IndicTrans2 greedy with its cache, IndicXlit beam search) runs inside the
+helper. Tokenizers are Go (`internal/subword`, read from tokenizer.json, held once per
+file content); `TOKENIZER_REFERENCE` runs its comparison with the Hugging Face library.
+IndicTrans2's pre- and post-processing is `internal/indictrans`. Speech to text is
+whisper.cpp (`whisper/` in the release) as a model job.
+
+The model datasets (`internal/dataset/aimodels.go`) are server-only like the voices.
+Files that needed converting were made by `tools/models/convert.py` and attached to the
+GitHub release `models-2026-10` (never pruned: only `v1.1.N` tags are). Changing a model
+means a new release name and new checksums. `DOWNLOAD_MIRROR=<dir>` (host/path layout)
+makes `apidata refresh` copy files instead of downloading them, for tests on a slow line.
 
 ### MCP
 

@@ -24,10 +24,19 @@ type extras struct {
 	trace tracer
 	// traces holds a slot for each traceroute running.
 	traces chan struct{}
+	// models runs the text models (textmodels.go); text holds what they need on the
+	// API's side, such as tokenizers, loaded on first use.
+	models *textModels
+	text   textModelState
 }
 
 // datasetChanged drops whatever was derived from a dataset that was just replaced.
-func (e *extras) datasetChanged(name string) {}
+func (e *extras) datasetChanged(name string) {
+	if e.models != nil {
+		e.models.forget(name)
+	}
+	e.text.forget(name)
+}
 
 // start sets up what the extra APIs need and the housekeeping they do in the background.
 func (e *extras) start(cfg Config) {
@@ -35,6 +44,7 @@ func (e *extras) start(cfg Config) {
 	e.render = newRenderer(cfg)
 	e.programs = newPrograms(cfg.Programs)
 	e.traces = make(chan struct{}, mtrConcurrency)
+	e.models = newTextModels(cfg, e.programs)
 	e.stop = make(chan struct{})
 	go func() {
 		ticker := time.NewTicker(time.Minute)
@@ -45,6 +55,8 @@ func (e *extras) start(cfg Config) {
 				// A tokenizer vocabulary is 4 to 8 MB and takes a moment to load, so one
 				// that is in use stays; one nobody has asked for in half a day goes.
 				e.tokens.DropIdle(12 * time.Hour)
+				e.models.sweep()
+				e.text.dropIdle(e.models.idle)
 			case <-e.stop:
 				return
 			}
@@ -55,6 +67,9 @@ func (e *extras) start(cfg Config) {
 func (e *extras) close() {
 	if e.stop != nil {
 		close(e.stop)
+	}
+	if e.models != nil {
+		e.models.close()
 	}
 	if readers := e.ip.Swap(nil); readers != nil {
 		readers.close()
@@ -121,6 +136,7 @@ func (s *Server) registerMore() {
 		{"text_tokens", "/v1/text/tokens", s.handleTokens},
 		{"text_language", "/v1/text/language", s.handleLanguage},
 		{"regex", "/v1/regex", s.handleRegex},
+		{"transliterate_suggest", "/v1/transliterate/suggest", s.handleXlit},
 	} {
 		s.handle(tool.route, costHeavy, "GET "+tool.path, tool.handler)
 		s.handle(tool.route, costHeavy, "POST "+tool.path, tool.handler)
@@ -165,4 +181,26 @@ func (s *Server) registerFileTools() {
 	s.handle("tts", costModel, "POST /v1/tts", s.handleTTS)
 	s.handle("tts_voices", costLight, "GET /v1/tts/voices", s.handleVoices)
 	s.handle("samples", costFree, "GET /samples/{file}", s.handleSampleFile)
+	s.registerAITools(model)
+}
+
+// registerAITools registers the AI model endpoints (round 3). The text models answer in
+// tens of milliseconds and wait for their own helper, not a CPU slot; speech to text
+// runs Whisper as a model job.
+func (s *Server) registerAITools(model uploadRoute) {
+	s.handleUpload("stt", costModel, "POST /v1/stt", model, s.handleSTT)
+	for _, tool := range []struct {
+		route, path string
+		cost        int
+		handler     http.HandlerFunc
+	}{
+		{"embed", "/v1/embed", costHeavy, s.handleEmbed},
+		{"rerank", "/v1/rerank", costHeavy, s.handleRerank},
+		{"text_moderate", "/v1/text/moderate", costHeavy, s.handleModerate},
+		{"translate", "/v1/translate", costModel, s.handleTranslate},
+	} {
+		s.handle(tool.route, tool.cost, "GET "+tool.path, tool.handler)
+		s.handle(tool.route, tool.cost, "POST "+tool.path, tool.handler)
+	}
+	s.handle("translate_languages", costLight, "GET /v1/translate/languages", s.handleTranslateLanguages)
 }

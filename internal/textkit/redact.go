@@ -11,7 +11,8 @@ import (
 
 // Redaction finds personal identifiers by their published structure, and checks the
 // ones that carry a check digit (Aadhaar, cards, GSTIN) so a random long number is not
-// masked by mistake. It does not find names or addresses: that needs a language model.
+// masked by mistake. Names come from a model outside this package (RedactWithNames);
+// street addresses are not found.
 
 // Kind is one sort of identifier the redactor knows.
 type Kind struct {
@@ -83,6 +84,15 @@ type RedactResult struct {
 // Redact replaces the identifiers of the given kinds (all when kinds is empty). With
 // partial, the last few characters of numbers stay visible, as on a bank statement.
 func Redact(text string, kinds []string, partial bool) RedactResult {
+	return RedactWithNames(text, kinds, partial, nil)
+}
+
+// NameKind is the kind of a person's name found by a model.
+var NameKind = Kind{ID: "name", Label: "NAME"}
+
+// RedactWithNames is Redact that also masks the given names: byte ranges of text, found
+// by a model. An identifier that overlaps a name wins.
+func RedactWithNames(text string, kinds []string, partial bool, names [][2]int) RedactResult {
 	wanted := map[string]bool{}
 	for _, kind := range kinds {
 		wanted[kind] = true
@@ -120,6 +130,27 @@ func Redact(text string, kinds []string, partial bool) RedactResult {
 			hits = append(hits, added...)
 			sort.Slice(hits, func(a, b int) bool { return hits[a].start < hits[b].start })
 		}
+	}
+
+	var named []hit
+	for _, span := range names {
+		if span[0] < 0 || span[1] > len(text) || span[0] >= span[1] || taken(span[0], span[1]) {
+			continue
+		}
+		named = append(named, hit{span[0], span[1], &NameKind})
+	}
+	if len(named) > 0 {
+		hits = append(hits, named...)
+		sort.Slice(hits, func(a, b int) bool { return hits[a].start < hits[b].start })
+		// Two names found by different models may overlap each other.
+		kept := hits[:0]
+		for _, h := range hits {
+			if len(kept) > 0 && h.start < kept[len(kept)-1].end {
+				continue
+			}
+			kept = append(kept, h)
+		}
+		hits = kept
 	}
 
 	result := RedactResult{Findings: []Finding{}, Counts: map[string]int{}}

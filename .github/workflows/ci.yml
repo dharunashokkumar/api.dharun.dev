@@ -56,6 +56,7 @@ jobs:
           {
             echo "$RUNNER_TEMP/tools"
             echo "$RUNNER_TEMP/tools/piper"
+            echo "$RUNNER_TEMP/tools/whisper"
           } >> "$GITHUB_PATH"
           echo "TOOLS=$RUNNER_TEMP/tools" >> "$GITHUB_ENV"
           echo "REQUIRE_TOOLS=1" >> "$GITHUB_ENV"

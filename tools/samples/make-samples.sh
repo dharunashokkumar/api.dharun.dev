@@ -7,6 +7,7 @@
 #   codes.png     a QR code and an EAN-13 barcode drawn by this API
 #   photo.jpg     a picture with one subject on a plain background, drawn by Typst
 #   noisy.mp3     a sentence spoken by Piper's public-domain LJ Speech voice, with noise and hum
+#   speech.mp3    two clean sentences in the same voice, for speech to text
 #
 # Needs typst, piper (with the en_US-ljspeech-medium voice in $VOICES), ffmpeg, vips and Go:
 #   VOICES=/path/to/voices bash tools/samples/make-samples.sh
@@ -43,5 +44,8 @@ ffmpeg -hide_banner -loglevel error -y -i "$work/voice.wav" \
   -f lavfi -i "anoisesrc=color=pink:amplitude=0.05:seed=7" -f lavfi -i "sine=frequency=100:sample_rate=22050" \
   -filter_complex "[2]volume=0.04[hum];[0][1][hum]amix=inputs=3:duration=first:normalize=0" \
   -ac 1 -ar 22050 -c:a libmp3lame -b:a 48k -map_metadata -1 "$out/noisy.mp3"
+
+piper --model "$VOICES/en_US-ljspeech-medium.onnx" --output_file "$work/speech.wav" --quiet <<<'Welcome to India API. This sentence was spoken by a computer, and Whisper writes it back as text.'
+ffmpeg -hide_banner -loglevel error -y -i "$work/speech.wav" -ac 1 -ar 22050 -c:a libmp3lame -b:a 48k -map_metadata -1 "$out/speech.mp3"
 
 ls -la "$out"

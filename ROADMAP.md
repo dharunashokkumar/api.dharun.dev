@@ -20,7 +20,8 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
 | Round 2 | Uploads (section 6): **live 2026-10-15 in `v1.1.18`**, after the server got 10 CPUs, 5 GB, 16 GB disk and the packages. Every tool checked on the live site; speech and background removal answer 503 until the first refresh fetches the voices and the model |
-| Next rounds | Round 3 AI models, round 4 network tools. One round per session |
+| Round 3 | AI models (section 6): built 2026-10-15, models published in the `models-2026-10` release |
+| Next rounds | Round 4 network tools. One round per session |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
 ## 2. Platform work in round 1
@@ -201,24 +202,49 @@ reading (files as base64), a downloader that gives up on a stalled transfer inst
 after ten minutes (a 179 MB model on a slow line took longer), and the docs, OpenAPI,
 skill and plugin describing uploads.
 
-### Round 3: AI models (group C)
+### Round 3: AI models (group C), built 2026-10-15
 
-Embeddings (`bge-small` or `e5-small`), reranking (a cross-encoder), model-based
-transliteration (AI4Bharat IndicXlit: "type English, get Tamil"), moderation including
-Hinglish and Tanglish, translation (IndicTrans2), speech to text (Whisper), and name
-detection for PII redaction. One model process beside the Go server in the same
-container, with its own memory limit, started on demand and stopped when idle.
+Dharun's decisions, 2026-10-15:
 
-Notes carried over from the first brainstorm: use quantised (int8, ONNX) models, about a
-quarter of the memory for more CPU; a fixed number of workers behind a queue, so more
-traffic means a longer wait and not more memory; long jobs (speech, translation) answer
-with a job ID that the client polls instead of holding a connection open. Rough sizes
-once loaded: embeddings 300 to 500 MB, reranker 300 MB, IndicXlit 0.5 to 1 GB, Whisper
-small 1 GB, IndicTrans2 distilled 1.5 to 2 GB. Measure before believing them.
+- **Scope: all four parts**: embeddings and reranking, speech to text, names and
+  moderation, translation and IndicXlit. The small general model (0.5B, 4-bit) stays Open:
+  no model or licence chosen.
+- **Runtime: Go and ONNX, no Python on the server.** `onnx-run serve` keeps a kind's
+  models loaded while they are used and is stopped after `TEXT_MODEL_IDLE_MINUTES` (10);
+  all such helpers together stay under `TEXT_MODEL_MEMORY_MB` (2048), stopping the idle one
+  used longest ago to make room. Tokenizers (SentencePiece Unigram, BPE, WordPiece) are
+  written in Go (`internal/subword`) and match the Hugging Face library token for token on
+  the test texts. Speech to text is whisper.cpp, built in the release like deep-filter.
+- **Models: multilingual.** multilingual-e5-small and bge-reranker-v2-m3; Whisper small,
+  5-bit, answering in the request, the first five minutes heard.
+- **Moderation: the Apache and MIT trio**: Detoxify multilingual (Unitary), the Hinglish
+  classifier of Darel Philip (MIT, built on L3Cube HingRoBERTa, CC BY 4.0, credited) and
+  Sean Benhur's Tanglish model. The Tanglish ONNX file on Hugging Face lacks its
+  classification layer, so it is exported from the PyTorch weights.
+- **Names:** IndicNER for Indian scripts. Dharun chose the XLM-R WikiANN model for English;
+  its repository states no licence, so it was dropped and `dslim/bert-base-NER` (MIT) used
+  for English instead. Name detection is opt-in (`names=true` on `/v1/text/redact`).
+- **Converted files are attached to the GitHub release `models-2026-10`** of this
+  repository: IndicXlit (fairseq weights loaded into a PyTorch copy of the network and
+  exported), the classifiers quantised to int8, IndicTrans2's int8 ONNX files with their
+  weights merged in. `tools/models/convert.py` repeats it from the original weights.
+- Hosting the IndicTrans2 and IndicNER weights: the AI4Bharat repositories are gated on
+  Hugging Face, so the files come from ungated copies of the same MIT weights
+  (hari31416's ONNX export, abbasrazalaghari's IndicNER export), pinned by checksum.
 
-Added 2026-10-14, Open: a small general model (about 0.5B parameters, 4-bit, on CPU)
-for classify and extract tasks, about 500 MB loaded. Slow, but free and without keys.
-Which model, and whether its licence allows serving it, is not chosen yet.
+| API | Endpoint | How | Status |
+|---|---|---|---|
+| Embeddings | `/v1/embed` | multilingual-e5-small, int8 (MIT): 384 numbers per text, query and passage prefixes, mean pooling, unit length; up to 64 texts | Built |
+| Reranking | `/v1/rerank` | bge-reranker-v2-m3, int8 (Apache-2.0), up to 100 documents | Built |
+| Speech to text | `POST /v1/stt` | Whisper small q5_1 through whisper.cpp 1.9.4 (MIT), every CPU variant of ggml; JSON with segments, SRT, WebVTT or text; `task=translate` for English | Built |
+| Moderation | `/v1/text/moderate` | Three classifiers, scores 0 to 1, `flagged` at a threshold (0.5) | Built |
+| Names in redaction | `/v1/text/redact?names=true` | IndicNER (MIT) for Indian scripts, bert-base-NER (MIT) for the rest; people only | Built |
+| Translation | `/v1/translate`, `/v1/translate/languages` | IndicTrans2 distilled 200M, int8 (MIT), English to and from 22 languages; Indian to Indian through English; IndicProcessor's steps rewritten in Go (`internal/indictrans`); greedy decoding | Built |
+| Roman typing to a script | `/v1/transliterate/suggest` | IndicXlit en-indic v1.0 (MIT), beam search, up to eight guesses a word, 21 languages | Built |
+
+Left for later: beam search for translation (greedy now), the indic-indic IndicTrans2 model
+instead of going through English, IndicXlit's word-frequency rescoring, a Tamil Whisper
+fine-tune if a licensed one appears.
 
 ### Round 4: network tools (group D)
 

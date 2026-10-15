@@ -7,7 +7,7 @@ const htmlPages = `
 <section class="hero"><div class="wrap">
 <p class="eyebrow">` + productName + `</p>
 <h1>Free APIs for India.</h1>
-<p class="lead">Pincodes, IFSC codes, GSTIN checks, holidays, GST invoices, OCR in Indian languages, UPI QR codes and more: {{.Count}} APIs, one simple shape. No key. No sign-up. Open source.</p>
+<p class="lead">Pincodes, IFSC codes, GSTIN checks, holidays, GST invoices, OCR, translation and speech in Indian languages, UPI QR codes and more: {{.Count}} APIs, one simple shape. No key. No sign-up. Open source.</p>
 <div class="actions"><a class="button" href="/docs">Browse the APIs</a><a class="more" href="/ai">Use with AI ›</a></div>
 <div class="try">
 <div class="codebox"><pre><code>curl {{.Example}}</code></pre></div>
@@ -113,7 +113,7 @@ const htmlPages = `
 <div class="codebox"><pre><code>npx skills add {{.Repo}}</code></pre></div>
 <p>Or download it and upload it where your assistant takes skills, such as claude.ai: <a href="/skills/{{.Name}}.zip">{{.Name}}.zip</a>. Read it first at <a href="/.well-known/agent-skills/{{.Name}}/SKILL.md">SKILL.md</a>. The skill is MIT-0.</p>
 <h2>Try asking</h2>
-<ul><li>Which district and state is pincode 637001 in?</li><li>Which bank branch is IFSC SBIN0000001, and does it support RTGS?</li><li>Is 26 January 2026 a bank holiday in Tamil Nadu? What is the next working day?</li><li>Write 1,25,000.50 rupees in words in Hindi.</li><li>Is GSTIN 27AAPFU0939F1ZV well formed, and which state is it from?</li><li>Make a GST invoice PDF for 4 bags of rice at ₹2,150 each, 5% GST, from my Tamil Nadu shop to a buyer in Bengaluru.</li><li>Read the Tamil text in this photo.</li></ul>
+<ul><li>Which district and state is pincode 637001 in?</li><li>Which bank branch is IFSC SBIN0000001, and does it support RTGS?</li><li>Is 26 January 2026 a bank holiday in Tamil Nadu? What is the next working day?</li><li>Write 1,25,000.50 rupees in words in Hindi.</li><li>Is GSTIN 27AAPFU0939F1ZV well formed, and which state is it from?</li><li>Make a GST invoice PDF for 4 bags of rice at ₹2,150 each, 5% GST, from my Tamil Nadu shop to a buyer in Bengaluru.</li><li>Read the Tamil text in this photo.</li><li>Translate this notice into Tamil and Hindi.</li><li>Is this Hinglish comment abusive?</li></ul>
 <h2>Tools</h2>
 <table class="params"><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
 {{range .Tools}}<tr><th><code>{{.Name}}</code></th><td>{{.Description}}</td></tr>

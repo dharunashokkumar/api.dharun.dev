@@ -72,13 +72,13 @@ func requireDataset(t *testing.T, name string) {
 	}
 }
 
-// copyModelDatasets copies the voices and matting datasets from a refreshed live
+// copyModelDatasets copies the model datasets (voices, matting and round 3's) from a refreshed live
 // directory into the tests' own.
 func copyModelDatasets(t interface{ Fatal(...any) }, from, to string) {
 	if from == "" {
 		return
 	}
-	for _, name := range []string{"voices", "matting"} {
+	for _, name := range []string{"voices", "matting", "embeddings", "reranker", "whisper", "names", "moderation", "translation", "xlit"} {
 		files, _ := filepath.Glob(filepath.Join(from, name+".*"))
 		for _, file := range files {
 			if err := os.MkdirAll(to, 0o755); err != nil {

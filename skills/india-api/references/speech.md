@@ -1,10 +1,28 @@
 # Speech API
 
-> Text to speech in Hindi, Telugu, Malayalam and English, and noise removal for recordings.
+> Speech to text, text to speech in Hindi, Telugu, Malayalam and English, and noise removal.
 
-Turn text into natural speech with Piper voices, as MP3, Ogg Opus or WAV, or clean background noise from a recording with DeepFilterNet. Each voice keeps the licence of the recordings it learnt from: /v1/tts/voices lists them, and two Hindi voices are for non-commercial use only. There is no Tamil, Kannada, Bengali, Gujarati or Marathi voice yet. Nothing you send is kept or logged.
+Turn a recording into text (and subtitles) with Whisper, turn text into natural speech with Piper voices, or clean background noise from a recording with DeepFilterNet. Each voice keeps the licence of the recordings it learnt from: /v1/tts/voices lists them, and two Hindi voices are for non-commercial use only. There is no Tamil, Kannada, Bengali, Gujarati or Marathi voice yet. Nothing you send is kept or logged.
 
 Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+
+## Speech to text, with subtitles
+
+`POST /v1/stt`
+
+Send a recording (MP3, WAV, Ogg, M4A, WebM, video files too) and get the text with timed segments, as JSON, SRT or WebVTT subtitles, or plain text. Whisper small recognises about a hundred languages, Indian ones included; it is good on clear English and fair on Indian languages. task=translate gives English text whatever was spoken. The first five minutes are heard. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: An audio or video file, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/speech.mp3
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `language` (query): auto (default) or the language spoken: en, hi, ta, te, kn, ml, mr, bn, gu, pa, ur, as, ne, sa, sd, or, ar, fr, de, es, zh, ja. Naming it helps on short clips.
+- `task` (query): transcribe (default) writes what was said; translate writes it in English. One of: transcribe, translate.
+- `format` (query): Default json. One of: json, srt, vtt, text.
+
+Example: `POST` https://api.dharun.dev/v1/stt
 
 ## Text to speech
 
