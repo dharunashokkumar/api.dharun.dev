@@ -472,7 +472,7 @@ Done by Dharun, outside the repository:
       (repository settings, Security), 2026-10-14
 - [x] Submit `/sitemap.xml` in Search Console and Bing, 2026-10-14
 
-### 7.1a Where requests come from: people, AI assistants, crawlers (built 2026-10-16)
+### 7.1a Where requests come from: people, AI assistants, crawlers (live 2026-10-16 in `v1.1.32`)
 
 Dharun, 2026-10-16: see whether requests come from Claude, ChatGPT and other assistants,
 from someone who copied an address from the docs or the home page, or from crawlers. Decided:
@@ -506,8 +506,7 @@ from someone who copied an address from the docs or the home page, or from crawl
   14%, node 10%, other bots 9%, ClaudeBot 2%.
 - [x] Grafana row "Who sends requests" in `deploy/monitoring/grafana-dashboard.json`: kinds,
       kinds over time, top sources, links followed, and a table of sources from the logs.
-- [ ] Copy that dashboard to Grafana (`pve/api/deploy.sh --monitoring`, from the homelab:
-      an infrastructure step for Dharun).
+- [x] Dashboard copied to Grafana from the homelab, 2026-10-16 (live in `v1.1.32`).
 
 ### 7.2 Launch: listings and posts (On hold)
 
