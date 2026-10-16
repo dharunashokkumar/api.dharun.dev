@@ -1,0 +1,1 @@
+{"description":"RDAP bootstrap file for IPv4 address allocations (test fixture)","publication":"2026-09-30T23:00:03Z","services":[[["49.0.0.0/8","103.0.0.0/8"],["https://rdap.apnic.net/"]],[["8.0.0.0/8"],["https://rdap.arin.net/registry/","http://rdap.arin.net/registry/"]]],"version":"1.0"}

@@ -77,13 +77,65 @@ func TestSitePages(t *testing.T) {
 	}
 	// A browser's ordinary Accept header gets HTML.
 	browser := request(t, http.MethodGet, "/docs/pincode", "", "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-	if !strings.HasPrefix(browser.header.Get("Content-Type"), "text/html") || !strings.Contains(browser.header.Get("Vary"), "Accept") {
-		t.Errorf("browser got %s, Vary %q", browser.header.Get("Content-Type"), browser.header.Get("Vary"))
+	if !strings.HasPrefix(browser.header.Get("Content-Type"), "text/html") {
+		t.Errorf("browser got %s", browser.header.Get("Content-Type"))
+	}
+	// A page varies on Accept, and a compressed one on Accept-Encoding as well; a shared
+	// cache that saw only one of them could hand Markdown to a browser.
+	for _, accept := range []string{"text/html", "text/markdown"} {
+		page := request(t, http.MethodGet, "/docs/pincode", "", "Accept", accept, "Accept-Encoding", "gzip")
+		if vary := varyTokens(page.header); !vary["accept"] || !vary["accept-encoding"] {
+			t.Errorf("Accept %s: Vary %q", accept, page.header.Values("Vary"))
+		}
+	}
+	// Quality values decide, and q=0 rules a type out.
+	for accept, want := range map[string]string{
+		"text/markdown;q=0, text/html;q=1":     "text/html",
+		"text/html;q=0.1, text/markdown;q=1":   "text/markdown",
+		"text/markdown, text/html":             "text/markdown",
+		"text/html, text/markdown":             "text/html",
+		"text/markdown;q=0.5, text/html;q=0.9": "text/html",
+		"*/*":                                  "text/html",
+	} {
+		page := request(t, http.MethodGet, "/docs/pincode", "", "Accept", accept)
+		if !strings.HasPrefix(page.header.Get("Content-Type"), want) {
+			t.Errorf("Accept %q got %s, want %s", accept, page.header.Get("Content-Type"), want)
+		}
+	}
+	// The Markdown form names its HTML page as canonical.
+	for path, page := range map[string]string{"/docs/pincode.md": "/docs/pincode", "/index.md": "/", "/docs.md": "/docs"} {
+		if link := get(t, path).header.Values("Link"); !slices.Contains(link, "<"+testOrigin+page+`>; rel="canonical"`) {
+			t.Errorf("%s Link header %q", path, link)
+		}
 	}
 	if home := get(t, "/"); !strings.Contains(home.header.Get("Link"), `rel="api-catalog"`) {
 		t.Errorf("home page Link header: %q", home.header.Get("Link"))
 	}
 	expectStatus(t, "/guides/nothing", http.StatusNotFound)
+
+	// The directory shows how each endpoint is really called and what comes back.
+	for _, path := range []string{"/docs", "/docs.md"} {
+		page := string(get(t, path).body)
+		for _, want := range []string{"POST /v1/invoice", "GET or POST /v1/typst", "GET /v1/pincode/{pincode}", "(returns PDF)", "(returns image)"} {
+			if !strings.Contains(page, want) {
+				t.Errorf("%s does not show %q", path, want)
+			}
+		}
+		if strings.Contains(page, "GET /v1/invoice") || strings.Contains(page, "Every endpoint is a GET") {
+			t.Errorf("%s still calls every endpoint a GET", path)
+		}
+	}
+}
+
+// varyTokens lists the tokens of every Vary header, in lower case.
+func varyTokens(header http.Header) map[string]bool {
+	tokens := map[string]bool{}
+	for _, value := range header.Values("Vary") {
+		for _, token := range strings.Split(value, ",") {
+			tokens[strings.ToLower(strings.TrimSpace(token))] = true
+		}
+	}
+	return tokens
 }
 
 // API pages show what the examples really return.

@@ -145,5 +145,15 @@
     "retrieved": "2026-10-13",
     "sha256": "e793099d6f300787329cf22bc0a144292d4af11b9dc3ca9595f1928692f4caee",
     "attribution": "Thirukkural text with English translations by G.U. Pope (1886) and by W.H. Drew and John Lazarus (1840, 1885), from the tk120404/thirukkural compilation (Apache-2.0)."
+  },
+  "rdap": {
+    "name": "RDAP bootstrap registries",
+    "publisher": "Internet Assigned Numbers Authority (IANA)",
+    "url": "https://www.iana.org/assignments/rdap-dns/",
+    "licence": "CC0 1.0",
+    "licenceUrl": "https://www.iana.org/help/licensing-terms",
+    "version": "e3419eb0-f6ad30d1-3292eb71-80a0659f",
+    "retrieved": "2026-10-16T06:56:19Z",
+    "attribution": "Which registry answers for each domain, network and AS number, from IANA's RDAP bootstrap registries (CC0). Registration details come live from that registry."
   }
 }

@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
+description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois (RDAP), TLS certificate and website speed checks from India, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -220,6 +220,26 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Traceroute from India** ([references/mtr.md](references/mtr.md)): The network path from a server in India to any host, with loss and latency per hop.
 
 - `GET /v1/mtr/{host}`: Trace the route to a host. Example: `/v1/mtr/1.1.1.1`
+
+**Whois** ([references/whois.md](references/whois.md)): Who registered a domain, an IP network or an AS number, through RDAP.
+
+- `GET /v1/whois/{query}`: Look up a registration. Example: `/v1/whois/google.in`
+
+**TLS check** ([references/tls.md](references/tls.md)): A website's certificate and TLS setup, checked from India.
+
+- `GET /v1/tls/{host}`: Check a host's TLS. Example: `/v1/tls/dharun.dev`
+
+**IPv6 check** ([references/ipv6.md](references/ipv6.md)): Is a domain ready for IPv6: website, nameservers and mail.
+
+- `GET /v1/ipv6/{domain}`: Check a domain's IPv6. Example: `/v1/ipv6/dharun.dev`
+
+**HTTP probe from India** ([references/probe.md](references/probe.md)): How fast a URL answers from India: DNS, connect, TLS, first byte and the CDN edge.
+
+- `GET /v1/probe`: Time a URL from India. Example: `/v1/probe?url=https://dharun.dev`
+
+**Website icons** ([references/icon.md](references/icon.md)): The icon of any website as a square PNG, for lists of links and bookmarks.
+
+- `GET /v1/icon/{domain}`: Icon for a website. Example: `/v1/icon/github.com`
 
 ### Files, documents and media
 

@@ -75,37 +75,15 @@ func (s *Server) resolveTarget(ctx context.Context, host string, v6 bool) (netip
 	if addr, err := netip.ParseAddr(host); err == nil {
 		return addr.Unmap().WithZone(""), nil
 	}
-	name, err := asciiName(host)
-	if err != nil {
-		return netip.Addr{}, err
-	}
 	kind := dns.TypeA
 	if v6 {
 		kind = dns.TypeAAAA
 	}
-	for _, server := range []string{"1.1.1.1", "8.8.8.8"} {
-		query := new(dns.Msg)
-		query.SetQuestion(dns.Fqdn(name), kind)
-		query.RecursionDesired = true
-		reply, _, err := s.dnsClient().Exchange(ctx, server, query)
-		if err != nil {
-			continue
-		}
-		for _, record := range reply.Answer {
-			switch r := record.(type) {
-			case *dns.A:
-				if addr, ok := netip.AddrFromSlice(r.A.To4()); ok {
-					return addr, nil
-				}
-			case *dns.AAAA:
-				if addr, ok := netip.AddrFromSlice(r.AAAA); ok {
-					return addr, nil
-				}
-			}
-		}
-		return netip.Addr{}, errNoAddress
+	addrs, err := s.lookupAddrs(ctx, host, kind)
+	if err != nil {
+		return netip.Addr{}, err
 	}
-	return netip.Addr{}, errors.New("no resolver answered")
+	return addrs[0], nil
 }
 
 var errNoAddress = errors.New("the name has no address of that kind")

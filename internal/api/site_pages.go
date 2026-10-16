@@ -53,10 +53,10 @@ const htmlPages = `
 {{define "docs"}}{{template "top" .}}{{with .Body}}
 <div class="wrap page">
 <h1 class="section">API reference</h1>
-<p class="section-lead">Every endpoint is a GET under <code>/v1</code> and answers <code>{ "data": ..., "meta": ... }</code>. No key; {{.Limit}} requests a minute per client.</p>
+<p class="section-lead">Every endpoint is under <code>/v1</code>. Lookups use GET; endpoints that take a file or a document use POST. JSON answers come as <code>{ "data": ..., "meta": ... }</code>; image, PDF and audio endpoints return the file itself. No key; {{.Limit}} requests a minute per client.</p>
 {{range .Categories}}<h2 class="label">{{.Title}}</h2>
 {{range .Groups}}<div class="dir"><h2><a href="/docs/{{.ID}}">{{.Title}}</a></h2><p>{{.Tagline}}</p>
-<ul>{{range .Endpoints}}<li><code>GET {{.Path}}</code> <span>{{.Summary}}</span></li>{{end}}</ul></div>
+<ul>{{range .Endpoints}}<li><code>{{.Methods}} {{.Path}}</code> <span>{{.Summary}}{{with .Kind}} (returns {{.}}){{end}}</span></li>{{end}}</ul></div>
 {{end}}{{end}}
 </div>
 {{end}}{{template "bottom" .}}{{end}}

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"slices"
+	"strconv"
 	"strings"
 	textTemplate "text/template"
 )
@@ -169,29 +170,68 @@ func renderMarkdown(name string, data any) []byte {
 	return buffer.Bytes()
 }
 
-// wantsMarkdown is true for a .md address, or when the client asks for Markdown first.
+// wantsMarkdown is true for a .md address, or when the client prefers Markdown to HTML:
+// a higher quality value, or the same one listed first. q=0 rules a type out.
 func wantsMarkdown(r *http.Request) bool {
 	if strings.HasSuffix(r.URL.Path, ".md") {
 		return true
 	}
+	markdown, html := -1.0, -1.0
 	for _, part := range strings.Split(r.Header.Get("Accept"), ",") {
-		media := strings.TrimSpace(strings.Split(part, ";")[0])
+		fields := strings.Split(part, ";")
+		media := strings.ToLower(strings.TrimSpace(fields[0]))
+		quality := 1.0
+		for _, field := range fields[1:] {
+			name, value, _ := strings.Cut(strings.TrimSpace(field), "=")
+			if strings.EqualFold(strings.TrimSpace(name), "q") {
+				if parsed, err := strconv.ParseFloat(strings.TrimSpace(value), 64); err == nil && parsed >= 0 && parsed <= 1 {
+					quality = parsed
+				}
+			}
+		}
 		switch media {
 		case "text/markdown", "text/x-markdown":
-			return true
+			markdown = max(markdown, quality)
 		case "text/html", "application/xhtml+xml":
-			return false
+			// The first listed wins a tie, so HTML only counts once it outranks Markdown.
+			if quality > markdown {
+				html = max(html, quality)
+			}
 		}
 	}
-	return false
+	return markdown > 0 && markdown > html
+}
+
+// markdownPage gives the HTML address a Markdown address stands for: /docs/ifsc.md is
+// /docs/ifsc, /index.md is /.
+func markdownPage(path string) string {
+	if path == "/index.md" {
+		return "/"
+	}
+	return strings.TrimSuffix(path, ".md")
+}
+
+// addVary adds a token to the Vary header unless it is there already, keeping the
+// others: a page varies on Accept and, when compressed, on Accept-Encoding too.
+func addVary(header http.Header, token string) {
+	for _, value := range header.Values("Vary") {
+		for _, existing := range strings.Split(value, ",") {
+			if strings.EqualFold(strings.TrimSpace(existing), token) {
+				return
+			}
+		}
+	}
+	header.Add("Vary", token)
 }
 
 // sendPage answers with the HTML or the Markdown form of a page. Both are rendered once
-// per origin and kept until a dataset changes.
+// per origin and kept until a dataset changes. The Markdown form names the HTML page as
+// canonical, so search engines index one of the two.
 func (s *Server) sendPage(w http.ResponseWriter, r *http.Request, key string, html func(origin string) []byte, markdown func(origin string) []byte) {
-	w.Header().Add("Vary", "Accept")
+	addVary(w.Header(), "Accept")
 	if markdown != nil && wantsMarkdown(r) {
 		body := s.cached(r, key+".md", markdown)
+		w.Header().Add("Link", "<"+s.origin(r)+markdownPage(r.URL.Path)+`>; rel="canonical"`)
 		writeBody(w, r, http.StatusOK, body, "text/markdown; charset=utf-8", cacheShort, true)
 		return
 	}
@@ -304,11 +344,11 @@ func (s *Server) docsIndexMarkdown(origin string) []byte {
 		for _, group := range category.Groups {
 			fmt.Fprintf(&out, "### [%s](%s/docs/%s.md)\n\n%s\n\n", group.Title, origin, group.ID, group.Tagline)
 			for _, e := range group.Endpoints {
-				method := e.Method()
-				if e.Post && e.Upload == nil {
-					method = "GET or POST"
+				returns := ""
+				if kind := e.Kind(); kind != "" {
+					returns = " (returns " + kind + ")"
 				}
-				fmt.Fprintf(&out, "- `%s %s`: %s\n", method, e.Path, e.Summary)
+				fmt.Fprintf(&out, "- `%s %s`: %s%s\n", e.Methods(), e.Path, e.Summary, returns)
 			}
 			out.WriteString("\n")
 		}

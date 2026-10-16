@@ -57,9 +57,11 @@ func (s *Server) cached(r *http.Request, name string, build func(origin string) 
 func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 	origin := s.origin(r)
 	type endpointView struct {
-		Path    string `json:"path"`
-		Summary string `json:"summary"`
-		Example string `json:"example"`
+		Path    string   `json:"path"`
+		Methods []string `json:"methods"`
+		Returns string   `json:"returns"`
+		Summary string   `json:"summary"`
+		Example string   `json:"example"`
 	}
 	type groupView struct {
 		ID        string         `json:"id"`
@@ -73,7 +75,15 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 	for _, group := range catalog {
 		view := groupView{ID: group.ID, Title: group.Title, Summary: group.Tagline, Docs: origin + "/docs/" + group.ID, Source: s.source(group.SourceKey)}
 		for _, e := range group.Endpoints {
-			view.Endpoints = append(view.Endpoints, endpointView{Path: e.Path, Summary: e.Summary, Example: origin + e.Example})
+			methods := []string{e.Method()}
+			if e.Post && e.Upload == nil {
+				methods = []string{"GET", "POST"}
+			}
+			returns := strings.ToLower(e.Kind())
+			if returns == "" {
+				returns = "json"
+			}
+			view.Endpoints = append(view.Endpoints, endpointView{Path: e.Path, Methods: methods, Returns: returns, Summary: e.Summary, Example: origin + e.Example})
 		}
 		groups = append(groups, view)
 	}
@@ -143,15 +153,39 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 				}
 				item := map[string]any{"get": operation("")}
 				if e.Post {
+					// Posted as JSON, the options may sit beside the text instead of in the
+					// query (readText), so no query option is required on a POST.
 					post := operation("_post")
+					properties := map[string]any{"text": map[string]any{"type": "string", "description": e.Body}}
+					postParams := []any{}
+					for _, p := range e.Params {
+						if p.Name == "text" {
+							continue
+						}
+						schema := map[string]any{"type": p.Type}
+						if len(p.Enum) > 0 {
+							schema["enum"] = p.Enum
+						}
+						required := p.Required
+						if p.In == "query" {
+							properties[p.Name] = map[string]any{"description": p.Doc, "type": p.Type}
+							if len(p.Enum) > 0 {
+								properties[p.Name].(map[string]any)["enum"] = p.Enum
+							}
+							required = false
+						}
+						postParams = append(postParams, map[string]any{
+							"name": p.Name, "in": p.In, "required": required, "description": p.Doc, "schema": schema,
+						})
+					}
+					post["parameters"] = postParams
 					post["requestBody"] = map[string]any{
-						"description": e.Body,
+						"description": e.Body + " As text/plain the options go in the query; as JSON they may also go beside text, and a value in the body is used over the query.",
 						"required":    true,
 						"content": map[string]any{
 							"text/plain": map[string]any{"schema": map[string]any{"type": "string"}},
 							"application/json": map[string]any{"schema": map[string]any{
-								"type": "object", "required": []string{"text"},
-								"properties": map[string]any{"text": map[string]any{"type": "string"}},
+								"type": "object", "required": []string{"text"}, "properties": properties,
 							}},
 						},
 					}

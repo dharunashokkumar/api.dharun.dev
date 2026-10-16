@@ -122,7 +122,7 @@ func writeBody(w http.ResponseWriter, r *http.Request, status int, body []byte, 
 
 	compress := compressible && len(body) > 1024
 	if compress {
-		header.Set("Vary", "Accept-Encoding")
+		addVary(header, "Accept-Encoding")
 		compress = acceptsGzip(r.Header.Get("Accept-Encoding"))
 	}
 	if status == http.StatusOK {

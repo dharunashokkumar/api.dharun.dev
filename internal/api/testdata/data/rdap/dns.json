@@ -1,0 +1,1 @@
+{"description":"RDAP bootstrap file for Domain Name System registrations (test fixture)","publication":"2026-09-30T23:00:03Z","services":[[["in"],["https://rdap.nixiregistry.in/rdap/"]],[["com","net"],["https://rdap.verisign.com/com/v1/"]],[["dev","app"],["http://plain.example/","https://pubapi.registry.google/rdap/"]]],"version":"1.0"}

@@ -124,6 +124,16 @@
     "attribution": "Contains data from the All India Pincode Directory, Department of Posts, published on data.gov.in under the Government Open Data License - India.",
     "notes": "The portal refuses scripted downloads, so this copy came from the mirror github.com/dropdevrahul/pincodes-india (commit d817d3e652e8). Its size matches the file size the portal lists for the official resource, last changed there on 2026-08-10."
   },
+  "rdap": {
+    "name": "RDAP bootstrap registries",
+    "publisher": "Internet Assigned Numbers Authority (IANA)",
+    "url": "https://www.iana.org/assignments/rdap-dns/",
+    "licence": "CC0 1.0",
+    "licenceUrl": "https://www.iana.org/help/licensing-terms",
+    "version": "e3419eb0-f6ad30d1-3292eb71-80a0659f",
+    "retrieved": "2026-10-16T06:56:19Z",
+    "attribution": "Which registry answers for each domain, network and AS number, from IANA's RDAP bootstrap registries (CC0). Registration details come live from that registry."
+  },
   "rto": {
     "name": "List of Regional Transport Office districts in India",
     "publisher": "Wikipedia contributors",

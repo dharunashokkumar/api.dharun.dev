@@ -118,6 +118,10 @@ check "/v1/transliterate?to=ascii&text=%E0%AE%A4%E0%AE%AE%E0%AE%BF%E0%AE%B4%E0%A
 check "/v1/sun-moon/2026-10-14?pincode=600001" application/json '"waxing crescent"'
 check "/v1/regex?pattern=%5Cd%2B&text=a1b22" application/json '"count":2'
 check /docs/invoice text/html "CGST"
+# The network tools ask other sites, so only their pages are checked here: a site that is
+# down must not stop a release.
+check /docs/whois text/html "RDAP"
+check /docs/probe.md text/markdown "IndiaAPI-check"
 check /samples/document.pdf application/pdf
 check /v1/tts/voices application/json '"hi_IN-rohan-medium"'
 # The AI models are fetched by each server, so a fresh bundle answers their endpoints 503;

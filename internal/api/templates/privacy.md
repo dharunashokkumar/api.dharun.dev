@@ -19,7 +19,7 @@ None. The site sets no cookies and loads no analytics, advertising or third-part
 
 ## Others who see requests
 
-Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. The DNS check and the email check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give.
+Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. The DNS check, the email check and the IPv6 check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give. The TLS check, the HTTP probe and website icons connect to the site you name and fetch from it, with a user agent that names this API; the site sees a request from this server, not from you. Whois sends the domain, address or AS number you ask about to the registry that holds it (for example NIXI for .in, APNIC for Indian IP addresses). A whois lookup of an IP address is not logged.
 
 ## The data in answers
 

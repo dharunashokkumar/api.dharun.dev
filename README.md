@@ -3,7 +3,7 @@
 **Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
 checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
 and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation,
-speech to text and text to speech, and more: 39 APIs behind one consistent JSON shape. No API key, no sign-up, open
+speech to text and text to speech, and more: 44 APIs behind one consistent JSON shape. No API key, no sign-up, open
 CORS, and an MCP server so AI assistants can use it too.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
@@ -56,6 +56,11 @@ JavaScript and Python.
 | [Email check](https://api.dharun.dev/docs/email) | `/v1/email/someone@example.com` | Syntax, disposable domain, whether the domain takes mail |
 | [DNS check](https://api.dharun.dev/docs/dns) | `/v1/dns/example.com?type=MX` | Records as several public resolvers see them |
 | [Traceroute from India](https://api.dharun.dev/docs/mtr) | `/v1/mtr/example.com` | MTR-style path from a server in India: network, loss and latency per hop |
+| [Whois](https://api.dharun.dev/docs/whois) | `/v1/whois/example.co.in`, `/v1/whois/AS55836` | Registrar, dates, status and nameservers of a domain; holder and abuse contact of an IP network or AS number, through RDAP |
+| [TLS check](https://api.dharun.dev/docs/tls) | `/v1/tls/example.com` | Certificate validity, chain, days left, TLS versions and weak ciphers, as a list of problems |
+| [IPv6 check](https://api.dharun.dev/docs/ipv6) | `/v1/ipv6/example.com` | IPv6 addresses for the site, its nameservers and mail servers |
+| [HTTP probe from India](https://api.dharun.dev/docs/probe) | `/v1/probe?url=https://example.com` | DNS, connect, TLS and first-byte times from India, redirects, headers and the CDN edge city |
+| [Website icons](https://api.dharun.dev/docs/icon) | `/v1/icon/github.com?size=64` | Any site's icon as a square PNG, or an initials tile |
 | [QR, UPI QR and barcodes](https://api.dharun.dev/docs/codes) | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250`, `POST /v1/barcode/read` | QR codes, UPI payment QR codes and links, barcodes; reading codes from a photo |
 | [GST invoice](https://api.dharun.dev/docs/invoice) | `POST /v1/invoice` | A GST tax invoice PDF from JSON: CGST and SGST or IGST, HSN summary, amount in words, UPI QR |
 | [OCR](https://api.dharun.dev/docs/ocr) | `POST /v1/ocr?lang=eng+tam` | Text from photos, scans and scanned PDFs in English and ten Indian languages |
@@ -168,6 +173,7 @@ accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 | Constituencies | [DataMeet](https://github.com/datameet/maps) community maps | Assembly CC BY 2.5 India; parliamentary CC0 | 4,182 assembly, 543 parliamentary |
 | Thirukkural | [tk120404/thirukkural](https://github.com/tk120404/thirukkural); translations by G.U. Pope and by Drew and Lazarus | Public domain text; compilation Apache-2.0 | 1,330 couplets |
 | IP addresses | [DB-IP](https://db-ip.com) Lite | CC BY 4.0 | fetched by each server |
+| Whois registries | [IANA RDAP bootstrap registries](https://www.iana.org/assignments/rdap-dns/) (RFC 9224); each registration is fetched live from its registry | CC0 1.0 | 1,201 top-level domains, refreshed weekly |
 | Orbit elements | [CelesTrak](https://celestrak.org/NORAD/elements/), from US Space Force data via Space-Track.org; only computed passes and positions are published | None stated; redistribution with credit allowed by USSPACECOM | fetched by each server, 111 satellites |
 | Space weather | [NOAA Space Weather Prediction Center](https://www.swpc.noaa.gov/) | Public domain (US government work) | fetched by each server, hourly |
 | Speech voices | [Piper voices](https://huggingface.co/rhasspy/piper-voices), each trained on its own recordings | Per voice: public domain, CC BY 4.0, IIT Madras Indic TTS licence, or CC BY-NC-SA 4.0 (two Hindi voices, non-commercial) | fetched by each server, 10 voices |

@@ -58,8 +58,8 @@ func TestMain(m *testing.M) {
 	// PNG output of generated images is tested where the renderer is installed.
 	testServer = newTestServer(Config{Version: "1.2.3", PublicOrigin: testOrigin, DataDir: testLive, TrustProxy: true,
 		Resvg: os.Getenv("RESVG")})
-	testServer.extras.dns = fakeDNS{} // tests never touch the network
-	testServer.extras.trace = fakeTrace
+	startTestSites() // the network tools reach these, never the internet
+	useFakeNetwork(testServer)
 	testHTTP = httptest.NewServer(testServer)
 
 	code := m.Run()
@@ -80,6 +80,7 @@ func newTestServer(cfg Config) *Server {
 	if err != nil {
 		panic(err)
 	}
+	useFakeNetwork(server)
 	return server
 }
 
@@ -648,6 +649,18 @@ func TestDocuments(t *testing.T) {
 	if openapi.OpenAPI != "3.1.0" || openapi.Servers[0].URL != testOrigin || len(openapi.Paths) != endpoints {
 		t.Errorf("unexpected OpenAPI document: %s %v %d paths for %d endpoints", openapi.OpenAPI, openapi.Servers, len(openapi.Paths), endpoints)
 	}
+	// A JSON POST may carry the options beside the text, so they are body properties
+	// there and not required in the query.
+	translatePost := openapi.Paths["/v1/translate"].(map[string]any)["post"].(map[string]any)
+	properties := translatePost["requestBody"].(map[string]any)["content"].(map[string]any)["application/json"].(map[string]any)["schema"].(map[string]any)["properties"].(map[string]any)
+	if properties["from"] == nil || properties["to"] == nil {
+		t.Errorf("translate POST body lacks from and to: %v", properties)
+	}
+	for _, p := range translatePost["parameters"].([]any) {
+		if p := p.(map[string]any); p["required"] == true || p["name"] == "text" {
+			t.Errorf("translate POST query parameter %v", p)
+		}
+	}
 
 	llms := string(expectStatus(t, "/llms.txt", http.StatusOK).body)
 	if !strings.HasPrefix(llms, "# "+productName) || !strings.Contains(llms, testOrigin+"/docs/rto.md") {
@@ -665,6 +678,19 @@ func TestDocuments(t *testing.T) {
 	logos, _ := index["datasets"].(map[string]any)["logos"].(map[string]any)
 	if len(index["apis"].([]any)) != len(catalog) || logos["copy"] != "seed" || logos["records"].(map[string]any)["logos"].(float64) < 10 {
 		t.Errorf("unexpected index: %v", index["datasets"])
+	}
+	// The index says how each endpoint is called and what it returns.
+	calls := map[string]string{}
+	for _, group := range index["apis"].([]any) {
+		for _, e := range group.(map[string]any)["endpoints"].([]any) {
+			e := e.(map[string]any)
+			calls[e["path"].(string)] = fmt.Sprint(e["methods"], " ", e["returns"])
+		}
+	}
+	for path, want := range map[string]string{"/v1/invoice": "[POST] pdf", "/v1/translate": "[GET POST] json", "/v1/pincode/{pincode}": "[GET] json", "/v1/logos/{symbol}": "[GET] image"} {
+		if calls[path] != want {
+			t.Errorf("index says %s is %q, want %q", path, calls[path], want)
+		}
 	}
 	health := expectStatus(t, "/healthz", http.StatusOK)
 	// The updater looks for the version in exactly this form.

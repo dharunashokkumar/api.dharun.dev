@@ -17,6 +17,27 @@ func (e endpoint) Method() string {
 	return "GET"
 }
 
+// Methods is every way the endpoint can be called, for the directory of endpoints.
+func (e endpoint) Methods() string {
+	if e.Post && e.Upload == nil {
+		return "GET or POST"
+	}
+	return e.Method()
+}
+
+// Kind names what a non-JSON answer is, in one word: image, PDF or audio.
+func (e endpoint) Kind() string {
+	switch {
+	case e.Output == "pdf":
+		return "PDF"
+	case e.Output == "audio":
+		return "audio"
+	case e.Image:
+		return "image"
+	}
+	return ""
+}
+
 // Returns says in a few words what comes back when it is not JSON.
 func (e endpoint) Returns() string {
 	switch {

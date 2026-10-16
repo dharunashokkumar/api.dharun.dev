@@ -82,7 +82,7 @@ func init() {
 		"make_qr_code", "make_barcode", "make_code_image", "chunk_text", "embed_texts", "convert_tamil_legacy_text",
 		"convert_image", "get_image_info", "remove_image_background", "hash_image", "compare_images",
 		"read_pdf_text", "get_pdf_info", "render_pdf_page", "select_pdf_pages", "rotate_pdf_pages", "compress_pdf", "merge_pdfs",
-		"remove_audio_noise",
+		"remove_audio_noise", "probe_url_from_india",
 	} {
 		privateTools[name] = true
 	}

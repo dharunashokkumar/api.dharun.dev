@@ -256,6 +256,17 @@ type pngEntry struct {
 	data []byte
 }
 
+// peek returns a cached entry without making one.
+func (c *pngCache) peek(key string) ([]byte, bool) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	if element, ok := c.entries[key]; ok {
+		c.order.MoveToFront(element)
+		return element.Value.(*pngEntry).data, true
+	}
+	return nil, false
+}
+
 func newPNGCache(limit int) *pngCache {
 	return &pngCache{limit: limit, order: list.New(), entries: map[string]*list.Element{}}
 }

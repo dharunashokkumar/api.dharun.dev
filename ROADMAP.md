@@ -4,7 +4,7 @@ The one place that tracks what `api.dharun.dev` serves, what is being built, wha
 later and what was turned down. Every API lists where its data comes from and how that
 data is refreshed. Update this file in the same change that adds or alters an API.
 
-Last updated: 2026-10-15
+Last updated: 2026-10-16
 
 **Status words:** `Live` released · `Building` in the current round · `Planned` agreed,
 later round · `Open` waiting for a decision · `Not building` turned down, with the reason.
@@ -21,7 +21,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
 | Round 2 | Uploads (section 6): **live 2026-10-15 in `v1.1.18`**, after the server got 10 CPUs, 5 GB, 16 GB disk and the packages. Every tool checked on the live site; speech and background removal answer 503 until the first refresh fetches the voices and the model |
 | Round 3 | AI models (section 6): **live 2026-10-15**, models published in the `models-2026-10` release; every endpoint checked on the live site |
-| Next rounds | Round 4 network tools. One round per session |
+| Round 4 | Network tools: **built 2026-10-16, not released** (section 6): whois, TLS check, IPv6 check, HTTP probe, website icons; with the search audit fixes |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
 ## 2. Platform work in round 1
@@ -246,11 +246,43 @@ Left for later: beam search for translation (greedy now), the indic-indic IndicT
 instead of going through English, IndicXlit's word-frequency rescoring, a Tamil Whisper
 fine-tune if a licensed one appears.
 
-### Round 4: network tools (group D)
+### Round 4: network tools (group D), built 2026-10-16, not released
 
 Probe from India, TLS check, IPv6 test, logo for any domain, RDAP. Decided 2026-10-13:
 build with guards (no private addresses, fixed ports, strict limits) and accept that
 outgoing requests leave from the server's own connection.
+
+Dharun's decisions, 2026-10-16:
+
+- **Scope: all five** (whois through RDAP, TLS check, IPv6 check, HTTP probe, logo for
+  any domain). The probe and the domain logo fetch addresses callers name, which round 2
+  ruled out for uploads; here they go through one guarded client (`internal/netguard`):
+  public resolvers, public addresses only, the checked address dialled (no second lookup),
+  every redirect checked again, fixed ports, IPv4 only, short timeouts, byte caps, a user
+  agent naming the API, and a limit per target domain across all callers.
+- **Domain logo: a re-encoded image**, at most 256 px, drawn again through vips, never an
+  SVG passed through, the monogram when a site has no icon.
+- **TLS check: port 443 only.**
+- **Probe: never returns a body**, so it cannot be used as a proxy; the response says
+  "from India" and names no provider.
+- **IPv6 check: DNS only.** The server's line has no IPv6, so no IPv6 connection is tried,
+  and the response says so. A "does my own connection have IPv6" test is not possible
+  behind Cloudflare and is not built.
+- **The defects found in the search audit of 2026-10-15 are fixed in the same round**:
+  `Vary: Accept` lost on pages, `/docs` showing GET for POST-only routes, `Accept` quality
+  values ignored.
+
+| API | Endpoint | How | Status |
+|---|---|---|---|
+| Whois | `/v1/whois/{query}` | RDAP: IANA's bootstrap registries (dataset `rdap`, CC0, weekly; 1,201 TLDs, 255 networks, 159 AS ranges) name the registry; the registration is fetched from it live, a registry's redirect to another registry followed. Registrar referrals are not followed: the registry's answer has everything kept, and the registrar's adds only contacts that are dropped. Domain, IP network or AS number. Registrant, admin and tech contacts dropped; registrar and abuse contacts kept; an IP network's or AS number's holder named only when the registry marks it an organisation. IP queries are Private. `.in` and `.co.in` work (NIXI); the Indian-script TLDs (`.भारत`) are not in the bootstrap and answer 404. 60 lookups a minute per registry | Built 2026-10-16 |
+| TLS check | `/v1/tls/{host}` | `crypto/tls` on port 443: one ordinary handshake, one per version 1.0 to 1.3 (every cipher Go has, weak ones included) and one offering only weak ciphers; the chain as sent, SANs, verification against the system roots, days left, OCSP staple, SCTs; problems as errors and warnings, no grade | Built 2026-10-16 |
+| IPv6 check | `/v1/ipv6/{domain}` | AAAA for the name and `www`, for each nameserver and mail server; 6to4, Teredo, NAT64 and private addresses pointed out; `ready` and a list of what is missing | Built 2026-10-16 |
+| HTTP probe | `/v1/probe?url=` | GET from India on ports 80 and 443, up to five redirects, 1 to 5 rounds: DNS, connect, TLS, first byte, download and total, status, HTTP version, headers (cookie values hidden, 16 KB), body size and SHA-256 (body read up to 1 MB, never returned), CDN and edge city (Cloudflare, CloudFront, Fastly, Vercel, Netlify, Akamai, Bunny, Azure, Google; city from the airports dataset). Private: the URL may carry a token | Built 2026-10-16 |
+| Logo for a domain | `/v1/icon/{domain}` | The site's own icon (link tags, web manifest, `/favicon.ico`), PNG, JPEG, GIF, WebP, BMP or ICO, decoded and drawn again as a square PNG in the server (as the company logos are), 16 to 256 px; SVG icons skipped; the monogram otherwise. Kept in the PNG cache, so a repeat costs 1 request and only a fetch costs 20 | Built 2026-10-16 |
+
+Shared guards (`internal/netguard`, `network.go`): every address public and the checked one dialled (and checked again as the socket connects), the server's own public address refused too (learned from `whoami.cloudflare` every five minutes, so a probe cannot come back in through the home router; checks answer 503 while it is unknown), IPv4 only, a user agent naming the API, 10 checks a minute per target domain across all callers, four checks at once. Tests reach only local test servers with certificates from a test authority. Fuzz tests for the URL reader, the icon decoder and the link reader.
+
+Memory, measured 2026-10-16 in WSL against real sites (API built from this change, seed datasets): 49 MB idle, 64 MB after one of each check (whois for google.in, an IP and an AS number; TLS checks of five hosts including badssl.com's broken ones; IPv6; probes; three icons), 68 MB peak under a burst of 30 TLS checks, probes and icon fetches at once (the rate limit refused the rest, as intended). A whois lookup takes 0.3 to 0.7 s, a TLS check 1 to 3.5 s (six handshakes), a probe of dharun.dev 0.25 s. Not run here: the race detector (no C compiler in WSL; CI runs it).
 
 Screenshot and HTML to PDF need a headless browser (200 to 500 MB each) and are the last
 candidates; Typst covers most of the PDF need.
@@ -649,3 +681,4 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-15 | Raise the OpenSSF Scorecard with the fixes that keep push-to-main deploys: no pull request reviews or branch rules that require them |
 | 2026-10-15 | Infrastructure first, then the round 2 push: the release waits until the server has the packages, memory and disk |
 | 2026-10-15 | Monitoring shows where requests come from (country, Indian state, city, network) and unique visitors per day, month and country per day. Addresses are still never written; the visitor sketches and their period keys are saved so deploys do not reset the counts |
+| 2026-10-16 | Round 4 builds all five network tools through one guarded client; the domain logo is a re-drawn PNG, never the site's file, never SVG; the TLS check uses port 443 only; the probe returns no body and names no provider; the IPv6 check is DNS only. The search audit's defects are fixed in the same round |

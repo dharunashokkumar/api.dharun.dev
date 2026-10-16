@@ -1,0 +1,1 @@
+{"description":"RDAP bootstrap file for Autonomous System Number allocations (test fixture)","publication":"2026-09-30T23:00:03Z","services":[[["55296-56319","9583"],["https://rdap.apnic.net/"]],[["15169"],["https://rdap.arin.net/registry/"]]],"version":"1.0"}

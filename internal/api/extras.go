@@ -24,6 +24,8 @@ type extras struct {
 	trace tracer
 	// traces holds a slot for each traceroute running.
 	traces chan struct{}
+	// network is what the TLS check, probe, icon and whois tools share (network.go).
+	network *networkTools
 	// models runs the text models (textmodels.go); text holds what they need on the
 	// API's side, such as tokenizers, loaded on first use.
 	models *textModels
@@ -44,6 +46,7 @@ func (e *extras) start(cfg Config) {
 	e.render = newRenderer(cfg)
 	e.programs = newPrograms(cfg.Programs)
 	e.traces = make(chan struct{}, mtrConcurrency)
+	e.network = newNetworkTools()
 	e.models = newTextModels(cfg, e.programs)
 	e.stop = make(chan struct{})
 	go func() {
@@ -117,6 +120,11 @@ func (s *Server) registerMore() {
 	s.handle("satellite", costLight, "GET /v1/satellites/{id}", s.handleSatellite)
 	s.handle("sat_pass", costHeavy, "GET /v1/sat-pass", s.handleSatellitePasses)
 	s.handle("mtr", costProbe, "GET /v1/mtr/{host}", s.handleMTR)
+	s.handle("whois", costHeavy, "GET /v1/whois/{query}", s.handleWhois)
+	s.handle("tls", costProbe, "GET /v1/tls/{host}", s.handleTLS)
+	s.handle("ipv6", costHeavy, "GET /v1/ipv6/{domain}", s.handleIPv6)
+	s.handle("probe", costProbe, "GET /v1/probe", s.handleProbe)
+	s.handle("icon", costLight, "GET /v1/icon/{domain}", s.handleIcon)
 	s.handle("constituency", costLight, "GET /v1/constituency", s.handleConstituency)
 	s.handle("phone", costLight, "GET /v1/phone/{number}", s.handlePhone)
 	s.handle("fake", costLight, "GET /v1/fake/{kind}", s.handleFake)
