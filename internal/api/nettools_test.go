@@ -39,7 +39,7 @@ const (
 var testSiteNames = []string{
 	"rdap.nixiregistry.in", "rdap.verisign.com", "rdap.apnic.net", "rdap.arin.net", "pubapi.registry.google",
 	"site.in", "www.site.in", "old.site.in", "expired.site.in", "rc4.site.in", "wrong.site.in", "self.site.in", "noinner.site.in", "legacy.site.in",
-	"icons.site.in", "manifest.site.in", "plain.site.in", "noicon.site.in", "big.site.in", "slow.site.in", "github.com",
+	"icons.site.in", "manifest.site.in", "plain.site.in", "noicon.site.in", "long.site.in", "closed.site.in", "big.site.in", "slow.site.in", "github.com",
 }
 
 func init() {

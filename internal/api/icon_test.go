@@ -123,6 +123,23 @@ func TestDomainIcon(t *testing.T) {
 		}
 		w.Write([]byte("<html><head><title>no links</title></head></html>"))
 	}))
+	// A home page longer than iconPageLimit (GitHub's is 570 KB): the head is still read.
+	sites.serve("long.site.in", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/apple.png" {
+			w.Write(solidPNG(180, blue))
+			return
+		}
+		w.Write([]byte(`<html><head><link rel="apple-touch-icon" href="/apple.png"></head><body>`))
+		w.Write(bytes.Repeat([]byte("<p>text</p>"), iconPageLimit/5))
+	}))
+	// A home page that refuses the check, with a favicon all the same.
+	sites.serve("closed.site.in", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/favicon.ico" {
+			w.Write(icoWithBitmap(32, color.NRGBA{G: 180, A: 255}))
+			return
+		}
+		http.Error(w, "forbidden", http.StatusForbidden)
+	}))
 	var asked atomic.Int32
 	sites.serve("noicon.site.in", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		asked.Add(1)
@@ -161,6 +178,12 @@ func TestDomainIcon(t *testing.T) {
 	}
 	if img, got := picture("/v1/icon/plain.site.in?size=32"); color.NRGBAModel.Convert(img.At(16, 16)).(color.NRGBA).G != 180 || !strings.HasSuffix(got.header.Get("X-Icon-Source"), "/favicon.ico") {
 		t.Errorf("favicon.ico: %v %v", img.At(16, 16), got.header.Get("X-Icon-Source"))
+	}
+	if img, got := picture("/v1/icon/long.site.in"); color.NRGBAModel.Convert(img.At(32, 32)) != blue || !strings.HasSuffix(got.header.Get("X-Icon-Source"), "/apple.png") {
+		t.Errorf("long page: %v %v", img.At(32, 32), got.header)
+	}
+	if img, got := picture("/v1/icon/closed.site.in"); color.NRGBAModel.Convert(img.At(32, 32)).(color.NRGBA).G != 180 || !strings.HasSuffix(got.header.Get("X-Icon-Source"), "/favicon.ico") {
+		t.Errorf("refused home page: %v %v", img.At(32, 32), got.header)
 	}
 
 	// No icon: the initials tile, and the site is not asked again.

@@ -21,7 +21,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
 | Round 2 | Uploads (section 6): **live 2026-10-15 in `v1.1.18`**, after the server got 10 CPUs, 5 GB, 16 GB disk and the packages. Every tool checked on the live site; speech and background removal answer 503 until the first refresh fetches the voices and the model |
 | Round 3 | AI models (section 6): **live 2026-10-15**, models published in the `models-2026-10` release; every endpoint checked on the live site |
-| Round 4 | Network tools: **built 2026-10-16, not released** (section 6): whois, TLS check, IPv6 check, HTTP probe, website icons; with the search audit fixes |
+| Round 4 | Network tools: **live 2026-10-16 in `v1.1.30`** (section 6): whois, TLS check, IPv6 check, HTTP probe, website icons; with the search audit fixes |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
 
 ## 2. Platform work in round 1
@@ -246,7 +246,7 @@ Left for later: beam search for translation (greedy now), the indic-indic IndicT
 instead of going through English, IndicXlit's word-frequency rescoring, a Tamil Whisper
 fine-tune if a licensed one appears.
 
-### Round 4: network tools (group D), built 2026-10-16, not released
+### Round 4: network tools (group D), live 2026-10-16 in `v1.1.30`
 
 Probe from India, TLS check, IPv6 test, logo for any domain, RDAP. Decided 2026-10-13:
 build with guards (no private addresses, fixed ports, strict limits) and accept that
@@ -282,7 +282,16 @@ Dharun's decisions, 2026-10-16:
 
 Shared guards (`internal/netguard`, `network.go`): every address public and the checked one dialled (and checked again as the socket connects), the server's own public address refused too (learned from `whoami.cloudflare` every five minutes, so a probe cannot come back in through the home router; checks answer 503 while it is unknown), IPv4 only, a user agent naming the API, 10 checks a minute per target domain across all callers, four checks at once. Tests reach only local test servers with certificates from a test authority. Fuzz tests for the URL reader, the icon decoder and the link reader.
 
-Memory, measured 2026-10-16 in WSL against real sites (API built from this change, seed datasets): 49 MB idle, 64 MB after one of each check (whois for google.in, an IP and an AS number; TLS checks of five hosts including badssl.com's broken ones; IPv6; probes; three icons), 68 MB peak under a burst of 30 TLS checks, probes and icon fetches at once (the rate limit refused the rest, as intended). A whois lookup takes 0.3 to 0.7 s, a TLS check 1 to 3.5 s (six handshakes), a probe of dharun.dev 0.25 s. Not run here: the race detector (no C compiler in WSL; CI runs it).
+Memory, measured 2026-10-16 in WSL against real sites (API built from this change, seed datasets): 49 MB idle, 64 MB after one of each check (whois for google.in, an IP and an AS number; TLS checks of five hosts including badssl.com's broken ones; IPv6; probes; three icons), 68 MB peak under a burst of 30 TLS checks, probes and icon fetches at once (the rate limit refused the rest, as intended). A whois lookup takes 0.3 to 0.7 s, a TLS check 1 to 3.5 s (six handshakes), a probe of dharun.dev 0.25 s. CI's race detector found the probe's HTTP/2 timing
+callbacks writing from two goroutines; fixed with a lock before the first release.
+
+Checked on the live site (`v1.1.30`): whois for google.in, a Jio address and AS55836
+(1.5 to 2 s from outside), TLS for dharun.dev and expired.badssl.com, IPv6 for dharun.dev
+and irctc.co.in, a probe, icons for wikipedia.org, onlinesbi.sbi, zoho.com and dharun.dev,
+the docs pages and the guide. github.com's icon fell back to the tile: its home page is
+570 KB and the page limit refused it. Fixed in the next release: the page is read up to
+512 KB (icons are in the head), and a home page that cannot be read still leaves
+`/favicon.ico` to try.
 
 Screenshot and HTML to PDF need a headless browser (200 to 500 MB each) and are the last
 candidates; Typst covers most of the PDF need.

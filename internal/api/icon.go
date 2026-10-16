@@ -132,7 +132,8 @@ func (s *Server) fetchIcon(ctx context.Context, host string) (string, image.Imag
 	var base *url.URL
 	var lastErr error
 	for _, scheme := range []string{"https", "http"} {
-		body, final, err := iconGet(ctx, client, scheme+"://"+host+"/", iconPageLimit)
+		// Icons are named in the head, so a long page is read only as far as the limit.
+		body, final, err := iconGet(ctx, client, scheme+"://"+host+"/", iconPageLimit, true)
 		if err == nil {
 			page, base = body, final
 			break
@@ -140,12 +141,19 @@ func (s *Server) fetchIcon(ctx context.Context, host string) (string, image.Imag
 		lastErr = err
 	}
 	if base == nil {
+		// No readable home page (a refusal, an error page): /favicon.ico may still be there.
+		favicon := "https://" + host + "/favicon.ico"
+		if body, _, err := iconGet(ctx, client, favicon, iconFileLimit, false); err == nil {
+			if picture, err := decodeIcon(body); err == nil {
+				return favicon, picture, nil
+			}
+		}
 		return "", nil, lastErr
 	}
 	candidates := iconLinks(page, base)
 	for _, candidate := range candidates {
 		if candidate.Manifest {
-			if body, final, err := iconGet(ctx, client, candidate.URL, 64<<10); err == nil {
+			if body, final, err := iconGet(ctx, client, candidate.URL, 64<<10, false); err == nil {
 				candidates = append(candidates, manifestIcons(body, final)...)
 			}
 		}
@@ -177,7 +185,7 @@ func (s *Server) fetchIcon(ctx context.Context, host string) (string, image.Imag
 		}
 		seen[candidate.URL] = true
 		tries++
-		body, _, err := iconGet(ctx, client, candidate.URL, iconFileLimit)
+		body, _, err := iconGet(ctx, client, candidate.URL, iconFileLimit, false)
 		if err != nil {
 			continue
 		}
@@ -188,8 +196,9 @@ func (s *Server) fetchIcon(ctx context.Context, host string) (string, image.Imag
 	return "", nil, errNoIcon
 }
 
-// iconGet fetches one address, refusing anything larger than limit.
-func iconGet(ctx context.Context, client *http.Client, address string, limit int64) ([]byte, *url.URL, error) {
+// iconGet fetches one address, refusing anything larger than limit, or with cut, keeping
+// only the first limit bytes.
+func iconGet(ctx context.Context, client *http.Client, address string, limit int64, cut bool) ([]byte, *url.URL, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, address, nil)
 	if err != nil {
 		return nil, nil, err
@@ -207,7 +216,10 @@ func iconGet(ctx context.Context, client *http.Client, address string, limit int
 		return nil, nil, err
 	}
 	if int64(len(body)) > limit {
-		return nil, nil, errors.New("too large")
+		if !cut {
+			return nil, nil, errors.New("too large")
+		}
+		body = body[:limit]
 	}
 	return body, resp.Request.URL, nil
 }
