@@ -15,6 +15,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/netguard"
@@ -203,25 +204,49 @@ func (s *Server) probeOnce(ctx context.Context, client *http.Client, start *url.
 	began := time.Now()
 	current := start
 	for hop := 0; ; hop++ {
+		// The callbacks run on the transport's goroutines (HTTP/2 writes and reads on
+		// different ones), so everything they set is behind mu.
+		var mu sync.Mutex
 		var timings probeTimings
 		var address netip.Addr
-		var sent, tlsStart time.Time
+		var sent, tlsStart, firstByteAt time.Time
 		var tlsTook time.Duration
-		var firstByte time.Duration
 		var state *tls.ConnectionState
 		hopCtx := netguard.WithTrace(ctx, &netguard.Trace{
-			Resolved:  func(addr netip.Addr, took time.Duration) { address, timings.DNS = addr, millis(took) },
-			Connected: func(took time.Duration) { timings.Connect = millis(took) },
+			Resolved: func(addr netip.Addr, took time.Duration) {
+				mu.Lock()
+				address, timings.DNS = addr, millis(took)
+				mu.Unlock()
+			},
+			Connected: func(took time.Duration) {
+				mu.Lock()
+				timings.Connect = millis(took)
+				mu.Unlock()
+			},
 		})
 		hopCtx = httptrace.WithClientTrace(hopCtx, &httptrace.ClientTrace{
-			TLSHandshakeStart: func() { tlsStart = time.Now() },
+			TLSHandshakeStart: func() {
+				mu.Lock()
+				tlsStart = time.Now()
+				mu.Unlock()
+			},
 			TLSHandshakeDone: func(cs tls.ConnectionState, err error) {
+				mu.Lock()
 				if err == nil {
 					tlsTook, state = time.Since(tlsStart), &cs
 				}
+				mu.Unlock()
 			},
-			WroteRequest:         func(httptrace.WroteRequestInfo) { sent = time.Now() },
-			GotFirstResponseByte: func() { firstByte = time.Since(sent) },
+			WroteRequest: func(httptrace.WroteRequestInfo) {
+				mu.Lock()
+				sent = time.Now()
+				mu.Unlock()
+			},
+			GotFirstResponseByte: func() {
+				mu.Lock()
+				firstByteAt = time.Now()
+				mu.Unlock()
+			},
 		})
 		req, err := http.NewRequestWithContext(hopCtx, http.MethodGet, current.String(), nil)
 		if err != nil {
@@ -240,13 +265,20 @@ func (s *Server) probeOnce(ctx context.Context, client *http.Client, start *url.
 		more, _ := resp.Body.Read(make([]byte, 1))
 		resp.Body.Close()
 		downloaded := time.Now()
-		timings.FirstByte = millis(firstByte)
+		mu.Lock()
+		if sent.IsZero() || sent.After(firstByteAt) {
+			sent = firstByteAt // an answer before the request was fully written
+		}
+		timings.FirstByte = millis(firstByteAt.Sub(sent))
 		if state != nil {
 			took := millis(tlsTook)
 			timings.TLS = &took
 		}
 		timings.Total = millis(downloaded.Sub(requested))
 		timings.Download = math.Max(0, math.Round((timings.Total-timings.DNS-timings.Connect-timingValue(timings.TLS)-timings.FirstByte)*10)/10)
+		// Copies taken under the lock: the rest of the hop reads only these.
+		hopTimings, hopAddress, hopState := timings, address.String(), state
+		mu.Unlock()
 
 		location := resp.Header.Get("Location")
 		next, _ := current.Parse(location)
@@ -254,23 +286,23 @@ func (s *Server) probeOnce(ctx context.Context, client *http.Client, start *url.
 			if next.Scheme != "http" && next.Scheme != "https" {
 				return result, errProbeRedirect
 			}
-			view.Redirects = append(view.Redirects, probeHop{URL: current.String(), Status: resp.StatusCode, Location: next.String(), Address: address.String(), Timings: timings})
+			view.Redirects = append(view.Redirects, probeHop{URL: current.String(), Status: resp.StatusCode, Location: next.String(), Address: hopAddress, Timings: hopTimings})
 			current = next
 			continue
 		}
 		view.FinalURL = current.String()
 		view.Status = resp.StatusCode
 		view.HTTPVersion = resp.Proto
-		view.Address = address.String()
-		view.Timings = timings
+		view.Address = hopAddress
+		view.Timings = hopTimings
 		view.Headers, view.HeadersTruncated = probeHeaders(resp.Header)
 		view.Body = probeBody{Bytes: int(read), Truncated: more > 0}
 		if more == 0 {
 			sum := hex.EncodeToString(hasher.Sum(nil))
 			view.Body.SHA256 = &sum
 		}
-		if state != nil {
-			view.TLS = &probeTLS{Version: tls.VersionName(state.Version), Cipher: tls.CipherSuiteName(state.CipherSuite), ALPN: state.NegotiatedProtocol}
+		if hopState != nil {
+			view.TLS = &probeTLS{Version: tls.VersionName(hopState.Version), Cipher: tls.CipherSuiteName(hopState.CipherSuite), ALPN: hopState.NegotiatedProtocol}
 		}
 		view.CDN = s.detectCDN(resp.Header)
 		result.total = millis(time.Since(began))
