@@ -200,7 +200,10 @@ func TestGuides(t *testing.T) {
 				continue // built in code from a variable
 			}
 			tested++
-			if strings.HasSuffix(path, "/v1/text/redact") {
+			if !strings.Contains(path, "utm_medium=guide") {
+				t.Errorf("guide %s: %s is not tagged with utm_medium=guide", g.Slug, path)
+			}
+			if bare, _, _ := strings.Cut(path, "?"); strings.HasSuffix(bare, "/v1/text/redact") && !strings.Contains(path, "text=") {
 				posted := request(t, http.MethodPost, path, "Call 98765 43210, PAN ABCPK1234F", "Content-Type", "text/plain")
 				if posted.status != http.StatusOK || !strings.Contains(string(posted.body), "[PAN]") {
 					t.Errorf("guide %s: POST %s = %d", g.Slug, path, posted.status)

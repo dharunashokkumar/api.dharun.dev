@@ -16,7 +16,7 @@ Parameters:
 
 - `address` (path, required): IPv4 or IPv6 address.
 
-Example: https://api.dharun.dev/v1/ip/49.204.0.1
+Example: https://api.dharun.dev/v1/ip/49.204.0.1?utm_medium=skill
 
 ## Location of your own address
 
@@ -24,4 +24,4 @@ Example: https://api.dharun.dev/v1/ip/49.204.0.1
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: https://api.dharun.dev/v1/ip
+Example: https://api.dharun.dev/v1/ip?utm_medium=skill

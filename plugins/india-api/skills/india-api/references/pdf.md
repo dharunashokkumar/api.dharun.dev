@@ -16,7 +16,7 @@ Send: A PDF, up to 10 MB. Post the file as the request body, or as `multipart/fo
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/pdf/info
+Example: `POST` https://api.dharun.dev/v1/pdf/info?utm_medium=skill
 
 ## Text of a PDF, page by page
 
@@ -34,7 +34,7 @@ Parameters:
 - `last` (query): Last page; at most 500 pages per request.
 - `layout` (query): Keep the page's layout with spaces, for tables. One of: true, false.
 
-Example: `POST` https://api.dharun.dev/v1/pdf/text
+Example: `POST` https://api.dharun.dev/v1/pdf/text?utm_medium=skill
 
 ## Merge PDFs into one
 
@@ -46,7 +46,7 @@ Send: Two to twenty PDFs as multipart/form-data, up to 25 MB together. Post the 
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/pdf/merge (returns the PDF itself)
+Example: `POST` https://api.dharun.dev/v1/pdf/merge?utm_medium=skill (returns the PDF itself)
 
 ## Pick, reorder or split pages
 
@@ -62,7 +62,7 @@ Parameters:
 
 - `pages` (query, required): Pages: numbers and ranges such as 1-3,5,8- (8 to the end), odd, even or l (the last page).
 
-Example: `POST` https://api.dharun.dev/v1/pdf/pages?pages=2,1 (returns the PDF itself)
+Example: `POST` https://api.dharun.dev/v1/pdf/pages?pages=2,1&utm_medium=skill (returns the PDF itself)
 
 ## Rotate pages
 
@@ -79,7 +79,7 @@ Parameters:
 - `angle` (query): Degrees, clockwise. Default 90. One of: 90, 180, 270, -90, -180, -270.
 - `pages` (query): Pages: numbers and ranges such as 1-3,5,8- (8 to the end), odd, even or l (the last page).
 
-Example: `POST` https://api.dharun.dev/v1/pdf/rotate?angle=90&pages=1 (returns the PDF itself)
+Example: `POST` https://api.dharun.dev/v1/pdf/rotate?angle=90&pages=1&utm_medium=skill (returns the PDF itself)
 
 ## Make a PDF smaller
 
@@ -91,7 +91,7 @@ Send: A PDF, up to 10 MB. Post the file as the request body, or as `multipart/fo
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/pdf/compress (returns the PDF itself)
+Example: `POST` https://api.dharun.dev/v1/pdf/compress?utm_medium=skill (returns the PDF itself)
 
 ## Draw a page as a picture
 
@@ -109,4 +109,4 @@ Parameters:
 - `width` (query): Width in pixels, 50 to 3000. Default 1000.
 - `format` (query): Default png. One of: png, jpeg.
 
-Example: `POST` https://api.dharun.dev/v1/pdf/render?page=1&width=600 (returns the image itself)
+Example: `POST` https://api.dharun.dev/v1/pdf/render?page=1&width=600&utm_medium=skill (returns the image itself)

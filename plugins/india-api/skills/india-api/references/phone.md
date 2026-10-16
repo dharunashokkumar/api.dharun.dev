@@ -16,4 +16,4 @@ Parameters:
 
 - `number` (path, required): The number, with or without +91, 91 or 0; spaces and dashes are ignored.
 
-Example: https://api.dharun.dev/v1/phone/+91%2095001%2012345
+Example: https://api.dharun.dev/v1/phone/+91%2095001%2012345?utm_medium=skill

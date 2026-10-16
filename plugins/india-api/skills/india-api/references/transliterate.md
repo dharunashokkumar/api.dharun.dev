@@ -20,7 +20,7 @@ Parameters:
 - `to` (query, required): A script (devanagari, bengali, gurmukhi, gujarati, odia, tamil, telugu, kannada, malayalam), a language code such as ta or hi, or iso15919, iast, ascii.
 - `from` (query): auto (default: the script of the text), a script, or iso15919 or iast for romanised input.
 
-Example: https://api.dharun.dev/v1/transliterate?to=tamil&text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87+%E0%A4%AD%E0%A4%BE%E0%A4%B0%E0%A4%A4
+Example: https://api.dharun.dev/v1/transliterate?to=tamil&text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87+%E0%A4%AD%E0%A4%BE%E0%A4%B0%E0%A4%A4&utm_medium=skill
 
 ## Roman typing to an Indian script (type English, get Tamil)
 
@@ -38,4 +38,4 @@ Parameters:
 - `lang` (query, required): as, bn, brx, gom, gu, hi, kn, ks, mai, ml, mni, mr, ne, or, pa, sa, sd, si, ta, te or ur.
 - `count` (query): Suggestions per word, 1 to 8. Default 4.
 
-Example: https://api.dharun.dev/v1/transliterate/suggest?lang=ta&text=vanakkam+chennai
+Example: https://api.dharun.dev/v1/transliterate/suggest?lang=ta&text=vanakkam+chennai&utm_medium=skill

@@ -10,6 +10,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
 
 // Minimal Prometheus text exporter plus all-time request totals that survive restarts.
@@ -39,6 +41,7 @@ type metrics struct {
 	busyCount   uint64
 	countries   map[string]uint64 // requests by country code
 	states      map[string]uint64 // requests from India by state
+	origins     map[string]uint64 // kind|source|medium, from the fixed lists only
 	visitors    *visitors
 	totals      lifetimeTotals
 	totalsDirty bool
@@ -66,6 +69,7 @@ func newMetrics(version, stateDir string, datasets func() []datasetState) *metri
 		logos:     map[string]uint64{},
 		countries: map[string]uint64{},
 		states:    map[string]uint64{},
+		origins:   map[string]uint64{},
 		visitors:  newVisitors(stateDir),
 		totals:    lifetimeTotals{Since: time.Now().UTC().Format("2006-01-02"), Requests: map[string]uint64{}},
 		stop:      make(chan struct{}),
@@ -204,6 +208,14 @@ func (m *metrics) visit(client string, place clientPlace) {
 	m.visitors.add(client, place.country)
 }
 
+// origin counts a request by who sent it and which of our links it followed. Only the
+// names from the fixed lists are labels, so callers cannot add series.
+func (m *metrics) origin(from traffic.Origin) {
+	m.mu.Lock()
+	m.origins[from.Kind+"|"+from.Known+"|"+from.KnownMedium]++
+	m.mu.Unlock()
+}
+
 // observeLogo records a logo lookup. result is found, fallback or not_found.
 func (m *metrics) observeLogo(format, result string) {
 	m.mu.Lock()
@@ -334,6 +346,12 @@ func (m *metrics) render() string {
 	family("api_requests_by_state_total", "counter", "Requests since start from India, by state or union territory (or unknown).")
 	for _, state := range sortedKeys(m.states) {
 		fmt.Fprintf(&out, "api_requests_by_state_total{state=%q} %d\n", state, m.states[state])
+	}
+
+	family("api_requests_by_origin_total", "counter", "Requests since start by kind of client (person, ai-assistant, program, crawlers, bot, own, unknown), source (who sent it or led to it, from utm_source, the MCP client name, the referring site or the user agent; other when not a known name) and medium (which of our links it followed, from utm_medium). Health checks and preflights are left out.")
+	for _, key := range sortedKeys(m.origins) {
+		parts := strings.Split(key, "|")
+		fmt.Fprintf(&out, "api_requests_by_origin_total{kind=%q,source=%q,medium=%q} %d\n", parts[0], parts[1], parts[2], m.origins[key])
 	}
 
 	m.visitors.roll()

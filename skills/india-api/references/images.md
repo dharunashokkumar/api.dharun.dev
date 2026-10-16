@@ -24,7 +24,7 @@ Parameters:
 - `accent` (query): Accent colour, hex.
 - `format` (query): Default png. One of: png, svg.
 
-Example: https://api.dharun.dev/v1/og-image?title=Free%20APIs%20for%20Indian%20developers&subtitle=Pincodes%2C%20IFSC%2C%20holidays%20and%20more&site=api.dharun.dev (returns the image itself)
+Example: https://api.dharun.dev/v1/og-image?title=Free%20APIs%20for%20Indian%20developers&subtitle=Pincodes%2C%20IFSC%2C%20holidays%20and%20more&site=api.dharun.dev&utm_medium=skill (returns the image itself)
 
 ## Code as an image
 
@@ -45,4 +45,4 @@ Parameters:
 - `lineNumbers` (query): Show line numbers. One of: true.
 - `format` (query): Default png. One of: png, svg.
 
-Example: https://api.dharun.dev/v1/code-image?language=go&title=main.go&code=package+main%0A%0Aimport+%22fmt%22%0A%0Afunc+main%28%29+%7B%0A%09fmt.Println%28%22%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%22%29%0A%7D (returns the image itself)
+Example: https://api.dharun.dev/v1/code-image?language=go&title=main.go&code=package+main%0A%0Aimport+%22fmt%22%0A%0Afunc+main%28%29+%7B%0A%09fmt.Println%28%22%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%22%29%0A%7D&utm_medium=skill (returns the image itself)

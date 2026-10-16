@@ -14,7 +14,7 @@ Parameters:
 
 - `code` (path, required): 11-character IFSC.
 
-Example: https://api.dharun.dev/v1/ifsc/SBIN0000001
+Example: https://api.dharun.dev/v1/ifsc/SBIN0000001?utm_medium=skill
 
 ## Search a bank's branches
 
@@ -31,7 +31,7 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/ifsc?bank=SBIN&state=TN&q=namakkal
+Example: https://api.dharun.dev/v1/ifsc?bank=SBIN&state=TN&q=namakkal&utm_medium=skill
 
 ## Bank for a four-letter code
 
@@ -41,7 +41,7 @@ Parameters:
 
 - `code` (path, required): Four-letter bank code.
 
-Example: https://api.dharun.dev/v1/banks/HDFC
+Example: https://api.dharun.dev/v1/banks/HDFC?utm_medium=skill
 
 ## Search banks
 
@@ -55,7 +55,7 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/banks?q=gramin
+Example: https://api.dharun.dev/v1/banks?q=gramin&utm_medium=skill
 
 ## Guides
 

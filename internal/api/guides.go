@@ -7,9 +7,11 @@ import (
 	"html/template"
 	"net/http"
 	"path"
+	"regexp"
 	"sort"
 	"strings"
 
+	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
@@ -108,8 +110,28 @@ func parseGuide(slug, raw string) guide {
 	if g.Updated == "" {
 		g.Updated = g.Published
 	}
-	g.Markdown = strings.TrimLeft(body, "\n")
+	g.Markdown = tagGuideAddresses(strings.TrimLeft(body, "\n"))
 	return g
+}
+
+var guideAddress = regexp.MustCompile("https://api\\.dharun\\.dev/v1/[^\\s\"'`)<>\\\\]*")
+
+// tagGuideAddresses adds utm_medium=guide to every complete API address in a guide.
+// An address that code builds from a variable (${...}, {...}) is left as it is.
+func tagGuideAddresses(markdown string) string {
+	var out strings.Builder
+	last := 0
+	for _, at := range guideAddress.FindAllStringIndex(markdown, -1) {
+		address := markdown[at[0]:at[1]]
+		if strings.Contains(address, "{") {
+			continue
+		}
+		out.WriteString(markdown[last:at[0]])
+		out.WriteString(traffic.Tag(address, "guide"))
+		last = at[1]
+	}
+	out.WriteString(markdown[last:])
+	return out.String()
 }
 
 func guideBySlug(slug string) (guide, bool) {

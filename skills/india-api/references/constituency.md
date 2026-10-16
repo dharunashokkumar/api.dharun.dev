@@ -16,4 +16,4 @@ Parameters:
 - `lat` (query): Latitude, if no pincode.
 - `lng` (query): Longitude, if no pincode.
 
-Example: https://api.dharun.dev/v1/constituency?pincode=637001
+Example: https://api.dharun.dev/v1/constituency?pincode=637001&utm_medium=skill

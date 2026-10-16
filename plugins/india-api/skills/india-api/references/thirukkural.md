@@ -14,7 +14,7 @@ Parameters:
 
 - `number` (path, required): 1 to 1330.
 
-Example: https://api.dharun.dev/v1/thirukkural/1
+Example: https://api.dharun.dev/v1/thirukkural/1?utm_medium=skill
 
 ## Search kurals
 
@@ -30,7 +30,7 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/thirukkural?q=rain
+Example: https://api.dharun.dev/v1/thirukkural?q=rain&utm_medium=skill
 
 ## Kural of the day
 
@@ -42,19 +42,19 @@ Parameters:
 
 - `date` (query): A date, YYYY-MM-DD. Default today in India.
 
-Example: https://api.dharun.dev/v1/thirukkural/today?date=2026-10-13
+Example: https://api.dharun.dev/v1/thirukkural/today?date=2026-10-13&utm_medium=skill
 
 ## A random kural
 
 `GET /v1/thirukkural/random`
 
-Example: https://api.dharun.dev/v1/thirukkural/random
+Example: https://api.dharun.dev/v1/thirukkural/random?utm_medium=skill
 
 ## All 133 chapters
 
 `GET /v1/thirukkural/chapters`
 
-Example: https://api.dharun.dev/v1/thirukkural/chapters
+Example: https://api.dharun.dev/v1/thirukkural/chapters?utm_medium=skill
 
 ## One chapter
 
@@ -64,4 +64,4 @@ Parameters:
 
 - `number` (path, required): 1 to 133.
 
-Example: https://api.dharun.dev/v1/thirukkural/chapters/2
+Example: https://api.dharun.dev/v1/thirukkural/chapters/2?utm_medium=skill

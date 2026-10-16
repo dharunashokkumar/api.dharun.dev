@@ -471,6 +471,44 @@ Done by Dharun, outside the repository:
 - [x] Turn on GitHub private vulnerability reporting and Dependabot security updates
       (repository settings, Security), 2026-10-14
 - [x] Submit `/sitemap.xml` in Search Console and Bing, 2026-10-14
+
+### 7.1a Where requests come from: people, AI assistants, crawlers (built 2026-10-16)
+
+Dharun, 2026-10-16: see whether requests come from Claude, ChatGPT and other assistants,
+from someone who copied an address from the docs or the home page, or from crawlers. Decided:
+
+- Two optional query parameters, the standard ones: `utm_source` says **who** (an agent's
+  own name, or `chatgpt.com`, which ChatGPT already adds to links it shows), `utm_medium`
+  says **which of our links** (`docs`, `docs-preview`, `docs-md`, `home`, `guide`, `llms`,
+  `skill`, `index`; `mcp` is set by the server). No endpoint reads them.
+- Our links carry `utm_medium`: the code samples on API pages and the home page (copied
+  code keeps it; accepted), the picture an API page shows (`docs-preview`, so page views
+  are not counted as use), the Markdown pages, `llms.txt`, `llms-full.txt`, guides, the
+  skill and the `/v1` index. `llms.txt`, the skill and the OpenAPI description ask agents
+  to add `utm_source=<their name>`.
+- Each request gets a **kind** (person, ai-assistant, program, ai-crawler,
+  search-crawler, bot, own, unknown) and a **source**: the explicit `utm_source`, else
+  the MCP client's `clientInfo.name` (only on `initialize`: the server is stateless),
+  else the referring site (chatgpt.com, claude.ai, google, github, ...), else the user
+  agent. Rules and tests are in `internal/traffic`. A browser that arrives from an
+  assistant's link is a person with that source; an agent that names itself is an
+  ai-assistant.
+- Crawlers are classified and counted only; what they are served does not change.
+- Where: the log line (`kind`, `src`, `medium`; on private routes and unmatched paths
+  only names from the fixed list), the metric `api_requests_by_origin_total{kind,source,medium}`
+  (fixed lists only, the rest `other`), and `go run ./cmd/traffic` (Cloudflare analytics
+  by user agent, 30 days; or `-logs <file>` over the server's own log lines for the full
+  breakdown). Cloudflare's analytics on this plan have no query string and no referer.
+- Our own checks send the user agent `india-api-check/1`; Uptime Kuma and beacon are known
+  by theirs. All count as `own`.
+- First numbers (Cloudflare, 30 days to 2026-10-16, 8,406 requests outside `/healthz`):
+  browsers 30%, curl 28% (mostly the production checks), MCP and agent directory probes
+  14%, node 10%, other bots 9%, ClaudeBot 2%.
+- [x] Grafana row "Who sends requests" in `deploy/monitoring/grafana-dashboard.json`: kinds,
+      kinds over time, top sources, links followed, and a table of sources from the logs.
+- [ ] Copy that dashboard to Grafana (`pve/api/deploy.sh --monitoring`, from the homelab:
+      an infrastructure step for Dharun).
+
 ### 7.2 Launch: listings and posts (On hold)
 
 **On hold by Dharun's decision, 2026-10-14:** the launch waits until the remaining

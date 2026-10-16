@@ -16,7 +16,7 @@ Parameters:
 
 - `host` (path, required): Domain name or public IPv4 address.
 
-Example: https://api.dharun.dev/v1/tls/dharun.dev
+Example: https://api.dharun.dev/v1/tls/dharun.dev?utm_medium=skill
 
 ## Guides
 

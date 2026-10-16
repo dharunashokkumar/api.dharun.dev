@@ -17,7 +17,7 @@ Parameters:
 - `state` (query): State code or name, for example TN or Tamil Nadu.
 - `month` (query): Month number, 1 to 12.
 
-Example: https://api.dharun.dev/v1/holidays/2026?type=market
+Example: https://api.dharun.dev/v1/holidays/2026?type=market&utm_medium=skill
 
 ## Guides
 

@@ -16,4 +16,4 @@ Parameters:
 
 - `domain` (path, required): Domain name.
 
-Example: https://api.dharun.dev/v1/ipv6/dharun.dev
+Example: https://api.dharun.dev/v1/ipv6/dharun.dev?utm_medium=skill

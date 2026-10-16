@@ -23,4 +23,4 @@ Parameters:
 - `first` (query): PDF: first page to read. Default 1.
 - `last` (query): PDF: last page to read; at most 10 pages per request.
 
-Example: `POST` https://api.dharun.dev/v1/ocr?lang=eng+tam
+Example: `POST` https://api.dharun.dev/v1/ocr?lang=eng+tam&utm_medium=skill

@@ -25,4 +25,4 @@ Parameters:
 - `replace` (query): Replace every match with this: $1, $<name>, $& and $$ in js; ${1}, ${name} and $$ in re2.
 - `limit` (query): Matches listed, 1 to 1000. Default 100; count goes on to the end of the text.
 
-Example: https://api.dharun.dev/v1/regex?flags=i&pattern=%28%3F%3Cstate%3E%5BA-Z%5D%7B2%7D%29%5B+-%5D%3F%28%5Cd%7B2%7D%29&text=Cars+TN+37%2C+ka-05+and+MH12
+Example: https://api.dharun.dev/v1/regex?flags=i&pattern=%28%3F%3Cstate%3E%5BA-Z%5D%7B2%7D%29%5B+-%5D%3F%28%5Cd%7B2%7D%29&text=Cars+TN+37%2C+ka-05+and+MH12&utm_medium=skill

@@ -16,7 +16,7 @@ Parameters:
 
 - `query` (path, required): A domain name (Indian-script names are accepted), an IPv4 or IPv6 address, or an AS number such as AS55836.
 
-Example: https://api.dharun.dev/v1/whois/google.in
+Example: https://api.dharun.dev/v1/whois/google.in?utm_medium=skill
 
 ## Guides
 

@@ -16,7 +16,7 @@ Parameters:
 - `lang` (query): Language. Default en. One of: en, hi, ta.
 - `style` (query): currency gives rupees and paise. Default number. One of: number, currency.
 
-Example: https://api.dharun.dev/v1/words/1,25,000.50?style=currency
+Example: https://api.dharun.dev/v1/words/1,25,000.50?style=currency&utm_medium=skill
 
 ## Guides
 

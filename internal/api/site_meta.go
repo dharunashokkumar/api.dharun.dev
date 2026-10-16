@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
 
 // Files for crawlers, AI agents and security researchers. Each is built from the
@@ -18,6 +20,10 @@ func base64Std(data []byte) string { return base64.StdEncoding.EncodeToString(da
 
 // ---- llms.txt ----
 
+// utmNote asks agents to say who they are. The labels change no answer; they only feed
+// the request counts and the log, which the privacy page describes.
+const utmNote = "Optional, for AI agents: when you call the API, add `utm_source=<your name>` (for example claude, chatgpt, gemini, cursor) to say which assistant is calling; the `utm_medium` already in our example addresses says which page they came from. Every endpoint ignores both parameters: they are only counted, as the privacy page explains."
+
 // llmsIntro is the opening shared by llms.txt and llms-full.txt.
 func (s *Server) llmsIntro(origin string) string {
 	var out strings.Builder
@@ -25,6 +31,7 @@ func (s *Server) llmsIntro(origin string) string {
 	fmt.Fprintf(&out, "Base URL: %s. Every endpoint is under `/v1`. Lookups are plain GETs; endpoints that take text also accept it as a POST body (text/plain, or JSON `{\"text\": ...}`); endpoints that take a file or a JSON document (OCR, image, PDF and audio tools, speech to text, the GST invoice) are POST only. No API key and no sign-up. CORS is open, so browsers can call it directly.\n\n", origin)
 	out.WriteString("JSON responses share one shape: `{ \"data\": ..., \"meta\": { ... } }`. `meta.source` names the dataset, its licence, version and the credit it asks for. Lists add `meta.total`, `meta.limit` and `meta.offset`. Errors are `{ \"error\": { \"code\", \"message\" } }` with a matching HTTP status: 400 for bad input, 404 when nothing matches, 429 over the rate limit, 503 while a dataset is not loaded.\n\n")
 	fmt.Fprintf(&out, "Rate limit: %d requests per minute per client; endpoints that do heavy work (images, astronomy, live DNS) count as 10, file uploads as 15 and neural-network jobs (text to speech, speech to text, translation, background removal, denoise) as 30. Image, PDF and audio endpoints return the file itself. Uploads are POSTed as the body or as multipart/form-data, up to 10 MB a file (25 MB in all for a PDF merge).\n\n", s.cfg.RateLimitPerMinute)
+	out.WriteString(utmNote + "\n\n")
 	return out.String()
 }
 
@@ -34,7 +41,7 @@ func (s *Server) llmsIndex(origin string) []byte {
 	for _, category := range categorised() {
 		fmt.Fprintf(&out, "## %s\n\n", category.Title)
 		for _, group := range category.Groups {
-			fmt.Fprintf(&out, "- [%s](%s/docs/%s.md): %s Example: `%s %s`\n", group.Title, origin, group.ID, group.Tagline, group.Endpoints[0].Method(), group.Endpoints[0].Example)
+			fmt.Fprintf(&out, "- [%s](%s/docs/%s.md): %s Example: `%s %s`\n", group.Title, origin, group.ID, group.Tagline, group.Endpoints[0].Method(), traffic.Tag(group.Endpoints[0].Example, "llms"))
 		}
 		out.WriteString("\n")
 	}
@@ -66,7 +73,7 @@ func (s *Server) handleLLMsFull(w http.ResponseWriter, r *http.Request) {
 		out.WriteString(s.llmsIntro(origin))
 		for _, category := range categorised() {
 			for _, group := range category.Groups {
-				out.Write(renderMarkdown("group", s.docGroup(origin, group, true)))
+				out.Write(renderMarkdown("group", s.docGroup(origin, group, true, "llms")))
 				out.WriteString("\n---\n\n")
 			}
 		}

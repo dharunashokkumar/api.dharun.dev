@@ -12,6 +12,8 @@ import (
 	"strconv"
 	"strings"
 	textTemplate "text/template"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
 
 // The website: a short landing page, a directory of the APIs, one page per API, guides,
@@ -296,7 +298,7 @@ func (s *Server) handleHome(w http.ResponseWriter, r *http.Request) {
 			Body: map[string]any{
 				"Categories": categorised(),
 				"Count":      len(catalog),
-				"Example":    origin + pincode.Endpoints[0].Example,
+				"Example":    traffic.Tag(origin+pincode.Endpoints[0].Example, "home"),
 				"Sample":     s.sample(strings.TrimPrefix(strings.TrimPrefix(origin, "https://"), "http://"), pincode.Endpoints[0]),
 				"Guides":     guides,
 				"FAQs":       faqs,
@@ -358,8 +360,11 @@ func (s *Server) docsIndexMarkdown(origin string) []byte {
 
 type docEndpoint struct {
 	endpoint
-	Anchor     string
+	Anchor string
+	// URL is the example address as the page shows it, tagged with the page's
+	// utm_medium; Preview is the address the page's own picture loads.
 	URL        string
+	Preview    string
 	Samples    []codeSample
 	Sample     *sample
 	PathParams []param
@@ -381,12 +386,14 @@ type docGroup struct {
 }
 
 // staticDocGroup is the part of an API's page that depends only on the catalog: what
-// the skill's reference files are made from.
-func staticDocGroup(origin string, group apiGroup) docGroup {
+// the skill's reference files are made from. medium tags the example addresses with
+// where they were read (docs, docs-md, llms, skill).
+func staticDocGroup(origin string, group apiGroup, medium string) docGroup {
 	view := docGroup{apiGroup: group, CategoryTitle: categoryTitle(group.Category), Categories: categorised(),
 		Limit: defaultRateLimit, BodyLimit: byteSize(defaultBodyBytes), Origin: origin}
 	for _, e := range group.Endpoints {
-		d := docEndpoint{endpoint: e, Anchor: anchor(e.Summary), URL: origin + e.Example}
+		d := docEndpoint{endpoint: e, Anchor: anchor(e.Summary), URL: traffic.Tag(origin+e.Example, medium),
+			Preview: traffic.Tag(origin+e.Example, "docs-preview")}
 		for _, p := range e.Params {
 			if p.In == "path" {
 				d.PathParams = append(d.PathParams, p)
@@ -407,8 +414,8 @@ func staticDocGroup(origin string, group apiGroup) docGroup {
 
 // docGroup adds what this server knows: its limits, sample responses and the sources of
 // the data in use.
-func (s *Server) docGroup(origin string, group apiGroup, samples bool) docGroup {
-	view := staticDocGroup(origin, group)
+func (s *Server) docGroup(origin string, group apiGroup, samples bool, medium string) docGroup {
+	view := staticDocGroup(origin, group, medium)
 	view.Limit, view.BodyLimit = s.cfg.RateLimitPerMinute, byteSize(s.cfg.MaxBodyBytes)
 	if samples {
 		host := strings.TrimPrefix(strings.TrimPrefix(origin, "https://"), "http://")
@@ -482,7 +489,7 @@ func (s *Server) handleGroupPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.sendPage(w, r, "docs:"+id, func(origin string) []byte {
-		view := s.docGroup(origin, group, true)
+		view := s.docGroup(origin, group, true, "docs")
 		p := page{
 			Origin: origin, Path: "/docs/" + id, Nav: "docs",
 			Title:       group.Title + " API for India, free and open | " + productName,
@@ -499,7 +506,7 @@ func (s *Server) handleGroupPage(w http.ResponseWriter, r *http.Request) {
 		)
 		return s.renderHTML("group", p)
 	}, func(origin string) []byte {
-		return renderMarkdown("group", s.docGroup(origin, group, true))
+		return renderMarkdown("group", s.docGroup(origin, group, true, "docs-md"))
 	})
 }
 
@@ -622,6 +629,7 @@ var templateFuncs = map[string]any{
 	"category": categoryTitle,
 	"lower":    strings.ToLower,
 	"add":      func(a, b int) int { return a + b },
+	"tag":      traffic.Tag,
 	"fence": func(code string) string { // a Markdown code fence that the code cannot close
 		fence := "```"
 		for strings.Contains(code, fence) {

@@ -19,4 +19,4 @@ Parameters:
 - `url` (query, required): An http or https address. A bare host name is taken as https.
 - `rounds` (query): Times to fetch it, 1 to 5. Default 1.
 
-Example: https://api.dharun.dev/v1/probe?url=https://dharun.dev
+Example: https://api.dharun.dev/v1/probe?url=https://dharun.dev&utm_medium=skill

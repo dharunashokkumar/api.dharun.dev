@@ -14,7 +14,7 @@ Parameters:
 
 - `code` (path, required): IATA code (MAA) or ICAO code (VOMM).
 
-Example: https://api.dharun.dev/v1/airports/MAA
+Example: https://api.dharun.dev/v1/airports/MAA?utm_medium=skill
 
 ## Search airports
 
@@ -31,4 +31,4 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/airports?q=chennai
+Example: https://api.dharun.dev/v1/airports?q=chennai&utm_medium=skill

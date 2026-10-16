@@ -18,4 +18,4 @@ Parameters:
 - `rounds` (query): Probes per hop, 1 to 10. Default 5; a trace takes about a second per round.
 - `v` (query): IP version for a domain name. Default 4. One of: 4, 6.
 
-Example: https://api.dharun.dev/v1/mtr/1.1.1.1
+Example: https://api.dharun.dev/v1/mtr/1.1.1.1?utm_medium=skill

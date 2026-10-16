@@ -14,7 +14,7 @@ Parameters:
 
 - `code` (path, required): 2 to 8 digits; spaces and dots are ignored. SAC codes start with 99.
 
-Example: https://api.dharun.dev/v1/hsn/0902
+Example: https://api.dharun.dev/v1/hsn/0902?utm_medium=skill
 
 ## Search codes
 
@@ -29,4 +29,4 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/hsn?q=green%20tea
+Example: https://api.dharun.dev/v1/hsn?q=green%20tea&utm_medium=skill

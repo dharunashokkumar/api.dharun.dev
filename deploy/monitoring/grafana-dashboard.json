@@ -1873,6 +1873,292 @@
     "w": 12,
     "h": 12
    }
+  },
+  {
+   "id": 50,
+   "type": "row",
+   "title": "Who sends requests: people, AI assistants, programs, crawlers",
+   "gridPos": {
+    "x": 0,
+    "y": 117,
+    "w": 24,
+    "h": 1
+   },
+   "collapsed": false,
+   "panels": []
+  },
+  {
+   "type": "bargauge",
+   "title": "Requests by kind of client, in this time range",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "person (a browser), ai-assistant (an AI tool acting for someone now, or an agent that named itself with utm_source), program (curl, node, python...), ai-crawler, search-crawler, bot (MCP directory probes, link previews, SEO tools), own (our checks), unknown.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "values": false
+    },
+    "showUnfilled": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sort_desc(sum by (kind) (increase(api_requests_by_origin_total{job=\"dharun-api\"}[$__range])))",
+     "legendFormat": "{{kind}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true
+    }
+   ],
+   "id": 51,
+   "gridPos": {
+    "x": 0,
+    "y": 118,
+    "w": 12,
+    "h": 8
+   }
+  },
+  {
+   "type": "timeseries",
+   "title": "Requests per second by kind of client",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "reqps",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (kind) (rate(api_requests_by_origin_total{job=\"dharun-api\"}[5m]))",
+     "legendFormat": "{{kind}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 52,
+   "gridPos": {
+    "x": 12,
+    "y": 118,
+    "w": 12,
+    "h": 8
+   },
+   "description": "The same kinds over time."
+  },
+  {
+   "type": "bargauge",
+   "title": "Top sources, in this time range",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Who sent the request or led to it: utm_source, the MCP client's name, the referring site, or the user agent. Names outside the fixed list are counted as other; the log has them.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "values": false
+    },
+    "showUnfilled": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(20, sum by (kind, source) (increase(api_requests_by_origin_total{job=\"dharun-api\"}[$__range])))",
+     "legendFormat": "{{kind}} / {{source}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true
+    }
+   ],
+   "id": 53,
+   "gridPos": {
+    "x": 0,
+    "y": 126,
+    "w": 12,
+    "h": 10
+   }
+  },
+  {
+   "type": "bargauge",
+   "title": "Links followed, in this time range",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "description": "Which of our links a request came from (utm_medium): docs, docs-preview (the picture on an API page), docs-md, home, guide, llms, skill, index, mcp.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "orientation": "horizontal",
+    "displayMode": "basic",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "values": false
+    },
+    "showUnfilled": true
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sort_desc(sum by (medium, kind) (increase(api_requests_by_origin_total{job=\"dharun-api\",medium!=\"none\"}[$__range])))",
+     "legendFormat": "{{medium}} / {{kind}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     },
+     "instant": true
+    }
+   ],
+   "id": 54,
+   "gridPos": {
+    "x": 12,
+    "y": 126,
+    "w": 12,
+    "h": 10
+   }
+  },
+  {
+   "type": "table",
+   "title": "Sources as logged, in this time range (from the logs)",
+   "datasource": {
+    "type": "loki",
+    "uid": "${logs}"
+   },
+   "description": "Every source and medium as the log has them, including names outside the fixed list.",
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "options": {
+    "showHeader": true,
+    "sortBy": [
+     {
+      "displayName": "Requests",
+      "desc": true
+     }
+    ]
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "topk(30, sum by (kind, src, medium) (count_over_time(${log_stream:raw} |= \"\\\"msg\\\":\\\"request\\\"\" | json | __error__=\"\" | src != \"\" [$__range])))",
+     "queryType": "instant",
+     "datasource": {
+      "type": "loki",
+      "uid": "${logs}"
+     }
+    }
+   ],
+   "transformations": [
+    {
+     "id": "labelsToFields",
+     "options": {
+      "mode": "columns"
+     }
+    },
+    {
+     "id": "merge",
+     "options": {}
+    },
+    {
+     "id": "organize",
+     "options": {
+      "excludeByName": {
+       "Time": true
+      },
+      "indexByName": {
+       "kind": 0,
+       "src": 1,
+       "medium": 2,
+       "Value": 3,
+       "Value #A": 4
+      },
+      "renameByName": {
+       "Value": "Requests",
+       "Value #A": "Requests",
+       "kind": "Kind",
+       "src": "Source",
+       "medium": "Link followed"
+      }
+     }
+    }
+   ],
+   "id": 55,
+   "gridPos": {
+    "x": 0,
+    "y": 136,
+    "w": 24,
+    "h": 10
+   }
   }
  ]
 }

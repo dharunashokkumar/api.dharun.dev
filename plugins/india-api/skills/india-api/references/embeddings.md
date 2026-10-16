@@ -21,7 +21,7 @@ Parameters:
 - `text` (query): A text; repeat for several (or POST them).
 - `type` (query): query (default) for questions, passage for the documents searched. One of: query, passage.
 
-Example: https://api.dharun.dev/v1/embed?type=query&text=How+do+I+renew+my+passport%3F
+Example: https://api.dharun.dev/v1/embed?type=query&text=How+do+I+renew+my+passport%3F&utm_medium=skill
 
 ## Rerank documents for a query
 
@@ -39,4 +39,4 @@ Parameters:
 - `document` (query): A candidate; repeat for each (or POST them).
 - `top` (query): Return only the best few. Default all.
 
-Example: https://api.dharun.dev/v1/rerank?query=capital+of+Tamil+Nadu&document=Chennai+is+the+capital+of+Tamil+Nadu.&document=Mumbai+is+the+financial+capital+of+India.
+Example: https://api.dharun.dev/v1/rerank?query=capital+of+Tamil+Nadu&document=Chennai+is+the+capital+of+Tamil+Nadu.&document=Mumbai+is+the+financial+capital+of+India.&utm_medium=skill

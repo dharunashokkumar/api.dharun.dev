@@ -298,8 +298,14 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 	case "initialize":
 		var params struct {
 			ProtocolVersion string `json:"protocolVersion"`
+			ClientInfo      struct {
+				Name string `json:"name"`
+			} `json:"clientInfo"`
 		}
 		json.Unmarshal(request.Params, &params)
+		// Which client connected (claude-ai, cursor, ...). Each later call is a new request
+		// with no session, so only this one carries the name.
+		info(r).agent = params.ClientInfo.Name
 		version := mcpDefaultVersion
 		for _, supported := range mcpProtocolVersions {
 			if supported == params.ProtocolVersion {

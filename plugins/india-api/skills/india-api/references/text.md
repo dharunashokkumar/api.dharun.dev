@@ -23,7 +23,7 @@ Parameters:
 - `overlap` (query): Characters repeated from the previous chunk, up to half the size. Default a tenth of the size.
 - `format` (query): Default auto: Markdown if the text has headings or code fences. One of: auto, markdown, text.
 
-Example: https://api.dharun.dev/v1/text/chunk?size=200&overlap=20&text=%23+Setup%0A%0AInstall+Go.+Clone+the+repository.%0A%0A%23+Deploy%0A%0APush+to+main.
+Example: https://api.dharun.dev/v1/text/chunk?size=200&overlap=20&text=%23+Setup%0A%0AInstall+Go.+Clone+the+repository.%0A%0A%23+Deploy%0A%0APush+to+main.&utm_medium=skill
 
 ## Redact Indian personal identifiers
 
@@ -42,7 +42,7 @@ Parameters:
 - `style` (query): label replaces with [PAN]; partial keeps the last digits, as on a bank statement. Default label. One of: label, partial.
 - `names` (query): true also finds people's names with a model (slower; text up to 20,000 characters). Default false. One of: true, false.
 
-Example: https://api.dharun.dev/v1/text/redact?text=Call+98765+43210%2C+PAN+ABCPK1234F
+Example: https://api.dharun.dev/v1/text/redact?text=Call+98765+43210%2C+PAN+ABCPK1234F&utm_medium=skill
 
 ## Count tokens
 
@@ -59,7 +59,7 @@ Parameters:
 - `text` (query): The text (or POST it).
 - `model` (query): Model name, such as gpt-4o or gpt-4, or an encoding: o200k_base, cl100k_base, p50k_base. Default o200k_base.
 
-Example: https://api.dharun.dev/v1/text/tokens?model=gpt-4o&text=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%2C+how+many+tokens+is+this%3F
+Example: https://api.dharun.dev/v1/text/tokens?model=gpt-4o&text=%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%2C+how+many+tokens+is+this%3F&utm_medium=skill
 
 ## Detect the language
 
@@ -75,7 +75,7 @@ Parameters:
 
 - `text` (query): The text (or POST it).
 
-Example: https://api.dharun.dev/v1/text/language?text=%E0%AE%85%E0%AE%95%E0%AE%B0+%E0%AE%AE%E0%AF%81%E0%AE%A4%E0%AE%B2+%E0%AE%8E%E0%AE%B4%E0%AF%81%E0%AE%A4%E0%AF%8D%E0%AE%A4%E0%AF%86%E0%AE%B2%E0%AF%8D%E0%AE%B2%E0%AE%BE%E0%AE%AE%E0%AF%8D+%E0%AE%86%E0%AE%A4%E0%AE%BF+%E0%AE%AA%E0%AE%95%E0%AE%B5%E0%AE%A9%E0%AF%8D+%E0%AE%AE%E0%AF%81%E0%AE%A4%E0%AE%B1%E0%AF%8D%E0%AE%B1%E0%AF%87+%E0%AE%89%E0%AE%B2%E0%AE%95%E0%AF%81
+Example: https://api.dharun.dev/v1/text/language?text=%E0%AE%85%E0%AE%95%E0%AE%B0+%E0%AE%AE%E0%AF%81%E0%AE%A4%E0%AE%B2+%E0%AE%8E%E0%AE%B4%E0%AF%81%E0%AE%A4%E0%AF%8D%E0%AE%A4%E0%AF%86%E0%AE%B2%E0%AF%8D%E0%AE%B2%E0%AE%BE%E0%AE%AE%E0%AF%8D+%E0%AE%86%E0%AE%A4%E0%AE%BF+%E0%AE%AA%E0%AE%95%E0%AE%B5%E0%AE%A9%E0%AF%8D+%E0%AE%AE%E0%AF%81%E0%AE%A4%E0%AE%B1%E0%AF%8D%E0%AE%B1%E0%AF%87+%E0%AE%89%E0%AE%B2%E0%AE%95%E0%AF%81&utm_medium=skill
 
 ## Score text for abuse, Hinglish and Tanglish included
 
@@ -93,7 +93,7 @@ Parameters:
 - `threshold` (query): Score at which flagged becomes true, between 0 and 1. Default 0.5.
 - `models` (query): Comma-separated: general, hinglish, tanglish. Default all three.
 
-Example: https://api.dharun.dev/v1/text/moderate?text=tu+bahut+bakwas+aadmi+hai
+Example: https://api.dharun.dev/v1/text/moderate?text=tu+bahut+bakwas+aadmi+hai&utm_medium=skill
 
 ## Guides
 

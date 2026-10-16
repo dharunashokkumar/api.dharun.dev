@@ -22,7 +22,7 @@ Parameters:
 - `task` (query): transcribe (default) writes what was said; translate writes it in English. One of: transcribe, translate.
 - `format` (query): Default json. One of: json, srt, vtt, text.
 
-Example: `POST` https://api.dharun.dev/v1/stt
+Example: `POST` https://api.dharun.dev/v1/stt?utm_medium=skill
 
 ## Text to speech
 
@@ -41,7 +41,7 @@ Parameters:
 - `format` (query): Default mp3. One of: mp3, ogg, wav.
 - `speed` (query): 0.5 to 2. Default 1.
 
-Example: https://api.dharun.dev/v1/tts?text=Namaste%2C%20welcome%20to%20India%20API.&voice=en_GB-cori-medium (returns the audio itself)
+Example: https://api.dharun.dev/v1/tts?text=Namaste%2C%20welcome%20to%20India%20API.&voice=en_GB-cori-medium&utm_medium=skill (returns the audio itself)
 
 ## Voices
 
@@ -49,7 +49,7 @@ Example: https://api.dharun.dev/v1/tts?text=Namaste%2C%20welcome%20to%20India%20
 
 Every voice with its language, speaker, licence and the credit the licence asks for.
 
-Example: https://api.dharun.dev/v1/tts/voices
+Example: https://api.dharun.dev/v1/tts/voices?utm_medium=skill
 
 ## Remove background noise
 
@@ -66,4 +66,4 @@ Parameters:
 - `format` (query): Default mp3. One of: mp3, ogg, wav.
 - `limit` (query): The most noise is lowered by, in decibels, 6 to 100. Lower values sound more natural. Default 100.
 
-Example: `POST` https://api.dharun.dev/v1/audio/denoise (returns the audio itself)
+Example: `POST` https://api.dharun.dev/v1/audio/denoise?utm_medium=skill (returns the audio itself)

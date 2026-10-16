@@ -14,7 +14,7 @@ Parameters:
 
 - `code` (path, required): Station code, such as MAS or NDLS.
 
-Example: https://api.dharun.dev/v1/stations/MAS
+Example: https://api.dharun.dev/v1/stations/MAS?utm_medium=skill
 
 ## Search stations
 
@@ -30,10 +30,10 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/stations?q=chennai
+Example: https://api.dharun.dev/v1/stations?q=chennai&utm_medium=skill
 
 ## Railway zones
 
 `GET /v1/stations/zones`
 
-Example: https://api.dharun.dev/v1/stations/zones
+Example: https://api.dharun.dev/v1/stations/zones?utm_medium=skill

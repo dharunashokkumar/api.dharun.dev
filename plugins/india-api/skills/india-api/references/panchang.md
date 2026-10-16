@@ -20,4 +20,4 @@ Parameters:
 - `lng` (query): Longitude, if no pincode.
 - `tz` (query): IANA time zone for the times. Default Asia/Kolkata.
 
-Example: https://api.dharun.dev/v1/panchang/2026-01-14?pincode=600001
+Example: https://api.dharun.dev/v1/panchang/2026-01-14?pincode=600001&utm_medium=skill

@@ -15,4 +15,4 @@ Parameters:
 - `name` (path, required): Domain name (Indian-script names are accepted), or an IP address for PTR.
 - `type` (query): Record type. Default A. One of: A, AAAA, CNAME, MX, NS, TXT, CAA, SOA, SRV, PTR.
 
-Example: https://api.dharun.dev/v1/dns/dharun.dev?type=MX
+Example: https://api.dharun.dev/v1/dns/dharun.dev?type=MX&utm_medium=skill

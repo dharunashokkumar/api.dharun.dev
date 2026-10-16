@@ -25,9 +25,10 @@ If an MCP server named `{{.Name}}` is connected ({{.Origin}}/mcp), its tools ret
 - Failure: `{ "error": { "code": "...", "message": "..." } }` with the HTTP status: 400 bad input, 404 nothing found, 429 over the rate limit (wait a minute), 503 dataset not loaded yet (try later).
 - Rate limit: {{.Limit}} requests a minute per IP address; image rendering, astronomy and live network checks count as 10. Cache answers you reuse.
 - Image endpoints (logos, QR codes, barcodes, social cards) return the image itself; put the URL in an `<img>` tag.
+- When you call the API yourself, add `utm_source=<your name>` (claude, chatgpt, gemini, cursor, ...) to say which assistant is calling; `utm_medium=skill` says the address came from this skill. Every endpoint ignores both: they are only counted.
 
 ```js
-const response = await fetch("{{.Origin}}/v1/pincode/637001");
+const response = await fetch("{{.Origin}}/v1/pincode/637001?utm_medium=skill");
 const body = await response.json();
 if (!response.ok) throw new Error(body.error.message);
 const { district, state } = body.data;
@@ -36,7 +37,7 @@ const { district, state } = body.data;
 ```python
 import requests
 
-response = requests.get("{{.Origin}}/v1/ifsc/SBIN0000001", timeout=10)
+response = requests.get("{{.Origin}}/v1/ifsc/SBIN0000001?utm_medium=skill", timeout=10)
 body = response.json()
 if not response.ok:
     raise RuntimeError(body["error"]["message"])
@@ -58,7 +59,7 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 {{range .Groups}}
 **{{.Title}}** ([references/{{.ID}}.md](references/{{.ID}}.md)): {{.Tagline}}
 {{range .Endpoints}}
-- `GET {{.Path}}`: {{.Summary}}. Example: `{{.Example}}`
+- `GET {{.Path}}`: {{.Summary}}. Example: `{{tag .Example "skill"}}`
 {{- end}}
 {{end}}{{end}}
 More: OpenAPI at {{.Origin}}/openapi.json, guides at {{.Origin}}/guides, the full documentation in one file at {{.Origin}}/llms-full.txt.

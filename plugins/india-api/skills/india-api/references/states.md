@@ -10,7 +10,7 @@ Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ...,
 
 `GET /v1/states`
 
-Example: https://api.dharun.dev/v1/states
+Example: https://api.dharun.dev/v1/states?utm_medium=skill
 
 ## One state
 
@@ -20,7 +20,7 @@ Parameters:
 
 - `code` (path, required): State code, vehicle prefix or name.
 
-Example: https://api.dharun.dev/v1/states/TN
+Example: https://api.dharun.dev/v1/states/TN?utm_medium=skill
 
 ## Guides
 

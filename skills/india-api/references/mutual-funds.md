@@ -14,7 +14,7 @@ Parameters:
 
 - `code` (path, required): AMFI scheme code, or the scheme's growth or reinvestment ISIN.
 
-Example: https://api.dharun.dev/v1/mutual-funds/122639
+Example: https://api.dharun.dev/v1/mutual-funds/122639?utm_medium=skill
 
 ## Search schemes
 
@@ -33,10 +33,10 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/mutual-funds?q=flexi%20cap&plan=direct&option=growth
+Example: https://api.dharun.dev/v1/mutual-funds?q=flexi%20cap&plan=direct&option=growth&utm_medium=skill
 
 ## Fund houses
 
 `GET /v1/mutual-funds/fund-houses`
 
-Example: https://api.dharun.dev/v1/mutual-funds/fund-houses
+Example: https://api.dharun.dev/v1/mutual-funds/fund-houses?utm_medium=skill

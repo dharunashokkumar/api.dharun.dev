@@ -3,11 +3,13 @@
 # the server to check: by smoke-test.sh against a fresh bundle on the full datasets, and by
 # prod-check.sh against the public server once a release is live.
 # shellcheck disable=SC2154  # base comes from the script that sources this
+# Requests from these checks name themselves, so the server counts them as its own traffic.
+check_agent="india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)"
 # <path> <expected content-type prefix> [text the body must contain]
 check() {
   local type body
   body="$(mktemp)"
-  type="$(curl -fsS -m 30 --retry 2 --retry-delay 3 -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL $1: request failed" >&2; exit 1; }
+  type="$(curl -fsS -A "$check_agent" -m 30 --retry 2 --retry-delay 3 -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL $1: request failed" >&2; exit 1; }
   case "$type" in
     "$2"*) ;;
     *) echo "FAIL $1: got '$type', want '$2'" >&2; exit 1 ;;
@@ -25,8 +27,8 @@ post_check() {
   local type body sample
   body="$(mktemp)"
   sample="$(mktemp)"
-  curl -fsS -m 30 --retry 2 -o "$sample" "$base/samples/$2" || { echo "FAIL $1: no sample $2" >&2; exit 1; }
-  type="$(curl -fsS -m 60 --retry 2 --retry-delay 3 -H "Content-Type: $3" --data-binary "@$sample" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
+  curl -fsS -A "$check_agent" -m 30 --retry 2 -o "$sample" "$base/samples/$2" || { echo "FAIL $1: no sample $2" >&2; exit 1; }
+  type="$(curl -fsS -A "$check_agent" -m 60 --retry 2 --retry-delay 3 -H "Content-Type: $3" --data-binary "@$sample" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
   case "$type" in
     "$4"*) ;;
     *) echo "FAIL POST $1: got '$type', want '$4'" >&2; exit 1 ;;
@@ -43,7 +45,7 @@ post_check() {
 post_json() {
   local type body
   body="$(mktemp)"
-  type="$(curl -fsS -m 60 --retry 2 --retry-delay 3 -H "Content-Type: application/json" --data-binary "$2" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
+  type="$(curl -fsS -A "$check_agent" -m 60 --retry 2 --retry-delay 3 -H "Content-Type: application/json" --data-binary "$2" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
   case "$type" in
     "$3"*) ;;
     *) echo "FAIL POST $1: got '$type', want '$3'" >&2; exit 1 ;;

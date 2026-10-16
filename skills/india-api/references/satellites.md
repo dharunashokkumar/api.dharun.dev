@@ -23,7 +23,7 @@ Parameters:
 - `visible` (query): true lists only passes that can be seen with the eye. One of: true, false.
 - `tz` (query): IANA time zone for the times. Default Asia/Kolkata.
 
-Example: https://api.dharun.dev/v1/sat-pass?sat=ISS&pincode=600001
+Example: https://api.dharun.dev/v1/sat-pass?sat=ISS&pincode=600001&utm_medium=skill
 
 ## Where a satellite is now
 
@@ -35,7 +35,7 @@ Parameters:
 
 - `id` (path, required): Catalogue number or name.
 
-Example: https://api.dharun.dev/v1/satellites/ISS
+Example: https://api.dharun.dev/v1/satellites/ISS?utm_medium=skill
 
 ## Tracked satellites
 
@@ -48,4 +48,4 @@ Parameters:
 - `q` (query): Part of a name, or a catalogue number.
 - `group` (query): Limit to one group. One of: stations, amateur.
 
-Example: https://api.dharun.dev/v1/satellites?group=stations
+Example: https://api.dharun.dev/v1/satellites?group=stations&utm_medium=skill

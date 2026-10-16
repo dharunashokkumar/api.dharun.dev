@@ -158,6 +158,20 @@ refused before the handler runs (rate limit, busy, wrong method, preflight) stay
 the log too. A test fails when a handler marks itself private and the catalog does not.
 Client IP addresses are never logged.
 
+Every request is also labelled by `internal/traffic`: a `kind` (person, ai-assistant,
+program, ai-crawler, search-crawler, bot, own, unknown), a `src` (from `utm_source`, the
+MCP client's `clientInfo.name`, the referring site, or the user agent) and a `medium`
+(`utm_medium`, which our own links carry: `docs`, `docs-preview`, `docs-md`, `home`,
+`guide`, `llms`, `skill`, `index`; `mcp` for `/mcp`). No endpoint reads the `utm_`
+parameters. Our example addresses get their medium from `traffic.Tag` where a page is
+rendered (`staticDocGroup`, the home page, `llms.txt`, the `/v1` index, guides at load,
+the skill template's `tag`), never in the catalog. On private routes and unmatched paths
+only names from the fixed lists are logged; the metric `api_requests_by_origin_total`
+only ever carries those. A new user agent pattern goes in `agentRules` with a test case.
+`go run ./cmd/traffic` reports the same labels from Cloudflare analytics (user agent only)
+or from a file of the server's log lines (`-logs`); `-agents` lists the user agents behind
+each label. The check scripts send `india-api-check/1` so they count as `own`.
+
 `/healthz` starts with `{"status":"ok","version":"X",`; the updater greps for that, so
 keep the version first. It also lists every dataset with the copy in use.
 

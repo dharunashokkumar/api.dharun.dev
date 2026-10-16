@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
 
 func (s *Server) registerRoutes() {
@@ -83,7 +85,7 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 			if returns == "" {
 				returns = "json"
 			}
-			view.Endpoints = append(view.Endpoints, endpointView{Path: e.Path, Methods: methods, Returns: returns, Summary: e.Summary, Example: origin + e.Example})
+			view.Endpoints = append(view.Endpoints, endpointView{Path: e.Path, Methods: methods, Returns: returns, Summary: e.Summary, Example: traffic.Tag(origin+e.Example, "index")})
 		}
 		groups = append(groups, view)
 	}
@@ -199,7 +201,7 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 			"info": map[string]any{
 				"title":       productName + ": " + siteTagline,
 				"version":     s.cfg.Version,
-				"description": siteSummary,
+				"description": siteSummary + " " + utmNote,
 				"license":     map[string]string{"name": "AGPL-3.0 (server code); data under each source's licence, named in meta.source", "identifier": "AGPL-3.0-only"},
 				"contact":     map[string]string{"name": authorName, "url": repoURL + "/issues", "email": "me@dharun.dev"},
 			},

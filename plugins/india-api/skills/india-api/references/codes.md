@@ -26,7 +26,7 @@ Parameters:
 - `fg` (query): Dark colour, hex such as 000000. Default black.
 - `bg` (query): Light colour, hex, or transparent. Default white.
 
-Example: https://api.dharun.dev/v1/qr?text=https://api.dharun.dev&format=png&size=256 (returns the image itself)
+Example: https://api.dharun.dev/v1/qr?text=https://api.dharun.dev&format=png&size=256&utm_medium=skill (returns the image itself)
 
 ## UPI payment QR code
 
@@ -50,7 +50,7 @@ Parameters:
 - `fg` (query): Dark colour, hex such as 000000. Default black.
 - `bg` (query): Light colour, hex, or transparent. Default white.
 
-Example: https://api.dharun.dev/v1/upi-qr?pa=shop@okaxis&pn=Sri%20Murugan%20Stores&am=250&tn=Order%2042 (returns the image itself)
+Example: https://api.dharun.dev/v1/upi-qr?pa=shop@okaxis&pn=Sri%20Murugan%20Stores&am=250&tn=Order%2042&utm_medium=skill (returns the image itself)
 
 ## Barcode
 
@@ -74,7 +74,7 @@ Parameters:
 - `fg` (query): Dark colour, hex such as 000000. Default black.
 - `bg` (query): Light colour, hex, or transparent. Default white.
 
-Example: https://api.dharun.dev/v1/barcode/ean13?text=890123456789 (returns the image itself)
+Example: https://api.dharun.dev/v1/barcode/ean13?text=890123456789&utm_medium=skill (returns the image itself)
 
 ## Read QR codes and barcodes from a picture
 
@@ -86,7 +86,7 @@ Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Pos
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/barcode/read
+Example: `POST` https://api.dharun.dev/v1/barcode/read?utm_medium=skill
 
 ## Guides
 

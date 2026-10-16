@@ -17,7 +17,7 @@ Parameters:
 - `kind` (path, required): Which identifier. One of: gstin, pan, ifsc.
 - `value` (path, required): The identifier to check.
 
-Example: https://api.dharun.dev/v1/validate/gstin/27AAPFU0939F1ZV
+Example: https://api.dharun.dev/v1/validate/gstin/27AAPFU0939F1ZV?utm_medium=skill
 
 ## Guides
 

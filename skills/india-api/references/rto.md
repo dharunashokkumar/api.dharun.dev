@@ -14,7 +14,7 @@ Parameters:
 
 - `code` (path, required): RTO code (TN-28, TN28) or a registration number (TN28AB1234).
 
-Example: https://api.dharun.dev/v1/rto/TN-28
+Example: https://api.dharun.dev/v1/rto/TN-28?utm_medium=skill
 
 ## List or search RTO codes
 
@@ -27,4 +27,4 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/rto?state=TN&q=chennai
+Example: https://api.dharun.dev/v1/rto?state=TN&q=chennai&utm_medium=skill

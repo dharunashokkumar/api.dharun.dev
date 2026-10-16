@@ -24,7 +24,7 @@ Parameters:
 - `fit` (query): How the picture fits width and height. Default inside. One of: inside, cover, fill.
 - `quality` (query): JPEG, WebP and AVIF quality, 1 to 100. Default 80.
 
-Example: `POST` https://api.dharun.dev/v1/image/convert?format=webp&width=400 (returns the image itself)
+Example: `POST` https://api.dharun.dev/v1/image/convert?format=webp&width=400&utm_medium=skill (returns the image itself)
 
 ## Size, format and metadata of a picture
 
@@ -36,7 +36,7 @@ Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Pos
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/image/info
+Example: `POST` https://api.dharun.dev/v1/image/info?utm_medium=skill
 
 ## Remove the background
 
@@ -52,7 +52,7 @@ Parameters:
 
 - `format` (query): png (default), webp, or mask: the cut-out mask alone, white where the subject is. One of: png, webp, mask.
 
-Example: `POST` https://api.dharun.dev/v1/image/remove-background (returns the image itself)
+Example: `POST` https://api.dharun.dev/v1/image/remove-background?utm_medium=skill (returns the image itself)
 
 ## Perceptual hash of a picture
 
@@ -64,7 +64,7 @@ Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Pos
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/image/hash
+Example: `POST` https://api.dharun.dev/v1/image/hash?utm_medium=skill
 
 ## Compare two pictures
 
@@ -76,4 +76,4 @@ Send: Two pictures, as multipart/form-data, up to 10 MB each. Post the file as t
 
 What you send is never written to the log, and the answer is not cached.
 
-Example: `POST` https://api.dharun.dev/v1/image/compare
+Example: `POST` https://api.dharun.dev/v1/image/compare?utm_medium=skill

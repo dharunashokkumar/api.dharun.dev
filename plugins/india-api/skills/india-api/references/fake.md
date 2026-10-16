@@ -19,4 +19,4 @@ Parameters:
 - `state` (query): State code or name, for example TN or Tamil Nadu.
 - `seed` (query): The same seed gives the same records. Without one, each request differs.
 
-Example: https://api.dharun.dev/v1/fake/people?count=3&state=TN&seed=42
+Example: https://api.dharun.dev/v1/fake/people?count=3&state=TN&seed=42&utm_medium=skill

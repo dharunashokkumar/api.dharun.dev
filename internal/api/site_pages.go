@@ -88,7 +88,7 @@ const htmlPages = `
 {{range .Samples}}<div class="panel" data-lang="{{.Lang}}"><p class="panel-label">{{.Label}}</p><div class="codebox"><pre><code>{{.Code}}</code></pre></div></div>
 {{end}}</div>
 {{if and .Upload .Upload.JSON}}<p class="label">invoice.json</p><div class="codebox"><pre><code>{{.ExampleBody}}</code></pre></div>{{end}}
-{{if and .Image (not .Upload)}}<p class="label">Result</p><div class="preview"><img src="{{.URL}}" alt="Example: {{.Summary}}" loading="lazy"></div>
+{{if and .Image (not .Upload)}}<p class="label">Result</p><div class="preview"><img src="{{.Preview}}" alt="Example: {{.Summary}}" loading="lazy"></div>
 {{else if .Sample}}<p class="label">Response{{if .Sample.Shortened}}, with lists and long text shortened{{end}}</p><div class="codebox"><pre class="sample"><code>{{.Sample.JSON}}</code></pre></div>
 {{end}}</section>
 {{end}}

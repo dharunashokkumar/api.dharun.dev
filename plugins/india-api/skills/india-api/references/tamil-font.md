@@ -22,7 +22,7 @@ Parameters:
 - `from` (query, required): What the text is in. One of: unicode, tscii.
 - `to` (query): What to convert to. Default unicode; one of from and to must be unicode. One of: unicode, tscii.
 
-Example: https://api.dharun.dev/v1/tamil-font/convert?from=tscii&text=%C2%BE%C3%81%C2%A2%C3%BA+%C3%85%C2%BD%C3%AC%C2%B8%C3%B5
+Example: https://api.dharun.dev/v1/tamil-font/convert?from=tscii&text=%C2%BE%C3%81%C2%A2%C3%BA+%C3%85%C2%BD%C3%AC%C2%B8%C3%B5&utm_medium=skill
 
 ## Encodings offered
 
@@ -30,4 +30,4 @@ Example: https://api.dharun.dev/v1/tamil-font/convert?from=tscii&text=%C2%BE%C3%
 
 The encodings that can be converted, with fonts that use each, to help recognise what a text is in.
 
-Example: https://api.dharun.dev/v1/tamil-font/encodings
+Example: https://api.dharun.dev/v1/tamil-font/encodings?utm_medium=skill

@@ -23,4 +23,4 @@ Parameters:
 - `page` (query): png and svg: which page. Default 1.
 - `ppi` (query): png: pixels per inch, 36 to 300. Default 144.
 
-Example: https://api.dharun.dev/v1/typst?text=%23set%20page%28width%3A%2012cm%2C%20height%3A%20auto%2C%20margin%3A%201cm%29%0A=%20வணக்கம்%2C%20India%20API%0ATypst%20sets%20%2ATamil%2A%2C%20हिन्दी%20and%20English%20on%20one%20page. (returns the PDF itself)
+Example: https://api.dharun.dev/v1/typst?text=%23set%20page%28width%3A%2012cm%2C%20height%3A%20auto%2C%20margin%3A%201cm%29%0A=%20வணக்கம்%2C%20India%20API%0ATypst%20sets%20%2ATamil%2A%2C%20हिन्दी%20and%20English%20on%20one%20page.&utm_medium=skill (returns the PDF itself)

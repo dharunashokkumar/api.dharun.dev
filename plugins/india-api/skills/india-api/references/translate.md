@@ -22,7 +22,7 @@ Parameters:
 - `from` (query, required): The language of the text: en, or a code from /v1/translate/languages such as hi or ta.
 - `to` (query, required): The language to translate into.
 
-Example: https://api.dharun.dev/v1/translate?from=en&to=ta&text=The+train+to+Chennai+leaves+at+6+pm.+Please+reach+the+station+early.
+Example: https://api.dharun.dev/v1/translate?from=en&to=ta&text=The+train+to+Chennai+leaves+at+6+pm.+Please+reach+the+station+early.&utm_medium=skill
 
 ## Languages
 
@@ -30,4 +30,4 @@ Example: https://api.dharun.dev/v1/translate?from=en&to=ta&text=The+train+to+Che
 
 Every language with its short code and FLORES-200 code; either can be used as from and to.
 
-Example: https://api.dharun.dev/v1/translate/languages
+Example: https://api.dharun.dev/v1/translate/languages?utm_medium=skill

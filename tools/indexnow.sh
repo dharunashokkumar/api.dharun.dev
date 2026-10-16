@@ -19,9 +19,9 @@ next=$(mktemp)
 changed=$(mktemp)
 trap 'rm -f "$next" "$changed"' EXIT
 
-curl -fsS "$origin/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//; s/<\/loc>//' |
+curl -fsS -A "india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)" "$origin/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//; s/<\/loc>//' |
   while read -r url; do
-    sum=$(curl -fsS "$url" | sha256sum | cut -d' ' -f1)
+    sum=$(curl -fsS -A "india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)" "$url" | sha256sum | cut -d' ' -f1)
     printf '%s %s\n' "$url" "$sum" >>"$next"
     if ! grep -qxF "$url $sum" "$state"; then
       printf '%s\n' "$url" >>"$changed"

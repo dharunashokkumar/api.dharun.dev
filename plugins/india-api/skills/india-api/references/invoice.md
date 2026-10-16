@@ -20,7 +20,7 @@ Parameters:
 
 - `format` (query): pdf (default), png (the first page) or json (the amounts only). One of: pdf, png, json.
 
-Example: `POST` https://api.dharun.dev/v1/invoice (returns the PDF itself)
+Example: `POST` https://api.dharun.dev/v1/invoice?utm_medium=skill (returns the PDF itself)
 
 Example body (invoice.json):
 

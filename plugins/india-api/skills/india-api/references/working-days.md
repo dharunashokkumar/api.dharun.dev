@@ -20,7 +20,7 @@ Parameters:
 - `office` (query): Bank calendar only. One Reserve Bank office's list, such as Srinagar or Kochi, for a state with several offices (Maharashtra, Uttar Pradesh, Jammu and Kashmir, Kerala). Without it, a day off at any of the state's offices counts.
 - `add` (query): Working days to add, -366 to 366.
 
-Example: https://api.dharun.dev/v1/working-days/2026-01-16?calendar=bank&state=TN&add=3
+Example: https://api.dharun.dev/v1/working-days/2026-01-16?calendar=bank&state=TN&add=3&utm_medium=skill
 
 ## Count working days between two dates
 
@@ -36,7 +36,7 @@ Parameters:
 - `state` (query): State code or name. Required for the bank calendar.
 - `office` (query): Bank calendar only. One Reserve Bank office's list, such as Srinagar or Kochi, for a state with several offices (Maharashtra, Uttar Pradesh, Jammu and Kashmir, Kerala). Without it, a day off at any of the state's offices counts.
 
-Example: https://api.dharun.dev/v1/working-days?from=2026-01-01&to=2026-01-31&calendar=market
+Example: https://api.dharun.dev/v1/working-days?from=2026-01-01&to=2026-01-31&calendar=market&utm_medium=skill
 
 ## Is the stock market open
 
@@ -48,7 +48,7 @@ Parameters:
 
 - `at` (query): Moment with its offset, RFC 3339, for example 2026-10-13T10:30:00+05:30.
 
-Example: https://api.dharun.dev/v1/market/status?at=2026-01-26T10:00:00%2B05:30
+Example: https://api.dharun.dev/v1/market/status?at=2026-01-26T10:00:00%2B05:30&utm_medium=skill
 
 ## Guides
 

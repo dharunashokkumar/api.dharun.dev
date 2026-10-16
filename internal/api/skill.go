@@ -48,7 +48,7 @@ var skillFiles = sync.OnceValue(func() map[string][]byte {
 		"LICENSE.txt": []byte(mit0),
 	}
 	for _, group := range catalog {
-		files["references/"+group.ID+".md"] = renderMarkdown("group", staticDocGroup(publicOrigin, group))
+		files["references/"+group.ID+".md"] = renderMarkdown("group", staticDocGroup(publicOrigin, group, "skill"))
 	}
 	return files
 })

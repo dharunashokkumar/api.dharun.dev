@@ -16,7 +16,7 @@ Parameters:
 
 - `pincode` (path, required): Six-digit pincode.
 
-Example: https://api.dharun.dev/v1/pincode/637001
+Example: https://api.dharun.dev/v1/pincode/637001?utm_medium=skill
 
 ## Search post offices
 
@@ -32,7 +32,7 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/pincode?q=namakkal&state=TN
+Example: https://api.dharun.dev/v1/pincode?q=namakkal&state=TN&utm_medium=skill
 
 ## Post offices near a point
 
@@ -47,7 +47,7 @@ Parameters:
 - `radius` (query): Kilometres, 1 to 50. Default 5.
 - `limit` (query): Results, 1 to 100. Default 10.
 
-Example: https://api.dharun.dev/v1/pincode/near?lat=11.2189&lng=78.1674&radius=5
+Example: https://api.dharun.dev/v1/pincode/near?lat=11.2189&lng=78.1674&radius=5&utm_medium=skill
 
 ## Guides
 

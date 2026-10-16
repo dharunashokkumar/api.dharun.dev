@@ -16,4 +16,4 @@ Parameters:
 
 - `address` (path, required): The email address.
 
-Example: https://api.dharun.dev/v1/email/someone@mailinator.com
+Example: https://api.dharun.dev/v1/email/someone@mailinator.com?utm_medium=skill

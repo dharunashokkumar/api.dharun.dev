@@ -19,6 +19,7 @@ import (
 	"time"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/dataset"
+	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
 
 // Config is read from the environment by cmd/api.
@@ -200,6 +201,8 @@ type requestInfo struct {
 	// request already paid for one lookup; client is who to charge for the rest.
 	internal bool
 	client   string
+	// agent is the name an MCP client gave itself on initialize.
+	agent string
 }
 
 type infoKey struct{}
@@ -257,11 +260,13 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// Where the request came from stands in for its address, which goes no further.
 		client := s.clientKey(r)
 		place := s.locate(r, client)
+		from := classify(r, details)
 		if details.route != "preflight" {
 			s.metrics.visit(client, place)
+			s.metrics.origin(from)
 		}
 		if s.cfg.LogRequests {
-			s.logRequest(r, details, place, writer.status, elapsed)
+			s.logRequest(r, details, place, from, writer.status, elapsed)
 		}
 	}()
 
@@ -319,7 +324,20 @@ func (s *Server) handleUnmatched(w http.ResponseWriter, r *http.Request) {
 	s.notFound(w, r, "Not found. The API index is at /v1 and the documentation at /.")
 }
 
-func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientPlace, status int, elapsed time.Duration) {
+// classify labels a request by who sent it and which of our links it followed.
+func classify(r *http.Request, details *requestInfo) traffic.Origin {
+	query := r.URL.Query()
+	return traffic.Classify(traffic.Request{
+		UserAgent: r.Header.Get("User-Agent"),
+		Referer:   r.Header.Get("Referer"),
+		UTMSource: query.Get("utm_source"),
+		UTMMedium: query.Get("utm_medium"),
+		Client:    details.agent,
+		MCP:       details.route == "mcp",
+	})
+}
+
+func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientPlace, from traffic.Origin, status int, elapsed time.Duration) {
 	path := r.URL.RequestURI()
 	switch {
 	case details.private:
@@ -340,6 +358,19 @@ func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientP
 		entry["subject"] = clip(details.subject, 80)
 	}
 	place.addTo(entry)
+	entry["kind"] = from.Kind
+	// Where the query itself stays out of the log, so do the caller's own labels: only
+	// the names from the fixed lists are written.
+	source, medium := from.Source, from.Medium
+	if details.private || details.route == "other" {
+		source, medium = from.Known, from.KnownMedium
+	}
+	if source != "" && source != "none" {
+		entry["src"] = source
+	}
+	if medium != "" && medium != "none" {
+		entry["medium"] = medium
+	}
 	for field, name := range map[string]string{"ua": "User-Agent", "referer": "Referer"} {
 		if value := r.Header.Get(name); value != "" {
 			entry[field] = clip(value, 200)

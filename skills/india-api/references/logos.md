@@ -20,7 +20,7 @@ Parameters:
 - `fallback` (query): Return an initials tile instead of 404 for unknown symbols. One of: monogram.
 - `exchange` (query): Force an exchange. One of: nse, bse.
 
-Example: https://api.dharun.dev/v1/logos/TCS (returns the image itself)
+Example: https://api.dharun.dev/v1/logos/TCS?utm_medium=skill (returns the image itself)
 
 ## Details of a listed company
 
@@ -33,7 +33,7 @@ Parameters:
 - `symbol` (path, required): Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or earlier ticker.
 - `exchange` (query): Force an exchange. One of: nse, bse.
 
-Example: https://api.dharun.dev/v1/companies/RELIANCE
+Example: https://api.dharun.dev/v1/companies/RELIANCE?utm_medium=skill
 
 ## Search listed companies
 
@@ -51,7 +51,7 @@ Parameters:
 - `limit` (query): Results per page, 1 to 100.
 - `offset` (query): Results to skip.
 
-Example: https://api.dharun.dev/v1/companies?q=tata&limit=5
+Example: https://api.dharun.dev/v1/companies?q=tata&limit=5&utm_medium=skill
 
 ## Guides
 

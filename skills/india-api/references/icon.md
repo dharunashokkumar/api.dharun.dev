@@ -17,4 +17,4 @@ Parameters:
 - `domain` (path, required): Domain name; a .png suffix is allowed.
 - `size` (query): Width and height in pixels, 16 to 256. Default 64.
 
-Example: https://api.dharun.dev/v1/icon/github.com (returns the image itself)
+Example: https://api.dharun.dev/v1/icon/github.com?utm_medium=skill (returns the image itself)
