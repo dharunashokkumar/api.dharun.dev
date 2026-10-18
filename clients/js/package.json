@@ -1,0 +1,49 @@
+{
+  "author": "Dharun Ashokkumar (https://dharun.dev)",
+  "bin": {
+    "india-api": "./bridge.js"
+  },
+  "bugs": "https://github.com/dharunashokkumar/api.dharun.dev/issues",
+  "description": "Client for the India API (api.dharun.dev): free Indian data, Indian-language AI and document tools. No key, no dependencies.",
+  "engines": {
+    "node": ">=18"
+  },
+  "exports": {
+    ".": {
+      "default": "./index.js",
+      "types": "./index.d.ts"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "bridge.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "homepage": "https://api.dharun.dev/docs",
+  "keywords": [
+    "india",
+    "pincode",
+    "ifsc",
+    "gstin",
+    "pan",
+    "holidays",
+    "rto",
+    "upi",
+    "mcp",
+    "api"
+  ],
+  "license": "MIT-0",
+  "main": "./index.js",
+  "name": "india-api",
+  "repository": {
+    "directory": "clients/js",
+    "type": "git",
+    "url": "git+https://github.com/dharunashokkumar/api.dharun.dev.git"
+  },
+  "sideEffects": false,
+  "type": "module",
+  "types": "./index.d.ts",
+  "version": "1.0.0"
+}

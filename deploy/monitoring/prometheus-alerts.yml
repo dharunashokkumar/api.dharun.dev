@@ -74,3 +74,55 @@ groups:
         annotations:
           summary: 'The server has no copy of {{ $labels.dataset }}'
           description: Its endpoints answer 503 until a refresh fetches it.
+
+  # The sandbox VM (round 5). Its controller is scraped as job "sandbox"; the API's own
+  # counters of sandbox requests are api_sandbox_requests_total.
+  - name: sandbox
+    rules:
+      - alert: SandboxDown
+        expr: up{job="sandbox"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: The sandbox controller is not answering its metrics port
+          description: Runs, sessions, the browser tools and throwaway databases answer 503. See `journalctl -u sandboxd` on the sandbox VM.
+
+      - alert: SandboxPaused
+        expr: sandbox_paused{job="sandbox"} == 1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: The sandbox kill switch is on
+          description: Nothing new starts while /etc/sandboxd/paused exists. Remove it to resume.
+
+      # Runs that kept the processor busy until the time limit: what a miner looks like.
+      - alert: SandboxMiningPattern
+        expr: increase(sandbox_cpu_bound_timeouts_total{job="sandbox"}[30m]) >= 10
+        labels:
+          severity: warning
+        annotations:
+          summary: Many runs used the processor flat out until the time limit
+          description: >-
+            {{ $value }} in 30 minutes. Find the accounts in the audit log
+            (STATE_DIR/audit on the API container: limitsHit time) and block them, or
+            pause the service.
+
+      - alert: SandboxBusy
+        expr: sum(increase(sandbox_busy_total{job="sandbox"}[15m])) >= 20
+        labels:
+          severity: warning
+        annotations:
+          summary: Sandbox requests are being refused for want of memory
+          description: The microVMs need more than MEMORY_CAP_MB, or someone is filling it.
+
+      - alert: SandboxVMsFailing
+        expr: |
+          sum(increase(sandbox_vm_starts_total{job="sandbox",image_outcome=~".*/error"}[15m]))
+            / clamp_min(sum(increase(sandbox_vm_starts_total{job="sandbox"}[15m])), 1) > 0.2
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: More than a fifth of microVMs fail to boot

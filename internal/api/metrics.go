@@ -42,6 +42,7 @@ type metrics struct {
 	countries   map[string]uint64 // requests by country code
 	states      map[string]uint64 // requests from India by state
 	origins     map[string]uint64 // kind|source|medium, from the fixed lists only
+	sandbox     map[string]uint64 // what|outcome of the sandbox services
 	visitors    *visitors
 	totals      lifetimeTotals
 	totalsDirty bool
@@ -70,6 +71,7 @@ func newMetrics(version, stateDir string, datasets func() []datasetState) *metri
 		countries: map[string]uint64{},
 		states:    map[string]uint64{},
 		origins:   map[string]uint64{},
+		sandbox:   map[string]uint64{},
 		visitors:  newVisitors(stateDir),
 		totals:    lifetimeTotals{Since: time.Now().UTC().Format("2006-01-02"), Requests: map[string]uint64{}},
 		stop:      make(chan struct{}),
@@ -228,6 +230,16 @@ func (m *metrics) rateLimited() {
 	m.rateLimits++
 	m.mu.Unlock()
 }
+
+// sandboxEvent counts one request to the sandbox services by what it was and how it
+// ended: ok, refused, busy, quota, failed.
+func (m *metrics) sandboxEvent(what, outcome string) {
+	m.mu.Lock()
+	m.sandbox[what+"|"+outcome]++
+	m.mu.Unlock()
+}
+
+func (m *metrics) sandboxRefused(reason string) { m.sandboxEvent("refused", reason) }
 
 func (m *metrics) busy() {
 	m.mu.Lock()
@@ -388,6 +400,11 @@ func (m *metrics) render() string {
 	family("process_start_time_seconds", "gauge", "Start time of the process since unix epoch.")
 	fmt.Fprintf(&out, "process_start_time_seconds %d\n", m.startedAt.Unix())
 
+	family("api_sandbox_requests_total", "counter", "Requests to the sandbox services, by what was asked and how it ended.")
+	for _, key := range sortedKeys(m.sandbox) {
+		parts := strings.Split(key, "|")
+		fmt.Fprintf(&out, "api_sandbox_requests_total{what=%q,outcome=%q} %d\n", parts[0], parts[1], m.sandbox[key])
+	}
 	return out.String()
 }
 
@@ -405,7 +422,7 @@ func residentMemory(fallback uint64) uint64 {
 	return resident * uint64(os.Getpagesize())
 }
 
-func sortedKeys(counts map[string]uint64) []string {
+func sortedKeys[V any](counts map[string]V) []string {
 	keys := make([]string, 0, len(counts))
 	for key := range counts {
 		keys = append(keys, key)

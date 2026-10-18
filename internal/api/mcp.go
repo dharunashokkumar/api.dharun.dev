@@ -345,7 +345,7 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Every tool only reads. These reach hosts on the internet named by the caller, and this
+// Every tool but the round 5 ones (actingTools) only reads. These reach hosts on the internet named by the caller, and this
 // one answers differently on each call unless it is given a seed.
 var (
 	openWorldTools = map[string]bool{"check_dns": true, "check_email_address": true, "traceroute_from_india": true,
@@ -363,7 +363,7 @@ func listedTools() []map[string]any {
 		out = append(out, map[string]any{
 			"name": tool.Name, "title": title, "description": tool.Description, "inputSchema": tool.InputSchema,
 			"annotations": map[string]any{
-				"title": title, "readOnlyHint": true, "destructiveHint": false,
+				"title": title, "readOnlyHint": !actingTools[tool.Name], "destructiveHint": false,
 				"idempotentHint": !changingTools[tool.Name], "openWorldHint": openWorldTools[tool.Name],
 			},
 		})
@@ -404,6 +404,13 @@ func (s *Server) callTool(r *http.Request, tool *mcpTool, args map[string]any) m
 		}
 	}
 	inner.Host = r.Host
+	// The sandbox tools act for the caller: their token goes along.
+	if auth := r.Header.Get("Authorization"); auth != "" {
+		inner.Header.Set("Authorization", auth)
+	}
+	if token := arg(args, "sandbox_token"); token != "" {
+		inner.Header.Set("Authorization", "Bearer "+token)
+	}
 	recorder := &memoryWriter{header: http.Header{}}
 	s.mux.ServeHTTP(recorder, inner)
 	if kind := recorder.header.Get("Content-Type"); recorder.status == http.StatusOK && !strings.HasPrefix(kind, "application/json") {

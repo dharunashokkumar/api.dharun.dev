@@ -6,6 +6,7 @@ require (
 	github.com/abadojack/whatlanggo v1.0.1
 	github.com/alecthomas/chroma/v2 v2.27.0
 	github.com/boombuler/barcode v1.1.0
+	github.com/coder/websocket v1.8.15
 	github.com/dlclark/regexp2 v1.10.0
 	github.com/go-text/typesetting v0.3.5
 	github.com/hablullah/go-sampa v1.0.0

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terminal · India API</title>
+<meta name="description" content="A throwaway Linux machine in your browser: Debian, Alpine, Arch, Fedora, or the code image with Python, Node.js, Go, C, Ruby and PHP. Free, with a GitHub sign-in.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/terminal/xterm.css">
+<link rel="stylesheet" href="/terminal/terminal.css">
+</head>
+<body>
+<header>
+  <a href="/">India API</a> <span class="sep">/</span> Terminal
+  <span id="who"></span>
+</header>
+<main>
+  <section id="intro">
+    <h1>A throwaway Linux machine</h1>
+    <p>Each session is a microVM of its own: five minutes with the code image (Python, Node.js, Go, C and C++, Ruby, PHP), ten with a distribution. Nothing is kept afterwards. There is no internet, except each language's package registry when you turn network on. Sign in with GitHub so the machines cannot be used anonymously; you get 200 sessions and commands and 30 CPU-minutes a day.</p>
+  </section>
+  <section id="signin" hidden>
+    <button id="login" type="button">Sign in with GitHub</button>
+    <div id="code" hidden>
+      <p>Open <a id="verify" href="https://github.com/login/device" target="_blank" rel="noopener">github.com/login/device</a> and enter</p>
+      <p class="usercode" id="usercode"></p>
+      <p class="muted">Waiting for GitHub…</p>
+    </div>
+  </section>
+  <section id="start" hidden>
+    <label>Machine
+      <select id="image">
+        <option value="code">Code: Python, Node.js, Go, C, C++, Ruby, PHP (5 min)</option>
+        <option value="debian">Debian 13 (10 min)</option>
+        <option value="alpine">Alpine 3.24 (10 min)</option>
+        <option value="arch">Arch Linux (10 min)</option>
+        <option value="fedora">Fedora 44 (10 min)</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" id="network"> Package registries (pip, npm, go, gem, composer)</label>
+    <div id="turnstile"></div>
+    <button id="go" type="button">Start</button>
+    <p class="muted" id="quota"></p>
+  </section>
+  <section id="session" hidden>
+    <div class="bar"><span id="what"></span><span id="left"></span><button id="stop" type="button">Stop</button></div>
+    <div id="term"></div>
+  </section>
+  <p id="message" role="status"></p>
+</main>
+<footer><a href="/docs/sandbox">Sandbox API</a> · <a href="/privacy">Privacy</a> · <a id="signout" href="#" hidden>Sign out</a></footer>
+<script src="/terminal/xterm.js"></script>
+<script src="/terminal/addon-fit.js"></script>
+<script src="/terminal/terminal.js" data-sitekey="{{SITEKEY}}"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+</body>
+</html>

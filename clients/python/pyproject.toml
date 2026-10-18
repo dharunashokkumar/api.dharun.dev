@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "india-api"
+version = "1.0.0"
+description = "Client for the India API (api.dharun.dev): free Indian data, Indian-language AI and document tools. No key, no dependencies."
+readme = "README.md"
+license = "MIT-0"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+authors = [{ name = "Dharun Ashokkumar" }]
+keywords = ["india", "pincode", "ifsc", "gstin", "pan", "holidays", "rto", "upi", "mcp", "api"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Homepage = "https://api.dharun.dev/docs"
+Source = "https://github.com/dharunashokkumar/api.dharun.dev"
+Issues = "https://github.com/dharunashokkumar/api.dharun.dev/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/india_api"]

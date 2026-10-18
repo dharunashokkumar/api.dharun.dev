@@ -63,6 +63,20 @@ type Config struct {
 	TextModelMemory  int64
 	TextModelIdle    time.Duration
 	TextModelThreads int
+	// The sandbox services (round 5). GitHubClientID is the OAuth app that signs callers
+	// in (device flow, no secret needed); SandboxURL and SandboxSecret reach the sandbox
+	// controller over the private link, SandboxPGAddr its Postgres. TurnstileSiteKey and
+	// TurnstileSecret are the terminal page's browser check. Empty leaves a service off:
+	// its endpoints answer 503. The URLs below them are for tests.
+	GitHubClientID     string
+	SandboxURL         string
+	SandboxSecret      string
+	SandboxPGAddr      string
+	TurnstileSiteKey   string
+	TurnstileSecret    string
+	GitHubWebURL       string
+	GitHubAPIURL       string
+	TurnstileVerifyURL string
 	// Programs overrides where an outside program is found, by name (typst, piper, ...).
 	// A program not named here is looked for next to the server binary, then on PATH.
 	Programs map[string]string
@@ -281,12 +295,24 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case http.MethodOptions:
 		details.route = "preflight"
 		details.private = s.privatePath(r)
-		header.Set("Access-Control-Allow-Methods", "GET, HEAD, POST, OPTIONS")
-		header.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Mcp-Session-Id, Mcp-Protocol-Version")
+		header.Set("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS")
+		header.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, Mcp-Session-Id, Mcp-Protocol-Version")
 		header.Set("Access-Control-Max-Age", "86400")
 		writer.WriteHeader(http.StatusNoContent)
 	case http.MethodGet, http.MethodHead, http.MethodPost:
 		s.mux.ServeHTTP(writer, r)
+		// A handler that needs no body (making a request bin, signing out) leaves it unread.
+		// Closing a connection with unread bytes resets it, and the client may lose the
+		// answer, so a small leftover body is read away.
+		io.Copy(io.Discard, io.LimitReader(r.Body, 64<<10))
+	case http.MethodPut, http.MethodPatch, http.MethodDelete:
+		// Only the few routes registered for them take these methods (request bins,
+		// sandbox sessions); everywhere else they are refused as before.
+		if _, pattern := s.mux.Handler(r); pattern != "" && pattern != "/" {
+			s.mux.ServeHTTP(writer, r)
+			return
+		}
+		fallthrough
 	default:
 		details.private = s.privatePath(r)
 		s.fail(writer, r, http.StatusMethodNotAllowed, "method_not_allowed", "Use GET, or POST where the documentation says so.")

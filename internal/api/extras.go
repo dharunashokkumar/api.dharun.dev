@@ -2,6 +2,8 @@ package api
 
 import (
 	"net/http"
+
+	"github.com/dharunashokkumar/api.dharun.dev/internal/sandbox"
 	"strconv"
 	"sync/atomic"
 	"time"
@@ -30,6 +32,13 @@ type extras struct {
 	// API's side, such as tokenizers, loaded on first use.
 	models *textModels
 	text   textModelState
+	// hooks holds the request bins; nil when their file could not be opened.
+	hooks *hookStore
+	// accounts and github sign callers in to the sandbox services; sandbox reaches the
+	// sandbox VM. Each is nil when not set up.
+	accounts *accountStore
+	github   *github
+	sandbox  *sandboxService
 }
 
 // datasetChanged drops whatever was derived from a dataset that was just replaced.
@@ -48,6 +57,21 @@ func (e *extras) start(cfg Config) {
 	e.traces = make(chan struct{}, mtrConcurrency)
 	e.network = newNetworkTools()
 	e.models = newTextModels(cfg, e.programs)
+	if hooks, err := openHookStore(cfg.StateDir); err != nil {
+		logError("opening the request bins", err)
+	} else {
+		e.hooks = hooks
+	}
+	if accounts, err := openAccountStore(cfg.StateDir); err != nil {
+		logError("opening the sandbox accounts", err)
+	} else {
+		e.accounts = accounts
+	}
+	if cfg.GitHubClientID != "" {
+		e.github = &github{clientID: cfg.GitHubClientID, web: cmpOr(cfg.GitHubWebURL, "https://github.com"),
+			api: cmpOr(cfg.GitHubAPIURL, "https://api.github.com"), client: &http.Client{Timeout: 15 * time.Second}}
+	}
+	e.sandbox = newSandboxService(cfg)
 	e.stop = make(chan struct{})
 	go func() {
 		ticker := time.NewTicker(time.Minute)
@@ -60,6 +84,12 @@ func (e *extras) start(cfg Config) {
 				e.tokens.DropIdle(12 * time.Hour)
 				e.models.sweep()
 				e.text.dropIdle(e.models.idle)
+				if e.hooks != nil {
+					e.hooks.sweep(time.Now())
+				}
+				if e.accounts != nil {
+					e.accounts.pruneAudit(time.Now())
+				}
 			case <-e.stop:
 				return
 			}
@@ -73,6 +103,12 @@ func (e *extras) close() {
 	}
 	if e.models != nil {
 		e.models.close()
+	}
+	if e.hooks != nil {
+		e.hooks.close()
+	}
+	if e.accounts != nil {
+		e.accounts.close()
 	}
 	if readers := e.ip.Swap(nil); readers != nil {
 		readers.close()
@@ -135,6 +171,13 @@ func (s *Server) registerMore() {
 	s.handle("code_image", costHeavy, "GET /v1/code-image", s.handleCodeImage)
 	s.handle("code_image", costHeavy, "POST /v1/code-image", s.handleCodeImage)
 	s.registerFileTools()
+	s.handle("hook_create", costHeavy, "POST /v1/hooks", s.handleHookCreate)
+	s.handle("hook_read", costLight, "GET /v1/hooks/{id}", s.handleHookRead)
+	s.handle("hook_delete", costLight, "POST /v1/hooks/{id}/delete", s.handleHookDelete)
+	// A bin records any method, at its own URL and any path below it.
+	s.handle("hook", costLight, "/v1/hook/{id}", s.handleHookReceive)
+	s.handle("hook", costLight, "/v1/hook/{id}/{rest...}", s.handleHookReceive)
+	s.registerSandbox()
 	for _, tool := range []struct {
 		route, path string
 		handler     http.HandlerFunc
@@ -152,6 +195,41 @@ func (s *Server) registerMore() {
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }
+
+func cmpOr(value, fallback string) string {
+	if value != "" {
+		return value
+	}
+	return fallback
+}
+
+// registerSandbox registers the sandbox services (round 5).
+func (s *Server) registerSandbox() {
+	s.handle("docs", costFree, "GET /terminal", s.handleTerminalPage)
+	s.handle("docs", costFree, "GET /terminal/{file}", s.handleTerminalFile)
+	s.handle("sandbox_login", costLight, "POST /v1/sandbox/login", s.handleLoginStart)
+	s.handle("sandbox_login", costLight, "POST /v1/sandbox/login/poll", s.handleLoginPoll)
+	s.handle("sandbox_account", costLight, "GET /v1/sandbox/account", s.handleAccount)
+	s.handle("sandbox_logout", costLight, "POST /v1/sandbox/logout", s.handleLogout)
+	s.handle("sandbox_languages", costLight, "GET /v1/sandbox/languages", s.handleSandboxLanguages)
+	s.handle("sandbox_run", costRemote, "POST /v1/sandbox/run", s.handleSandboxRun)
+	s.handle("sandbox_session", costRemote, "POST /v1/sandbox/sessions", s.handleSessionCreate)
+	s.handle("sandbox_session", costLight, "GET /v1/sandbox/sessions/{id}", s.handleSessionGet)
+	s.handle("sandbox_exec", costRemote, "POST /v1/sandbox/sessions/{id}/exec", s.handleSessionExec)
+	s.handle("sandbox_run", costRemote, "POST /v1/sandbox/sessions/{id}/run", s.handleSessionRun)
+	s.handle("sandbox_files", costRemote, "POST /v1/sandbox/sessions/{id}/upload", s.handleSessionPutFile)
+	s.handle("sandbox_files", costRemote, "GET /v1/sandbox/sessions/{id}/download", s.handleSessionGetFile)
+	s.handle("sandbox_stop", costLight, "POST /v1/sandbox/sessions/{id}/stop", s.handleSessionStop)
+	s.handle("sandbox_tty", costRemote, "GET /v1/sandbox/sessions/{id}/tty", s.handleSessionTTY)
+	s.handle("db", costRemote, "POST /v1/db", s.handleDatabaseCreate)
+	s.handle("db", costLight, "GET /v1/db/{name}", s.handleDatabaseGet)
+	s.handle("db", costLight, "POST /v1/db/{name}/drop", s.handleDatabaseDrop)
+	s.handle("db_socket", costRemote, "GET /v1/db/ws", s.handleDatabaseSocket)
+	for _, action := range []string{sandbox.BrowserScreenshot, sandbox.BrowserPDF, sandbox.BrowserText} {
+		s.handle("browser_"+action, costModel, "GET /v1/browser/"+action, s.handleBrowser(action))
+		s.handle("browser_"+action, costModel, "POST /v1/browser/"+action, s.handleBrowser(action))
+	}
+}
 
 // registerFileTools registers the endpoints that take files (round 2). Their work waits
 // for a CPU slot, or for a model slot when it runs a neural network.

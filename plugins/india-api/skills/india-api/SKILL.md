@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois (RDAP), TLS certificate and website speed checks from India, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
+description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois, TLS and speed checks from India, page screenshots and text, a code sandbox, Postgres and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -9,7 +9,7 @@ metadata:
 
 # India API
 
-Free JSON APIs for Indian data at https://api.dharun.dev: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key, no sign-up, CORS open. Open source (https://github.com/dharunashokkumar/api.dharun.dev).
+Free JSON APIs for Indian data at https://api.dharun.dev: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key, no sign-up, CORS open; only the code sandbox, the terminal and throwaway Postgres take a free GitHub sign-in (see the sandbox-account reference). Open source (https://github.com/dharunashokkumar/api.dharun.dev).
 
 ## When to use it
 
@@ -284,6 +284,48 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/og-image`: Social preview image. Example: `/v1/og-image?title=Free%20APIs%20for%20Indian%20developers&subtitle=Pincodes%2C%20IFSC%2C%20holidays%20and%20more&site=api.dharun.dev&utm_medium=skill`
 - `GET /v1/code-image`: Code as an image. Example: `/v1/code-image?language=go&title=main.go&code=package+main%0A%0Aimport+%22fmt%22%0A%0Afunc+main%28%29+%7B%0A%09fmt.Println%28%22%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%22%29%0A%7D&utm_medium=skill`
+
+### Sandboxes and throwaway services
+
+**Code sandbox** ([references/sandbox.md](references/sandbox.md)): Run Python, JavaScript, Go, C, C++, Ruby, PHP or Bash in a throwaway microVM.
+
+- `GET /v1/sandbox/languages`: Languages, versions and limits. Example: `/v1/sandbox/languages?utm_medium=skill`
+- `GET /v1/sandbox/run`: Run code once. Example: `/v1/sandbox/run?utm_medium=skill`
+- `GET /v1/sandbox/sessions`: Start a session. Example: `/v1/sandbox/sessions?utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}`: Describe a session. Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978?utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}/exec`: Run a command in a session. Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978/exec?utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}/run`: Run code in a session. Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978/run?utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}/upload`: Put a file in a session. Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978/upload?path=receipt.png&utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}/download`: Read a file from a session. Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978/download?path=out.png&utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}/stop`: Stop a session now. Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978/stop?utm_medium=skill`
+- `GET /v1/sandbox/sessions/{id}/tty`: Terminal of a session (WebSocket). Example: `/v1/sandbox/sessions/ses0f1e2d3c4b5a6978/tty?utm_medium=skill`
+
+**Sandbox account** ([references/sandbox-account.md](references/sandbox-account.md)): Sign in with GitHub for the sandbox services, and see today's quota.
+
+- `GET /v1/sandbox/login`: Start a GitHub sign-in. Example: `/v1/sandbox/login?utm_medium=skill`
+- `GET /v1/sandbox/login/poll`: Finish a GitHub sign-in. Example: `/v1/sandbox/login/poll?utm_medium=skill`
+- `GET /v1/sandbox/account`: Today's quota. Example: `/v1/sandbox/account?utm_medium=skill`
+- `GET /v1/sandbox/logout`: Revoke a token. Example: `/v1/sandbox/logout?utm_medium=skill`
+
+**Browser tools** ([references/browser.md](references/browser.md)): Screenshots, PDFs and the text of web pages, from a real Chromium.
+
+- `GET /v1/browser/screenshot`: Screenshot of a page. Example: `/v1/browser/screenshot?url=https://example.com&width=1280&height=800&utm_medium=skill`
+- `GET /v1/browser/pdf`: A page or HTML as PDF. Example: `/v1/browser/pdf?url=https://example.com&utm_medium=skill`
+- `GET /v1/browser/text`: Text of a page. Example: `/v1/browser/text?url=https://example.com&format=markdown&utm_medium=skill`
+
+**Throwaway Postgres** ([references/db.md](references/db.md)): A real Postgres database for an hour, for tests and demos.
+
+- `GET /v1/db`: Make a database. Example: `/v1/db?utm_medium=skill`
+- `GET /v1/db/{name}`: Describe a database. Example: `/v1/db/sb_0f1e2d3c4b5a6978?utm_medium=skill`
+- `GET /v1/db/{name}/drop`: Delete a database now. Example: `/v1/db/sb_0f1e2d3c4b5a6978/drop?utm_medium=skill`
+- `GET /v1/db/ws`: Postgres over WebSocket. Example: `/v1/db/ws?utm_medium=skill`
+
+**Request bin** ([references/hooks.md](references/hooks.md)): A URL that records every request sent to it, for testing webhooks.
+
+- `GET /v1/hooks`: Make a request bin. Example: `/v1/hooks?utm_medium=skill`
+- `GET /v1/hook/{id}`: Send a request to a bin. Example: `/v1/hook/example?utm_medium=skill`
+- `GET /v1/hooks/{id}`: Read what a bin received. Example: `/v1/hooks/example?token=example&utm_medium=skill`
+- `GET /v1/hooks/{id}/delete`: Delete a bin now. Example: `/v1/hooks/example/delete?utm_medium=skill`
 
 ### Sky and radio
 

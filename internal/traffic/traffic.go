@@ -292,6 +292,8 @@ var agentRules = []agentRule{
 	{"collector", "bot", Bot}, {"survey", "bot", Bot}, {"audit", "bot", Bot}, {"seo-", "bot", Bot},
 	{"health check", "bot", Bot}, {"monitor", "bot", Bot},
 
+	// Our own client packages, before the generic python and node rules.
+	{"india-api-js", "india-api-js", Program}, {"india-api-python", "india-api-python", Program},
 	{"curl/", "curl", Program}, {"wget", "wget", Program}, {"python-requests", "python", Program},
 	{"python-httpx", "python", Program}, {"aiohttp", "python", Program}, {"python-urllib", "python", Program},
 	{"python", "python", Program}, {"node-fetch", "node", Program}, {"undici", "node", Program},

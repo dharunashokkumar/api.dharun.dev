@@ -1,0 +1,24 @@
+[Unit]
+Description=India API sandbox controller (Firecracker microVMs)
+Documentation=https://github.com/dharunashokkumar/api.dharun.dev/blob/main/docs/sandbox-design.md
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Root starts the jailer, which drops every microVM to a user ID of its own inside a chroot
+# and cgroup. The controller puts the microVMs' cgroups below its own, so systemd must
+# hand the subtree over.
+User=root
+Delegate=yes
+EnvironmentFile=/etc/sandboxd/env
+ExecStart=/opt/sandbox/bin/sandboxd
+Restart=always
+RestartSec=2
+LimitNOFILE=65536
+# Stopping the service stops every microVM: they live in its cgroup.
+KillMode=control-group
+TimeoutStopSec=20
+
+[Install]
+WantedBy=multi-user.target

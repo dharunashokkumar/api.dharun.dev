@@ -1,0 +1,10 @@
+[Unit]
+Description=Install the newest India API sandbox release
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/sandboxd/env
+ExecStart=/opt/sandbox/current/sandbox-update.sh
+Nice=10

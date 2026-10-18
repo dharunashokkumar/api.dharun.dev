@@ -4,7 +4,7 @@ The one place that tracks what `api.dharun.dev` serves, what is being built, wha
 later and what was turned down. Every API lists where its data comes from and how that
 data is refreshed. Update this file in the same change that adds or alters an API.
 
-Last updated: 2026-10-16
+Last updated: 2026-10-17
 
 **Status words:** `Live` released · `Building` in the current round · `Planned` agreed,
 later round · `Open` waiting for a decision · `Not building` turned down, with the reason.
@@ -18,11 +18,12 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Search and AI round | Live in `v1.1.14` (section 7.1). Its launch (7.2) is on hold until the next rounds are done |
 | Round 1 | Built: the platform changes (section 2) and group A (section 4). Left open: three Tamil encodings (4.3) and INR reference rates (section 5) |
 | Released 2026-10-14 | Satellite passes, HF propagation, sun and moon, regex tester, traceroute, Cloudflare cache purge after a deploy (section 6), licence notices in the bundle. Tested on Linux, install test included; in `v1.1.6`, with CI's race detector and vulnerability check passing |
-| Waiting for Dharun | The code sandbox design (`docs/sandbox-design.md`) and the questions in section 6 |
+| Waiting for Dharun | The round 5 infrastructure steps (sandbox VM, GitHub OAuth app, Turnstile widget), once the code is built |
 | Round 2 | Uploads (section 6): **live 2026-10-15 in `v1.1.18`**, after the server got 10 CPUs, 5 GB, 16 GB disk and the packages. Every tool checked on the live site; speech and background removal answer 503 until the first refresh fetches the voices and the model |
 | Round 3 | AI models (section 6): **live 2026-10-15**, models published in the `models-2026-10` release; every endpoint checked on the live site |
 | Round 4 | Network tools: **live 2026-10-16 in `v1.1.30`** (section 6): whois, TLS check, IPv6 check, HTTP probe, website icons; with the search audit fixes |
-| Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
+| Round 5 | **Built 2026-10-17, not pushed** (section 6): code sandbox (all three phases), headless browser tools, request bin, throwaway Postgres, throwaway distributions, client packages for npm and PyPI. Built locally and not pushed until Dharun says; the VM endpoints answer 503 until the sandbox VM exists. The launch (7.2) follows this round |
+| Open, not scheduled | The rest of the Cloudflare automation (edge rate limits, cache rule and counting, shared-address allowance), TLS fingerprint, more India data, round 1 to 3 loose ends (section 6) |
 
 ## 2. Platform work in round 1
 
@@ -318,12 +319,99 @@ returns the indices plus a per-band estimate labelled as a rule of thumb.
 | Sun and moon | `/v1/sun-moon/{date}?pincode=` or `?lat=&lng=` | Computed with the panchang's code (`go-sampa`) | None | Sunrise, sunset, solar noon, day length, three twilights, moonrise and moonset, phase, illumination, age, the next four principal phases. The date is in the path, as for the panchang. Checked against Skyfield with JPL DE421 for Chennai: sun and twilight within 1 s, phases within 8 s, moonrise and moonset within 70 s | Live in `v1.1.6` |
 | Regex tester | `/v1/regex` | Computed: `regexp` (RE2) and `regexp2` (MIT, already a dependency) in ECMAScript mode for JavaScript, with a one-second limit | None | Matches with groups and character offsets, replacement, a token by token explanation. Private. regexp2 numbers groups the .NET way and ignores the `s` flag in ECMAScript mode; both are corrected here, and a test checks it. Left: a backreference like `\1` in a pattern mixing named and unnamed groups counts the .NET way, and the response says so | Live in `v1.1.6` |
 
-### Disposable services and sandboxes (Open)
+### Round 5: sandboxes, browser tools, disposable services, clients (built, not released)
 
-From the brainstorm of 2026-10-14. Disposable code sandboxes are the most asked-for thing
+Started 2026-10-17. Dharun's decisions, 2026-10-17:
+
+- **Scope:** the code sandbox in all three phases (run once; a sandbox kept up to five
+  minutes with files and packages; a shell for learners), the headless browser tools,
+  the request bin, throwaway Postgres, throwaway distributions, and thin client
+  packages. **Throwaway Kubernetes was dropped** the same day: too much memory.
+  Not this round: more India data, the round 1 to 3 loose ends, and the Cloudflare edge
+  work (rate limits, cache rule and counting, the shared-address
+  allowance).
+- **Isolation: Firecracker microVMs in a dedicated Proxmox VM** with nested
+  virtualization, on an isolated bridge: the internet on ports 80 and 443 (registries,
+  the browser, image builds), nothing on the LAN, and only the API container may connect
+  in. **4 GB and 8 cores**: pve's memory is at its ceiling, so Kubernetes, Java and Rust
+  were dropped to fit (8 GB was agreed first). The microVMs themselves get **no network
+  device at all**: code, output, the terminal and package downloads all go over vsock to
+  the controller, which allows only the listed registries.
+- **Login: GitHub** (OAuth device flow, works from a terminal and from agents), giving a
+  token for these services only. Needed by the sandbox, the browser terminal, Postgres
+  and distributions. Not needed by the request bin (runs in the API container,
+  per-IP limits, a secret read token per bin) or the browser tools (per-IP cost like the
+  model routes, per-domain limit). The rest of the API stays keyless.
+- **Quota per GitHub account and day:** 200 runs and 30 CPU-minutes; accounts younger than
+  30 days 50 runs and 10 CPU-minutes.
+- **Languages:** Python, Node.js, Go, C and C++, Ruby, PHP, Bash; **256 MB** per code
+  microVM (Java and Rust dropped with the memory). Chromium gets 1 GB.
+- **Network for phases 2 and 3:** each language's registry only (PyPI, npm, the Go module
+  proxy, RubyGems, Packagist), through an allowlisting proxy we run, with a download cap
+  per session. Phase 1 has none.
+- **Audit log kept one year** (account, run ID, SHA-256 of the code, limits hit; never
+  the code). Loki keeps 30 days, so the audit log is its own file, pruned after a year.
+- **Phase 3 shell: a terminal in the browser** (xterm.js, served from this site, over a
+  WebSocket through the existing tunnel), with Turnstile. The Turnstile widget's keys are
+  added later as env settings; until then the terminal page answers 503.
+- **Browser tools: screenshot of a URL, HTML to PDF, URL to PDF, rendered page text.**
+  Chromium runs in a microVM per page in the sandbox VM; its traffic leaves only through
+  a guarded proxy (public addresses, ports 80 and 443). Page text: one URL per request,
+  no link following, `robots.txt` honoured for our user agent, 10 pages a minute per
+  domain across all callers (section 8's "no open scraping" stands).
+- **Postgres over WebSocket** (the Neon serverless-driver model), through the tunnel; no
+  port opened. A database lives one hour, 100 MB, 5 connections. **Request bin:** last
+  100 requests (bodies up to 64 KB) for 24 hours, read back as JSON only.
+- **Client packages:** `india-api` on npm and on PyPI (the `@dharun` npm scope belongs to
+  someone else; Dharun's npm account is `dharun.dak`), generated from the catalog, MIT-0,
+  published from CI.
+- **Order:** everything is built now. The VM request went into the homelab on 2026-10-17;
+  once the VM exists, this repo's session gets SSH to that VM only (never pve) to install
+  and test the controller. Nothing is pushed until Dharun says, since every push deploys.
+
+| Part | Endpoint | Status |
+|---|---|---|
+| Client packages | `india-api` on npm and PyPI | Built 2026-10-17: `clients/js` (ESM with types, Node 18+, browsers, Deno, Bun) and `clients/python` (3.9+, standard library only), one method per endpoint named after its OpenAPI operation, generated from the catalog (`TestGeneratedFilesAreCurrent`); `TestClients` runs both against the test server. CI job `clients` publishes when the catalog hash changes, with trusted publishing, once the repository variable `PUBLISH_CLIENTS` is `true`. **Dharun:** publish `clients/js` to npm once by hand from `dharun.dak`, then add the trusted publisher on npm and a pending publisher on PyPI (workflow `ci.yml`), then set the variable |
+| Request bin | `POST /v1/hooks`, `/v1/hook/{id}` (any method and path), `GET /v1/hooks/{id}` | Built 2026-10-17: SQLite in `STATE_DIR/hooks.db`, 24 hours, last 100 requests, 64 KB bodies, 60 a minute per bin, 5,000 bins and 256 MB in all; sender-address headers dropped; private; tests pass |
+| GitHub login and quota | `/v1/sandbox/login`, `/login/poll`, `/account`, `/logout` | Built 2026-10-17 (tested with a stand-in GitHub): device flow (client ID only), tokens `isb_…` hashed in `STATE_DIR/sandbox.db`, daily quota per GitHub ID (India time), audit log in `STATE_DIR/audit/<month>.jsonl` kept a year. Waiting for the OAuth app |
+| Sandbox controller, guest agent, images | `cmd/sandboxd`, `cmd/sandbox-agent`, `deploy/sandbox/` | Built 2026-10-17 and **checked with real Firecracker v1.17.0 microVMs** (jailer, cgroup v2, the 6.1 CI guest kernel) in a Debian 13 container with KVM under WSL: boot 0.8 s; every language runs; time, memory and output limits, fork bomb, no network in a run, read-only root, uid 1000, runs isolated from each other, the kill switch. The agent is the VM's init; no network device at all, vsock only |
+| Sandbox phase 1 | `POST /v1/sandbox/run` | Built 2026-10-17 (controller side checked in the rig; the API side tested against a stand-in controller) |
+| Browser tools | `/v1/browser/screenshot`, `/pdf`, `/text` (GET or POST) | Built 2026-10-17 and checked in the rig with real Chromium in a microVM: screenshot, HTML to PDF (Tamil, Hindi, Kannada and ₹ shaped right), page text as Markdown, private addresses refused through the proxy. Noto CJK fonts added after the first screenshot showed boxes for Chinese. Keyless, 30 units, 10 pages a minute per site, `robots.txt` honoured by the text tool for `india-api-browser` |
+| Sandbox phase 2 | `/v1/sandbox/sessions`, `/exec`, `/run`, `/upload`, `/download`, `/stop` | Built 2026-10-17: checked in the rig, `pip install` through the registry proxy works and other hosts are refused |
+| Sandbox phase 3 and the terminal page | `/terminal`, `GET /v1/sandbox/sessions/{id}/tty` (WebSocket) | Built 2026-10-17: xterm.js 6.0.0 vendored (MIT, checksums tested), device-flow sign-in on the page, Turnstile before a session, a terminal only for sessions started from the page. Tested with a stand-in controller; the shell over vsock checked in the rig. Waiting for the Turnstile keys |
+| Throwaway Postgres | `POST /v1/db`, `GET /v1/db/{name}`, `POST /v1/db/{name}/drop`, `GET /v1/db/ws` | Built 2026-10-17 and checked end to end in the rig: psql through the Python bridge, the API's WebSocket and Postgres 17; a user cannot reach another database (`sameuser`), 30 s statement limit, size and drop. Bridges in both clients (`npx india-api db-bridge`, `python -m india_api.bridge`) |
+| Throwaway distributions | `POST /v1/sandbox/sessions` with `image` debian, alpine, arch or fedora | Built 2026-10-17 as session images rather than an endpoint of their own; all four boot and run commands in the rig (Debian 13, Alpine 3.24.2, Arch 2026.10.01, Fedora 44, checked against their publishers' checksums) |
+| Sandbox VM | homelab request of 2026-10-17 | Waiting for Dharun; then SSH for this repo's session, `install.sh`, and the API's env settings |
+| Monitoring, audit log, kill switch | metrics, dashboard row, alerts | Built 2026-10-17: controller metrics on :9465 (no account names), `api_sandbox_requests_total` on the API, a "Sandbox VM" dashboard row, alerts for down, paused, mining pattern, busy and failing boots; the kill switch (`/etc/sandboxd/paused`) checked in the rig |
+| MCP tools | `run_code`, `start_sandbox_session`, `run_in_sandbox_session`, `stop_sandbox_session`, `screenshot_web_page`, `web_page_to_pdf`, `read_web_page`, `create_request_bin`, `read_request_bin`, `create_postgres_database` | Built 2026-10-17: the sandbox ones take the caller's token from the connection's Authorization header or a `sandbox_token` argument, and are not marked read-only |
+| VM install and updates | `deploy/sandbox/`: `install.sh`, `build-images.sh`, `patch-images.sh`, `sandbox-update.sh`, units | Built 2026-10-17: each release carries `sandbox-linux-amd64.tar.gz` (a few MB); the VM pulls it every five minutes, patches a new agent into the images, rebuilds them when their recipe changes, rolls back when the controller does not come up. Firecracker v1.17.0 and the guest kernel pinned by SHA-256 |
+
+**How round 5 was checked (2026-10-17).** Before any infrastructure exists, everything that
+runs on the sandbox VM was run for real in WSL: a privileged Debian 13 container with
+`/dev/kvm` (nested virtualization), the real jailer and Firecracker v1.17.0, the 6.1 guest
+kernel, the images built by `deploy/sandbox/build-images.sh`, cgroups delegated as systemd
+will, and `sandboxd` driven over its HTTP API by a script: every language, every limit
+(time, memory, output, fork bomb), no network in a run, runs isolated from each other,
+sessions with `pip install` through the registry proxy and other hosts refused, files, all
+four distributions, the browser tools with real Chromium, Postgres through the bridge and
+the API's WebSocket, and the kill switch. The API side has its own tests against stand-ins
+for the controller, GitHub and Turnstile (`internal/api/sandbox_test.go`), and the generated
+clients run against the test server in Node and Python.
+
+Numbers from that rig: a microVM boots in 0.8 s; a Python run takes about 0.5 s, Go 1 s, C++
+1.9 s. The controller holds 8 MB. An idle microVM costs about 50 MB of real memory (162 MB
+after its program touched 100 MB, until it ends); five at once took 365 MB. The memory budget
+(2,560 MB) reserves each VM's full size plus 48 MB, so it refuses long before the VM's 4 GB
+runs out. The API's own memory does not change: a request bin and the account store are small
+SQLite files, and the browser and sandbox work happens on the other VM.
+
+### Disposable services and sandboxes (Round 5)
+
+From the brainstorm of 2026-10-14. Decided 2026-10-17 (above). Disposable code sandboxes are the most asked-for thing
 here (AI agent developers need a safe place to run code; E2B, built on Firecracker, is
 paid) and also the riskiest thing to give away. **Every one of these is Open**: they would
-reopen settled decisions, listed after the table, and need a decision before any work.
+reopen settled decisions, listed after the table. Decided 2026-10-17: all are built in
+round 5, the request bin in the API container and the rest in the sandbox VM.
 
 | Service | Endpoint | How | Memory | Risk |
 |---|---|---|---|---|
@@ -332,7 +420,7 @@ reopen settled decisions, listed after the table, and need a decision before any
 | Code sandbox, phase 3 | | Disposable shell over SSH for learners, only with login and strict quotas | Same | High. SSH cannot pass through the Cloudflare tunnel without `cloudflared` on the user's side or Cloudflare's browser-based SSH |
 | Throwaway database | `/v1/db` | One shared Postgres (later Redis); each request gets a new database and user, dropped after an hour. For CI and tests | Almost none per database | Low. Postgres has no per-database size limit, so a watcher must enforce one. **Open**: Postgres is not HTTP, so the tunnel cannot carry it to the public without `cloudflared` on the client; opening a port exposes the home address |
 | Request bin | `/v1/hook` | A URL that records every request sent to it, read back through the API (webhook.site charges for API access) | Tiny | Low. What it records is strangers' data: private, short-lived, returned only as JSON, never shown as a page under the domain |
-| Throwaway Kubernetes | `/v1/k8s` | A k3s cluster in a microVM for 30 minutes | 512 MB or more each | Medium |
+| Throwaway Kubernetes | `/v1/k8s` | A k3s cluster in a microVM for 30 minutes. **Dropped 2026-10-17**: too much memory for the 4 GB VM | 512 MB or more each | Medium |
 | Try a distribution | `/v1/distro` | Arch, Alpine, Debian or Fedora for 10 minutes, in the browser or over SSH; reuses the sandbox machinery | About 128 MB each | Medium |
 
 **How a sandbox would be hosted.** Firecracker needs KVM. Running it on the Proxmox host
@@ -366,9 +454,9 @@ E2B's own infrastructure is open source and worth reading before designing this.
 
 **Design written 2026-10-14:** `docs/sandbox-design.md` lays out phase 1 (layout, one run
 step by step, limits, login and quota, monitoring, alternatives such as gVisor) and ends
-with the seven decisions it needs. Nothing is built until those are made.
+with the seven decisions it needs. All seven were made on 2026-10-17 (round 5, above).
 
-### Monitoring for these services (Open)
+### Monitoring for these services (Round 5)
 
 Dharun, 2026-10-14: services like these need more advanced monitoring, to watch them and
 to analyse their use. On top of what the API already reports:
@@ -557,7 +645,7 @@ Never break `/v1`.
 | IRCTC PNR status | The source prohibits scraping |
 | GSTIN verification against the GST portal | Captcha-protected government site |
 | Live or delayed share prices | Licensed by the exchanges |
-| Open web search or scraping | Uses the server's connection to scrape third parties; search engines block it |
+| Open web search or scraping | Uses the server's connection to scrape third parties; search engines block it. The round 5 page text tool reads one page a caller names, honours `robots.txt` and never follows links |
 | State and district boundary files | Publishing a map of India whose boundary differs from the Survey of India's is an offence; DataMeet already offers the files free |
 
 Turned down on 2026-10-14. The rule behind them: nothing that lets strangers publish
@@ -728,3 +816,6 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-15 | Infrastructure first, then the round 2 push: the release waits until the server has the packages, memory and disk |
 | 2026-10-15 | Monitoring shows where requests come from (country, Indian state, city, network) and unique visitors per day, month and country per day. Addresses are still never written; the visitor sketches and their period keys are saved so deploys do not reset the counts |
 | 2026-10-16 | Round 4 builds all five network tools through one guarded client; the domain logo is a re-drawn PNG, never the site's file, never SVG; the TLS check uses port 443 only; the probe returns no body and names no provider; the IPv6 check is DNS only. The search audit's defects are fixed in the same round |
+| 2026-10-17 | Round 5: the code sandbox in all three phases (Firecracker in a dedicated 4 GB, 8 core VM), browser tools in the sandbox VM, request bin, throwaway Postgres over WebSocket, distributions, npm and PyPI clients. Kubernetes, Java and Rust dropped for memory. Reopens settled decisions for these services only: a separate VM beside the container, a GitHub login with a daily quota (200 runs, 30 CPU-minutes), 4 GB for the VM, and a terminal page on the site. The request bin and the browser tools stay keyless. Audit log kept a year. Built in full before any infrastructure step; nothing pushed until Dharun says |
+| 2026-10-17 | Rendered page text is built as one page per request with `robots.txt` honoured; open crawling stays in section 8 |
+| 2026-10-17 | The launch follows round 5 |

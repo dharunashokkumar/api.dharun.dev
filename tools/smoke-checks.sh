@@ -138,3 +138,10 @@ post_check /v1/image/info photo.jpg image/jpeg application/json '"width":853'
 post_check "/v1/image/convert?format=webp&width=200" photo.jpg image/jpeg image/webp
 post_json "/v1/invoice?format=json" '{"number":"T-1","date":"2026-10-14","seller":{"name":"A","address":"Namakkal","gstin":"33AABCS1429B1Z1"},"buyer":{"name":"B","address":"Bengaluru","gstin":"29AAACK6812C1ZS"},"items":[{"description":"Rice","hsn":"1006","rate":100,"gst_rate":5}]}' application/json '"igst":5'
 post_json /v1/invoice '{"number":"T-1","date":"2026-10-14","seller":{"name":"A","address":"Namakkal","gstin":"33AABCS1429B1Z1"},"buyer":{"name":"B","address":"Bengaluru","gstin":"29AAACK6812C1ZS"},"items":[{"description":"Rice","hsn":"1006","rate":100,"gst_rate":5}]}' application/pdf
+
+# Round 5. These answer the same on a fresh bundle and on the live server whether or not the
+# sandbox VM is connected: the language list, the request bin's example and the terminal page.
+check /v1/sandbox/languages application/json '"python"'
+check "/v1/hooks/example?token=example" application/json '"payment.captured"'
+check /terminal text/html 'A throwaway Linux machine'
+check /terminal/xterm.js text/javascript

@@ -1,6 +1,7 @@
 # Code sandbox: design for a decision
 
-Status: **Open**. Nothing here is built. Written 2026-10-14 from the brainstorm recorded
+Status: **Decided and built 2026-10-17** (round 5, `ROADMAP.md` section 6), not released yet.
+The answers to the decisions and what changed while building are at the end. Written 2026-10-14 from the brainstorm recorded
 in `ROADMAP.md` (section 6, "Disposable services and sandboxes"), for Dharun to decide
 on. Network addresses, VM names and host details belong in the private homelab
 repository, not here.
@@ -132,3 +133,27 @@ and is worth reading, and borrowing from, before writing the controller.
 
 Measure before trusting the numbers here: snapshot restore time, memory per microVM with
 shared snapshot pages, and how many runs the VM holds at once.
+
+## Answers, 2026-10-17
+
+1. Build it, all three phases, accepting the reopened decisions for these services only.
+2. Firecracker in a dedicated VM.
+3. GitHub login (device flow) for a token used only by the sandbox-type services.
+4. 200 runs and 30 CPU-minutes a day; accounts younger than 30 days 50 and 10.
+5. One year, in its own file (Loki keeps 30 days).
+6. 4 GB and 8 cores (pve's memory is at its ceiling); 256 MB per code microVM.
+7. Python, Node.js, Go, C and C++, Ruby, PHP, Bash.
+
+Changed from this design: the microVMs have no network device in any phase. Phases 2 and 3
+reach the language registries through a proxy the guest sees at `127.0.0.1:3128`, carried
+over vsock to the controller.
+
+Changed while building:
+
+- **Cold boots and a warm pool instead of snapshots.** A microVM with the agent as its first
+  process boots in about 0.8 s, and clones of one snapshot would share the state of their
+  random number generators. A few code VMs are kept booted instead (`WARM`).
+- **No network device, also in phases 2 and 3** (above): the proxy goes over vsock.
+- **Distributions are session images** (`image` on `POST /v1/sandbox/sessions`) rather than an
+  endpoint of their own, and each gets a writable copy of its small root file system.
+- **Memory:** 256 MB per code VM, 1 GB per browser VM, a budget of 2,560 MB on the 4 GB VM.

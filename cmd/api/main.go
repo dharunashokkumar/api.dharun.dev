@@ -65,6 +65,12 @@ func run() error {
 		LogRequests:        envBool("LOG_REQUESTS", true),
 		PNGCacheBytes:      envInt("PNG_CACHE_MB", 32) * 1024 * 1024,
 		StateDir:           stateDir,
+		GitHubClientID:     os.Getenv("GITHUB_CLIENT_ID"),
+		SandboxURL:         os.Getenv("SANDBOX_URL"),
+		SandboxSecret:      os.Getenv("SANDBOX_SECRET"),
+		SandboxPGAddr:      os.Getenv("SANDBOX_PG_ADDR"),
+		TurnstileSiteKey:   os.Getenv("TURNSTILE_SITE_KEY"),
+		TurnstileSecret:    os.Getenv("TURNSTILE_SECRET"),
 	})
 	if err != nil {
 		return err

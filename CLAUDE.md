@@ -6,9 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `api.dharun.dev`, named **India API**: free, open source APIs for Indian developers (company
 logos, pincodes, IFSC, RTO codes, holidays, number to words, format checks, GST invoices,
-OCR, PDF, image and speech tools, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
+OCR, PDF, image and speech tools, a code sandbox, browser tools, a request bin, throwaway
+Postgres, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
 same service serves the website, the guides and the files for AI agents. No API keys,
-rate limit per IP. Code AGPL-3.0-only; examples, guides' code, skill and plugin MIT-0.
+rate limit per IP; only the sandbox services (code, terminal, Postgres) take a GitHub sign-in,
+and they run on a separate sandbox VM. Code AGPL-3.0-only; examples, guides' code, skill and plugin MIT-0.
 
 `ROADMAP.md` tracks what is implemented, what is planned and what was rejected, with the
 data source and refresh method for each API. Read it before adding an API, and update it
@@ -288,6 +290,51 @@ Files that needed converting were made by `tools/models/convert.py` and attached
 GitHub release `models-2026-10` (never pruned: only `v1.1.N` tags are). Changing a model
 means a new release name and new checksums. `DOWNLOAD_MIRROR=<dir>` (host/path layout)
 makes `apidata refresh` copy files instead of downloading them, for tests on a slow line.
+
+### Sandbox services (round 5: `sandbox*.go`, `browser.go`, `internal/sandbox`, `internal/sandboxd`)
+
+The code sandbox, its sessions and terminal, the distributions, the browser tools and
+throwaway Postgres run on a separate VM (the "sandbox VM"), never in the API container.
+The API checks the caller and the target and calls the controller there over a private
+link with a shared secret (`sandbox.Client`, `SANDBOX_URL`, `SANDBOX_SECRET`); unset, those
+endpoints answer 503 `not_available`.
+
+- **Accounts** (`sandbox_account.go`): GitHub device flow (only `GITHUB_CLIENT_ID`), tokens
+  `isb_…` stored as SHA-256 in `STATE_DIR/sandbox.db`, a daily quota per GitHub ID in India
+  time (`fullQuota`, `newQuota` for accounts under 30 days), and the audit log in
+  `STATE_DIR/audit/<YYYY-MM>.jsonl` kept a year: a hash of what ran, never the code. The
+  controller knows accounts as `gh:<id>`; the API checks ownership of every session and
+  database through it. The request bin and the browser tools need no account.
+- **Controller** (`cmd/sandboxd`, `internal/sandboxd`, Linux only): one Firecracker microVM
+  per run, session or browser page, started by the jailer under its own UID, chroot and
+  cgroup (below the controller's own cgroup: the unit has `Delegate=yes`), booted with
+  `--config-file --no-api`. A memory budget (`MEMORY_CAP_MB`) decides how many run at once;
+  more wait `QUEUE_WAIT_SECONDS`, then 503 busy. A few code VMs are kept booted (`WARM`).
+  Cold boots, not snapshots: no shared random state between clones, 0.8 s anyway. The kill
+  switch is the file `/etc/sandboxd/paused`.
+- **No network device in any microVM.** Everything goes over vsock: the guest agent
+  (`cmd/sandbox-agent`, PID 1 of every image, at `/sandbox-agent`) runs commands, writes and
+  reads files and carries a terminal; programs that need the internet use the agent's proxy
+  on `127.0.0.1:3128`, which goes over vsock to the controller's `proxy.go`: the languages'
+  registries for code sessions with network, any public address on 80/443 for the browser,
+  nothing otherwise. Protocol: `internal/sandbox/agent.go` (a JSON line, then frames).
+- **Images** are built on the VM by `deploy/sandbox/build-images.sh` (code, browser and four
+  distributions, pinned by checksum); a new agent or browser helper is patched in by
+  `patch-images.sh` without a rebuild. `cmd/sandbox-browser` drives Chromium over DevTools
+  inside the browser image. Every release carries `sandbox-linux-amd64.tar.gz`, which the VM's
+  `sandbox-update.sh` installs (pull-based, rollback, like the API).
+- **Postgres** runs on the VM itself; the controller makes a database and a same-named user
+  per request (`sameuser` in pg_hba), drops it after an hour, locks it over 100 MB. Callers
+  reach it through the API's WebSocket `/v1/db/ws`; the clients carry a TCP bridge for psql.
+- **Terminal page** `/terminal` (`terminal.go`, `terminal/`): xterm.js vendored (checked
+  against `terminal/SHA256SUMS`), Cloudflare Turnstile before a session (`TURNSTILE_*`), and a
+  TTY only for sessions started from that page.
+
+Testing the VM side needs KVM, so it runs in WSL: a privileged Debian 13 Docker container
+with `--device /dev/kvm`, the real Firecracker and kernel, images built by the real script,
+`sandboxd` driven over HTTP by a checking script (round 5's rig; see ROADMAP section 6, "How
+round 5 was checked"). Unit tests of the API side use stand-ins for the controller, GitHub
+and Turnstile (`sandbox_test.go`). Never run the sandbox on the API container or on pve.
 
 ### MCP
 

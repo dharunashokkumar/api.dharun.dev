@@ -3,8 +3,10 @@
 **Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
 checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
 and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation,
-speech to text and text to speech, and more: 44 APIs behind one consistent JSON shape. No API key, no sign-up, open
-CORS, and an MCP server so AI assistants can use it too.
+speech to text and text to speech, web page screenshots and text, a request bin, and more: 49 APIs
+behind one consistent JSON shape. No API key, no sign-up, open CORS, and an MCP server so AI
+assistants can use it too. A code sandbox in Firecracker microVMs, a Linux terminal in the browser
+and throwaway Postgres come with a free GitHub sign-in.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dharunashokkumar/api.dharun.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/dharunashokkumar/api.dharun.dev)
@@ -75,6 +77,11 @@ JavaScript and Python.
 | [Number to words](https://api.dharun.dev/docs/words) | `/v1/words/1,25,000?lang=ta` | Lakh and crore spelling in English, Hindi, Tamil |
 | [Format checks](https://api.dharun.dev/docs/validate) | `/v1/validate/gstin/27AAPFU0939F1ZV` | GSTIN, PAN and IFSC structure and check characters |
 | [States](https://api.dharun.dev/docs/states) | `/v1/states/TN` | State codes, GST codes, vehicle prefixes |
+| [Code sandbox](https://api.dharun.dev/docs/sandbox) | `POST /v1/sandbox/run`, `/v1/sandbox/sessions` | Run Python, JavaScript, Go, C, C++, Ruby, PHP or Bash in a throwaway Firecracker microVM; sessions with files and package installs; Debian, Alpine, Arch and Fedora; a [terminal in the browser](https://api.dharun.dev/terminal). GitHub sign-in |
+| [Sandbox account](https://api.dharun.dev/docs/sandbox-account) | `POST /v1/sandbox/login` | GitHub sign-in by device code, for the sandbox, the terminal and Postgres; daily allowance |
+| [Browser tools](https://api.dharun.dev/docs/browser) | `/v1/browser/screenshot?url=...`, `/pdf`, `/text` | Screenshots, PDFs of pages or HTML, and page text as Markdown, from a real Chromium |
+| [Throwaway Postgres](https://api.dharun.dev/docs/db) | `POST /v1/db` | A Postgres 17 database for an hour, over WebSocket or through the clients' bridge for psql. GitHub sign-in |
+| [Request bin](https://api.dharun.dev/docs/hooks) | `POST /v1/hooks`, `/v1/hook/{id}` | A URL that records every request sent to it for 24 hours, for testing webhooks |
 
 ## One shape everywhere
 
@@ -109,7 +116,8 @@ npx skills add dharunashokkumar/api.dharun.dev
 ```
 
 - **MCP server:** `https://api.dharun.dev/mcp`, Streamable HTTP, stateless, no
-  authentication. Each tool returns exactly what the matching REST endpoint returns.
+  authentication. Each tool returns exactly what the matching REST endpoint returns. The
+  sandbox tools act for a signed-in account: send `Authorization: Bearer <sandbox token>`.
   Setup for Claude, ChatGPT, VS Code, Cursor, Windsurf, Gemini CLI and Codex:
   [api.dharun.dev/ai](https://api.dharun.dev/ai). In the MCP Registry as
   `io.github.dharunashokkumar/india-api`.
@@ -121,7 +129,10 @@ npx skills add dharunashokkumar/api.dharun.dev
   `.md` or send `Accept: text/markdown`), [`/openapi.json`](https://api.dharun.dev/openapi.json),
   an MCP server card, an AI catalog and an API catalog under `/.well-known/`.
 
-The skill, the plugin and `server.json` are generated from the catalog in
+- **Client libraries:** `npm install india-api` and `pip install india-api`, one method per
+  endpoint, no dependencies ([`clients/`](clients)).
+
+The skill, the plugin, the clients and `server.json` are generated from the catalog in
 `internal/api/catalog.go`; a test fails when the committed copies are out of date.
 
 ## Licence
@@ -192,6 +203,12 @@ Exact versions, retrieval dates and checksums are in [`data/sources.json`](data/
 response repeats the credit in `meta.source`. Models published only as PyTorch weights or in
 full precision were converted to ONNX and int8 by [`tools/models/convert.py`](tools/models/convert.py)
 and attached to the `models-2026-10` release.
+
+The sandbox's machines are not data: they are built on the sandbox VM by
+[`deploy/sandbox/build-images.sh`](deploy/sandbox/build-images.sh) from Debian 13 packages
+and the published Alpine 3.24, Arch Linux and Fedora 44 root file systems (checked against
+the publishers' checksums), and boot Firecracker's own CI build of Linux 6.1; each keeps its
+own licences. The terminal page carries [xterm.js](https://xtermjs.org) (MIT), unchanged.
 
 Known gaps:
 

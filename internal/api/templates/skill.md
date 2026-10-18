@@ -9,7 +9,7 @@ metadata:
 
 # India API
 
-Free JSON APIs for Indian data at {{.Origin}}: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key, no sign-up, CORS open. Open source ({{.Repo}}).
+Free JSON APIs for Indian data at {{.Origin}}: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key, no sign-up, CORS open; only the code sandbox, the terminal and throwaway Postgres take a free GitHub sign-in (see the sandbox-account reference). Open source ({{.Repo}}).
 
 ## When to use it
 

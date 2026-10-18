@@ -64,4 +64,19 @@ printf '%s\n' "$version" > dist/VERSION
 cp "$tools/espeak-ng-source.tar.gz" dist/espeak-ng-source.tar.gz
 rm -rf "$stage" dist/tools
 
+# The sandbox VM takes a bundle of its own: the controller, the guest agent, the browser
+# helper and the scripts that install and update them. It is a few megabytes, so the VM
+# does not download the API's bundle for every release.
+sandbox="dist/sandbox"
+mkdir -p "$sandbox"
+for program in sandboxd sandbox-agent sandbox-browser; do
+  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$sandbox/$program" "./cmd/$program"
+done
+cp deploy/sandbox/*.sh deploy/sandbox/*.service deploy/sandbox/*.timer deploy/sandbox/sandboxd.env.example "$sandbox/"
+install -m 644 LICENSE "$sandbox/LICENSE"
+printf '%s\n' "$version" > "$sandbox/VERSION"
+tar -C dist -czf dist/sandbox-linux-amd64.tar.gz sandbox
+(cd dist && sha256sum sandbox-linux-amd64.tar.gz > sandbox-linux-amd64.tar.gz.sha256)
+rm -rf "$sandbox"
+
 echo "Built dist/$name-linux-amd64.tar.gz ($version, $(du -h "dist/$name-linux-amd64.tar.gz" | cut -f1))"

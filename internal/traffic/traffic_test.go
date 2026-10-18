@@ -38,6 +38,8 @@ func TestClassify(t *testing.T) {
 		{"nothing at all", Request{}, "", "none", Unknown, "none"},
 		{"unnamed bot", Request{UserAgent: "Mozilla/5.0 (compatible; Thing/1.0; +http://thing.example)"}, "bot", "bot", Bot, "none"},
 		{"python", Request{UserAgent: "python-requests/2.32.3"}, "python", "python", Program, "none"},
+		{"our python client", Request{UserAgent: "india-api-python/3f2a9c1b0d4e"}, "india-api-python", "india-api-python", Program, "none"},
+		{"our js client", Request{UserAgent: "india-api-js/3f2a9c1b0d4e"}, "india-api-js", "india-api-js", Program, "none"},
 		{"compatible form", Request{UserAgent: "Mozilla/5.0 (compatible; Thing/1.0)"}, "bot", "bot", Bot, "none"},
 		{"MCP directory", Request{UserAgent: "mcpbeat/0.1 (+https://mcpbeat.com/bot/; liveness check)", MCP: true}, "mcp-directory", "mcp-directory", Bot, "mcp"},
 		{"MCP directory without a link", Request{UserAgent: "io.verifymcp/probe"}, "mcp-directory", "mcp-directory", Bot, "none"},

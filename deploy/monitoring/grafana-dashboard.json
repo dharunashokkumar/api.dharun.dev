@@ -2159,6 +2159,526 @@
     "w": 24,
     "h": 10
    }
+  },
+  {
+   "type": "row",
+   "title": "Sandbox VM: runs, sessions, browser, databases",
+   "id": 60,
+   "collapsed": false,
+   "gridPos": {
+    "x": 0,
+    "y": 146,
+    "w": 24,
+    "h": 1
+   },
+   "panels": []
+  },
+  {
+   "type": "stat",
+   "title": "Paused (kill switch)",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "max(sandbox_paused{job=\"sandbox\"})",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 61,
+   "gridPos": {
+    "x": 0,
+    "y": 147,
+    "w": 6,
+    "h": 4
+   },
+   "description": "1 while /etc/sandboxd/paused exists on the sandbox VM."
+  },
+  {
+   "type": "stat",
+   "title": "MicroVMs running",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(sandbox_vms_running{job=\"sandbox\"})",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 62,
+   "gridPos": {
+    "x": 6,
+    "y": 147,
+    "w": 6,
+    "h": 4
+   },
+   "description": ""
+  },
+  {
+   "type": "stat",
+   "title": "Guest memory in use",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "percentunit",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "max(sandbox_memory_used_bytes{job=\"sandbox\"}) / max(sandbox_memory_cap_bytes{job=\"sandbox\"})",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 63,
+   "gridPos": {
+    "x": 12,
+    "y": 147,
+    "w": 6,
+    "h": 4
+   },
+   "description": ""
+  },
+  {
+   "type": "stat",
+   "title": "Sessions and databases now",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "none",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "blue"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ]
+    },
+    "colorMode": "value",
+    "graphMode": "none"
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(sandbox_sessions{job=\"sandbox\"}) + sum(sandbox_databases{job=\"sandbox\"})",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 64,
+   "gridPos": {
+    "x": 18,
+    "y": 147,
+    "w": 6,
+    "h": 4
+   },
+   "description": ""
+  },
+  {
+   "type": "timeseries",
+   "title": "Runs per minute by outcome",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (outcome) (rate(sandbox_runs_total{job=\"sandbox\"}[5m])) * 60",
+     "legendFormat": "{{outcome}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 65,
+   "gridPos": {
+    "x": 0,
+    "y": 151,
+    "w": 12,
+    "h": 8
+   },
+   "description": "ok, or the first limit a run hit (time, memory, output)."
+  },
+  {
+   "type": "timeseries",
+   "title": "Processor time used by microVMs",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (kind) (rate(sandbox_cpu_seconds_total{job=\"sandbox\"}[5m]))",
+     "legendFormat": "{{kind}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 66,
+   "gridPos": {
+    "x": 12,
+    "y": 151,
+    "w": 12,
+    "h": 8
+   },
+   "description": "CPU cores in use by runs, sessions and the browser. Mining shows as runs at the time limit with the CPU flat out."
+  },
+  {
+   "type": "timeseries",
+   "title": "Abuse signals",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum(increase(sandbox_cpu_bound_timeouts_total{job=\"sandbox\"}[10m]))",
+     "legendFormat": "CPU-bound timeouts",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "sum by (policy) (increase(sandbox_proxy_refused_total{job=\"sandbox\"}[10m]))",
+     "legendFormat": "proxy refused ({{policy}})",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    },
+    {
+     "refId": "C",
+     "expr": "sum(increase(sandbox_busy_total{job=\"sandbox\"}[10m]))",
+     "legendFormat": "busy",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    },
+    {
+     "refId": "D",
+     "expr": "sum(increase(api_sandbox_requests_total{job=\"dharun-api\",outcome=\"quota\"}[10m]))",
+     "legendFormat": "over quota",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 67,
+   "gridPos": {
+    "x": 0,
+    "y": 159,
+    "w": 12,
+    "h": 8
+   },
+   "description": "Per 10 minutes."
+  },
+  {
+   "type": "timeseries",
+   "title": "Boot time and queue",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "s",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (image) (rate(sandbox_vm_boot_seconds_sum{job=\"sandbox\"}[15m])) / sum by (image) (rate(sandbox_vm_boot_seconds_count{job=\"sandbox\"}[15m]))",
+     "legendFormat": "boot {{image}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "sum(rate(sandbox_queue_wait_seconds_sum{job=\"sandbox\"}[15m])) / sum(rate(sandbox_queue_wait_seconds_count{job=\"sandbox\"}[15m]))",
+     "legendFormat": "waited for memory",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 68,
+   "gridPos": {
+    "x": 12,
+    "y": 159,
+    "w": 12,
+    "h": 8
+   },
+   "description": ""
+  },
+  {
+   "type": "timeseries",
+   "title": "Sandbox requests at the API",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (what, outcome) (rate(api_sandbox_requests_total{job=\"dharun-api\"}[5m])) * 60",
+     "legendFormat": "{{what}} {{outcome}}",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 69,
+   "gridPos": {
+    "x": 0,
+    "y": 167,
+    "w": 12,
+    "h": 8
+   },
+   "description": "Per minute, by what was asked and how it ended."
+  },
+  {
+   "type": "timeseries",
+   "title": "Browser pages and downloads",
+   "datasource": {
+    "type": "prometheus",
+    "uid": "${datasource}"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "unit": "short",
+     "min": 0,
+     "custom": {
+      "fillOpacity": 10,
+      "showPoints": "never"
+     }
+    },
+    "overrides": []
+   },
+   "options": {
+    "legend": {
+     "displayMode": "list",
+     "placement": "bottom"
+    },
+    "tooltip": {
+     "mode": "multi"
+    }
+   },
+   "targets": [
+    {
+     "refId": "A",
+     "expr": "sum by (action_outcome) (rate(sandbox_browser_total{job=\"sandbox\"}[5m])) * 60",
+     "legendFormat": "{{action_outcome}} per minute",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    },
+    {
+     "refId": "B",
+     "expr": "sum by (policy) (rate(sandbox_proxy_bytes_total{job=\"sandbox\"}[5m]))",
+     "legendFormat": "{{policy}} bytes/s",
+     "datasource": {
+      "type": "prometheus",
+      "uid": "${datasource}"
+     }
+    }
+   ],
+   "id": 70,
+   "gridPos": {
+    "x": 12,
+    "y": 167,
+    "w": 12,
+    "h": 8
+   },
+   "description": ""
   }
  ]
 }

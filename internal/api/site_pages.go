@@ -7,7 +7,7 @@ const htmlPages = `
 <section class="hero"><div class="wrap">
 <p class="eyebrow">` + productName + `</p>
 <h1>Free APIs for India.</h1>
-<p class="lead">Pincodes, IFSC codes, GSTIN checks, holidays, GST invoices, OCR, translation and speech in Indian languages, UPI QR codes and more: {{.Count}} APIs, one simple shape. No key. No sign-up. Open source.</p>
+<p class="lead">Pincodes, IFSC codes, GSTIN checks, holidays, GST invoices, OCR, translation and speech in Indian languages, UPI QR codes, page screenshots, a code sandbox and more: {{.Count}} APIs, one simple shape. No key. No sign-up, except a free GitHub one for the sandbox. Open source.</p>
 <div class="actions"><a class="button" href="/docs">Browse the APIs</a><a class="more" href="/ai">Use with AI ›</a></div>
 <div class="try">
 <div class="codebox"><pre><code>curl {{.Example}}</code></pre></div>
@@ -16,7 +16,7 @@ const htmlPages = `
 </div></section>
 
 <section class="band"><div class="wrap facts">
-<div class="fact"><h3>No key, no sign-up</h3><p>Call it from your server or straight from a browser. CORS is open, and every answer has the same <code>{ data, meta }</code> shape.</p></div>
+<div class="fact"><h3>No key, no sign-up</h3><p>Call it from your server or straight from a browser. CORS is open, and every answer has the same <code>{ data, meta }</code> shape. Only the code sandbox, the terminal and throwaway Postgres ask for a free GitHub sign-in, so they cannot be used anonymously.</p></div>
 <div class="fact"><h3>Open source</h3><p>The code is on GitHub under AGPL-3.0. Every response names its data source, its version and its licence.</p></div>
 <div class="fact"><h3>Private by default</h3><p>No cookies, no tracking, no IP addresses in the logs. Personal values you send are never logged. <a href="/privacy">Details</a></p></div>
 </div></section>
@@ -105,7 +105,7 @@ const htmlPages = `
 <h1>Use ` + productName + ` from your AI assistant</h1>
 <p class="lead">Connect the MCP server and your assistant can look up pincodes, IFSC codes, holidays and more by itself. No key, no sign-up, nothing to install.</p>
 <div class="codebox"><pre><code>{{.Endpoint}}</code></pre></div>
-<p class="note">Streamable HTTP, stateless, no authentication. Each of the {{len .Tools}} tools returns exactly what the matching REST endpoint returns.</p>
+<p class="note">Streamable HTTP, stateless, no authentication. Each of the {{len .Tools}} tools returns exactly what the matching REST endpoint returns. The sandbox tools (running code, sandbox sessions, Postgres) act for a signed-in account: give the connection the header <code>Authorization: Bearer &lt;sandbox token&gt;</code>, which <a href="/docs/sandbox-account">a GitHub sign-in</a> gives you.</p>
 {{range .Clients}}<section class="client"><h3>{{.Name}}</h3><p>{{.Note}}</p><div class="codebox"><pre><code>{{.Code}}</code></pre></div>{{if .Button}}<a class="button" href="{{.ButtonURL}}">{{.Button}}</a>{{end}}</section>
 {{end}}
 <h2>Teach your coding agent the API</h2>
@@ -113,7 +113,7 @@ const htmlPages = `
 <div class="codebox"><pre><code>npx skills add {{.Repo}}</code></pre></div>
 <p>Or download it and upload it where your assistant takes skills, such as claude.ai: <a href="/skills/{{.Name}}.zip">{{.Name}}.zip</a>. Read it first at <a href="/.well-known/agent-skills/{{.Name}}/SKILL.md">SKILL.md</a>. The skill is MIT-0.</p>
 <h2>Try asking</h2>
-<ul><li>Which district and state is pincode 637001 in?</li><li>Which bank branch is IFSC SBIN0000001, and does it support RTGS?</li><li>Is 26 January 2026 a bank holiday in Tamil Nadu? What is the next working day?</li><li>Write 1,25,000.50 rupees in words in Hindi.</li><li>Is GSTIN 27AAPFU0939F1ZV well formed, and which state is it from?</li><li>Make a GST invoice PDF for 4 bags of rice at ₹2,150 each, 5% GST, from my Tamil Nadu shop to a buyer in Bengaluru.</li><li>Read the Tamil text in this photo.</li><li>Pull the text out of pages 2 to 4 of this PDF.</li><li>Remove the background from this product photo.</li><li>Translate this notice into Tamil and Hindi.</li><li>Is this Hinglish comment abusive?</li></ul>
+<ul><li>Which district and state is pincode 637001 in?</li><li>Which bank branch is IFSC SBIN0000001, and does it support RTGS?</li><li>Is 26 January 2026 a bank holiday in Tamil Nadu? What is the next working day?</li><li>Write 1,25,000.50 rupees in words in Hindi.</li><li>Is GSTIN 27AAPFU0939F1ZV well formed, and which state is it from?</li><li>Make a GST invoice PDF for 4 bags of rice at ₹2,150 each, 5% GST, from my Tamil Nadu shop to a buyer in Bengaluru.</li><li>Read the Tamil text in this photo.</li><li>Pull the text out of pages 2 to 4 of this PDF.</li><li>Remove the background from this product photo.</li><li>Translate this notice into Tamil and Hindi.</li><li>Is this Hinglish comment abusive?</li><li>Run this Python and plot the result.</li><li>Take a full-page screenshot of my landing page on a phone.</li><li>Make me a request bin and tell me what my webhook sends.</li></ul>
 <h2>Tools</h2>
 <table class="params"><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
 {{range .Tools}}<tr><th><code>{{.Name}}</code></th><td>{{.Description}}</td></tr>
