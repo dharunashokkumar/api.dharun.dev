@@ -114,6 +114,7 @@ func (s *Server) registerSite() {
 	s.handle("docs", costFree, "GET /sitemap.xml", s.handleSitemap)
 	s.handle("docs", costFree, "GET /favicon.svg", s.handleFavicon)
 	s.handle("docs", costFree, "GET /favicon.ico", s.handleFavicon)
+	s.handle("docs", costFree, "GET /fonts/{file}", s.handleFont)
 	s.handle("docs", costFree, "GET /"+indexNowKey+".txt", s.handleIndexNowKey)
 	s.handle("docs", costFree, "GET /.well-known/security.txt", s.handleSecurityTxt)
 	s.handle("docs", costFree, "GET /.well-known/api-catalog", s.handleAPICatalog)
@@ -150,9 +151,9 @@ func (p page) OGImage() string {
 	values.Set("site", siteName)
 	values.Set("tag", productName)
 	values.Set("theme", "light")
-	values.Set("bg", "ffffff")
-	values.Set("fg", "1d1d1f")
-	values.Set("accent", "0071e3")
+	values.Set("bg", "f8fbfe")
+	values.Set("fg", "111825")
+	values.Set("accent", "0462d3")
 	return p.Origin + "/v1/og-image?" + values.Encode()
 }
 
@@ -303,6 +304,7 @@ func (s *Server) handleHome(w http.ResponseWriter, r *http.Request) {
 				"Guides":     guides,
 				"FAQs":       faqs,
 				"Limit":      s.cfg.RateLimitPerMinute,
+				"Repo":       repoSlug,
 			},
 		}
 		p.JSONLD = jsonLD(

@@ -77,6 +77,7 @@ check /.well-known/agent-skills/index.json application/json "sha256:"
 check /v1 application/json
 check /openapi.json application/json
 check /llms.txt text/plain
+check /fonts/ibm-plex-sans-latin-400-normal.woff2 font/woff2
 check /v1/logos/TCS image/svg+xml
 check "/v1/logos/TCS?format=png&size=64" image/png
 check "/v1/logos/UNKNOWN?fallback=monogram&format=png" image/png

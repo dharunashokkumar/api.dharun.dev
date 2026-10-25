@@ -184,7 +184,9 @@ keep the version first. It also lists every dataset with the copy in use.
   one page per group with a real sample response (`samples.go` runs the `Example` through
   the router in memory; endpoints marked `Live` are never run), `/ai`, `/guides`, and
   `/privacy`, `/security`, `/about`, which are written once as Markdown in `templates/`
-  and rendered. Plain white, system fonts, nothing loaded from other hosts.
+  and rendered. Cool paper, code on graphite, one cobalt accent; the three fonts are
+  served from the binary (`webfonts.go`, `internal/api/webfonts/` with `SHA256SUMS`), so
+  nothing is loaded from other hosts.
 - A Markdown form of every page (`.md` address or `Accept: text/markdown`), `/llms.txt`,
   `/llms-full.txt`, `/openapi.json`, `/sitemap.xml`, `/robots.txt` (content signals) and
   the discovery files: `/.well-known/security.txt`, `api-catalog`, `ai-catalog.json`,

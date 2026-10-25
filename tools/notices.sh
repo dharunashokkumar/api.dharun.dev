@@ -54,6 +54,9 @@ done <<<"$modules"
 
 notice "SGP4 from github.com/joshuaferrara/go-satellite, copied into internal/orbit" internal/orbit/LICENSE.go-satellite
 notice "Noto fonts (https://github.com/notofonts), compiled into api" internal/typeset/fonts/LICENSE
+notice "Familjen Grotesk (https://github.com/Familjen-Sthlm/Familjen-Grotesk), compiled into api for the website" internal/api/webfonts/OFL-familjen-grotesk.txt
+notice "IBM Plex Sans (https://github.com/IBM/plex), compiled into api for the website" internal/api/webfonts/OFL-ibm-plex-sans.txt
+notice "JetBrains Mono (https://github.com/JetBrains/JetBrainsMono), compiled into api for the website" internal/api/webfonts/OFL-jetbrains-mono.txt
 
 cat <<'EOF'
 ================================================================================

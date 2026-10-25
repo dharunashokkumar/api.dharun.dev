@@ -1,0 +1,8 @@
+# The website's fonts, from the npm packages @fontsource/familjen-grotesk, @fontsource/ibm-plex-sans
+# and @fontsource/jetbrains-mono, version 5.3.0: files/<file>, Latin subset. SIL Open Font License 1.1,
+# texts in OFL-*.txt. To change a font, replace the file and its line here; the tests check every file.
+490e3a95d21896ee66c4d7888b1f8e2e4413c1e910a97f197ad1690491ef5f40 familjen-grotesk-latin-500-normal.woff2
+4becdcd6d182685a5bc7f961e49f8991538cd42acabf4ffbba72654f26743620 familjen-grotesk-latin-600-normal.woff2
+3b646991d30055a93a4ecc499713d4347953a74a947ecab435ab72070cbdab0e ibm-plex-sans-latin-400-normal.woff2
+0717336fb31fcdcde4b8deb3675bb4a0f7f6d484864afcd6751ac29975962203 ibm-plex-sans-latin-500-normal.woff2
+14425ba9c695763c1547f48a206b7aa60350a33ae23de09f0407877f3fcd89eb jetbrains-mono-latin-400-normal.woff2

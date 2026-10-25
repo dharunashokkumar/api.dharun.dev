@@ -166,7 +166,7 @@ func (s *Server) handleSitemap(w http.ResponseWriter, r *http.Request) {
 	writeBody(w, r, http.StatusOK, []byte(out.String()), "application/xml; charset=utf-8", cacheAPI, true)
 }
 
-const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#1d1d1f"/><path d="M27 18c-5 0-7 2-7 7v3c0 3-1 4-4 4 3 0 4 1 4 4v3c0 5 2 7 7 7M37 18c5 0 7 2 7 7v3c0 3 1 4 4 4-3 0-4 1-4 4v3c0 5-2 7-7 7" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#121823"/><path d="M27 18c-5 0-7 2-7 7v3c0 3-1 4-4 4 3 0 4 1 4 4v3c0 5 2 7 7 7M37 18c5 0 7 2 7 7v3c0 3 1 4 4 4-3 0-4 1-4 4v3c0 5-2 7-7 7" fill="none" stroke="#e3e8ee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 
 func (s *Server) handleFavicon(w http.ResponseWriter, r *http.Request) {
 	writeBody(w, r, http.StatusOK, []byte(favicon), typeSVG, cacheLong, false)

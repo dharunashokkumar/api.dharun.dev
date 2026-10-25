@@ -452,7 +452,7 @@ use. Decisions are in section 12 (2026-10-14). Built in this repository:
 |---|---|
 | Licence: code AGPL-3.0; examples, guides' code, skill and plugin MIT-0; data keeps its sources' licences | Live |
 | SECURITY.md, `/.well-known/security.txt` (GitHub private reporting, me@dharun.dev, dharun.dak@gmail.com), CONTRIBUTING.md (issues only, no pull requests), issue forms | Live |
-| Site split into pages, plain white minimal design: short landing page, `/docs` directory, one page per API with real sample responses and curl / JavaScript / Python, `/ai`, `/guides`, `/privacy`, `/security`, `/about` | Live |
+| Site split into pages, minimal design (redesigned 2026-10-25, see decisions): short landing page, `/docs` directory, one page per API with real sample responses and curl / JavaScript / Python, `/ai`, `/guides`, `/privacy`, `/security`, `/about` | Live |
 | Name "India API by dharun.dev" in titles, OpenAPI, MCP (`india-api`, was `india-data`) | Live |
 | JSON-LD, share images from our own `/v1/og-image`, sitemap with dates, a Markdown copy of every page, short `llms.txt` plus `llms-full.txt`, robots.txt content signals | Live |
 | Guides, first set of eight (pincode autofill, IFSC, GSTIN and PAN, working days, logos, amount in words, UPI QR, redaction before an LLM); every request in them tested | Live |
@@ -728,3 +728,4 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-10-15 | Infrastructure first, then the round 2 push: the release waits until the server has the packages, memory and disk |
 | 2026-10-15 | Monitoring shows where requests come from (country, Indian state, city, network) and unique visitors per day, month and country per day. Addresses are still never written; the visitor sketches and their period keys are saved so deploys do not reset the counts |
 | 2026-10-16 | Round 4 builds all five network tools through one guarded client; the domain logo is a re-drawn PNG, never the site's file, never SVG; the TLS check uses port 443 only; the probe returns no body and names no provider; the IPv6 check is DNS only. The search audit's defects are fixed in the same round |
+| 2026-10-25 | Full redesign of every page (Hallmark, Cobalt theme): cool near-white paper, hairlines, code and real answers on graphite, one cobalt accent; Familjen Grotesk, IBM Plex Sans and JetBrains Mono served from the binary (`internal/api/webfonts`, OFL), so still nothing loaded from other hosts. Replaces the plain white, system-font design |

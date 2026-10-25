@@ -2,3 +2,4 @@
 * text=auto eol=lf
 *.gz binary
 *.ttf binary
+*.woff2 binary
