@@ -126,7 +126,11 @@ func crossing(f angle, target float64, start time.Time, limit, step time.Duratio
 		v, err := value(t)
 		return normalise(v - first), err
 	}
+	// The angle only grows, so a step that ends with less travelled than it started
+	// wrapped past 360 and so also past the target, which is at most 360 away.
 	low, high := start, start
+	lowMoved := 0.0
+	passed := func(moved float64) bool { return moved >= distance || moved < lowMoved }
 	for {
 		high = low.Add(step)
 		if high.Sub(start) > limit {
@@ -136,10 +140,10 @@ func crossing(f angle, target float64, start time.Time, limit, step time.Duratio
 		if err != nil {
 			return time.Time{}, err
 		}
-		if moved >= distance {
+		if passed(moved) {
 			break
 		}
-		low = high
+		low, lowMoved = high, moved
 	}
 	for high.Sub(low) > time.Second {
 		middle := low.Add(high.Sub(low) / 2)
@@ -147,10 +151,10 @@ func crossing(f angle, target float64, start time.Time, limit, step time.Duratio
 		if err != nil {
 			return time.Time{}, err
 		}
-		if moved >= distance {
+		if passed(moved) {
 			high = middle
 		} else {
-			low = middle
+			low, lowMoved = middle, moved
 		}
 	}
 	return high.Truncate(time.Second), nil

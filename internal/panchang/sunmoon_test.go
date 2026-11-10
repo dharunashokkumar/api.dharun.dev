@@ -54,3 +54,27 @@ func TestPrincipalPhaseNamesItsDate(t *testing.T) {
 		t.Errorf("next full moon from that date: %s", full.Moon.Next.FullMoon)
 	}
 }
+
+// Every day has an answer. A phase passed just before midnight left the search for the
+// next one wrapping past 360 degrees without noticing, so on 2026-11-10 and about one
+// day a week the day failed with "no crossing found". The next phases are always ahead
+// of the day, and each within one lunar month of it.
+func TestSunMoonEveryDay(t *testing.T) {
+	month := 30 * 24 * time.Hour // lunar months run up to 29.8 days
+	for date := time.Date(2026, 1, 1, 0, 0, 0, 0, ist); date.Year() < 2028; date = date.AddDate(0, 0, 1) {
+		day, err := ComputeSunMoon(date, chennai)
+		if err != nil {
+			t.Fatalf("%s: %v", date.Format("2006-01-02"), err)
+		}
+		for name, at := range map[string]string{"new": day.Moon.Next.NewMoon, "first quarter": day.Moon.Next.FirstQuarter,
+			"full": day.Moon.Next.FullMoon, "last quarter": day.Moon.Next.LastQuarter} {
+			when, err := time.Parse(time.RFC3339, at)
+			if err != nil || when.Before(date) || when.Sub(date) > month {
+				t.Fatalf("%s: next %s moon %s", date.Format("2006-01-02"), name, at)
+			}
+		}
+		if day.Moon.Age < 0 || day.Moon.Age > 30 {
+			t.Fatalf("%s: moon age %v", date.Format("2006-01-02"), day.Moon.Age)
+		}
+	}
+}
