@@ -172,6 +172,15 @@ only ever carries those. A new user agent pattern goes in `agentRules` with a te
 or from a file of the server's log lines (`-logs`); `-agents` lists the user agents behind
 each label. The check scripts send `india-api-check/1` so they count as `own`.
 
+`internal/attack` labels requests that look like attacks (a fixed list of types: probes,
+injections, Log4Shell, attack tools); `checkAttack` in `server.go` decides what it may
+look at: probes only on paths no route took, injections only on failed or unmatched
+requests, a body (first 4 KB) only for an unmatched POST. The log line gets `attack`,
+`attack_in` and, off private routes, `attack_snippet`; every `s.fail` puts its code in
+the line's `error`. Metrics: `api_attack_requests_total{type,in}`,
+`api_errors_total{route,status,code}`. Answers never change for an attack. A new rule
+needs a test case in both directions (caught, and a real request it must not catch).
+
 `/healthz` starts with `{"status":"ok","version":"X",`; the updater greps for that, so
 keep the version first. It also lists every dataset with the copy in use.
 

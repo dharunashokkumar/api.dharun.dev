@@ -18,6 +18,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/dharunashokkumar/api.dharun.dev/internal/attack"
 	"github.com/dharunashokkumar/api.dharun.dev/internal/dataset"
 	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
@@ -203,6 +204,11 @@ type requestInfo struct {
 	client   string
 	// agent is the name an MCP client gave itself on initialize.
 	agent string
+	// code is the error code of a failed answer, from s.fail.
+	code string
+	// body is the start of a body sent to a path no route took, kept only to see whether
+	// it is an attack.
+	body []byte
 }
 
 type infoKey struct{}
@@ -254,9 +260,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 		elapsed := time.Since(started)
 		s.metrics.observe(details.route, r.Method, writer.status, elapsed)
+		s.metrics.failed(details.route, writer.status, details.code)
 		if details.route == "health" {
 			return
 		}
+		found := checkAttack(r, details, writer.status)
+		s.metrics.attack(found)
 		// Where the request came from stands in for its address, which goes no further.
 		client := s.clientKey(r)
 		place := s.locate(r, client)
@@ -266,7 +275,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			s.metrics.origin(from)
 		}
 		if s.cfg.LogRequests {
-			s.logRequest(r, details, place, from, writer.status, elapsed)
+			s.logRequest(r, details, place, from, found, writer.status, elapsed)
 		}
 	}()
 
@@ -321,7 +330,29 @@ func (s *Server) handleUnmatched(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, http.StatusMethodNotAllowed, "method_not_allowed", "This endpoint takes "+other+".")
 		return
 	}
+	// No endpoint reads this body, so its start is kept to see whether it is an attack.
+	if r.Body != nil && r.Method == http.MethodPost {
+		info(r).body, _ = io.ReadAll(io.LimitReader(r.Body, attackBodyBytes))
+	}
 	s.notFound(w, r, "Not found. The API index is at /v1 and the documentation at /.")
+}
+
+// attackBodyBytes is how much of a body sent to a path no route took is read.
+const attackBodyBytes = 4 << 10
+
+// checkAttack looks for an attack in a request once it is answered. Injection payloads
+// are looked for only in a request that failed or reached no route, and probes for
+// files and pages only in one that reached no route; see the attack package.
+func checkAttack(r *http.Request, details *requestInfo, status int) attack.Finding {
+	unmatched := details.route == "other"
+	return attack.Check(attack.Request{
+		Path:     r.URL.EscapedPath(),
+		RawQuery: r.URL.RawQuery,
+		Header:   r.Header,
+		Body:     details.body,
+		Payload:  unmatched || status >= 400,
+		Probe:    unmatched,
+	})
 }
 
 // classify labels a request by who sent it and which of our links it followed.
@@ -337,7 +368,7 @@ func classify(r *http.Request, details *requestInfo) traffic.Origin {
 	})
 }
 
-func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientPlace, from traffic.Origin, status int, elapsed time.Duration) {
+func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientPlace, from traffic.Origin, found attack.Finding, status int, elapsed time.Duration) {
 	path := r.URL.RequestURI()
 	switch {
 	case details.private:
@@ -356,6 +387,17 @@ func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientP
 	}
 	if details.subject != "" && !details.private {
 		entry["subject"] = clip(details.subject, 80)
+	}
+	if status >= 400 && details.code != "" {
+		entry["error"] = details.code
+	}
+	if found.Type != "" {
+		entry["attack"], entry["attack_in"] = found.Type, found.In
+		// What the attacker sent is kept only where the request's input is logged anyway
+		// or reached no route; a private route's input never is, attack or not.
+		if !details.private {
+			entry["attack_snippet"] = found.Snippet
+		}
 	}
 	place.addTo(entry)
 	entry["kind"] = from.Kind

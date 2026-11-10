@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/dharunashokkumar/api.dharun.dev/internal/attack"
 	"github.com/dharunashokkumar/api.dharun.dev/internal/traffic"
 )
 
@@ -42,6 +43,8 @@ type metrics struct {
 	countries   map[string]uint64 // requests by country code
 	states      map[string]uint64 // requests from India by state
 	origins     map[string]uint64 // kind|source|medium, from the fixed lists only
+	failures    map[string]uint64 // route|status|code of error answers
+	attacks     map[string]uint64 // type|where, from the attack package's fixed lists
 	visitors    *visitors
 	totals      lifetimeTotals
 	totalsDirty bool
@@ -70,6 +73,8 @@ func newMetrics(version, stateDir string, datasets func() []datasetState) *metri
 		countries: map[string]uint64{},
 		states:    map[string]uint64{},
 		origins:   map[string]uint64{},
+		failures:  map[string]uint64{},
+		attacks:   map[string]uint64{},
 		visitors:  newVisitors(stateDir),
 		totals:    lifetimeTotals{Since: time.Now().UTC().Format("2006-01-02"), Requests: map[string]uint64{}},
 		stop:      make(chan struct{}),
@@ -223,6 +228,29 @@ func (m *metrics) observeLogo(format, result string) {
 	m.mu.Unlock()
 }
 
+// failed counts an error answer. code comes from s.fail; an error written another way
+// has none.
+func (m *metrics) failed(route string, status int, code string) {
+	if status < 400 {
+		return
+	}
+	if code == "" {
+		code = "none"
+	}
+	m.mu.Lock()
+	m.failures[fmt.Sprintf("%s|%d|%s", route, status, code)]++
+	m.mu.Unlock()
+}
+
+func (m *metrics) attack(found attack.Finding) {
+	if found.Type == "" {
+		return
+	}
+	m.mu.Lock()
+	m.attacks[found.Type+"|"+found.In]++
+	m.mu.Unlock()
+}
+
 func (m *metrics) rateLimited() {
 	m.mu.Lock()
 	m.rateLimits++
@@ -352,6 +380,17 @@ func (m *metrics) render() string {
 	for _, key := range sortedKeys(m.origins) {
 		parts := strings.Split(key, "|")
 		fmt.Fprintf(&out, "api_requests_by_origin_total{kind=%q,source=%q,medium=%q} %d\n", parts[0], parts[1], parts[2], m.origins[key])
+	}
+
+	family("api_errors_total", "counter", "Error answers (status 400 and above) since start, by route, status and error code (the code in the JSON error body; none when the answer had no code).")
+	for _, key := range sortedKeys(m.failures) {
+		parts := strings.Split(key, "|")
+		fmt.Fprintf(&out, "api_errors_total{route=%q,status=%q,code=%q} %d\n", parts[0], parts[1], parts[2], m.failures[key])
+	}
+	family("api_attack_requests_total", "counter", "Requests since start that look like attacks, by type (probes for files and pages the API does not have, injection payloads, attack tools) and where in the request it was found (path, query, header, body, user-agent). Health checks are left out.")
+	for _, key := range sortedKeys(m.attacks) {
+		parts := strings.Split(key, "|")
+		fmt.Fprintf(&out, "api_attack_requests_total{type=%q,in=%q} %d\n", parts[0], parts[1], m.attacks[key])
 	}
 
 	m.visitors.roll()

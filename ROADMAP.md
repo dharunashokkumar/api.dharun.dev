@@ -4,7 +4,7 @@ The one place that tracks what `api.dharun.dev` serves, what is being built, wha
 later and what was turned down. Every API lists where its data comes from and how that
 data is refreshed. Update this file in the same change that adds or alters an API.
 
-Last updated: 2026-10-16
+Last updated: 2026-11-04
 
 **Status words:** `Live` released · `Building` in the current round · `Planned` agreed,
 later round · `Open` waiting for a decision · `Not building` turned down, with the reason.
@@ -507,6 +507,38 @@ from someone who copied an address from the docs or the home page, or from crawl
 - [x] Grafana row "Who sends requests" in `deploy/monitoring/grafana-dashboard.json`: kinds,
       kinds over time, top sources, links followed, and a table of sources from the logs.
 - [x] Dashboard copied to Grafana from the homelab, 2026-10-16 (live in `v1.1.32`).
+
+### 7.1b Attacks and errors in Grafana (Building 2026-11-04)
+
+Dharun, 2026-10-16 and 2026-11-04: see in Grafana what attackers try, and every error
+the API answers, so faults are found early. **No honeypot and no fake answers**: the
+homelab honeynet (2026-10-16 to 10-25) was retired because it caught only bots and
+nobody watched it. Attackers keep getting the normal answer (a plain 404 for a probe).
+Decided:
+
+- **What reaches the API** (`internal/attack`): each request is labelled with one
+  attack type from a fixed list: probes for files and pages the API does not have
+  (secrets files, source control, backups, WordPress, admin panels, known exploit
+  paths, PHP and other script pages, web shells), injections (path traversal, SQL,
+  command, template, script, Log4Shell) and attack tools that name themselves (sqlmap,
+  nuclei, ...). Probes are looked for only on paths no route took; injections only on
+  requests that failed or reached no route, so a code image of a script or a regex with
+  SQL in it is not an attack; Log4Shell and attack tools everywhere.
+- **What is stored**: country and network as for every request, never the address
+  (Dharun: country + network only). The log line gets `attack`, `attack_in` (path, query,
+  header, body, user-agent) and `attack_snippet` (up to 200 characters around the match).
+  Bodies are read only for paths no route took (Dharun: unmatched paths only), at most
+  4 KB. Private routes log the type only. Credential and address headers are never read.
+- **Errors**: `s.fail` records its code; the log line gets `error` and the metric
+  `api_errors_total{route,status,code}` counts every error answer.
+- **Metric** `api_attack_requests_total{type,in}`.
+- **Privacy page** updated in the same change.
+- [ ] Homelab (private, requested in `pve/api/requests.md`): a timer on the logs guest
+      reads Cloudflare's security events for the whole dharun.dev zone every 5 minutes
+      into Loki, with its own read-only token; a Grafana dashboard "Security & errors"
+      (attacks reaching the API, blocked at Cloudflare on every site, API abuse, errors
+      by route and code); a weekly ntfy digest on Mondays (Dharun: no alerts, one quiet
+      summary). The dashboard lives in the homelab because it names the other sites.
 
 ### 7.2 Launch: listings and posts (On hold)
 

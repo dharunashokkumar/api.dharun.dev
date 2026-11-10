@@ -92,6 +92,7 @@ type errorBody struct {
 
 // fail writes an error in the one shape every endpoint uses.
 func (s *Server) fail(w http.ResponseWriter, r *http.Request, status int, code, message string) {
+	info(r).code = code
 	var body errorBody
 	body.Error.Code = code
 	body.Error.Message = message
