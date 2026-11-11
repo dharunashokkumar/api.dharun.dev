@@ -8,6 +8,10 @@
 #   photo.jpg     a picture with one subject on a plain background, drawn by Typst
 #   noisy.mp3     a sentence spoken by Piper's public-domain LJ Speech voice, with noise and hum
 #   speech.mp3    two clean sentences in the same voice, for speech to text
+#   locked.pdf    document.pdf behind the password india, for /v1/pdf/unlock
+#   clip.mp4      two seconds of ffmpeg's test picture and a tone, for the video tools
+#   table.csv     three post offices, for the spreadsheet tools
+#   badge.svg     a small flag drawn by hand, for SVG to PNG (written once, not by this script)
 #
 # Needs typst, piper (with the en_US-ljspeech-medium voice in $VOICES), ffmpeg, vips and Go:
 #   VOICES=/path/to/voices bash tools/samples/make-samples.sh
@@ -49,3 +53,9 @@ piper --model "$VOICES/en_US-ljspeech-medium.onnx" --output_file "$work/speech.w
 ffmpeg -hide_banner -loglevel error -y -i "$work/speech.wav" -ac 1 -ar 22050 -c:a libmp3lame -b:a 48k -map_metadata -1 "$out/speech.mp3"
 
 ls -la "$out"
+
+# Round 4 samples (2026-11-11).
+go run ./tools/samples/lockpdf "$out/document.pdf" "$out/locked.pdf" india
+ffmpeg -hide_banner -loglevel error -y -f lavfi -i "testsrc=size=320x180:rate=10:duration=2" -f lavfi -i "sine=frequency=440:duration=2" \
+  -c:v libx264 -preset veryslow -crf 32 -pix_fmt yuv420p -c:a aac -b:a 32k -shortest -map_metadata -1 -fflags +bitexact "$out/clip.mp4"
+printf 'pincode,office,district,state\n637001,Namakkal H.O,Namakkal,Tamil Nadu\n600001,Chennai G.P.O.,Chennai,Tamil Nadu\n110001,New Delhi G.P.O.,New Delhi,Delhi\n' > "$out/table.csv"

@@ -79,3 +79,66 @@ Send: Two pictures, as multipart/form-data, up to 10 MB each. Post the file as t
 What you send is never written to the log, and the answer is not cached.
 
 Example: `POST` https://api.dharun.dev/v1/image/compare?utm_medium=skill
+
+## ThumbHash placeholder
+
+`POST /v1/image/thumbhash`
+
+A ThumbHash (about 25 bytes) of a picture: store it beside the picture and draw a blurred preview while the picture loads. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/photo.jpg
+
+What you send is never written to the log, and the answer is not cached.
+
+Example: `POST` https://api.dharun.dev/v1/image/thumbhash?utm_medium=skill
+
+## Favicon and app icon pack
+
+`POST /v1/image/icons`
+
+One picture in, a ZIP out: favicon.ico (16, 32 and 48 px), a 32 px PNG, the Apple touch icon, 192 and 512 px app icons, a web manifest and the HTML lines for the page head. A square picture works best. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/photo.jpg
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `name` (query): The app's name, for the manifest.
+- `theme` (query): Theme colour, hex. Default ffffff.
+
+Example: `POST` https://api.dharun.dev/v1/image/icons?name=Chai%20Point&utm_medium=skill (returns a ZIP file)
+
+## SVG to PNG
+
+`POST /v1/image/svg-to-png`
+
+Draws an SVG as PNG with resvg. Scripts are removed, and an SVG that refers to other files is refused (embed pictures as data: addresses). Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: An SVG file, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/badge.svg
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `zoom` (query): Scale, 1 to 8. Default 1.
+
+Example: `POST` https://api.dharun.dev/v1/image/svg-to-png?zoom=2&utm_medium=skill (returns the image itself)
+
+## Watermark a picture
+
+`POST /v1/image/watermark`
+
+Writes a text over a picture, in any script, and returns PNG. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/photo.jpg
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `text` (query, required): Up to 80 characters.
+- `position` (query): Default bottom-right. One of: bottom-right, bottom-left, center, tile.
+- `opacity` (query): Above 0 to 1. Default 0.5.
+
+Example: `POST` https://api.dharun.dev/v1/image/watermark?text=%C2%A9%20Dharun&position=bottom-right&utm_medium=skill (returns the image itself)

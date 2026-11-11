@@ -288,6 +288,14 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/icon/{domain}`: Icon for a website. Example: `/v1/icon/github.com?utm_medium=skill`
 
+**Web pages** ([references/web.md](references/web.md)): Link previews, a page as Markdown for agents, screenshots, HTML to PDF, and HTML and Markdown to each other.
+
+- `GET /v1/unfurl`: Link preview data. Example: `/v1/unfurl?url=https://dharun.dev&utm_medium=skill`
+- `GET /v1/read`: A web page as Markdown. Example: `/v1/read?url=https://dharun.dev&utm_medium=skill`
+- `GET /v1/screenshot`: Screenshot of a page. Example: `/v1/screenshot?url=https://dharun.dev&width=1280&height=800&utm_medium=skill`
+- `GET /v1/html/pdf`: HTML to PDF. Example: `/v1/html/pdf?utm_medium=skill`
+- `GET /v1/markdown`: HTML and Markdown to each other. Example: `/v1/markdown?to=html&text=%23%20Hello%0A%0A*India*%20API&utm_medium=skill`
+
 ### Files, documents and media
 
 **OCR** ([references/ocr.md](references/ocr.md)): Text from photos, scans and scanned PDFs, in English and ten Indian languages.
@@ -301,6 +309,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/image/remove-background`: Remove the background. Example: `/v1/image/remove-background?utm_medium=skill`
 - `GET /v1/image/hash`: Perceptual hash of a picture. Example: `/v1/image/hash?utm_medium=skill`
 - `GET /v1/image/compare`: Compare two pictures. Example: `/v1/image/compare?utm_medium=skill`
+- `GET /v1/image/thumbhash`: ThumbHash placeholder. Example: `/v1/image/thumbhash?utm_medium=skill`
+- `GET /v1/image/icons`: Favicon and app icon pack. Example: `/v1/image/icons?name=Chai%20Point&utm_medium=skill`
+- `GET /v1/image/svg-to-png`: SVG to PNG. Example: `/v1/image/svg-to-png?zoom=2&utm_medium=skill`
+- `GET /v1/image/watermark`: Watermark a picture. Example: `/v1/image/watermark?text=%C2%A9%20Dharun&position=bottom-right&utm_medium=skill`
 
 **PDF tools** ([references/pdf.md](references/pdf.md)): Merge, split, rotate and compress PDFs, read their text and draw their pages.
 
@@ -311,10 +323,21 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/pdf/rotate`: Rotate pages. Example: `/v1/pdf/rotate?angle=90&pages=1&utm_medium=skill`
 - `GET /v1/pdf/compress`: Make a PDF smaller. Example: `/v1/pdf/compress?utm_medium=skill`
 - `GET /v1/pdf/render`: Draw a page as a picture. Example: `/v1/pdf/render?page=1&width=600&utm_medium=skill`
+- `GET /v1/pdf/watermark`: Watermark a PDF. Example: `/v1/pdf/watermark?text=DRAFT&utm_medium=skill`
+- `GET /v1/pdf/page-numbers`: Number the pages. Example: `/v1/pdf/page-numbers?style=of&utm_medium=skill`
+- `GET /v1/pdf/from-images`: Pictures to PDF. Example: `/v1/pdf/from-images?utm_medium=skill`
+- `GET /v1/pdf/unlock`: Remove a PDF's password. Example: `/v1/pdf/unlock?password=india&utm_medium=skill`
 
 **Typst to PDF** ([references/typst.md](references/typst.md)): Turn a Typst document into a PDF, with Indian scripts set correctly.
 
 - `GET /v1/typst`: Compile Typst to PDF. Example: `/v1/typst?text=%23set%20page%28width%3A%2012cm%2C%20height%3A%20auto%2C%20margin%3A%201cm%29%0A=%20வணக்கம்%2C%20India%20API%0ATypst%20sets%20%2ATamil%2A%2C%20हिन्दी%20and%20English%20on%20one%20page.&utm_medium=skill`
+
+**Audio and video tools** ([references/media.md](references/media.md)): Convert, trim, draw a waveform or take a frame, with ffmpeg.
+
+- `GET /v1/media/convert`: Convert audio or video. Example: `/v1/media/convert?format=wav&utm_medium=skill`
+- `GET /v1/media/trim`: Cut a clip. Example: `/v1/media/trim?start=0&end=1.5&utm_medium=skill`
+- `GET /v1/media/waveform`: Waveform picture. Example: `/v1/media/waveform?width=800&height=160&utm_medium=skill`
+- `GET /v1/media/thumbnail`: A frame from a video. Example: `/v1/media/thumbnail?at=1&utm_medium=skill`
 
 ### Developer tools
 
@@ -343,6 +366,42 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/badge`: A badge of your own. Example: `/v1/badge?label=made%20in&message=India&color=orange&utm_medium=skill`
 - `GET /v1/badge/{kind}`: Market or holiday badge. Example: `/v1/badge/market?utm_medium=skill`
 - `GET /v1/badge/dataset/{name}`: Dataset freshness badge. Example: `/v1/badge/dataset/ifsc?utm_medium=skill`
+
+**Data format tools** ([references/data-tools.md](references/data-tools.md)): JSON, YAML, TOML, CSV and XML to each other; text and JSON differences; spreadsheets to JSON and back.
+
+- `GET /v1/convert`: Convert between data formats. Example: `/v1/convert?to=yaml&text=%7B%22name%22%3A%22India%20API%22%2C%22tags%22%3A%5B%22a%22%2C%22b%22%5D%7D&utm_medium=skill`
+- `GET /v1/diff`: Compare two texts or JSON documents. Example: `/v1/diff?utm_medium=skill`
+- `GET /v1/sheet/to-json`: Spreadsheet to JSON. Example: `/v1/sheet/to-json?utm_medium=skill`
+- `GET /v1/sheet/from-json`: JSON to a spreadsheet. Example: `/v1/sheet/from-json?utm_medium=skill`
+
+**Developer utilities** ([references/dev-utils.md](references/dev-utils.md)): Cron in words, UUIDs and ULIDs, hashes and HMACs, JWT decoding, user agents and time zones.
+
+- `GET /v1/cron`: Explain a cron expression. Example: `/v1/cron?expr=30%209%20*%20*%201-5&utm_medium=skill`
+- `GET /v1/uuid`: New UUIDs, ULIDs and nano ids. Example: `/v1/uuid?kind=uuid7&count=3&utm_medium=skill`
+- `GET /v1/uuid/{id}`: Read a UUID or ULID. Example: `/v1/uuid/01936f4e-5a6a-7cc2-9a4b-3e5b2a1f0c11?utm_medium=skill`
+- `GET /v1/hash`: Hashes and HMACs. Example: `/v1/hash?text=hello&algo=sha256,md5&utm_medium=skill`
+- `GET /v1/jwt/decode`: Decode a JWT. Example: `/v1/jwt/decode?text=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZW1vIiwiaWF0IjoxNzYyODQ4MDAwfQ.c2ln&utm_medium=skill`
+- `GET /v1/user-agent`: Read a user agent. Example: `/v1/user-agent?ua=Mozilla%2F5.0%20(Linux%3B%20Android%2014%3B%20SM-S918B)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F131.0.0.0%20Mobile%20Safari%2F537.36&utm_medium=skill`
+- `GET /v1/time`: Convert a time between zones. Example: `/v1/time?at=2026-11-11%2015%3A00&from=IST&to=Europe%2FBerlin,PST,SGT&utm_medium=skill`
+
+**Colours** ([references/colors.md](references/colors.md)): Colour conversions, WCAG contrast checks and the palette of a picture.
+
+- `GET /v1/color/{color}`: One colour every way. Example: `/v1/color/ff9933?utm_medium=skill`
+- `GET /v1/color/contrast`: Contrast check. Example: `/v1/color/contrast?fg=999999&bg=ffffff&utm_medium=skill`
+- `GET /v1/color/palette`: Palette of a picture. Example: `/v1/color/palette?count=5&utm_medium=skill`
+
+**Request bins** ([references/hooks.md](references/hooks.md)): A private address that records what is sent to it, for testing webhooks.
+
+- `GET /v1/hooks`: Make a request bin. Example: `/v1/hooks?utm_medium=skill`
+- `GET /v1/hook/{id}`: Send to a bin. Example: `/v1/hook/demo?order=42&utm_medium=skill`
+- `GET /v1/hooks/{id}`: Read a bin. Example: `/v1/hooks/demo?secret=demo&utm_medium=skill`
+- `GET /v1/hooks/{id}/delete`: Delete a bin. Example: `/v1/hooks/demo/delete?secret=demo&utm_medium=skill`
+
+**Throwaway databases** ([references/db.md](references/db.md)): A private SQLite database for a day, over HTTP.
+
+- `GET /v1/db`: Make a database. Example: `/v1/db?utm_medium=skill`
+- `GET /v1/db/{id}/query`: Run SQL. Example: `/v1/db/demo/query?secret=demo&utm_medium=skill`
+- `GET /v1/db/{id}/delete`: Delete a database. Example: `/v1/db/demo/delete?secret=demo&utm_medium=skill`
 
 ### Sky and radio
 

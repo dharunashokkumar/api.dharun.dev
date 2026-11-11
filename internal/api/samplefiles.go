@@ -14,7 +14,8 @@ import (
 //go:embed samples/*
 var sampleFiles embed.FS
 
-var sampleTypes = map[string]string{".png": "image/png", ".jpg": "image/jpeg", ".pdf": "application/pdf", ".mp3": "audio/mpeg"}
+var sampleTypes = map[string]string{".png": "image/png", ".jpg": "image/jpeg", ".pdf": "application/pdf", ".mp3": "audio/mpeg",
+	".svg": "image/svg+xml", ".csv": "text/csv", ".mp4": "video/mp4"}
 
 func sampleFile(name string) ([]byte, bool) {
 	data, err := sampleFiles.ReadFile("samples/" + path.Base(name))

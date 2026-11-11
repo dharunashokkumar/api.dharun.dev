@@ -34,6 +34,10 @@ func (e endpoint) Kind() string {
 		return "audio"
 	case e.Output == "calendar":
 		return "calendar"
+	case e.Output == "zip":
+		return "ZIP"
+	case e.Output == "xlsx":
+		return "spreadsheet"
 	case e.Image:
 		return "image"
 	}
@@ -49,6 +53,10 @@ func (e endpoint) Returns() string {
 		return "returns the audio itself"
 	case e.Output == "calendar":
 		return "returns an iCalendar file (text/calendar) to subscribe to"
+	case e.Output == "zip":
+		return "returns a ZIP file"
+	case e.Output == "xlsx":
+		return "returns an XLSX workbook"
 	case e.Image:
 		return "returns the image itself"
 	}
@@ -85,6 +93,14 @@ func outputName(e endpoint, address string) string {
 		return "speech." + format
 	case e.Output == "calendar":
 		return "holidays.ics"
+	case e.Output == "zip":
+		return "icons.zip"
+	case e.Output == "xlsx":
+		return "sheet.xlsx"
+	case e.Output == "pdf":
+		return "out.pdf"
+	case format != "" && e.Path == "/v1/media/convert":
+		return "out." + format
 	case format != "":
 		if format == "jpeg" {
 			format = "jpg"
@@ -116,6 +132,20 @@ func fileSamples(e endpoint, address string) []codeSample {
 		return samples
 	}
 
+	if e.Upload.JSON && e.Path != "/v1/invoice" {
+		body := strings.ReplaceAll(e.ExampleBody, "'", "'\\''")
+		js := fmt.Sprintf("const response = await fetch(\"%s\", {\n  method: \"POST\",\n  headers: { \"Content-Type\": \"application/json\" },\n  body: JSON.stringify(%s),\n});\nconst body = await response.json();\nif (!response.ok) throw new Error(body.error.message);\nconsole.log(body.data);", address, e.ExampleBody)
+		py := fmt.Sprintf("import requests\n\nresponse = requests.post(\"%s\", data=%q, headers={\"Content-Type\": \"application/json\"}, timeout=60)\nbody = response.json()\nif not response.ok:\n    raise RuntimeError(body[\"error\"][\"message\"])\nprint(body[\"data\"])", address, e.ExampleBody)
+		if binary {
+			js = fmt.Sprintf("const response = await fetch(\"%s\", {\n  method: \"POST\",\n  headers: { \"Content-Type\": \"application/json\" },\n  body: %q,\n});\nif (!response.ok) throw new Error((await response.json()).error.message);\nconst file = await response.blob();", address, e.ExampleBody)
+			py = fmt.Sprintf("import requests\n\nresponse = requests.post(\"%s\", data=%q, headers={\"Content-Type\": \"application/json\"}, timeout=60)\nif not response.ok:\n    raise RuntimeError(response.json()[\"error\"][\"message\"])\nopen(\"%s\", \"wb\").write(response.content)", address, e.ExampleBody, name)
+		}
+		return []codeSample{
+			{"curl", "curl", fmt.Sprintf("curl -H \"Content-Type: application/json\" --data '%s'%s \"%s\"", body, save, address)},
+			{"js", "JavaScript", js},
+			{"python", "Python", py},
+		}
+	}
 	if e.Upload.JSON {
 		return []codeSample{
 			{"curl", "curl", fmt.Sprintf("curl -H \"Content-Type: application/json\" --data @invoice.json%s \"%s\"", save, address)},
@@ -168,6 +198,10 @@ func outputTypes(e endpoint) map[string]any {
 		types = []string{"audio/mpeg", "audio/ogg", "audio/wav"}
 	case e.Output == "calendar":
 		types = []string{"text/calendar"}
+	case e.Output == "zip":
+		types = []string{"application/zip"}
+	case e.Output == "xlsx":
+		types = []string{"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
 	case e.Image && e.Upload != nil:
 		types = []string{"image/png", "image/webp", "image/jpeg", "image/avif", "image/gif", "image/tiff"}
 	default:

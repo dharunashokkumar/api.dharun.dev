@@ -110,3 +110,69 @@ Parameters:
 - `format` (query): Default png. One of: png, jpeg.
 
 Example: `POST` https://api.dharun.dev/v1/pdf/render?page=1&width=600&utm_medium=skill (returns the image itself)
+
+## Watermark a PDF
+
+`POST /v1/pdf/watermark`
+
+A grey diagonal text across the pages (Latin letters). Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/document.pdf
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `text` (query, required): Up to 80 characters, no commas.
+- `pages` (query): Pages: numbers and ranges such as 1-3,5,8- (8 to the end), odd, even or l (the last page).
+
+Example: `POST` https://api.dharun.dev/v1/pdf/watermark?text=DRAFT&utm_medium=skill (returns the PDF itself)
+
+## Number the pages
+
+`POST /v1/pdf/page-numbers`
+
+Writes the page number on every page. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/document.pdf
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `style` (query): 3, Page 3, or Page 3 of 9. Default number. One of: number, page, of.
+- `position` (query): Default bottom-center. One of: bottom-center, bottom-right, bottom-left, top-center, top-right.
+
+Example: `POST` https://api.dharun.dev/v1/pdf/page-numbers?style=of&utm_medium=skill (returns the PDF itself)
+
+## Pictures to PDF
+
+`POST /v1/pdf/from-images`
+
+One page per picture, in the order sent, as multipart form fields (up to 20). Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: Pictures (JPEG, PNG, WebP, HEIC...), up to 25 MB together. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/photo.jpg
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `page` (query): Page size; fit makes each page the picture's size. Default A4. One of: A4, Letter, fit.
+
+Example: `POST` https://api.dharun.dev/v1/pdf/from-images?utm_medium=skill (returns the PDF itself)
+
+## Remove a PDF's password
+
+`POST /v1/pdf/unlock`
+
+With the password you give, returns the PDF without its protection. For files that are yours to open. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/locked.pdf
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `password` (query): The PDF's password. Send it as a form field rather than in the address.
+
+Example: `POST` https://api.dharun.dev/v1/pdf/unlock?password=india&utm_medium=skill (returns the PDF itself)

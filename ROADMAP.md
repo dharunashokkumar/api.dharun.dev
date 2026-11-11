@@ -497,6 +497,18 @@ data and status.
 | README badges | `/v1/badge`, `/v1/badge/{market,holiday}`, `/v1/badge/dataset/{name}` | Market status, holidays, dataset sources | Built |
 | Address reader | `/v1/address/parse` | Rules, checked against the pincode data; Private | Built |
 | Company cross-search | `/v1/companies?q=` | Already searched ticker, earlier tickers, ISIN and name | Was built |
+| Data format tools | `/v1/convert`, `/v1/diff`, `/v1/sheet/to-json`, `/v1/sheet/from-json` | Pure logic (`internal/devtools`); go-toml (MIT), excelize (BSD-3); Private | Built |
+| Developer utilities | `/v1/cron`, `/v1/uuid`, `/v1/uuid/{id}`, `/v1/hash`, `/v1/jwt/decode`, `/v1/user-agent`, `/v1/time` | Pure logic; zone data compiled in (`time/tzdata`) | Built |
+| HTML and Markdown | `/v1/markdown` | goldmark one way, our own converter the other | Built |
+| Colours | `/v1/color/{color}`, `/v1/color/contrast`, `/v1/color/palette` | Pure logic | Built |
+| Image extras | `/v1/image/thumbhash`, `/icons`, `/svg-to-png`, `/watermark` | ThumbHash ported from Evan Wallace's encoder (MIT); resvg | Built |
+| PDF extras | `/v1/pdf/watermark`, `/page-numbers`, `/from-images`, `/unlock` | pdfcpu | Built |
+| Audio and video | `/v1/media/{convert,trim,waveform,thumbnail}` | ffmpeg; Key | Built |
+| Link previews | `/v1/unfurl` | The guarded client, as the probe; Private | Built |
+| Web page to Markdown | `/v1/read` | Guarded client, robots.txt (RFC 9309), 10 a minute per site; Key | Built |
+| Screenshot, HTML to PDF | `/v1/screenshot`, `/v1/html/pdf` | Headless Chromium behind a loopback proxy that sends every connection through the guard; Key. **Needs Debian's `chromium` in the container (infrastructure request)**; answers 503 until then | Built, waiting for infrastructure |
+| Request bins | `/v1/hooks`, `/v1/hook/{id}` | In memory, a day, last 100 requests; making one is a key route; a public `demo` bin | Built |
+| Throwaway databases | `/v1/db`, `/v1/db/{id}/query` | SQLite in a temporary file, 10 MB, a day, ATTACH/VACUUM/PRAGMA refused; a read-only public `demo` | Built |
 
 ### Ideas not scheduled yet
 

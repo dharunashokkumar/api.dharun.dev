@@ -35,6 +35,12 @@ None. The site sets no cookies and loads no analytics, advertising or third-part
 
 Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. If you ask for a login code, Amazon Web Services (Amazon SES), which delivers the mail, receives your email address and the mail with the code. The DNS check, the email check and the IPv6 check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give. The TLS check, the HTTP probe and website icons connect to the site you name and fetch from it, with a user agent that names this API; the site sees a request from this server, not from you. Whois sends the domain, address or AS number you ask about to the registry that holds it (for example NIXI for .in, APNIC for Indian IP addresses). A whois lookup of an IP address is not logged.
 
+Link previews and the page reader fetch the address you give from the site that serves it (the reader reads its robots.txt first), and screenshots and HTML to PDF open the page in a browser on this server, which also fetches whatever the page itself loads. These sites see a request from this server, with a user agent that names this API.
+
+## What request bins and throwaway databases keep
+
+A request bin keeps the requests sent to it (method, path, query, headers and up to 64 KB of body each, never the sender's address), and a throwaway database keeps the rows put in it, for a day at most, in the server's memory or a temporary file, and only for someone who has its secret. A restart or the delete address removes them sooner. Neither is ever logged or backed up. The bin and the database named demo are public, for trying the API: do not send anything private to them.
+
 ## The data in answers
 
 Answers are public reference data: post offices, bank branches, holidays, codes. The fake data endpoint makes up people and companies; none of them is real.

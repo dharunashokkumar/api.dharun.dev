@@ -92,8 +92,10 @@ type Config struct {
 
 // Server holds everything a request needs. It is safe for concurrent use.
 type Server struct {
-	cfg       Config
-	store     *store
+	cfg   Config
+	store *store
+	// owned holds what callers made for themselves: request bins and throwaway databases.
+	owned     ownedStore
 	companies atomic.Pointer[companyIndex]
 	metrics   *metrics
 	limiter   *rateLimiter

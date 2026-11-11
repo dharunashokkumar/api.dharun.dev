@@ -202,6 +202,14 @@ func testUploadExample(t *testing.T, e endpoint) {
 		if !strings.HasPrefix(kind, "image/") {
 			t.Errorf("%s: content type %q", e.Example, kind)
 		}
+	case e.Output == "zip":
+		if kind != "application/zip" || !bytes.HasPrefix(got.body, []byte("PK")) {
+			t.Errorf("%s: %q is not a ZIP", e.Example, kind)
+		}
+	case e.Output == "xlsx":
+		if !strings.Contains(kind, "spreadsheetml") || !bytes.HasPrefix(got.body, []byte("PK")) {
+			t.Errorf("%s: %q is not a workbook", e.Example, kind)
+		}
 	default:
 		envelope := got.json(t)
 		if _, ok := envelope["data"]; !ok {
