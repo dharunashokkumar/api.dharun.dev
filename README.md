@@ -100,6 +100,8 @@ JavaScript and Python.
 | [Gold and silver rates](https://api.dharun.dev/docs/bullion) | `/v1/bullion`, `/v1/bullion/history?purity=916` | IBJA's daily gold (24K to 14K), silver and platinum rates, per gram too, and their history |
 | [Mutual fund returns](https://api.dharun.dev/docs/mutual-funds) | `/v1/mutual-funds/122639/returns`, `/history` | 1 month to 10 year returns (CAGR), SIP XIRR, month-end NAV history |
 | [RBI rates and exchange rates](https://api.dharun.dev/docs/rates) | `/v1/rates`, `/v1/fx?currency=USD` | Repo rate, CRR, SLR, MCLR range, bond yields; FBIL reference rates with history |
+| [Mandi prices](https://api.dharun.dev/docs/mandi) | `/v1/mandi?commodity=Tomato&state=Tamil%20Nadu`, `/v1/mandi/commodities` | Daily wholesale prices of farm produce in each market, from Agmarknet via data.gov.in |
+| [Air quality](https://api.dharun.dev/docs/air-quality) | `/v1/air-quality?city=Chennai`, `?near=lat,lon` | AQI and pollutants at CPCB's monitoring stations, hourly, via data.gov.in |
 | [Derivative expiries](https://api.dharun.dev/docs/expiries) | `/v1/expiries?exchange=nse&year=2026` | NSE and BSE weekly and monthly expiry dates, moved for holidays |
 | [MICR and SWIFT](https://api.dharun.dev/docs/ifsc) | `/v1/micr/400240003`, `/v1/swift/HDFCINBB` | The branch behind a cheque's MICR code or a SWIFT code |
 | [Sectors](https://api.dharun.dev/docs/logos) | `/v1/sectors?sector=...` | Sectors and industries of listed companies, with counts and the largest companies |

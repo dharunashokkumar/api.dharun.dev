@@ -156,6 +156,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/indices`: List indices, or the indices of a stock. Example: `/v1/indices?symbol=HDFCBANK&utm_medium=skill`
 - `GET /v1/indices/{id}`: Constituents of an index. Example: `/v1/indices/nifty-bank?utm_medium=skill`
 
+**Mandi prices** ([references/mandi.md](references/mandi.md)): Today's wholesale prices of vegetables, fruit, grain and pulses in India's markets, from Agmarknet.
+
+- `GET /v1/mandi`: Prices by commodity, state, district or market. Example: `/v1/mandi?commodity=Tomato&state=Tamil%20Nadu&utm_medium=skill`
+- `GET /v1/mandi/commodities`: What was reported on the latest day. Example: `/v1/mandi/commodities?state=Karnataka&utm_medium=skill`
+
 ### Places and transport
 
 **Pincodes** ([references/pincode.md](references/pincode.md)): Pincode to post office, district and state.
@@ -196,6 +201,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Helplines** ([references/helplines.md](references/helplines.md)): National emergency and helpline numbers.
 
 - `GET /v1/helplines`: National helplines. Example: `/v1/helplines?q=cyber&utm_medium=skill`
+
+**Air quality** ([references/air-quality.md](references/air-quality.md)): The air quality index at CPCB's monitoring stations across India, updated hourly.
+
+- `GET /v1/air-quality`: Stations with their AQI and pollutants. Example: `/v1/air-quality?city=Chennai&utm_medium=skill`
 
 ### Dates and calendars
 
