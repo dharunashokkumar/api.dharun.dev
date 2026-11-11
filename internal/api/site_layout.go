@@ -223,6 +223,7 @@ pre :focus-visible, pre:focus-visible { outline-color: var(--color-accent-2); }
 .route { display: inline-flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-sm); margin: var(--space-xs) 0 var(--space-sm); padding: var(--space-xs) var(--space-md); border: 1px solid var(--color-rule); border-radius: var(--radius-input); background: var(--color-paper-2); font: var(--text-sm)/1.5 var(--font-outlier); overflow-wrap: anywhere; }
 .method { color: var(--color-success); }
 .note { color: var(--color-ink-2); font-size: var(--text-sm); }
+.byline { color: var(--color-muted); font-size: var(--text-sm); margin-top: calc(-1 * var(--space-sm)); }
 .codebox + .note { margin-top: var(--space-sm); }
 table.params { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0 var(--space-xs); font-size: var(--text-sm); }
 table.params th, table.params td, .prose th, .prose td { text-align: left; vertical-align: top; padding: var(--space-sm) var(--space-md) var(--space-sm) 0; border-top: 1px solid var(--color-rule); }

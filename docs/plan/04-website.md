@@ -123,13 +123,13 @@ Made to be looked at and shared. Each links to the endpoint behind it.
 
 From `seo_audit.md` (still open) and the data:
 
-- [ ] **Search titles and descriptions per page** (`SEOTitle`, `SEODescription` in the
-      catalog), written for the task, not truncated from the summary.
+- [x] **Search titles and descriptions per page**, written for the task, not truncated from the summary
+      (2026-11-11: `seo.go`, the 20 most searched API pages; the rest keep the catalog title).
 - [ ] **Typed response schemas in OpenAPI**, shared with MCP `outputSchema`. Also the
       base for generated client packages.
 - [x] **Sitemap dates from documentation edits**, not dataset dates. Tool, demo and
       logo pages join the sitemap. (2026-11-11: `pagedates.json`, kept by the generated-files test.)
-- [ ] **Visible byline** on guides, a fuller `/about`, and a link from dharun.dev to the
+- [x] **Visible byline** on guides (2026-11-11; a fuller `/about` and the link from dharun.dev still open), a fuller `/about`, and a link from dharun.dev to the
       API (the personal site did not mention it when audited).
 - [ ] **Check Search Console first:** with 61 Googlebot fetches in a month, find out
       whether pages are indexed at all before writing more of them.

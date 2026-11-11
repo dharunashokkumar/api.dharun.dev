@@ -505,9 +505,9 @@ func (s *Server) handleGroupPage(w http.ResponseWriter, r *http.Request) {
 		view := s.docGroup(origin, group, true, "docs")
 		p := page{
 			Origin: origin, Path: "/docs/" + id, Nav: "docs",
-			Title:       group.Title + " API for India, free and open | " + productName,
+			Title:       seoTitle(group),
 			Heading:     group.Title + " API",
-			Description: shorten(group.Tagline+" "+group.Intro, 158),
+			Description: seoDescription(group),
 			Markdown:    "/docs/" + id + ".md",
 			Body:        view,
 		}

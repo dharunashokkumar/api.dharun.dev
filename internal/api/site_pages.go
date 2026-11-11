@@ -160,6 +160,7 @@ const htmlPages = `
 <p class="crumbs"><a href="/guides">Guides</a></p>
 <h1>{{.Guide.Title}}</h1>
 <p class="lead">{{.Guide.Description}}</p>
+<p class="byline">By <a href="` + authorURL + `" rel="author">` + authorName + `</a> · published {{.Guide.Published}}{{if ne .Guide.Updated .Guide.Published}}, updated {{.Guide.Updated}}{{end}}</p>
 {{.Guide.HTML}}
 <p class="note">` + guideLicenceLine + ` Updated {{.Guide.Updated}}.</p>
 {{if .Related}}<p class="aside">APIs used: {{range $i, $g := .Related}}{{if $i}}, {{end}}<a href="/docs/{{$g.ID}}">{{$g.Title}}</a>{{end}}.</p>{{end}}
