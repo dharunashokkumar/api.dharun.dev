@@ -50,7 +50,6 @@ func (s *Server) registerRoutes() {
 	s.registerDocAIMore()
 	s.registerGovData()
 	s.registerLaw()
-	s.registerSandbox()
 	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 

@@ -71,8 +71,6 @@ func missingTool(got result) bool {
 		return os.Getenv("REQUIRE_TOOLS") == ""
 	case bytes.Contains(got.body, []byte(`"dataset_unavailable"`)):
 		return os.Getenv("REQUIRE_MODELS") == ""
-	case bytes.Contains(got.body, []byte(`"sandbox_off"`)):
-		return true // test servers have no sandbox VM; TestRunCode runs /v1/run against a fake one
 	}
 	return false
 }

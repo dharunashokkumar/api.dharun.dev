@@ -84,8 +84,6 @@ func run() error {
 		SiteSecret:            []byte(os.Getenv("SITE_SECRET")),
 		SiteTokenAllowance:    envInt("SITE_TOKEN_DAILY", 10),
 		SignupsPerDay:         envInt("SIGNUPS_PER_DAY", 5),
-		SandboxURL:            os.Getenv("SANDBOX_URL"),
-		SandboxSecret:         os.Getenv("SANDBOX_SECRET"),
 	})
 	if err != nil {
 		return err

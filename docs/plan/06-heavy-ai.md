@@ -66,6 +66,8 @@ or only the task endpoints; the quota.
 
 ## Part 9: the code sandbox
 
+**Later, much later** (Dharun, 2026-11-11): dropped from `main`. A first version (`/v1/run` on API keys, the controller without the browser) was built and then removed; it stays in commit `749047ef` and on branch `round-5`. The homelab requests for the VM are marked dropped. Pick it up from there when the time comes.
+
 The design is in `docs/sandbox-design.md` (2026-10-14) and the VM was requested from the
 homelab on 2026-10-17. What changes with this plan:
 

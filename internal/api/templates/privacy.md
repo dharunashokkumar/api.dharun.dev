@@ -41,10 +41,6 @@ Link previews and the page reader fetch the address you give from the site that 
 
 A request bin keeps the requests sent to it (method, path, query, headers and up to 64 KB of body each, never the sender's address), and a throwaway database keeps the rows put in it, for a day at most, in the server's memory or a temporary file, and only for someone who has its secret. A restart or the delete address removes them sooner. Document collections (for search over your own documents) are kept the same way, in memory for a day. Agent notes are kept in a file on the server for 30 days after their last write, so they outlive a restart; deleting a note removes it. None of these is ever logged or backed up. The bin, database, collection and note store named demo are public, for trying the API: do not send anything private to them.
 
-## Running code
-
-Code sent to /v1/run is run once in a microVM on a separate machine that has no network, and the microVM is thrown away with everything in it. The code, its input and its output are not kept or logged. For 30 days a record is kept of each run: the key's ID, the language, a SHA-256 hash of the code, the exit code, the CPU time and any limit it reached, so abuse can be traced to a key.
-
 ## The data in answers
 
 Answers are public reference data: post offices, bank branches, holidays, codes. The fake data endpoint makes up people and companies; none of them is real.
