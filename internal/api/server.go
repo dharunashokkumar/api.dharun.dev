@@ -96,6 +96,8 @@ type Server struct {
 	store *store
 	// owned holds what callers made for themselves: request bins and throwaway databases.
 	owned     ownedStore
+	rag       ragStore // document collections (sete.go)
+	kv        kvStores // agent notes (sete.go)
 	companies atomic.Pointer[companyIndex]
 	metrics   *metrics
 	limiter   *rateLimiter

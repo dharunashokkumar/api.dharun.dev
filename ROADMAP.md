@@ -521,6 +521,9 @@ data and status.
 | Derivative expiries | `/v1/expiries` | Computed from the exchange rules in force from 1 September 2025 and the market holiday list | Built |
 | MICR and SWIFT | `/v1/micr/{code}`, `/v1/swift/{code}` | The IFSC dataset's own columns | Built |
 | Sectors and industries | `/v1/sectors` | The company list (logos dataset) | Built |
+| Search over your own documents | `/v1/rag`, `/v1/rag/{id}/{documents,query,delete}` | Chunking, embeddings and the reranker run in memory as the caller (their key and quota); collections in memory for a day, 1,000 passages, 100 on the server; a read-only `demo`. **Tested without the models only**: run the suite with MODELS_DIR on Linux | Built |
+| Agent notes | `/v1/kv`, `/v1/kv/{id}/{key}` | Saved in `STATE_DIR/agent-notes.json`, 1 MB a store, 30 days after the last write | Built |
+| MCP tool sets | `/mcp?tools=`, `find_tool`, `/v1/mcp-tools` | Sets from the tool names: files, money, network, text, dates, places | Built |
 | IPO calendar, corporate actions, results calendar, FII/DII flows | | NSE's pages answer programs only through a browser session, which this project does not imitate (no bot-check circumvention). **Waiting for Dharun**: another source (BSE files, SEBI filings) or leave out | Blocked |
 
 ### Ideas not scheduled yet

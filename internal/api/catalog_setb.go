@@ -37,6 +37,14 @@ func withSetB(groups []apiGroup) []apiGroup {
 	}
 	return append(groups,
 		apiGroup{
+			ID: "mcp-tools", Category: "developer", Title: "MCP tools",
+			Tagline: "Find the right tool among the MCP server's, and connect to only the sets you need.",
+			Intro:   "The MCP server at /mcp offers every tool by default. Connect to /mcp?tools=money,dates (sets: files, money, network, text, dates, places) to list fewer, so an assistant's context stays small; find_tool finds the rest by task.",
+			Endpoints: []endpoint{{Path: "/v1/mcp-tools", Summary: "Search the MCP tools", Reference: true, Example: "/v1/mcp-tools?q=gold%20rate",
+				Params: []param{{Name: "q", In: "query", Type: "string", Doc: "The task in a few words. Empty lists every tool."},
+					{Name: "set", In: "query", Type: "string", Enum: []string{"files", "money", "network", "text", "dates", "places"}, Doc: "Only one set."}}}},
+		},
+		apiGroup{
 			ID: "rates", Category: "money", Title: "RBI rates and exchange rates",
 			Tagline:   "Repo rate, CRR and SLR, FBIL reference exchange rates, lending and deposit rates, and bond yields.",
 			Intro:     "What the Reserve Bank of India shows as its current rates, checked every three hours: the policy rates, reserve ratios, FBIL reference rates for the dollar, pound, euro, yen, dirham, rupiah and rouble, the range of base rates and MCLR, deposit rates, treasury bill cut-offs and government bond yields. Exchange rate history builds up from the day this server began recording.",

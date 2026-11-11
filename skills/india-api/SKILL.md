@@ -286,6 +286,13 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/braille`: Bharati braille. Example: `/v1/braille?text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87&utm_medium=skill`
 - `GET /v1/keyboard/convert`: QWERTY keys and Indian layouts. Example: `/v1/keyboard/convert?layout=tamil99&text=vphhkf&utm_medium=skill`
 
+**Search your own documents** ([references/rag.md](references/rag.md)): Upload documents, ask a question, get the best passages back: retrieval for your own AI app.
+
+- `GET /v1/rag`: Make a collection. Example: `/v1/rag?utm_medium=skill`
+- `GET /v1/rag/{id}/documents`: Add documents. Example: `/v1/rag/demo/documents?secret=demo&utm_medium=skill`
+- `GET /v1/rag/{id}/query`: Ask a question. Example: `/v1/rag/demo/query?secret=demo&utm_medium=skill`
+- `GET /v1/rag/{id}/delete`: Delete a collection. Example: `/v1/rag/demo/delete?secret=demo&utm_medium=skill`
+
 ### Network and contact checks
 
 **IP address location** ([references/ip.md](references/ip.md)): IP address to country, state, city and network.
@@ -443,6 +450,17 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/db`: Make a database. Example: `/v1/db?utm_medium=skill`
 - `GET /v1/db/{id}/query`: Run SQL. Example: `/v1/db/demo/query?secret=demo&utm_medium=skill`
 - `GET /v1/db/{id}/delete`: Delete a database. Example: `/v1/db/demo/delete?secret=demo&utm_medium=skill`
+
+**MCP tools** ([references/mcp-tools.md](references/mcp-tools.md)): Find the right tool among the MCP server's, and connect to only the sets you need.
+
+- `GET /v1/mcp-tools`: Search the MCP tools. Example: `/v1/mcp-tools?q=gold%20rate&utm_medium=skill`
+
+**Agent notes** ([references/kv.md](references/kv.md)): A small private key-value store, for agents and scripts that must remember between runs.
+
+- `GET /v1/kv`: Make a store. Example: `/v1/kv?utm_medium=skill`
+- `GET /v1/kv/{id}`: List notes. Example: `/v1/kv/demo?secret=demo&utm_medium=skill`
+- `GET /v1/kv/{id}/{key}`: Read or write a note. Example: `/v1/kv/demo/greeting?secret=demo&utm_medium=skill`
+- `GET /v1/kv/{id}/{key}/delete`: Delete a note. Example: `/v1/kv/demo/greeting/delete?secret=demo&utm_medium=skill`
 
 ### Sky and radio
 

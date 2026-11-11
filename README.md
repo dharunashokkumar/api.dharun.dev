@@ -102,6 +102,9 @@ JavaScript and Python.
 | [Derivative expiries](https://api.dharun.dev/docs/expiries) | `/v1/expiries?exchange=nse&year=2026` | NSE and BSE weekly and monthly expiry dates, moved for holidays |
 | [MICR and SWIFT](https://api.dharun.dev/docs/ifsc) | `/v1/micr/400240003`, `/v1/swift/HDFCINBB` | The branch behind a cheque's MICR code or a SWIFT code |
 | [Sectors](https://api.dharun.dev/docs/logos) | `/v1/sectors?sector=...` | Sectors and industries of listed companies, with counts and the largest companies |
+| [Search your own documents](https://api.dharun.dev/docs/rag) | `POST /v1/rag`, `/documents`, `/query` | Upload text, ask questions, get the best passages back, embedded and reranked on the server |
+| [Agent notes](https://api.dharun.dev/docs/kv) | `POST /v1/kv`, `/v1/kv/{id}/{key}` | A small private key-value store for agents, kept 30 days |
+| [MCP tools](https://api.dharun.dev/docs/mcp-tools) | `/v1/mcp-tools?q=gold`, `/mcp?tools=money,dates` | Find a tool by task; connect to only the tool sets you need |
 
 ## One shape everywhere
 

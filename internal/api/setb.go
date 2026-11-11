@@ -15,6 +15,7 @@ func (s *Server) registerSetB() {
 	s.registerBullion()
 	s.registerRates()
 	s.registerBankCodes()
+	s.handle("mcp_tools", costLight, "GET /v1/mcp-tools", s.handleMCPTools)
 	s.handle("sectors", costLight, "GET /v1/sectors", s.handleSectors)
 }
 

@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"net/url"
+	"strings"
 	"testing"
 )
 
@@ -12,6 +13,7 @@ func init() {
 	mcpTestCalls["get_gold_silver_rates"] = `{}`
 	mcpTestCalls["get_mutual_fund_returns"] = `{"code":"122639"}`
 	mcpTestCalls["list_derivative_expiries"] = `{"year":2026,"month":3}`
+	mcpTestCalls["find_tool"] = `{"task":"merge pdf"}`
 }
 
 func TestIndices(t *testing.T) {
@@ -114,5 +116,22 @@ func TestBankCodesAndSectors(t *testing.T) {
 	one := expectStatus(t, "/v1/sectors?sector="+url.QueryEscape(name), http.StatusOK).json(t)["data"].([]any)[0].(map[string]any)
 	if len(one["largest"].([]any)) == 0 {
 		t.Errorf("sector %v", one)
+	}
+}
+
+func TestToolSets(t *testing.T) {
+	found := expectStatus(t, "/v1/mcp-tools?q=gold%20rate", http.StatusOK).json(t)["data"].([]any)
+	if len(found) == 0 || found[0].(map[string]any)["name"] != "get_gold_silver_rates" {
+		t.Errorf("find %v", found)
+	}
+	list := request(t, http.MethodPost, "/mcp?tools=money", `{"jsonrpc":"2.0","id":1,"method":"tools/list"}`, "Content-Type", "application/json")
+	body := string(list.body)
+	if !strings.Contains(body, "calculate_indian_money") || strings.Contains(body, "merge_pdfs") || !strings.Contains(body, "find_tool") {
+		t.Errorf("money set: %s", clip(body, 300))
+	}
+	for _, tool := range mcpTools {
+		if set := toolSet(tool.Name); set == "" {
+			t.Errorf("%s has no set", tool.Name)
+		}
 	}
 }

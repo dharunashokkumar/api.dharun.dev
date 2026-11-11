@@ -322,7 +322,7 @@ func (s *Server) handleMCP(w http.ResponseWriter, r *http.Request) {
 	case "ping":
 		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{}})
 	case "tools/list":
-		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{"tools": listedTools()}})
+		reply(http.StatusOK, rpcResponse{ID: request.ID, Result: map[string]any{"tools": filterToolSets(listedTools(), r.URL.Query().Get("tools"))}})
 	case "tools/call":
 		var params struct {
 			Name      string         `json:"name"`
@@ -391,10 +391,17 @@ func (s *Server) callTool(r *http.Request, tool *mcpTool, args map[string]any) m
 		if err != nil {
 			return failure(err.Error())
 		}
-		if inner, err = http.NewRequestWithContext(ctx, http.MethodPost, sent.path, bytes.NewReader(sent.body)); err != nil {
+		// A tool that sends nothing reads: GET.
+		method, body := http.MethodPost, io.Reader(bytes.NewReader(sent.body))
+		if sent.body == nil {
+			method, body = http.MethodGet, nil
+		}
+		if inner, err = http.NewRequestWithContext(ctx, method, sent.path, body); err != nil {
 			return failure("Could not build the request from those arguments.")
 		}
-		inner.Header.Set("Content-Type", sent.contentType)
+		if sent.contentType != "" {
+			inner.Header.Set("Content-Type", sent.contentType)
+		}
 	} else {
 		path, err := tool.path(args)
 		if err != nil {
