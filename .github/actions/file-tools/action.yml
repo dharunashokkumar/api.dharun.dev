@@ -1,0 +1,44 @@
+name: File tools
+description: >-
+  Installs the programs the file tools run: Tesseract, libvips, ffmpeg and poppler from
+  Debian packages (as deploy/install.sh does on the server), and typst, piper, whisper.cpp,
+  deep-filter and onnx-run (tools/fetch-tools.sh, as the release carries them). The
+  downloaded packages and the built tools are cached, so only the first run after a change
+  downloads and builds them. Sets TOOLS and REQUIRE_TOOLS and puts the tools on PATH.
+runs:
+  using: composite
+  steps:
+    - name: Restore the Debian packages
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/apt-archives
+        key: apt-${{ runner.os }}-${{ hashFiles('.github/actions/file-tools/action.yml') }}
+
+    - name: Restore the downloaded and built tools
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ~/ci-tools
+        key: tools-${{ runner.os }}-${{ hashFiles('tools/fetch-tools.sh') }}
+
+    - name: Install
+      shell: bash
+      run: |
+        # A stalled mirror connection is dropped after 30 seconds and retried.
+        echo 'Acquire::Retries "5"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/80-ci-retries >/dev/null
+        mkdir -p ~/apt-archives/partial
+        # Debian packages are taken from the cache when they are there.
+        sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" update -q
+        sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" install -y -q --no-install-recommends \
+          tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-kan \
+          tesseract-ocr-mal tesseract-ocr-ben tesseract-ocr-guj tesseract-ocr-pan tesseract-ocr-ori tesseract-ocr-mar \
+          libvips-tools libheif-plugin-aomenc ffmpeg poppler-utils
+        sudo chown -R "$USER" ~/apt-archives
+        # Files already in the tools directory are kept, so a cached one is not built again.
+        bash tools/fetch-tools.sh ~/ci-tools
+        {
+          echo "$HOME/ci-tools"
+          echo "$HOME/ci-tools/piper"
+          echo "$HOME/ci-tools/whisper"
+        } >> "$GITHUB_PATH"
+        echo "TOOLS=$HOME/ci-tools" >> "$GITHUB_ENV"
+        echo "REQUIRE_TOOLS=1" >> "$GITHUB_ENV"
