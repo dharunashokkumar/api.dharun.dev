@@ -134,6 +134,15 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/upi-handles/{handle}`: Look up a UPI handle. Example: `/v1/upi-handles/okhdfcbank?utm_medium=skill`
 - `GET /v1/qr/parse`: Read a UPI or Bharat QR code's text. Example: `/v1/qr/parse?text=upi%3A%2F%2Fpay%3Fpa%3Dshop%40okaxis%26pn%3DSri%2520Murugan%2520Stores%26am%3D250%26cu%3DINR%26mc%3D5411&utm_medium=skill`
 
+**RBI rates and exchange rates** ([references/rates.md](references/rates.md)): Repo rate, CRR and SLR, FBIL reference exchange rates, lending and deposit rates, and bond yields.
+
+- `GET /v1/rates`: Current RBI rates. Example: `/v1/rates?utm_medium=skill`
+- `GET /v1/fx`: Reference exchange rates. Example: `/v1/fx?currency=USD&utm_medium=skill`
+
+**Derivative expiries** ([references/expiries.md](references/expiries.md)): NSE and BSE futures and options expiry dates, moved for holidays.
+
+- `GET /v1/expiries`: Expiry dates. Example: `/v1/expiries?exchange=nse&year=2026&month=3&utm_medium=skill`
+
 **Gold and silver rates** ([references/bullion.md](references/bullion.md)): Today's gold (24K, 22K, 18K...), silver and platinum rates from IBJA, and their history.
 
 - `GET /v1/bullion`: Today's rates. Example: `/v1/bullion?utm_medium=skill`

@@ -517,6 +517,8 @@ data and status.
 | Index constituents | `/v1/indices`, `/v1/indices/{id}` | NSE Indices Ltd's constituent CSVs for 31 indices (niftyindices.com), weekly server refresh; no weights; BSE indices not yet (its site needs a session) | Built |
 | Mutual fund history and returns | `/v1/mutual-funds/{code}/history`, `/returns` | Server-only dataset `nav-history` from AMFI's NAV history download: ten years of month-end NAVs (filled 6 months per refresh, every 12 hours, so about ten days to fill; AMFI answers slowly) and the last 45 days daily; returns point to point and CAGR, SIP as XIRR | Built |
 | Gold, silver and platinum | `/v1/bullion`, `/v1/bullion/history` | Server-only dataset `bullion` from ibjarates.com every 2 hours, history kept from the first refresh; high risk (private association), agreed 2026-11-11 | Built |
+| RBI rates, INR reference rates | `/v1/rates`, `/v1/fx` | Server-only dataset `rbi-rates`: the "Current Rates" box of rbi.org.in every 3 hours (policy rates, CRR, SLR, FBIL rates, base rate and MCLR ranges, deposit rates, T-bill cut-offs, G-sec yields), history kept; the Sensex figure there is left out (no live share prices) | Built |
+| Derivative expiries | `/v1/expiries` | Computed from the exchange rules in force from 1 September 2025 and the market holiday list | Built |
 
 ### Ideas not scheduled yet
 

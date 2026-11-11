@@ -1,0 +1,194 @@
+[
+ {
+  "date": "2026-11-11",
+  "kind": "policy",
+  "name": "Policy Repo Rate",
+  "value": "5.50%",
+  "number": 5.5
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "policy",
+  "name": "Standing Deposit Facility Rate",
+  "value": "5.25%",
+  "number": 5.25
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "policy",
+  "name": "Marginal Standing Facility Rate",
+  "value": "5.75%",
+  "number": 5.75
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "policy",
+  "name": "Bank Rate",
+  "value": "5.75%",
+  "number": 5.75
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "policy",
+  "name": "Fixed Reverse Repo Rate",
+  "value": "3.35%",
+  "number": 3.35
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "ratio",
+  "name": "CRR",
+  "value": "3.00%",
+  "number": 3
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "ratio",
+  "name": "SLR",
+  "value": "18.00%",
+  "number": 18
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "INR / 1 USD",
+  "value": "93.8075",
+  "number": 93.8075
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "INR / 1 GBP",
+  "value": "125.1383",
+  "number": 125.1383
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "INR / 1 EUR",
+  "value": "104.6660",
+  "number": 104.666
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "INR / 100 JPY",
+  "value": "59.0600",
+  "number": 59.06
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "INR / 1 AED",
+  "value": "25.5406",
+  "number": 25.5406
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "INR / 10000 IDR",
+  "value": "51.6605",
+  "number": 51.6605
+ },
+ {
+  "date": "2026-11-09",
+  "kind": "fx",
+  "name": "INR / 1 RUB",
+  "value": "1.1405",
+  "number": 1.1405
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "fx",
+  "name": "(Source",
+  "value": "FBIL)"
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "lending",
+  "name": "Base Rate",
+  "value": "8.40% - 10.00%"
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "lending",
+  "name": "MCLR (Overnight)",
+  "value": "7.85% - 8.00%"
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "lending",
+  "name": "Savings Deposit Rate",
+  "value": "2.50%",
+  "number": 2.5
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "lending",
+  "name": "Term Deposit Rate \u003e 1 Year",
+  "value": "6.00% - 6.75%"
+ },
+ {
+  "date": "2026-11-09",
+  "kind": "bond",
+  "name": "6.20% GS 2029",
+  "value": "6.8519%",
+  "number": 6.8519
+ },
+ {
+  "date": "2026-11-09",
+  "kind": "bond",
+  "name": "6.53% GS 2031",
+  "value": "6.9658%",
+  "number": 6.9658
+ },
+ {
+  "date": "2026-11-09",
+  "kind": "bond",
+  "name": "6.94% GS 2036",
+  "value": "7.1671%",
+  "number": 7.1671
+ },
+ {
+  "date": "2026-11-09",
+  "kind": "bond",
+  "name": "7.06% GS 2041",
+  "value": "7.3432%",
+  "number": 7.3432
+ },
+ {
+  "date": "2026-11-09",
+  "kind": "bond",
+  "name": "7.63% GS 2056",
+  "value": "7.7103%",
+  "number": 7.7103
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "tbill",
+  "name": "91 day T-bills",
+  "value": "5.8681%",
+  "number": 5.8681
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "tbill",
+  "name": "182 day T-bills",
+  "value": "6.5183%",
+  "number": 6.5183
+ },
+ {
+  "date": "2026-11-11",
+  "kind": "tbill",
+  "name": "364 day T-bills",
+  "value": "6.6394%",
+  "number": 6.6394
+ },
+ {
+  "date": "2026-11-10",
+  "kind": "fx",
+  "name": "INR / 1 USD",
+  "value": "92.9000",
+  "number": 92.9
+ }
+]

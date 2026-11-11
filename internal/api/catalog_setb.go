@@ -21,6 +21,30 @@ func withSetB(groups []apiGroup) []apiGroup {
 	}
 	return append(groups,
 		apiGroup{
+			ID: "rates", Category: "money", Title: "RBI rates and exchange rates",
+			Tagline:   "Repo rate, CRR and SLR, FBIL reference exchange rates, lending and deposit rates, and bond yields.",
+			Intro:     "What the Reserve Bank of India shows as its current rates, checked every three hours: the policy rates, reserve ratios, FBIL reference rates for the dollar, pound, euro, yen, dirham, rupiah and rouble, the range of base rates and MCLR, deposit rates, treasury bill cut-offs and government bond yields. Exchange rate history builds up from the day this server began recording.",
+			SourceKey: "rbi-rates",
+			Endpoints: []endpoint{
+				{Path: "/v1/rates", Summary: "Current RBI rates", Live: true, Example: "/v1/rates"},
+				{Path: "/v1/fx", Summary: "Reference exchange rates", Live: true, Example: "/v1/fx?currency=USD",
+					Params: []param{{Name: "currency", In: "query", Type: "string", Enum: []string{"USD", "GBP", "EUR", "JPY", "AED", "IDR", "RUB"}, Doc: "One currency. Default all."},
+						{Name: "days", In: "query", Type: "integer", Doc: "History for this many days, 1 to 3650, instead of the latest."}}},
+			},
+		},
+		apiGroup{
+			ID: "expiries", Category: "money", Title: "Derivative expiries",
+			Tagline:   "NSE and BSE futures and options expiry dates, moved for holidays.",
+			Intro:     "Every weekly and monthly expiry of a year from the exchange rules in force since 1 September 2025: NSE on Tuesdays (Nifty 50 weekly), BSE on Thursdays (Sensex weekly), monthly contracts on the month's last one; an expiry on a holiday moves to the trading day before.",
+			SourceKey: "holidays-market",
+			Endpoints: []endpoint{
+				{Path: "/v1/expiries", Summary: "Expiry dates", Example: "/v1/expiries?exchange=nse&year=2026&month=3",
+					Params: []param{{Name: "exchange", In: "query", Type: "string", Enum: []string{"nse", "bse"}, Doc: "Default nse."},
+						{Name: "year", In: "query", Type: "integer", Doc: "From 2025. Default this year."}, {Name: "month", In: "query", Type: "integer", Doc: "1 to 12."},
+						{Name: "weekly", In: "query", Type: "boolean", Doc: "false lists only the monthly expiries."}}},
+			},
+		},
+		apiGroup{
 			ID: "bullion", Category: "money", Title: "Gold and silver rates",
 			Tagline:   "Today's gold (24K, 22K, 18K...), silver and platinum rates from IBJA, and their history.",
 			Intro:     "The India Bullion and Jewellers Association's benchmark rates, published each working day in two sessions, checked every two hours. Before GST and making charges. Gold and platinum per 10 grams, silver per kilogram, with the price per gram.",

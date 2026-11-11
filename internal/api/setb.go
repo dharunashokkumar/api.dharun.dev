@@ -13,6 +13,7 @@ func (s *Server) registerSetB() {
 	s.handle("indices", costLight, "GET /v1/indices/{id}", s.handleMarketIndex)
 	s.registerNAVHistory()
 	s.registerBullion()
+	s.registerRates()
 }
 
 type indexView struct {

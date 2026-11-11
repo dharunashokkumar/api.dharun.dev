@@ -1,0 +1,368 @@
+<html><body>        
+                window.open("/scripts/SearchResults.aspx?search=" + document.getElementById("txtSearch1").value,"_self");
+            }
+            else window.open("/scripts/SearchResults.aspx?search=" + document.getElementById("txtSearch1").value,"_self");
+        }
+    }
+    function validation() {
+        strSearch = trim(document.getElementById('txtSearch1').value);
+        if (strSearch == "") { alert('Please enter the search text'); return false; }
+        else {
+           
+            var strFilterChars = new RegExp("^[0-9a-zA-Z ]*$");
+            if (!strFilterChars.test(strSearch)) { alert("Please remove special characters from search text"); return false; }
+        }
+        return true;
+    }
+    function trim(value) {
+        value = value.replace(/^\s+/, '');
+        value = value.replace(/\s+$/, '');
+        return value;
+    }
+
+</script>
+
+        <div class="container_12">
+            <div>
+            <!--  CURRENT RATES START-->
+            
+                <a id="mainsection" href="#"></a>
+                <div class="grid_3">
+   
+
+		<h2 style="text-transform: none;">1. <span class="blue">Current</span> Rates</h2>
+           
+                <div id="wrapper">
+    <h3 class="accordionButton">
+        <a href="javascript:void(0);" aria-expanded="false" role="button">Policy&nbsp; Rates</a>
+    </h3>
+    <div class="accordionContent">
+        <table style="border-collapse:collapse; border:0;">
+            <tr>
+                <th>
+                    Policy Repo Rate
+                </th>
+                <td>
+                    :
+                    5.50%
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Standing Deposit Facility Rate
+                </th>
+                <td>
+                    :
+                    5.25%
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    Marginal Standing Facility Rate
+                </th>
+                <td>
+                    :
+                    5.75%
+                </td>
+            </tr>
+            <tr>
+                <th style="width:50%">
+                    Bank Rate
+                </th>
+                <td style="width:50%">
+                    :
+                    5.75%
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Fixed Reverse Repo Rate
+                </th>
+                <td>
+                    :
+                    3.35%
+                </td>
+            </tr>
+           
+
+
+        </table>
+    </div>
+    <h3 class="accordionButton">
+        <a href="javascript:void(0);" aria-expanded="false" role="button">Reserve &nbsp;Ratios</a>
+    </h3>
+    <div class="accordionContent">
+        <table style="border-collapse:collapse; border:0; width:100%;">
+            <tr>
+                <th style="width:50%">
+                    CRR
+                </th>
+                <td style="width:50%">
+                    :
+                    3.00%
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    SLR
+                </th>
+                <td>
+                    :
+                    18.00%
+                </td>
+            </tr>
+        </table>
+    </div>
+    <h3 class="accordionButton">
+        <a href="javascript:void(0);" aria-expanded="false" role="button">Exchange &nbsp;Rates</a>
+    </h3>
+    <div class="accordionContent">
+        <table style="border-collapse:collapse; border:0; width:100%;">
+
+            <tr>
+                <th style="width:65%">
+                    INR / 1 USD
+                </th>
+                <td>
+                    :
+                    93.8075
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    INR / 1 GBP
+                </th>
+                <td>
+                    :
+                    125.1383
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    INR / 1 EUR
+                </th>
+                <td>
+                    :
+                    104.6660
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    INR / 100 JPY
+                </th>
+                <td>
+                    :
+                    59.0600
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    INR / 1 AED
+                </th>
+                <td>
+                    :
+                    25.5406
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    INR / 10000 IDR
+                </th>
+                <td>
+                    :
+                    51.6605
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    INR / 1 RUB*
+                </th>
+                <td>
+                    :
+                    1.1405
+                </td>
+            </tr>
+
+
+        </table>
+        <div>
+            <div style="border-bottom:1px dotted #333;">
+                <span class="subText"> (As at 1.00pm of November 11, 2026) </span>
+            </div>
+
+            <div style="border-bottom:1px dotted #333;">
+                <span class="subText"> *(As at 3.00pm of November 09, 2026)</span>
+            </div>
+
+            <div style="border-bottom:1px dotted #333;">
+                <span class="subText"> (Source : FBIL) </span><br />
+            </div>
+            <div style="border-bottom:1px dotted #333;">
+                <a class="link1" href="/scripts/ReferenceRateArchive.aspx" style="float: right;">Archives</a>
+            </div>
+        </div>
+            
+        
+    </div>
+    <h3 class="accordionButton">
+        <a href="javascript:void(0);" aria-expanded="false" role="button">Lending / Deposit &nbsp;Rates</a>
+    </h3>
+    <div class="accordionContent">
+        <table style="border-collapse:collapse; border:0; width:100%;">
+            <tr>
+                <th style="width:52%">
+                    Base Rate
+                </th>
+                <td>
+                    :
+                    8.40% - 10.00%
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    MCLR (Overnight)
+                </th>
+                <td>
+                    :
+                    7.85% - 8.00%
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Savings Deposit Rate
+                </th>
+                <td>
+                    :
+                    2.50%
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Term Deposit Rate > 1 Year
+                </th>
+                <td>
+                    :
+                    6.00% - 6.75%
+                </td>
+            </tr>
+        </table>
+    </div>
+    <h3 class="accordionButton">
+        <a href="javascript:void(0);" aria-expanded="false" role="button">Market&nbsp; Trends</a>
+    </h3>
+    <div class="accordionContent">
+        <h3>Money Market</h3>
+        <div>
+            <table style="border-collapse:collapse; border:0; width:100%;">
+
+                <tr>
+                    <th style="width:45%">Call Rates</th>
+                    <td>
+                        :
+                        -%
+                        *
+                    </td>
+                </tr>
+            </table>
+            <div style="border-bottom:1px dotted #333;">
+                <span class="red">*</span><span class="subText"> as on <!--January 27, 2026--> November 10, 2026</span>
+            </div>
+        </div>
+       
+
+
+        <h3>Government Securities Market</h3>
+        <div>
+            <table style="border-collapse:collapse; border:0; ">
+                <tbody>
+                    <tr>
+                        <th>
+                            6.20% GS 2029
+                        </th>
+                        <td>: 6.8519% #</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            6.53% GS 2031
+                        </th>
+                        <td>: 6.9658% #</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            6.94% GS 2036
+                        </th>
+                        <td>: 7.1671% #</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            7.06% GS 2041
+                        </th>
+                        <td>: 7.3432% #</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            7.63% GS 2056
+                        </th>
+                        <td>: 7.7103% #</td>
+                    </tr>
+                    <tr>
+                        <th>
+                            91 day T-bills
+                        </th>
+                        <td>
+                            :
+                            5.8681%*
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            182 day T-bills
+                        </th>
+                        <td>
+                            :
+                            6.5183%*
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            364 day T-bills
+                        </th>
+                        <td>
+                            :
+                            6.6394%*
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="border-bottom:1px dotted #333;">
+                <span class="red">*</span><span class="subText"> cut-off at the last auction</span>
+            </div>
+            <div style="border-bottom:1px dotted #333;">
+                <span class="red">#</span><span class="subText"> as on <!--January 27, 2026--> November 09, 2026 </span>
+            </div>
+        </div>
+       
+
+        <h3>
+            Capital Market
+        </h3>
+        <div>
+            <table style="border-collapse:collapse; border:0; ">
+                <tr>
+                    <th>
+                        S&P BSE Sensex
+                    </th>
+                    <td>
+                        :
+                        81106.65
+                        *
+                    </td>
+                </tr>
+                <tr>
+  </body></html>

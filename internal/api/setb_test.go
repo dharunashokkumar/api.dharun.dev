@@ -7,6 +7,10 @@ import (
 
 func init() {
 	mcpTestCalls["list_index_constituents"] = `{"index":"nifty-bank"}`
+	mcpTestCalls["get_rbi_rates"] = `{"currency":"USD"}`
+	mcpTestCalls["get_gold_silver_rates"] = `{}`
+	mcpTestCalls["get_mutual_fund_returns"] = `{"code":"122639"}`
+	mcpTestCalls["list_derivative_expiries"] = `{"year":2026,"month":3}`
 }
 
 func TestIndices(t *testing.T) {
@@ -63,4 +67,31 @@ func TestBullion(t *testing.T) {
 		t.Errorf("history %v", history)
 	}
 	expectStatus(t, "/v1/bullion/history?metal=copper", http.StatusNotFound)
+}
+
+func TestRatesAndExpiries(t *testing.T) {
+	rates := expectStatus(t, "/v1/rates", http.StatusOK).data(t)
+	policy := rates["policy"].([]any)
+	if len(policy) < 4 || len(rates["governmentBonds"].([]any)) < 3 {
+		t.Errorf("rates %v", rates)
+	}
+	usd := expectStatus(t, "/v1/fx?currency=USD", http.StatusOK).json(t)["data"].([]any)
+	if len(usd) != 1 || usd[0].(map[string]any)["rupees"].(float64) != 93.8075 {
+		t.Errorf("usd %v", usd)
+	}
+	if history := expectStatus(t, "/v1/fx?currency=USD&days=7", http.StatusOK).json(t)["data"].([]any); len(history) != 2 {
+		t.Errorf("history %v", history)
+	}
+	expectStatus(t, "/v1/fx?currency=XYZ", http.StatusBadRequest)
+	march := expectStatus(t, "/v1/expiries?exchange=nse&year=2026&month=3", http.StatusOK).json(t)["data"].([]any)
+	last := march[len(march)-1].(map[string]any)
+	if len(march) != 5 || last["kind"] != "monthly" || last["date"] != "2026-03-31" && last["moved"] == nil {
+		t.Errorf("march %v", march)
+	}
+	for _, e := range march {
+		if e.(map[string]any)["moved"] != nil {
+			t.Logf("moved: %v", e)
+		}
+	}
+	expectStatus(t, "/v1/expiries?year=2024", http.StatusBadRequest)
 }

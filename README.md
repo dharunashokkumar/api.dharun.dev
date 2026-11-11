@@ -98,6 +98,8 @@ JavaScript and Python.
 | [Index constituents](https://api.dharun.dev/docs/indices) | `/v1/indices/nifty-50`, `/v1/indices?symbol=TCS` | Members of 31 NSE indices with industry, ISIN and logo; the indices a stock is in |
 | [Gold and silver rates](https://api.dharun.dev/docs/bullion) | `/v1/bullion`, `/v1/bullion/history?purity=916` | IBJA's daily gold (24K to 14K), silver and platinum rates, per gram too, and their history |
 | [Mutual fund returns](https://api.dharun.dev/docs/mutual-funds) | `/v1/mutual-funds/122639/returns`, `/history` | 1 month to 10 year returns (CAGR), SIP XIRR, month-end NAV history |
+| [RBI rates and exchange rates](https://api.dharun.dev/docs/rates) | `/v1/rates`, `/v1/fx?currency=USD` | Repo rate, CRR, SLR, MCLR range, bond yields; FBIL reference rates with history |
+| [Derivative expiries](https://api.dharun.dev/docs/expiries) | `/v1/expiries?exchange=nse&year=2026` | NSE and BSE weekly and monthly expiry dates, moved for holidays |
 
 ## One shape everywhere
 

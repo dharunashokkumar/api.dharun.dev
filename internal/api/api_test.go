@@ -55,6 +55,9 @@ func TestMain(m *testing.M) {
 	buildLiveFixture(panicker{}, testLive, "bullion", filepath.Join("testdata", "data"), dataset.Source{
 		Name: "Gold, silver and platinum rates (test)", Licence: "Test data", Attribution: "Rates as published by IBJA.",
 	})
+	buildLiveFixture(panicker{}, testLive, "rbi-rates", filepath.Join("testdata", "data"), dataset.Source{
+		Name: "RBI current rates (test)", Licence: "Test data", Attribution: "Rates as shown by the Reserve Bank of India.",
+	})
 	buildLiveFixture(panicker{}, testLive, "nav-history", filepath.Join("testdata", "data"), dataset.Source{
 		Name: "Mutual fund NAV history (synthetic test data)", Licence: "Test data", Attribution: "Made up for tests: 15% a year.",
 	})
