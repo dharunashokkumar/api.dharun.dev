@@ -273,7 +273,7 @@ log on key routes only.
 - [ ] `internal/deploytest` and the install test for the second unit (comes with the
       `deploy/` change on the homelab side).
 - [ ] A low-quota key in a repository secret for the production check once the date is set.
-- [ ] Sandbox design (`docs/sandbox-design.md`) to be re-read with these accounts (Part 9).
+- [x] ~~Sandbox design to be re-read with these accounts (Part 9).~~ Part 9 dropped to much later (2026-11-11).
 
 ## 12. Infrastructure request (written 2026-11-11, for the homelab side)
 
@@ -295,3 +295,5 @@ To be copied into the private homelab repository; no addresses here.
    commands, or a file copy with the unit stopped), and one restore tried.
 5. A superuser for the admin screen, reached only through an SSH tunnel to port 8091.
 6. Memory: about 30 MB more.
+
+**Live (2026-11-11):** the homelab side is done (Dharun) and the accounts unit runs with the release: `/signup`, `/keys` and `/account` answer, and `/account/api/code` runs its browser check. Left: the `KEY_REQUIRED_FROM` date, the low-quota key for the production check, the deploy and install tests for the second unit, and Google and GitHub login later.

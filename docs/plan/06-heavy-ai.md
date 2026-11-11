@@ -42,7 +42,9 @@ is genuine (the e-invoice signature check is the exception).
 | SmolLM2 1.7B Instruct (Apache-2.0) | 23 tok/s | 2.2 GB | Unusable: answers in English or echoes |
 | Phi 3.5 mini (MIT) | 12 tok/s | 4.3 GB | Best Hindi; invents facts; Tamil wrong |
 
-All four did the English JSON extraction right. **Conclusion: none can be offered for Hindi or Tamil generation.** Options for Dharun: (a) English-only task endpoints (extraction, classification) on Qwen 2.5 1.5B; (b) measure Indic-trained or newer multilingual small models next (for example Sarvam-1 2B, Gemma 3 1B/4B, Qwen 3 1.7B/4B, Llama 3.2 3B), same script with new rows; (c) drop the chat. Decision pending.
+All four did the English JSON extraction right. **Conclusion: none can be offered for Hindi or Tamil generation.**
+
+**Decision (Dharun, 2026-11-11): English only.** Hindi and Tamil generation is dropped. Build English task endpoints (extraction to JSON, classification, short summaries) on Qwen 2.5 1.5B Instruct (Apache-2.0, 25 tokens a second, 1.8 GB here), key only, 100,000 tokens a day per key. Next steps: llama-server built in the release like whisper.cpp; the model as a server-only dataset pinned by SHA-256 (like `aimodels.go`); a helper started on first use and stopped when idle within `TEXT_MODEL_MEMORY_MB` (it needs about 1.8 GB, so raise that budget or the container memory: an infrastructure request to write first); then the endpoints and, if wanted, an OpenAI-compatible English chat.
 
 
 **What the machine can do.** CPU only, 10 cores. A model of about 1 billion parameters
