@@ -51,6 +51,7 @@ func (s *Server) registerRoutes() {
 	s.registerGovData()
 	s.registerLaw()
 	s.registerLGD()
+	s.registerHospitals()
 	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 

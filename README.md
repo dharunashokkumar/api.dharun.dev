@@ -103,6 +103,7 @@ JavaScript and Python.
 | [Mandi prices](https://api.dharun.dev/docs/mandi) | `/v1/mandi?commodity=Tomato&state=Tamil%20Nadu`, `/v1/mandi/commodities` | Daily wholesale prices of farm produce in each market, from Agmarknet via data.gov.in |
 | [Air quality](https://api.dharun.dev/docs/air-quality) | `/v1/air-quality?city=Chennai`, `?near=lat,lon` | AQI and pollutants at CPCB's monitoring stations, hourly, via data.gov.in |
 | [Villages and LGD codes](https://api.dharun.dev/docs/lgd) | `/v1/lgd/states`, `/v1/lgd/villages?pincode=637001` | Every state, district, sub-district and village with its LGD and Census 2011 codes, and village PIN codes, from the Local Government Directory |
+| [Hospitals](https://api.dharun.dev/docs/hospitals) | `/v1/hospitals?pincode=637001`, `?near=lat,lon` | About 30,000 hospitals with phone, specialties and position, from the National Hospital Directory (May 2016) |
 | [IPC to BNS](https://api.dharun.dev/docs/law) | `/v1/law/ipc/302`, `/v1/law/bns?q=murder` | Section correspondence between the new criminal laws and the old ones: BNS and IPC, BNSS and CrPC, BSA and the Evidence Act |
 | [Derivative expiries](https://api.dharun.dev/docs/expiries) | `/v1/expiries?exchange=nse&year=2026` | NSE and BSE weekly and monthly expiry dates, moved for holidays |
 | [MICR and SWIFT](https://api.dharun.dev/docs/ifsc) | `/v1/micr/400240003`, `/v1/swift/HDFCINBB` | The branch behind a cheque's MICR code or a SWIFT code |

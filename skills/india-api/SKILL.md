@@ -87,6 +87,7 @@ Each API's endpoints, methods, parameters, enums and examples are in `references
 - **Helplines** ([references/helplines.md](references/helplines.md)): National emergency and helpline numbers. `/v1/helplines`. Example: `/v1/helplines?q=cyber&utm_medium=skill`
 - **Air quality** ([references/air-quality.md](references/air-quality.md)): The air quality index at CPCB's monitoring stations across India, updated hourly. `/v1/air-quality`. Example: `/v1/air-quality?city=Chennai&utm_medium=skill`
 - **Villages and LGD codes** ([references/lgd.md](references/lgd.md)): Every state, district, sub-district and village of India with its LGD and Census 2011 codes, and village PIN codes. `/v1/lgd/states`, `/v1/lgd/districts`, `/v1/lgd/subdistricts`, `/v1/lgd/villages`, `/v1/lgd/villages/{code}`. Example: `/v1/lgd/states?utm_medium=skill`
+- **Hospitals** ([references/hospitals.md](references/hospitals.md)): About 30,000 hospitals across India with their kind, system of medicine, phone and position, from the National Hospital Directory. `/v1/hospitals`. Example: `/v1/hospitals?pincode=637001&utm_medium=skill`
 
 ### Dates and calendars
 
