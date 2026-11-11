@@ -132,6 +132,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/upi-handles/{handle}`: Look up a UPI handle. Example: `/v1/upi-handles/okhdfcbank?utm_medium=skill`
 - `GET /v1/qr/parse`: Read a UPI or Bharat QR code's text. Example: `/v1/qr/parse?text=upi%3A%2F%2Fpay%3Fpa%3Dshop%40okaxis%26pn%3DSri%2520Murugan%2520Stores%26am%3D250%26cu%3DINR%26mc%3D5411&utm_medium=skill`
 
+**Index constituents** ([references/indices.md](references/indices.md)): Which companies are in Nifty 50, Bank Nifty, Nifty 500 and 28 more NSE indices, and which indices a stock is in.
+
+- `GET /v1/indices`: List indices, or the indices of a stock. Example: `/v1/indices?symbol=HDFCBANK&utm_medium=skill`
+- `GET /v1/indices/{id}`: Constituents of an index. Example: `/v1/indices/nifty-bank?utm_medium=skill`
+
 ### Places and transport
 
 **Pincodes** ([references/pincode.md](references/pincode.md)): Pincode to post office, district and state.

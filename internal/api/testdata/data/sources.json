@@ -182,5 +182,15 @@
     "retrieved": "2026-11-11",
     "attribution": "Marks belong to their respective owners. Crypto icons by spothq (CC0).",
     "notes": "Collected by tools/scrape_world_logos.py."
+  },
+  "indices": {
+    "name": "NSE index constituents",
+    "publisher": "NSE Indices Limited",
+    "url": "https://www.niftyindices.com/",
+    "licence": "Published by NSE Indices Limited; reused under this project's data rule, credited",
+    "version": "17ed6e4a39d9",
+    "retrieved": "2026-11-11T09:32:14Z",
+    "sha256": "17ed6e4a39d9dea2f4a1ff2aecdf26a4eead1efd3ffd2317c27b65405d521430",
+    "attribution": "Index constituents as published by NSE Indices Limited (niftyindices.com). Nifty is a trademark of NSE Indices Limited."
   }
 }

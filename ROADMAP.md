@@ -514,6 +514,7 @@ data and status.
 | Braille | `/v1/braille` | Bharati braille cells typed from the standard, other scripts through Devanagari; Grade 1 only; to be checked by a braille reader | Built |
 | Keyboard layouts | `/v1/keyboard/convert` | InScript (Hindi) and Tamil99 typed from the standards | Built |
 | Helplines | `/v1/helplines` | 24 national numbers typed from the ministries' pages; yearly review | Built |
+| Index constituents | `/v1/indices`, `/v1/indices/{id}` | NSE Indices Ltd's constituent CSVs for 31 indices (niftyindices.com), weekly server refresh; no weights; BSE indices not yet (its site needs a session) | Built |
 
 ### Ideas not scheduled yet
 
@@ -521,7 +522,6 @@ From the first brainstorm, kept so they are not lost. None has a source or a dec
 
 | Idea | What it would need |
 |---|---|
-| Index constituents with weights (Nifty 50, Bank Nifty, Sensex) | A source that may be republished; companies already list their index memberships |
 | Corporate actions (splits, bonus issues, dividends, record dates) | Same: exchange filings are public, redistribution terms are not clear |
 | State government holidays | Each state's own notification, typed in by hand like the central list |
 | Colleges and universities (AISHE), school boards | Check the AISHE portal's reuse terms |

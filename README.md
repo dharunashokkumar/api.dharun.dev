@@ -95,6 +95,7 @@ JavaScript and Python.
 | [Festivals](https://api.dharun.dev/docs/festivals) | `/v1/festivals/2026`, `/v1/festivals/2026.ics?state=TN` | Hindu, Tamil, Sikh, Jain, Buddhist, Islamic and Christian festival dates 1950 to 2100, computed from the panchang with each rule given |
 | [Indic text tools](https://api.dharun.dev/docs/indic) | `/v1/indic/aksharas?text=...`, `/v1/braille?text=...`, `/v1/keyboard/convert?layout=tamil99` | Letters as readers count them, dictionary order, look-alike fixes, Bharati braille, InScript and Tamil99 keys |
 | [Helplines](https://api.dharun.dev/docs/helplines) | `/v1/helplines?q=cyber` | National emergency and helpline numbers |
+| [Index constituents](https://api.dharun.dev/docs/indices) | `/v1/indices/nifty-50`, `/v1/indices?symbol=TCS` | Members of 31 NSE indices with industry, ISIN and logo; the indices a stock is in |
 
 ## One shape everywhere
 

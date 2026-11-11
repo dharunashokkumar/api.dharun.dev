@@ -182,3 +182,4 @@ check "/v1/festivals/2026.ics" text/calendar "BEGIN:VEVENT"
 check "/v1/keyboard/convert?layout=tamil99&text=vphhkf" application/json '"text":"வணக்கம்"'
 check "/v1/braille?text=%E0%A4%95" application/json '"braille":"⠅"'
 check /v1/helplines application/json '"number":"112"'
+check /v1/indices/nifty-50 application/json '"name":"Nifty 50"'
