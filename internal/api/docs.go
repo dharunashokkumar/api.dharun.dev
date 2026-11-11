@@ -13,6 +13,10 @@ func (s *Server) registerRoutes() {
 	s.handle("logo", costLight, "GET /v1/logos/{symbol}", s.handleLogo)
 	s.handle("company", costLight, "GET /v1/companies/{symbol}", s.handleCompany)
 	s.handle("company_search", costLight, "GET /v1/companies", s.handleCompanySearch)
+	for _, set := range worldLogoSets {
+		s.handle(set.name+"_logo", costLight, "GET /v1/"+set.path+"/{"+set.param+"}", s.handleWorldLogo(set))
+		s.handle(set.name+"_logo_search", costLight, "GET /v1/"+set.path, s.handleWorldLogoSearch(set))
+	}
 	s.handle("pincode", costLight, "GET /v1/pincode/{pincode}", s.handlePincode)
 	s.handle("pincode_search", costLight, "GET /v1/pincode", s.handlePincodeSearch)
 	s.handle("ifsc", costLight, "GET /v1/ifsc/{code}", s.handleIFSC)

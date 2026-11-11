@@ -244,15 +244,25 @@ func TestLogos(t *testing.T) {
 	expectStatus(t, "/v1/logos/M%26M", http.StatusOK)
 	expectStatus(t, "/v1/logos/MM", http.StatusOK)
 	expectStatus(t, "/v1/logos/BAJAJ-AUTO", http.StatusOK)
-	expectStatus(t, "/v1/logos/TCS?exchange=bse", http.StatusNotFound)
+	expectStatus(t, "/v1/logos/TCS?exchange=bse&fallback=none", http.StatusNotFound)
 
-	missing := expectStatus(t, "/v1/logos/NOTLISTED", http.StatusNotFound)
+	// An unknown symbol gets the tile without asking, kept for a day and marked unknown;
+	// fallback=none keeps the old 404 for callers that want to detect a miss.
+	for _, path := range []string{"/v1/logos/NOTLISTED", "/v1/logos/NOTLISTED?fallback=monogram", "/v1/logos/TCS?exchange=bse"} {
+		tile := expectStatus(t, path, http.StatusOK)
+		if tile.header.Get("X-Logo-Fallback") != "monogram" || tile.header.Get("X-Logo-Known") != "false" || tile.header.Get("Cache-Control") != cacheUnknownLogo {
+			t.Errorf("%s: headers %v", path, tile.header)
+		}
+		if path != "/v1/logos/TCS?exchange=bse" && !bytes.Contains(tile.body, []byte(">NO</text>")) {
+			t.Errorf("%s: unexpected monogram: %s", path, tile.body)
+		}
+	}
+	if known := expectStatus(t, "/v1/logos/TCS", http.StatusOK); known.header.Get("X-Logo-Known") != "" {
+		t.Errorf("a found logo is marked X-Logo-Known: %q", known.header.Get("X-Logo-Known"))
+	}
+	missing := expectStatus(t, "/v1/logos/NOTLISTED?fallback=none", http.StatusNotFound)
 	if code := missing.json(t)["error"].(map[string]any)["code"]; code != "not_found" {
 		t.Errorf("error code = %v", code)
-	}
-	fallback := expectStatus(t, "/v1/logos/NOTLISTED?fallback=monogram", http.StatusOK)
-	if fallback.header.Get("X-Logo-Fallback") != "monogram" || !bytes.Contains(fallback.body, []byte(">NO</text>")) {
-		t.Errorf("unexpected monogram: %s", fallback.body)
 	}
 	hostile := expectStatus(t, "/v1/logos/%22%3E%3Cscript%3Ealert(1)%3C%2Fscript%3E?fallback=monogram", http.StatusOK)
 	if bytes.Contains(hostile.body, []byte("<script")) || bytes.Contains(hostile.body, []byte("alert")) {
@@ -276,9 +286,15 @@ func TestLogos(t *testing.T) {
 		}
 	}
 
+	// The tile for a company without a logo keeps the short lifetime: its logo may come soon.
+	if tile := expectStatus(t, "/v1/logos/SBIFUNDS", http.StatusOK); tile.header.Get("Cache-Control") != cacheShort || tile.header.Get("X-Logo-Known") != "" {
+		t.Errorf("SBIFUNDS tile headers: %v", tile.header)
+	}
+
 	for _, path := range []string{
+		"/v1/logos/" + strings.Repeat("A", maxLogoSymbol+1), "/v1/logos/TC%01S",
 		"/v1/logos/TCS?format=gif", "/v1/logos/TCS?format=png&size=8", "/v1/logos/TCS?format=png&size=4096",
-		"/v1/logos/TCS?format=png&size=abc", "/v1/logos/TCS?fallback=blank", "/v1/logos/TCS?exchange=nyse",
+		"/v1/logos/TCS?format=png&size=abc", "/v1/logos/TCS?fallback=blank", "/v1/logos/TCS?exchange=xyz",
 	} {
 		expectStatus(t, path, http.StatusBadRequest)
 	}
@@ -877,7 +893,7 @@ func TestMetricsAndLifetimeTotals(t *testing.T) {
 		server.ServeHTTP(httptest.NewRecorder(), httptest.NewRequest(http.MethodGet, path, nil))
 	}
 	serve("/v1/logos/TCS")
-	serve("/v1/logos/NOTLISTED")
+	serve("/v1/logos/NOTLISTED?fallback=none")
 	serve("/v1/pincode/637001")
 	serve("/healthz")
 
@@ -944,6 +960,43 @@ func TestRateLimit(t *testing.T) {
 	// Another client, and the pages a throttled client needs, are unaffected.
 	if hit("/v1/logos/TCS", "203.0.113.6:1000") != http.StatusOK || hit("/", "203.0.113.5:1000") != http.StatusOK || hit("/healthz", "203.0.113.5:1000") != http.StatusOK {
 		t.Error("the limit leaked beyond the throttled client's data requests")
+	}
+}
+
+// A logo answered from cache (a 304, or a PNG already drawn) does not use the allowance;
+// a fresh answer still does, and other routes still count their 304s.
+func TestCachedLogosAreFree(t *testing.T) {
+	server := newTestServer(Config{Version: "t", RateLimitPerMinute: 3})
+	defer server.Close()
+	send := func(path, etag string) *httptest.ResponseRecorder {
+		req := httptest.NewRequest(http.MethodGet, path, nil)
+		req.RemoteAddr = "203.0.113.7:1000"
+		if etag != "" {
+			req.Header.Set("If-None-Match", etag)
+		}
+		recorder := httptest.NewRecorder()
+		server.ServeHTTP(recorder, req)
+		return recorder
+	}
+	etag := send("/v1/logos/TCS", "").Header().Get("ETag")
+	tile := send("/v1/logos/ZZTILE?format=png&size=40", "") // drawn once, then from the cache
+	if tile.Code != http.StatusOK {
+		t.Fatalf("tile: %d", tile.Code)
+	}
+	for i := 0; i < 10; i++ {
+		if got := send("/v1/logos/TCS", etag).Code; got != http.StatusNotModified {
+			t.Fatalf("revalidation %d answered %d", i, got)
+		}
+		if got := send("/v1/logos/ZZTILE?format=png&size=40", "").Code; got != http.StatusOK {
+			t.Fatalf("cached tile %d answered %d", i, got)
+		}
+	}
+	// Two units used so far (TCS and the first tile): one fresh answer fits, the next does not.
+	if got := send("/v1/logos/INFY", "").Code; got != http.StatusOK {
+		t.Errorf("third fresh answer: %d", got)
+	}
+	if got := send("/v1/logos/WIPRO", "").Code; got != http.StatusTooManyRequests {
+		t.Errorf("fourth fresh answer: %d, want 429", got)
 	}
 }
 

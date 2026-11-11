@@ -4,6 +4,7 @@
 //	apidata import ifsc                refresh the repository's copy of one dataset from its source
 //	apidata refresh                    on a server: fetch and rebuild every dataset that is due
 //	apidata status                     on a server: which copy of each dataset is in use
+//	apidata missed-logos               on a server: logo symbols that matched no company
 //
 // build never touches the network. import changes files under data/ that are committed.
 // refresh writes only to the server's own data directory.
@@ -39,6 +40,8 @@ func main() {
 		err = runRefresh(os.Args[2:])
 	case "status":
 		err = runStatus(os.Args[2:])
+	case "missed-logos":
+		err = runMissedLogos(os.Args[2:])
 	default:
 		usage()
 	}
@@ -60,6 +63,7 @@ func usage() {
   apidata import  <dataset> [-data data] [-file F] [-version V] [-year Y] [-note text]
   apidata refresh [-seed seed] [-live dir] [-force] [dataset ...]
   apidata status  [-seed seed] [-live dir]
+  apidata missed-logos [-state dir] [-n 100] [-json]
 
 datasets with a source that can be fetched: `+strings.Join(fetchable, ", "))
 	os.Exit(2)

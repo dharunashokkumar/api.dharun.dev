@@ -14,6 +14,10 @@ rate limit per IP. Code AGPL-3.0-only; examples, guides' code, skill and plugin 
 data source and refresh method for each API. Read it before adding an API, and update it
 in the same change.
 
+`docs/plan/` holds the growth plan of 2026-11-10 (Parts 0 to 9). Its `README.md` has a
+**Progress** table: read it to see what is built and what is next, and add a line (and
+tick the boxes in the part file) in the same change as the work.
+
 Production (where it runs, how deploys reach it, how to ask for infrastructure changes):
 read the git-ignored `INFRA.local.md` first. See "Deploy" below.
 
@@ -228,6 +232,19 @@ counts as half the slots. Parsed fonts are kept once used (16 MB for all twenty-
 drawing and bitmap resizing go through `renderer.work`, one per CPU.
 The fonts are committed in `internal/typeset/fonts` with their licence; a test checks
 each file against `SHA256SUMS` there, which also records where they came from.
+
+### Logo sets
+
+`/v1/logos` serves the NSE and BSE listing (dataset `logos`, `tools/scrape_logos.py`).
+Three more seed datasets share one build (`internal/dataset/worldlogos.go`, tables
+`entries` and `entry_keys`): `brand-logos` (a hand-kept `data/brand-logos/brands.json`,
+artwork by `tools/fetch_brand_logos.py`), `stock-logos` and `asset-logos`
+(`tools/scrape_world_logos.py`). All four are updated by hand and ship with a push. A
+name that is not an Indian listing falls through to brands, stocks, then assets
+(`worldlogos.go` in `internal/api`); an unknown name gets the monogram (200,
+`X-Logo-Known: false`) and is counted in `STATE_DIR/missed-logos.json`
+(`apidata missed-logos`). Check new brand artwork by eye: Commons has many things with
+the same name as an Indian brand.
 
 ### Logic packages
 

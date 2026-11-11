@@ -80,7 +80,13 @@ check /llms.txt text/plain
 check /fonts/ibm-plex-sans-latin-400-normal.woff2 font/woff2
 check /v1/logos/TCS image/svg+xml
 check "/v1/logos/TCS?format=png&size=64" image/png
+check /v1/logos/ZZNOTLISTED image/svg+xml
 check "/v1/logos/UNKNOWN?fallback=monogram&format=png" image/png
+check /v1/brand-logos/phonepe image/svg+xml
+check "/v1/stock-logos/AAPL?format=png&size=64" image/png
+check /v1/asset-logos/BTC image/svg+xml
+check /v1/logos/AAPL image/svg+xml
+check "/v1/asset-logos?kind=index&limit=3" application/json
 check /v1/companies/RELIANCE application/json '"NSE:RELIANCE"'
 check /v1/pincode/637001 application/json '"Namakkal"'
 check /v1/ifsc/SBIN0000001 application/json '"State Bank of India"'

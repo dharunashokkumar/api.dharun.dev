@@ -1,0 +1,2279 @@
+[
+ {
+  "slug": "phonepe",
+  "name": "PhonePe",
+  "domain": "phonepe.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "google-pay",
+  "name": "Google Pay",
+  "domain": "pay.google.com",
+  "category": "payments",
+  "aliases": [
+   "googlepay",
+   "gpay",
+   "tez"
+  ]
+ },
+ {
+  "slug": "bhim",
+  "name": "BHIM",
+  "domain": "bhimupi.org.in",
+  "category": "payments",
+  "aliases": [
+   "bhim-upi"
+  ]
+ },
+ {
+  "slug": "upi",
+  "name": "UPI",
+  "domain": "npci.org.in",
+  "category": "payments",
+  "aliases": [
+   "unified-payments-interface"
+  ],
+  "site_icon": false
+ },
+ {
+  "slug": "rupay",
+  "name": "RuPay",
+  "domain": "rupay.co.in",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "npci",
+  "name": "NPCI",
+  "domain": "npci.org.in",
+  "category": "payments",
+  "aliases": [
+   "national-payments-corporation-of-india"
+  ]
+ },
+ {
+  "slug": "amazon-pay",
+  "name": "Amazon Pay",
+  "domain": "amazonpay.in",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "cred",
+  "name": "CRED",
+  "domain": "cred.club",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "razorpay",
+  "name": "Razorpay",
+  "domain": "razorpay.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "cashfree-payments",
+  "name": "Cashfree Payments",
+  "domain": "cashfree.com",
+  "category": "payments",
+  "aliases": [
+   "cashfree"
+  ]
+ },
+ {
+  "slug": "payu",
+  "name": "PayU",
+  "domain": "payu.in",
+  "category": "payments",
+  "aliases": [
+   "payu-india"
+  ]
+ },
+ {
+  "slug": "juspay",
+  "name": "Juspay",
+  "domain": "juspay.in",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "bharatpe",
+  "name": "BharatPe",
+  "domain": "bharatpe.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "instamojo",
+  "name": "Instamojo",
+  "domain": "instamojo.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "ccavenue",
+  "name": "CCAvenue",
+  "domain": "ccavenue.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "freecharge",
+  "name": "Freecharge",
+  "domain": "freecharge.in",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "airtel-payments-bank",
+  "name": "Airtel Payments Bank",
+  "domain": "airtel.in",
+  "category": "payments",
+  "aliases": [
+   "airtel-bank"
+  ],
+  "site_icon": false
+ },
+ {
+  "slug": "jio-payments-bank",
+  "name": "Jio Payments Bank",
+  "domain": "jiopaymentsbank.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "super-money",
+  "name": "super.money",
+  "domain": "super.money",
+  "category": "payments",
+  "aliases": [
+   "supermoney"
+  ]
+ },
+ {
+  "slug": "simpl",
+  "name": "Simpl",
+  "domain": "getsimpl.com",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "lazypay",
+  "name": "LazyPay",
+  "domain": "lazypay.in",
+  "category": "payments",
+  "aliases": []
+ },
+ {
+  "slug": "bharat-billpay",
+  "name": "Bharat BillPay",
+  "domain": "bharatbillpay.com",
+  "category": "payments",
+  "aliases": [
+   "bbps"
+  ],
+  "site_icon": false
+ },
+ {
+  "slug": "fastag",
+  "name": "FASTag",
+  "domain": "npci.org.in",
+  "category": "payments",
+  "aliases": [
+   "netc-fastag"
+  ],
+  "site_icon": false
+ },
+ {
+  "slug": "slice",
+  "name": "Slice",
+  "domain": "sliceit.com",
+  "category": "fintech",
+  "aliases": [],
+  "commons": false
+ },
+ {
+  "slug": "jupiter",
+  "name": "Jupiter",
+  "domain": "jupiter.money",
+  "category": "fintech",
+  "aliases": [
+   "jupiter-money"
+  ],
+  "commons": false
+ },
+ {
+  "slug": "fi-money",
+  "name": "Fi Money",
+  "domain": "fi.money",
+  "category": "fintech",
+  "aliases": [
+   "epifi",
+   "fi"
+  ]
+ },
+ {
+  "slug": "niyo",
+  "name": "Niyo",
+  "domain": "goniyo.com",
+  "category": "fintech",
+  "aliases": [
+   "niyo-global"
+  ]
+ },
+ {
+  "slug": "onecard",
+  "name": "OneCard",
+  "domain": "getonecard.app",
+  "category": "fintech",
+  "aliases": [
+   "one-card"
+  ]
+ },
+ {
+  "slug": "navi",
+  "name": "Navi",
+  "domain": "navi.com",
+  "category": "fintech",
+  "aliases": [],
+  "commons": false
+ },
+ {
+  "slug": "kreditbee",
+  "name": "KreditBee",
+  "domain": "kreditbee.in",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "moneyview",
+  "name": "MoneyView",
+  "domain": "moneyview.in",
+  "category": "fintech",
+  "aliases": [
+   "money-view"
+  ]
+ },
+ {
+  "slug": "fibe",
+  "name": "Fibe",
+  "domain": "fibe.in",
+  "category": "fintech",
+  "aliases": [
+   "earlysalary"
+  ]
+ },
+ {
+  "slug": "lendingkart",
+  "name": "Lendingkart",
+  "domain": "lendingkart.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "paisabazaar",
+  "name": "Paisabazaar",
+  "domain": "paisabazaar.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "bankbazaar",
+  "name": "BankBazaar",
+  "domain": "bankbazaar.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "groww",
+  "name": "Groww",
+  "domain": "groww.in",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "zerodha",
+  "name": "Zerodha",
+  "domain": "zerodha.com",
+  "category": "fintech",
+  "aliases": [
+   "kite"
+  ]
+ },
+ {
+  "slug": "upstox",
+  "name": "Upstox",
+  "domain": "upstox.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "dhan",
+  "name": "Dhan",
+  "domain": "dhan.co",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "indmoney",
+  "name": "INDmoney",
+  "domain": "indmoney.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "smallcase",
+  "name": "smallcase",
+  "domain": "smallcase.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "kuvera",
+  "name": "Kuvera",
+  "domain": "kuvera.in",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "et-money",
+  "name": "ET Money",
+  "domain": "etmoney.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "scripbox",
+  "name": "Scripbox",
+  "domain": "scripbox.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "sensibull",
+  "name": "Sensibull",
+  "domain": "sensibull.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "tickertape",
+  "name": "Tickertape",
+  "domain": "tickertape.in",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "khatabook",
+  "name": "Khatabook",
+  "domain": "khatabook.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "okcredit",
+  "name": "OkCredit",
+  "domain": "okcredit.in",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "vyapar",
+  "name": "Vyapar",
+  "domain": "vyaparapp.in",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "jar",
+  "name": "Jar",
+  "domain": "myjar.app",
+  "category": "fintech",
+  "aliases": [
+   "jar-app"
+  ]
+ },
+ {
+  "slug": "fampay",
+  "name": "Fampay",
+  "domain": "famapp.in",
+  "category": "fintech",
+  "aliases": [
+   "famapp"
+  ]
+ },
+ {
+  "slug": "policyx",
+  "name": "PolicyX",
+  "domain": "policyx.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "ditto-insurance",
+  "name": "Ditto Insurance",
+  "domain": "joinditto.in",
+  "category": "fintech",
+  "aliases": [
+   "ditto"
+  ]
+ },
+ {
+  "slug": "perfios",
+  "name": "Perfios",
+  "domain": "perfios.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "setu",
+  "name": "Setu",
+  "domain": "setu.co",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "signzy",
+  "name": "Signzy",
+  "domain": "signzy.com",
+  "category": "fintech",
+  "aliases": []
+ },
+ {
+  "slug": "tata-aia-life",
+  "name": "Tata AIA Life",
+  "domain": "tataaia.com",
+  "category": "insurance",
+  "aliases": [
+   "tata-aia"
+  ]
+ },
+ {
+  "slug": "tata-aig",
+  "name": "Tata AIG",
+  "domain": "tataaig.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "bajaj-allianz",
+  "name": "Bajaj Allianz",
+  "domain": "bajajallianz.com",
+  "category": "insurance",
+  "aliases": [
+   "bajaj-general",
+   "bajaj-life"
+  ]
+ },
+ {
+  "slug": "kotak-life",
+  "name": "Kotak Life",
+  "domain": "kotaklife.com",
+  "category": "insurance",
+  "aliases": [
+   "kotak-life-insurance"
+  ]
+ },
+ {
+  "slug": "pnb-metlife",
+  "name": "PNB MetLife",
+  "domain": "pnbmetlife.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "canara-hsbc-life",
+  "name": "Canara HSBC Life",
+  "domain": "canarahsbclife.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "aditya-birla-health-insurance",
+  "name": "Aditya Birla Health Insurance",
+  "domain": "adityabirlacapital.com",
+  "category": "insurance",
+  "aliases": [
+   "abhi"
+  ],
+  "site_icon": false
+ },
+ {
+  "slug": "care-health-insurance",
+  "name": "Care Health Insurance",
+  "domain": "careinsurance.com",
+  "category": "insurance",
+  "aliases": [
+   "care-health"
+  ]
+ },
+ {
+  "slug": "manipalcigna",
+  "name": "ManipalCigna",
+  "domain": "manipalcigna.com",
+  "category": "insurance",
+  "aliases": [
+   "manipal-cigna"
+  ]
+ },
+ {
+  "slug": "acko",
+  "name": "Acko",
+  "domain": "acko.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "hdfc-ergo",
+  "name": "HDFC ERGO",
+  "domain": "hdfcergo.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "united-india-insurance",
+  "name": "United India Insurance",
+  "domain": "uiic.co.in",
+  "category": "insurance",
+  "aliases": [
+   "uiic"
+  ]
+ },
+ {
+  "slug": "oriental-insurance",
+  "name": "Oriental Insurance",
+  "domain": "orientalinsurance.org.in",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "national-insurance",
+  "name": "National Insurance",
+  "domain": "nationalinsurance.nic.co.in",
+  "category": "insurance",
+  "aliases": [
+   "nicl"
+  ]
+ },
+ {
+  "slug": "royal-sundaram",
+  "name": "Royal Sundaram",
+  "domain": "royalsundaram.in",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "chola-ms",
+  "name": "Chola MS",
+  "domain": "cholainsurance.com",
+  "category": "insurance",
+  "aliases": [
+   "cholamandalam-ms"
+  ]
+ },
+ {
+  "slug": "iffco-tokio",
+  "name": "IFFCO Tokio",
+  "domain": "iffcotokio.co.in",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "sbi-general-insurance",
+  "name": "SBI General Insurance",
+  "domain": "sbigeneral.in",
+  "category": "insurance",
+  "aliases": [
+   "sbi-general"
+  ]
+ },
+ {
+  "slug": "future-generali",
+  "name": "Future Generali",
+  "domain": "futuregenerali.in",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "ageas-federal-life",
+  "name": "Ageas Federal Life",
+  "domain": "ageasfederal.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "bharti-axa-life",
+  "name": "Bharti AXA Life",
+  "domain": "bhartiaxa.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "edelweiss-life",
+  "name": "Edelweiss Life",
+  "domain": "edelweisslife.in",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "max-life-insurance",
+  "name": "Max Life Insurance",
+  "domain": "axismaxlife.com",
+  "category": "insurance",
+  "aliases": [
+   "axis-max-life"
+  ]
+ },
+ {
+  "slug": "reliance-general-insurance",
+  "name": "Reliance General Insurance",
+  "domain": "reliancegeneral.co.in",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "universal-sompo",
+  "name": "Universal Sompo",
+  "domain": "universalsompo.com",
+  "category": "insurance",
+  "aliases": []
+ },
+ {
+  "slug": "zuno-general-insurance",
+  "name": "Zuno General Insurance",
+  "domain": "hizuno.com",
+  "category": "insurance",
+  "aliases": [
+   "zuno"
+  ]
+ },
+ {
+  "slug": "sbi-mutual-fund",
+  "name": "SBI Mutual Fund",
+  "domain": "sbimf.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "sbimf"
+  ]
+ },
+ {
+  "slug": "icici-prudential-mutual-fund",
+  "name": "ICICI Prudential Mutual Fund",
+  "domain": "icicipruamc.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "icici-pru-mf"
+  ]
+ },
+ {
+  "slug": "kotak-mutual-fund",
+  "name": "Kotak Mutual Fund",
+  "domain": "kotakmf.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "kotakmf"
+  ]
+ },
+ {
+  "slug": "axis-mutual-fund",
+  "name": "Axis Mutual Fund",
+  "domain": "axismf.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "axismf"
+  ]
+ },
+ {
+  "slug": "dsp-mutual-fund",
+  "name": "DSP Mutual Fund",
+  "domain": "dspim.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "dspmf"
+  ]
+ },
+ {
+  "slug": "mirae-asset-mutual-fund",
+  "name": "Mirae Asset Mutual Fund",
+  "domain": "miraeassetmf.co.in",
+  "category": "mutual-fund",
+  "aliases": [
+   "mirae-asset"
+  ]
+ },
+ {
+  "slug": "tata-mutual-fund",
+  "name": "Tata Mutual Fund",
+  "domain": "tatamutualfund.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "tatamf"
+  ]
+ },
+ {
+  "slug": "bandhan-mutual-fund",
+  "name": "Bandhan Mutual Fund",
+  "domain": "bandhanmutual.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "idfc-mutual-fund"
+  ]
+ },
+ {
+  "slug": "edelweiss-mutual-fund",
+  "name": "Edelweiss Mutual Fund",
+  "domain": "edelweissmf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "franklin-templeton-india",
+  "name": "Franklin Templeton India",
+  "domain": "franklintempletonindia.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "franklin-templeton"
+  ]
+ },
+ {
+  "slug": "invesco-mutual-fund",
+  "name": "Invesco Mutual Fund",
+  "domain": "invescomutualfund.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "invesco-india"
+  ]
+ },
+ {
+  "slug": "canara-robeco-mutual-fund",
+  "name": "Canara Robeco Mutual Fund",
+  "domain": "canararobeco.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "canara-robeco"
+  ]
+ },
+ {
+  "slug": "hsbc-mutual-fund",
+  "name": "HSBC Mutual Fund",
+  "domain": "assetmanagement.hsbc.co.in",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "motilal-oswal-mutual-fund",
+  "name": "Motilal Oswal Mutual Fund",
+  "domain": "motilaloswalmf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "pgim-india-mutual-fund",
+  "name": "PGIM India Mutual Fund",
+  "domain": "pgimindiamf.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "pgim-india"
+  ]
+ },
+ {
+  "slug": "sundaram-mutual-fund",
+  "name": "Sundaram Mutual Fund",
+  "domain": "sundarammutual.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "lic-mutual-fund",
+  "name": "LIC Mutual Fund",
+  "domain": "licmf.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "licmf"
+  ]
+ },
+ {
+  "slug": "baroda-bnp-paribas-mutual-fund",
+  "name": "Baroda BNP Paribas Mutual Fund",
+  "domain": "barodabnpparibasmf.in",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "mahindra-manulife-mutual-fund",
+  "name": "Mahindra Manulife Mutual Fund",
+  "domain": "mahindramanulife.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "quant-mutual-fund",
+  "name": "quant Mutual Fund",
+  "domain": "quantmutual.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "quant-mf"
+  ]
+ },
+ {
+  "slug": "ppfas-mutual-fund",
+  "name": "PPFAS Mutual Fund",
+  "domain": "amc.ppfas.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "parag-parikh",
+   "ppfas"
+  ]
+ },
+ {
+  "slug": "union-mutual-fund",
+  "name": "Union Mutual Fund",
+  "domain": "unionmf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "navi-mutual-fund",
+  "name": "Navi Mutual Fund",
+  "domain": "navimutualfund.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "groww-mutual-fund",
+  "name": "Groww Mutual Fund",
+  "domain": "growwmf.in",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "zerodha-fund-house",
+  "name": "Zerodha Fund House",
+  "domain": "zerodhafundhouse.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "zerodha-mf"
+  ]
+ },
+ {
+  "slug": "iti-mutual-fund",
+  "name": "ITI Mutual Fund",
+  "domain": "itiamc.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "jm-financial-mutual-fund",
+  "name": "JM Financial Mutual Fund",
+  "domain": "jmfinancialmf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "quantum-mutual-fund",
+  "name": "Quantum Mutual Fund",
+  "domain": "quantumamc.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "shriram-mutual-fund",
+  "name": "Shriram Mutual Fund",
+  "domain": "shriramamc.in",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "trust-mutual-fund",
+  "name": "Trust Mutual Fund",
+  "domain": "trustmf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "nj-mutual-fund",
+  "name": "NJ Mutual Fund",
+  "domain": "njmutualfund.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "samco-mutual-fund",
+  "name": "Samco Mutual Fund",
+  "domain": "samcomf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "bank-of-india-mutual-fund",
+  "name": "Bank of India Mutual Fund",
+  "domain": "boimf.in",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "taurus-mutual-fund",
+  "name": "Taurus Mutual Fund",
+  "domain": "taurusmutualfund.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "helios-mutual-fund",
+  "name": "Helios Mutual Fund",
+  "domain": "heliosmf.in",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "old-bridge-mutual-fund",
+  "name": "Old Bridge Mutual Fund",
+  "domain": "oldbridgemf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "whiteoak-capital-mutual-fund",
+  "name": "WhiteOak Capital Mutual Fund",
+  "domain": "whiteoakamc.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "whiteoak"
+  ]
+ },
+ {
+  "slug": "360-one-mutual-fund",
+  "name": "360 ONE Mutual Fund",
+  "domain": "360.one",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "angel-one-mutual-fund",
+  "name": "Angel One Mutual Fund",
+  "domain": "angelonemf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "jio-blackrock-mutual-fund",
+  "name": "Jio BlackRock Mutual Fund",
+  "domain": "jioblackrockamc.com",
+  "category": "mutual-fund",
+  "aliases": [
+   "jio-blackrock"
+  ]
+ },
+ {
+  "slug": "unifi-mutual-fund",
+  "name": "Unifi Mutual Fund",
+  "domain": "unifimf.com",
+  "category": "mutual-fund",
+  "aliases": []
+ },
+ {
+  "slug": "flipkart",
+  "name": "Flipkart",
+  "domain": "flipkart.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "myntra",
+  "name": "Myntra",
+  "domain": "myntra.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "meesho",
+  "name": "Meesho",
+  "domain": "meesho.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "zepto",
+  "name": "Zepto",
+  "domain": "zeptonow.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "blinkit",
+  "name": "Blinkit",
+  "domain": "blinkit.com",
+  "category": "commerce",
+  "aliases": [
+   "grofers"
+  ]
+ },
+ {
+  "slug": "bigbasket",
+  "name": "BigBasket",
+  "domain": "bigbasket.com",
+  "category": "commerce",
+  "aliases": [
+   "bb-now"
+  ]
+ },
+ {
+  "slug": "swiggy-instamart",
+  "name": "Swiggy Instamart",
+  "domain": "swiggy.com",
+  "category": "commerce",
+  "aliases": [
+   "instamart"
+  ],
+  "site_icon": false
+ },
+ {
+  "slug": "jiomart",
+  "name": "JioMart",
+  "domain": "jiomart.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "ajio",
+  "name": "AJIO",
+  "domain": "ajio.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "tata-neu",
+  "name": "Tata Neu",
+  "domain": "tataneu.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "tata-cliq",
+  "name": "Tata CLiQ",
+  "domain": "tatacliq.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "croma",
+  "name": "Croma",
+  "domain": "croma.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "reliance-digital",
+  "name": "Reliance Digital",
+  "domain": "reliancedigital.in",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "lenskart",
+  "name": "Lenskart",
+  "domain": "lenskart.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "boat",
+  "name": "boAt",
+  "domain": "boat-lifestyle.com",
+  "category": "commerce",
+  "aliases": [
+   "boat-lifestyle"
+  ]
+ },
+ {
+  "slug": "sugar-cosmetics",
+  "name": "SUGAR Cosmetics",
+  "domain": "sugarcosmetics.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "pepperfry",
+  "name": "Pepperfry",
+  "domain": "pepperfry.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "urban-ladder",
+  "name": "Urban Ladder",
+  "domain": "urbanladder.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "licious",
+  "name": "Licious",
+  "domain": "licious.in",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "country-delight",
+  "name": "Country Delight",
+  "domain": "countrydelight.in",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "snapdeal",
+  "name": "Snapdeal",
+  "domain": "snapdeal.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "shopclues",
+  "name": "ShopClues",
+  "domain": "shopclues.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "purplle",
+  "name": "Purplle",
+  "domain": "purplle.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "bewakoof",
+  "name": "Bewakoof",
+  "domain": "bewakoof.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "the-souled-store",
+  "name": "The Souled Store",
+  "domain": "thesouledstore.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "decathlon-india",
+  "name": "Decathlon India",
+  "domain": "decathlon.in",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "ikea-india",
+  "name": "IKEA India",
+  "domain": "ikea.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "spencers",
+  "name": "Spencer's",
+  "domain": "spencers.in",
+  "category": "commerce",
+  "aliases": [],
+  "site_icon": false,
+  "commons": false
+ },
+ {
+  "slug": "zivame",
+  "name": "Zivame",
+  "domain": "zivame.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "pharmeasy",
+  "name": "Pharmeasy",
+  "domain": "pharmeasy.in",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "tata-1mg",
+  "name": "Tata 1mg",
+  "domain": "1mg.com",
+  "category": "commerce",
+  "aliases": [
+   "1mg"
+  ]
+ },
+ {
+  "slug": "netmeds",
+  "name": "Netmeds",
+  "domain": "netmeds.com",
+  "category": "commerce",
+  "aliases": []
+ },
+ {
+  "slug": "apollo-24-7",
+  "name": "Apollo 24/7",
+  "domain": "apollo247.com",
+  "category": "commerce",
+  "aliases": [
+   "apollo247"
+  ]
+ },
+ {
+  "slug": "practo",
+  "name": "Practo",
+  "domain": "practo.com",
+  "category": "health",
+  "aliases": []
+ },
+ {
+  "slug": "cult-fit",
+  "name": "cult.fit",
+  "domain": "cult.fit",
+  "category": "health",
+  "aliases": [
+   "cultfit",
+   "curefit"
+  ]
+ },
+ {
+  "slug": "healthifyme",
+  "name": "HealthifyMe",
+  "domain": "healthifyme.com",
+  "category": "health",
+  "aliases": [
+   "healthify"
+  ]
+ },
+ {
+  "slug": "tata-health",
+  "name": "Tata Health",
+  "domain": "tatahealth.com",
+  "category": "health",
+  "aliases": []
+ },
+ {
+  "slug": "ola",
+  "name": "Ola",
+  "domain": "olacabs.com",
+  "category": "mobility",
+  "aliases": [
+   "ola-cabs"
+  ],
+  "commons": false
+ },
+ {
+  "slug": "rapido",
+  "name": "Rapido",
+  "domain": "rapido.bike",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "namma-yatri",
+  "name": "Namma Yatri",
+  "domain": "nammayatri.in",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "yulu",
+  "name": "Yulu",
+  "domain": "yulu.bike",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "zoomcar",
+  "name": "Zoomcar",
+  "domain": "zoomcar.com",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "porter",
+  "name": "Porter",
+  "domain": "porter.in",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "shadowfax",
+  "name": "Shadowfax",
+  "domain": "shadowfax.in",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "shiprocket",
+  "name": "Shiprocket",
+  "domain": "shiprocket.in",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "xpressbees",
+  "name": "Xpressbees",
+  "domain": "xpressbees.com",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "ecom-express",
+  "name": "Ecom Express",
+  "domain": "ecomexpress.in",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "dunzo",
+  "name": "Dunzo",
+  "domain": "dunzo.com",
+  "category": "mobility",
+  "aliases": []
+ },
+ {
+  "slug": "goibibo",
+  "name": "Goibibo",
+  "domain": "goibibo.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "cleartrip",
+  "name": "Cleartrip",
+  "domain": "cleartrip.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "redbus",
+  "name": "redBus",
+  "domain": "redbus.in",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "oyo",
+  "name": "OYO",
+  "domain": "oyorooms.com",
+  "category": "travel",
+  "aliases": [
+   "oravel"
+  ]
+ },
+ {
+  "slug": "treebo",
+  "name": "Treebo",
+  "domain": "treebo.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "fabhotels",
+  "name": "FabHotels",
+  "domain": "fabhotels.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "air-india",
+  "name": "Air India",
+  "domain": "airindia.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "akasa-air",
+  "name": "Akasa Air",
+  "domain": "akasaair.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "air-india-express",
+  "name": "Air India Express",
+  "domain": "airindiaexpress.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "vistara",
+  "name": "Vistara",
+  "domain": "airvistara.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "indigo",
+  "name": "IndiGo",
+  "domain": "goindigo.in",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "spicejet",
+  "name": "SpiceJet",
+  "domain": "spicejet.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "digiyatra",
+  "name": "DigiYatra",
+  "domain": "digiyatra.com",
+  "category": "travel",
+  "aliases": [
+   "digi-yatra"
+  ]
+ },
+ {
+  "slug": "confirmtkt",
+  "name": "ConfirmTkt",
+  "domain": "confirmtkt.com",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "indian-railways",
+  "name": "Indian Railways",
+  "domain": "indianrail.gov.in",
+  "category": "travel",
+  "aliases": []
+ },
+ {
+  "slug": "swiggy",
+  "name": "Swiggy",
+  "domain": "swiggy.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "zomato",
+  "name": "Zomato",
+  "domain": "zomato.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "eatsure",
+  "name": "EatSure",
+  "domain": "eatsure.com",
+  "category": "food",
+  "aliases": [
+   "rebel-foods"
+  ]
+ },
+ {
+  "slug": "faasos",
+  "name": "Faasos",
+  "domain": "faasos.io",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "dominos-india",
+  "name": "Domino's India",
+  "domain": "dominos.co.in",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "haldirams",
+  "name": "Haldiram's",
+  "domain": "haldirams.com",
+  "category": "food",
+  "aliases": [
+   "haldirams"
+  ]
+ },
+ {
+  "slug": "amul",
+  "name": "Amul",
+  "domain": "amul.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "mother-dairy",
+  "name": "Mother Dairy",
+  "domain": "motherdairy.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "parle",
+  "name": "Parle",
+  "domain": "parleproducts.com",
+  "category": "food",
+  "aliases": [
+   "parle-g"
+  ]
+ },
+ {
+  "slug": "bisleri",
+  "name": "Bisleri",
+  "domain": "bisleri.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "chaayos",
+  "name": "Chaayos",
+  "domain": "chaayos.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "third-wave-coffee",
+  "name": "Third Wave Coffee",
+  "domain": "thirdwavecoffee.in",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "blue-tokai",
+  "name": "Blue Tokai",
+  "domain": "bluetokaicoffee.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "paper-boat",
+  "name": "Paper Boat",
+  "domain": "paperboatdrinks.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "mtr-foods",
+  "name": "MTR Foods",
+  "domain": "mtrfoods.com",
+  "category": "food",
+  "aliases": [
+   "mtr"
+  ]
+ },
+ {
+  "slug": "aashirvaad",
+  "name": "Aashirvaad",
+  "domain": "aashirvaad.com",
+  "category": "food",
+  "aliases": []
+ },
+ {
+  "slug": "byjus",
+  "name": "BYJU'S",
+  "domain": "byjus.com",
+  "category": "education",
+  "aliases": [
+   "byjus"
+  ]
+ },
+ {
+  "slug": "unacademy",
+  "name": "Unacademy",
+  "domain": "unacademy.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "physics-wallah",
+  "name": "Physics Wallah",
+  "domain": "pw.live",
+  "category": "education",
+  "aliases": [
+   "physicswallah",
+   "pw"
+  ]
+ },
+ {
+  "slug": "vedantu",
+  "name": "Vedantu",
+  "domain": "vedantu.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "upgrad",
+  "name": "upGrad",
+  "domain": "upgrad.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "simplilearn",
+  "name": "Simplilearn",
+  "domain": "simplilearn.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "scaler",
+  "name": "Scaler",
+  "domain": "scaler.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "testbook",
+  "name": "Testbook",
+  "domain": "testbook.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "adda247",
+  "name": "Adda247",
+  "domain": "adda247.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "great-learning",
+  "name": "Great Learning",
+  "domain": "mygreatlearning.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "classplus",
+  "name": "Classplus",
+  "domain": "classplus.co",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "eruditus",
+  "name": "Eruditus",
+  "domain": "eruditus.com",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "lead-school",
+  "name": "LEAD School",
+  "domain": "leadschool.in",
+  "category": "education",
+  "aliases": []
+ },
+ {
+  "slug": "jiohotstar",
+  "name": "JioHotstar",
+  "domain": "hotstar.com",
+  "category": "media",
+  "aliases": [
+   "disney-hotstar",
+   "hotstar",
+   "jiocinema"
+  ]
+ },
+ {
+  "slug": "sonyliv",
+  "name": "SonyLIV",
+  "domain": "sonyliv.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "zee5",
+  "name": "ZEE5",
+  "domain": "zee5.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "mx-player",
+  "name": "MX Player",
+  "domain": "mxplayer.in",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "gaana",
+  "name": "Gaana",
+  "domain": "gaana.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "jiosaavn",
+  "name": "JioSaavn",
+  "domain": "jiosaavn.com",
+  "category": "media",
+  "aliases": [
+   "saavn"
+  ]
+ },
+ {
+  "slug": "wynk-music",
+  "name": "Wynk Music",
+  "domain": "wynk.in",
+  "category": "media",
+  "aliases": [
+   "wynk"
+  ]
+ },
+ {
+  "slug": "sharechat",
+  "name": "ShareChat",
+  "domain": "sharechat.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "moj",
+  "name": "Moj",
+  "domain": "mojapp.in",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "josh",
+  "name": "Josh",
+  "domain": "myjosh.in",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "dailyhunt",
+  "name": "Dailyhunt",
+  "domain": "dailyhunt.in",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "inshorts",
+  "name": "Inshorts",
+  "domain": "inshorts.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "pratilipi",
+  "name": "Pratilipi",
+  "domain": "pratilipi.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "pocket-fm",
+  "name": "Pocket FM",
+  "domain": "pocketfm.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "kuku-fm",
+  "name": "Kuku FM",
+  "domain": "kukufm.com",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "aha",
+  "name": "Aha",
+  "domain": "aha.video",
+  "category": "media",
+  "aliases": []
+ },
+ {
+  "slug": "altt",
+  "name": "ALTT",
+  "domain": "altt.co.in",
+  "category": "media",
+  "aliases": [
+   "altbalaji"
+  ]
+ },
+ {
+  "slug": "dream11",
+  "name": "Dream11",
+  "domain": "dream11.com",
+  "category": "gaming",
+  "aliases": []
+ },
+ {
+  "slug": "mpl",
+  "name": "MPL",
+  "domain": "mpl.live",
+  "category": "gaming",
+  "aliases": [
+   "mobile-premier-league"
+  ],
+  "commons": false
+ },
+ {
+  "slug": "my11circle",
+  "name": "My11Circle",
+  "domain": "my11circle.com",
+  "category": "gaming",
+  "aliases": []
+ },
+ {
+  "slug": "zupee",
+  "name": "Zupee",
+  "domain": "zupee.com",
+  "category": "gaming",
+  "aliases": []
+ },
+ {
+  "slug": "winzo",
+  "name": "WinZO",
+  "domain": "winzogames.com",
+  "category": "gaming",
+  "aliases": [
+   "winzo"
+  ]
+ },
+ {
+  "slug": "rummycircle",
+  "name": "Rummycircle",
+  "domain": "rummycircle.com",
+  "category": "gaming",
+  "aliases": []
+ },
+ {
+  "slug": "jio",
+  "name": "Jio",
+  "domain": "jio.com",
+  "category": "telecom",
+  "aliases": [
+   "reliance-jio"
+  ]
+ },
+ {
+  "slug": "bsnl",
+  "name": "BSNL",
+  "domain": "bsnl.co.in",
+  "category": "telecom",
+  "aliases": []
+ },
+ {
+  "slug": "act-fibernet",
+  "name": "ACT Fibernet",
+  "domain": "actcorp.in",
+  "category": "telecom",
+  "aliases": [
+   "act"
+  ]
+ },
+ {
+  "slug": "excitel",
+  "name": "Excitel",
+  "domain": "excitel.com",
+  "category": "telecom",
+  "aliases": []
+ },
+ {
+  "slug": "hathway",
+  "name": "Hathway",
+  "domain": "hathway.com",
+  "category": "telecom",
+  "aliases": []
+ },
+ {
+  "slug": "zoho",
+  "name": "Zoho",
+  "domain": "zoho.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "postman",
+  "name": "Postman",
+  "domain": "postman.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "browserstack",
+  "name": "BrowserStack",
+  "domain": "browserstack.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "chargebee",
+  "name": "Chargebee",
+  "domain": "chargebee.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "inmobi",
+  "name": "InMobi",
+  "domain": "inmobi.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "glance",
+  "name": "Glance",
+  "domain": "glance.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "ather-energy",
+  "name": "Ather Energy",
+  "domain": "atherenergy.com",
+  "category": "tech",
+  "aliases": [
+   "ather"
+  ]
+ },
+ {
+  "slug": "ultraviolette",
+  "name": "Ultraviolette",
+  "domain": "ultraviolette.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "ola-krutrim",
+  "name": "Ola Krutrim",
+  "domain": "olakrutrim.com",
+  "category": "tech",
+  "aliases": [
+   "krutrim"
+  ]
+ },
+ {
+  "slug": "sarvam-ai",
+  "name": "Sarvam AI",
+  "domain": "sarvam.ai",
+  "category": "tech",
+  "aliases": [
+   "sarvam"
+  ]
+ },
+ {
+  "slug": "unstop",
+  "name": "Unstop",
+  "domain": "unstop.com",
+  "category": "tech",
+  "aliases": [
+   "dare2compete"
+  ]
+ },
+ {
+  "slug": "naukri",
+  "name": "Naukri",
+  "domain": "naukri.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "apna",
+  "name": "Apna",
+  "domain": "apna.co",
+  "category": "tech",
+  "aliases": [
+   "apna-jobs"
+  ]
+ },
+ {
+  "slug": "linkedin-india",
+  "name": "LinkedIn India",
+  "domain": "linkedin.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "truecaller",
+  "name": "Truecaller",
+  "domain": "truecaller.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "nobroker",
+  "name": "NoBroker",
+  "domain": "nobroker.in",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "housing-com",
+  "name": "Housing.com",
+  "domain": "housing.com",
+  "category": "tech",
+  "aliases": [
+   "housing"
+  ]
+ },
+ {
+  "slug": "99acres",
+  "name": "99acres",
+  "domain": "99acres.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "magicbricks",
+  "name": "MagicBricks",
+  "domain": "magicbricks.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "cardekho",
+  "name": "CarDekho",
+  "domain": "cardekho.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "cars24",
+  "name": "Cars24",
+  "domain": "cars24.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "spinny",
+  "name": "Spinny",
+  "domain": "spinny.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "urban-company",
+  "name": "Urban Company",
+  "domain": "urbancompany.com",
+  "category": "tech",
+  "aliases": [
+   "urbanclap"
+  ]
+ },
+ {
+  "slug": "justdial",
+  "name": "Justdial",
+  "domain": "justdial.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "quikr",
+  "name": "Quikr",
+  "domain": "quikr.com",
+  "category": "tech",
+  "aliases": []
+ },
+ {
+  "slug": "olx-india",
+  "name": "OLX India",
+  "domain": "olx.in",
+  "category": "tech",
+  "aliases": [
+   "olx"
+  ]
+ },
+ {
+  "slug": "digilocker",
+  "name": "DigiLocker",
+  "domain": "digilocker.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "aadhaar",
+  "name": "Aadhaar",
+  "domain": "uidai.gov.in",
+  "category": "government",
+  "aliases": [
+   "uidai"
+  ]
+ },
+ {
+  "slug": "umang",
+  "name": "UMANG",
+  "domain": "web.umang.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "india-post",
+  "name": "India Post",
+  "domain": "indiapost.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "income-tax-department",
+  "name": "Income Tax Department",
+  "domain": "incometax.gov.in",
+  "category": "government",
+  "aliases": [
+   "income-tax",
+   "itr"
+  ]
+ },
+ {
+  "slug": "gst",
+  "name": "GST",
+  "domain": "gst.gov.in",
+  "category": "government",
+  "aliases": [
+   "gstn"
+  ]
+ },
+ {
+  "slug": "epfo",
+  "name": "EPFO",
+  "domain": "epfindia.gov.in",
+  "category": "government",
+  "aliases": [
+   "epf"
+  ]
+ },
+ {
+  "slug": "mygov",
+  "name": "MyGov",
+  "domain": "mygov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "ondc",
+  "name": "ONDC",
+  "domain": "ondc.org",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "gem",
+  "name": "GeM",
+  "domain": "gem.gov.in",
+  "category": "government",
+  "aliases": [
+   "government-e-marketplace"
+  ],
+  "commons": false
+ },
+ {
+  "slug": "abha",
+  "name": "ABHA",
+  "domain": "abdm.gov.in",
+  "category": "government",
+  "aliases": [
+   "abdm",
+   "ayushman-bharat"
+  ]
+ },
+ {
+  "slug": "rbi",
+  "name": "RBI",
+  "domain": "rbi.org.in",
+  "category": "government",
+  "aliases": [
+   "reserve-bank-of-india"
+  ]
+ },
+ {
+  "slug": "sebi",
+  "name": "SEBI",
+  "domain": "sebi.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "nse",
+  "name": "NSE",
+  "domain": "nseindia.com",
+  "category": "government",
+  "aliases": [
+   "national-stock-exchange"
+  ],
+  "commons": false
+ },
+ {
+  "slug": "isro",
+  "name": "ISRO",
+  "domain": "isro.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "election-commission-of-india",
+  "name": "Election Commission of India",
+  "domain": "eci.gov.in",
+  "category": "government",
+  "aliases": [
+   "eci"
+  ]
+ },
+ {
+  "slug": "passport-seva",
+  "name": "Passport Seva",
+  "domain": "passportindia.gov.in",
+  "category": "government",
+  "aliases": [
+   "passport"
+  ]
+ },
+ {
+  "slug": "parivahan",
+  "name": "Parivahan",
+  "domain": "parivahan.gov.in",
+  "category": "government",
+  "aliases": [
+   "sarathi",
+   "vahan"
+  ]
+ },
+ {
+  "slug": "nps",
+  "name": "NPS",
+  "domain": "npscra.nsdl.co.in",
+  "category": "government",
+  "aliases": [
+   "national-pension-system"
+  ]
+ },
+ {
+  "slug": "irdai",
+  "name": "IRDAI",
+  "domain": "irdai.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "pfrda",
+  "name": "PFRDA",
+  "domain": "pfrda.org.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "nhai",
+  "name": "NHAI",
+  "domain": "nhai.gov.in",
+  "category": "government",
+  "aliases": [],
+  "site_icon": false,
+  "commons": false
+ },
+ {
+  "slug": "make-in-india",
+  "name": "Make in India",
+  "domain": "makeinindia.com",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "startup-india",
+  "name": "Startup India",
+  "domain": "startupindia.gov.in",
+  "category": "government",
+  "aliases": []
+ },
+ {
+  "slug": "digital-india",
+  "name": "Digital India",
+  "domain": "digitalindia.gov.in",
+  "category": "government",
+  "aliases": []
+ }
+]

@@ -1,0 +1,170 @@
+[
+ {
+  "symbol": "GOLD",
+  "name": "Gold",
+  "aliases": [
+   "XAU",
+   "XAUUSD",
+   "GOLDM",
+   "GOLDPETAL"
+  ],
+  "file": "drawn/gold.svg"
+ },
+ {
+  "symbol": "SILVER",
+  "name": "Silver",
+  "aliases": [
+   "XAG",
+   "XAGUSD",
+   "SILVERM",
+   "SILVERMIC"
+  ],
+  "file": "drawn/silver.svg"
+ },
+ {
+  "symbol": "PLATINUM",
+  "name": "Platinum",
+  "aliases": [
+   "XPT",
+   "XPTUSD"
+  ],
+  "file": "drawn/platinum.svg"
+ },
+ {
+  "symbol": "PALLADIUM",
+  "name": "Palladium",
+  "aliases": [
+   "XPD",
+   "XPDUSD"
+  ],
+  "file": "drawn/palladium.svg"
+ },
+ {
+  "symbol": "COPPER",
+  "name": "Copper",
+  "aliases": [
+   "HG",
+   "XCU"
+  ],
+  "file": "drawn/copper.svg"
+ },
+ {
+  "symbol": "ALUMINIUM",
+  "name": "Aluminium",
+  "aliases": [
+   "ALUMINUM",
+   "ALI",
+   "ALUMINI"
+  ],
+  "file": "drawn/aluminium.svg"
+ },
+ {
+  "symbol": "ZINC",
+  "name": "Zinc",
+  "aliases": [
+   "ZINCMINI"
+  ],
+  "file": "drawn/zinc.svg"
+ },
+ {
+  "symbol": "LEAD",
+  "name": "Lead",
+  "aliases": [
+   "LEADMINI"
+  ],
+  "file": "drawn/lead.svg"
+ },
+ {
+  "symbol": "NICKEL",
+  "name": "Nickel",
+  "aliases": [],
+  "file": "drawn/nickel.svg"
+ },
+ {
+  "symbol": "CRUDEOIL",
+  "name": "Crude oil",
+  "aliases": [
+   "WTI",
+   "CL",
+   "USOIL",
+   "CRUDEOILM",
+   "OIL"
+  ],
+  "file": "drawn/crude-oil.svg"
+ },
+ {
+  "symbol": "BRENT",
+  "name": "Brent crude",
+  "aliases": [
+   "UKOIL",
+   "BRN",
+   "BRENTCRUDE"
+  ],
+  "file": "drawn/brent.svg"
+ },
+ {
+  "symbol": "NATURALGAS",
+  "name": "Natural gas",
+  "aliases": [
+   "NATGAS",
+   "NG",
+   "NATURALGASM"
+  ],
+  "file": "drawn/natural-gas.svg"
+ },
+ {
+  "symbol": "WHEAT",
+  "name": "Wheat",
+  "aliases": [
+   "ZW"
+  ],
+  "file": "drawn/wheat.svg"
+ },
+ {
+  "symbol": "CORN",
+  "name": "Corn",
+  "aliases": [
+   "ZC",
+   "MAIZE"
+  ],
+  "file": "drawn/corn.svg"
+ },
+ {
+  "symbol": "SOYBEAN",
+  "name": "Soybeans",
+  "aliases": [
+   "ZS",
+   "SOYBEANS",
+   "SOY"
+  ],
+  "file": "drawn/soybean.svg"
+ },
+ {
+  "symbol": "SUGAR",
+  "name": "Sugar",
+  "aliases": [
+   "SB",
+   "SUGAR11"
+  ],
+  "file": "drawn/sugar.svg"
+ },
+ {
+  "symbol": "COFFEE",
+  "name": "Coffee",
+  "aliases": [
+   "KC",
+   "ARABICA"
+  ],
+  "file": "drawn/coffee.svg"
+ },
+ {
+  "symbol": "COTTON",
+  "name": "Cotton",
+  "aliases": [
+   "CT",
+   "COTTONCNDY",
+   "KAPAS"
+  ],
+  "file": "drawn/cotton.svg"
+ }
+]

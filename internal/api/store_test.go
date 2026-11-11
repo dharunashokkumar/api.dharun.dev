@@ -150,12 +150,16 @@ func TestMissingDatasetAnswers503(t *testing.T) {
 			t.Errorf("%s: %d %s", path, recorder.Code, clip(recorder.Body.String(), 200))
 		}
 	}
-	// A logo lookup with no logo dataset is "not found", and the placeholder still draws.
-	if recorder := serve(server, http.MethodGet, "/v1/logos/TCS"); recorder.Code != http.StatusNotFound {
+	// A logo lookup with no logo dataset is "not found": the placeholder still draws, and
+	// the name is not written down as missed.
+	if recorder := serve(server, http.MethodGet, "/v1/logos/TCS?fallback=none"); recorder.Code != http.StatusNotFound {
 		t.Errorf("logo without the dataset: %d", recorder.Code)
 	}
-	if recorder := serve(server, http.MethodGet, "/v1/logos/TCS?fallback=monogram"); recorder.Code != http.StatusOK {
+	if recorder := serve(server, http.MethodGet, "/v1/logos/TCS"); recorder.Code != http.StatusOK || recorder.Header().Get("X-Logo-Known") != "false" {
 		t.Errorf("placeholder without the dataset: %d", recorder.Code)
+	}
+	if missed := server.metrics.missedLogos.list(); len(missed) != 0 {
+		t.Errorf("missed list without the dataset: %v", missed)
 	}
 }
 

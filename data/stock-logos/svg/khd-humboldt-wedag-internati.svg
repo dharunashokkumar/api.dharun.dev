@@ -1,0 +1,15 @@
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="18" height="18" fill="#F0F3FA"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M3 6H4V12H3V6Z" fill="#D00B14"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6H10V12H9V6Z" fill="#D00B14"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7 6H5.79694L4 9H5.20306L7 6Z" fill="#D00B14"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7 12H5.79694L4 9H5.20306L7 12Z" fill="#D00B14"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M6 9H10V10H6.62294L6 9Z" fill="#D00B14"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11 6H12.5066C13.878 6 15 7.30271 15 8.8949V9.1051C15 10.6973 13.878 12 12.5066 12H11V11H12.3305C13.2641 11 14 10.084 14 9.00004C14 7.91611 13.2641 7 12.3305 7H11V6Z" fill="#D00B14"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.5951 8C12.342 8 13 8.44773 13 9C13 9.55228 12.3945 10 11.6476 10C11.413 10 11.1923 9.95578 11 9.87808C11.1249 9.908 11.2582 9.92425 11.3966 9.92425C12.1067 9.92425 12.7174 9.49857 12.7174 8.9735C12.7174 8.44843 12.0542 8.02275 11.3441 8.02275C11.3308 8.02275 11.3175 8.02298 11.3043 8.02326C11.398 8.00807 11.4953 8 11.5951 8Z" fill="#2B2B2A"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.0217 8.60004C11.0217 8.60004 11.8093 8.91305 12.907 8.80872L13 9.00003C13 9.00003 11.5302 9.00003 11.0217 8.60004Z" fill="#2B2B2A"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.3043 9.20001C11.3043 9.20001 11.8249 9.36406 12.6528 9.31079L12.7173 9.3993C12.7173 9.3993 11.7099 9.42281 11.3043 9.20001Z" fill="#2B2B2A"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.5547 8C11.5547 8 12.0802 8.87161 11.3043 9.59999C11.3043 9.59999 12.0471 9.25438 11.8296 8.06209L11.5547 8Z" fill="#2B2B2A"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.8696 8.05682C11.8696 8.05682 12.6269 8.74005 12.2645 9.6C12.2645 9.6 12.7627 8.78695 12.0548 8.07071L11.8696 8.05682Z" fill="#2B2B2A"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.3043 8.40803C11.3043 8.40803 11.8543 8.61621 12.627 8.39996L12.7173 8.54454C12.7173 8.54454 11.7636 8.73568 11.3043 8.40803Z" fill="#2B2B2A"/>
+</svg>

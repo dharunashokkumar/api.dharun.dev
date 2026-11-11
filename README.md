@@ -3,7 +3,7 @@
 **Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
 checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
 and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation,
-speech to text and text to speech, and more: 44 APIs behind one consistent JSON shape. No API key, no sign-up, open
+speech to text and text to speech, and more: 45 APIs behind one consistent JSON shape. No API key, no sign-up, open
 CORS, and an MCP server so AI assistants can use it too.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
@@ -31,7 +31,8 @@ JavaScript and Python.
 
 | API | Example | What you get |
 |---|---|---|
-| [Company logos](https://api.dharun.dev/docs/logos) | `/v1/logos/TCS`, `/v1/companies/RELIANCE` | SVG or PNG logo of an NSE or BSE listed company, REITs and InvITs included; sector, ISIN, market cap, indexes; old tickers still work |
+| [Company logos](https://api.dharun.dev/docs/logos) | `/v1/logos/TCS`, `/v1/companies/RELIANCE` | SVG or PNG logo of an NSE or BSE listed company, REITs and InvITs included; an unknown symbol gets an initials tile, never a broken image, after the brand, global stock and asset sets are tried; sector, ISIN, market cap, indexes; old tickers still work |
+| [Brand, stock and asset logos](https://api.dharun.dev/docs/world-logos) | `/v1/brand-logos/phonepe`, `/v1/stock-logos/AAPL`, `/v1/asset-logos/BTC` | Logos of unlisted Indian brands (payments, fintech, insurers, mutual fund houses, apps, government services), global stocks (US and nine major markets) and crypto, indices, ETFs and commodities; `/v1/logos` falls through to them |
 | [Pincodes](https://api.dharun.dev/docs/pincode) | `/v1/pincode/637001`, `/v1/pincode/near?lat=&lng=` | Post offices, district, state, coordinates; pincodes near a point |
 | [IFSC and banks](https://api.dharun.dev/docs/ifsc) | `/v1/ifsc/SBIN0000001`, `/v1/banks?q=gramin` | Bank, branch, address, MICR, payment systems; banks and their codes by name |
 | [RTO codes](https://api.dharun.dev/docs/rto) | `/v1/rto/TN-28` | Transport office for a vehicle registration |
@@ -136,7 +137,9 @@ The skill, the plugin and `server.json` are generated from the catalog in
 - **Third-party code and fonts** compiled into the server keep their licences, such as the
   SGP4 code in `internal/orbit` (BSD-2-Clause) and the Noto fonts (OFL-1.1). The release
   bundle's `NOTICES` lists every one.
-- **Company logos** are trademarks of their owners.
+- **Company, brand, stock and asset logos** are trademarks of their owners. Brand artwork from
+  Wikimedia Commons keeps its own free licence, named per brand; the crypto icons from
+  spothq are CC0; the commodity icons were drawn for this project.
 
 ## Security and privacy
 
@@ -186,6 +189,9 @@ accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 | Moderation | [Detoxify multilingual](https://huggingface.co/unitary/multilingual-toxic-xlm-roberta) (Unitary); [Hinglish toxicity](https://huggingface.co/darelphilip/hinglish-toxicity-classifier) (Darel Philip, on L3Cube HingRoBERTa, CC BY 4.0); [Tanglish offensive language](https://huggingface.co/seanbenhur/tanglish-offensive-language-identification) (Sean Benhur) | Apache-2.0; MIT; Apache-2.0 | fetched by each server |
 | Disposable email domains | [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) | CC0 | 9,881 domains |
 | Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 5,599 companies, 5,354 with a logo |
+| Indian brand logos | [Wikimedia Commons](https://commons.wikimedia.org/) files under a free licence, else the brand site's own icon (`tools/fetch_brand_logos.py`) | Trademarks of the brands; Commons files keep their licence, named per brand | 294 brands, 234 with a logo |
+| Global stock logos | Collected from TradingView (`tools/scrape_world_logos.py`) | Logos are trademarks of the companies they identify | 8,799 stocks, 8,630 with a logo |
+| Crypto, index, ETF and commodity logos | TradingView; [cryptocurrency-icons](https://github.com/spothq/cryptocurrency-icons) (spothq); commodity icons drawn here | Marks belong to their owners; spothq icons CC0; drawn icons with the code | 1,586 assets, 1,548 with a logo |
 
 Exact versions, retrieval dates and checksums are in [`data/sources.json`](data/sources.json)
 (the models: pinned by revision and checksum in `internal/dataset/aimodels.go`), and every
@@ -272,6 +278,8 @@ Datasets that cannot be fetched by a program are updated by hand and ship with a
 go run ./cmd/apidata import pincode -file pincode.csv    # CSV saved from data.gov.in
 python tools/scrape_logos.py --dry-run                   # logos: see new, renamed and delisted companies
 python tools/scrape_logos.py                             # then download and write them
+python tools/scrape_world_logos.py --crypto-icons DIR    # global stocks, crypto, indices, ETFs
+python tools/fetch_brand_logos.py                        # Indian brands (Commons, then site icons)
 go run ./cmd/apidata status                              # which copy of each dataset is in use
 ```
 

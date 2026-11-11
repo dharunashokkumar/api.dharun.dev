@@ -99,7 +99,7 @@ func (s *Server) handleIcon(w http.ResponseWriter, r *http.Request) {
 	if len(master) == 0 {
 		registered, _ := registeredDomain(host)
 		label, _, _ := strings.Cut(registered, ".")
-		s.serveMonogram(w, r, label, "png", size)
+		s.serveMonogram(w, r, label, "png", size, "fallback", cacheShort)
 		return
 	}
 	sized, err := s.png.get("icon:"+host+"|"+itoa(size), func() ([]byte, error) { return resizePNG(master, size) })

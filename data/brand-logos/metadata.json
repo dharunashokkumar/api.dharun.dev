@@ -1,0 +1,3746 @@
+{
+ "generated_at": "2026-11-11T05:49:53+00:00",
+ "source": {
+  "provider": "Wikimedia Commons (files under a free licence); the brands' own site icons",
+  "note": "brands.json is kept by hand. Updated with tools/fetch_brand_logos.py."
+ },
+ "counts": {
+  "brands": 294,
+  "commons": 53,
+  "site-icon": 181,
+  "pinned": 0,
+  "none": 60
+ },
+ "logos": [
+  {
+   "slug": "phonepe",
+   "name": "PhonePe",
+   "domain": "phonepe.com",
+   "category": "payments",
+   "aliases": [],
+   "file": "svg/phonepe.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:PhonePe_Logo.svg",
+   "licence": "Public domain",
+   "author": "PhonePe"
+  },
+  {
+   "slug": "google-pay",
+   "name": "Google Pay",
+   "domain": "pay.google.com",
+   "category": "payments",
+   "aliases": [
+    "googlepay",
+    "gpay",
+    "tez"
+   ],
+   "file": "svg/google-pay.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Google_Pay_Logo.svg",
+   "licence": "Public domain",
+   "author": "Google"
+  },
+  {
+   "slug": "bhim",
+   "name": "BHIM",
+   "domain": "bhimupi.org.in",
+   "category": "payments",
+   "aliases": [
+    "bhim-upi"
+   ],
+   "file": "svg/bhim.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:BHIM_logo.svg",
+   "licence": "Public domain",
+   "author": "BHIM"
+  },
+  {
+   "slug": "upi",
+   "name": "UPI",
+   "domain": "npci.org.in",
+   "category": "payments",
+   "aliases": [
+    "unified-payments-interface"
+   ],
+   "file": "svg/upi.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:UPI_logo.svg",
+   "licence": "Public domain",
+   "author": "NPCI"
+  },
+  {
+   "slug": "rupay",
+   "name": "RuPay",
+   "domain": "rupay.co.in",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/rupay.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.rupay.co.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "npci",
+   "name": "NPCI",
+   "domain": "npci.org.in",
+   "category": "payments",
+   "aliases": [
+    "national-payments-corporation-of-india"
+   ],
+   "file": "svg/npci.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:NPCI_logo.svg",
+   "licence": "Public domain",
+   "author": "National Payments Corporation of India"
+  },
+  {
+   "slug": "amazon-pay",
+   "name": "Amazon Pay",
+   "domain": "amazonpay.in",
+   "category": "payments",
+   "aliases": [],
+   "file": "svg/amazon-pay.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Amazon_Pay_logo.svg",
+   "licence": "Public domain",
+   "author": "Amazon.com, Inc."
+  },
+  {
+   "slug": "cred",
+   "name": "CRED",
+   "domain": "cred.club",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/cred.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://web-images.credcdn.in/v2/_next/assets/icons/logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "razorpay",
+   "name": "Razorpay",
+   "domain": "razorpay.com",
+   "category": "payments",
+   "aliases": [],
+   "file": "svg/razorpay.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Razorpay_logo.svg",
+   "licence": "Public domain",
+   "author": "Razorpay"
+  },
+  {
+   "slug": "cashfree-payments",
+   "name": "Cashfree Payments",
+   "domain": "cashfree.com",
+   "category": "payments",
+   "aliases": [
+    "cashfree"
+   ],
+   "file": "png/cashfree-payments.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.prod.website-files.com/6a60525e5f4d2e4f1faed952/6a9071adf2e50b884a7b33d0_Icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "payu",
+   "name": "PayU",
+   "domain": "payu.in",
+   "category": "payments",
+   "aliases": [
+    "payu-india"
+   ],
+   "file": "svg/payu.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:PayU_India_Logo.svg",
+   "licence": "Public domain",
+   "author": "PayU India"
+  },
+  {
+   "slug": "juspay",
+   "name": "Juspay",
+   "domain": "juspay.in",
+   "category": "payments",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bharatpe",
+   "name": "BharatPe",
+   "domain": "bharatpe.com",
+   "category": "payments",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "instamojo",
+   "name": "Instamojo",
+   "domain": "instamojo.com",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/instamojo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.instamojo.com/wp-content/uploads/2020/01/Favicon-300x300.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ccavenue",
+   "name": "CCAvenue",
+   "domain": "ccavenue.com",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/ccavenue.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.ccavenue.com/images_mcpg/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "freecharge",
+   "name": "Freecharge",
+   "domain": "freecharge.in",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/freecharge.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://pa-cdn.freecharge.in/pwa-static/pwa/images/pwaCapability/rebranded/pwa-icon-192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "airtel-payments-bank",
+   "name": "Airtel Payments Bank",
+   "domain": "airtel.in",
+   "category": "payments",
+   "aliases": [
+    "airtel-bank"
+   ],
+   "file": "svg/airtel-payments-bank.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Airtel_Payments_Bank_logo.svg",
+   "licence": "Public domain",
+   "author": "Airtel Payments Bank"
+  },
+  {
+   "slug": "jio-payments-bank",
+   "name": "Jio Payments Bank",
+   "domain": "jiopaymentsbank.com",
+   "category": "payments",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "super-money",
+   "name": "super.money",
+   "domain": "super.money",
+   "category": "payments",
+   "aliases": [
+    "supermoney"
+   ],
+   "file": "png/super-money.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://super.money/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "simpl",
+   "name": "Simpl",
+   "domain": "getsimpl.com",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/simpl.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://getsimpl.com/nc_assets/img/nc-icon/namecheap-icon-57x57.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "lazypay",
+   "name": "LazyPay",
+   "domain": "lazypay.in",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/lazypay.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://images.lazypay.in/Website-2019/Fav_icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bharat-billpay",
+   "name": "Bharat BillPay",
+   "domain": "bharatbillpay.com",
+   "category": "payments",
+   "aliases": [
+    "bbps"
+   ],
+   "file": "svg/bharat-billpay.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Bharat_BillPay_logo.svg",
+   "licence": "Public domain",
+   "author": "National Payments Corporation of India"
+  },
+  {
+   "slug": "fastag",
+   "name": "FASTag",
+   "domain": "npci.org.in",
+   "category": "payments",
+   "aliases": [
+    "netc-fastag"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "slice",
+   "name": "Slice",
+   "domain": "sliceit.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/slice.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://slice.bank.in/android-chrome-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "jupiter",
+   "name": "Jupiter",
+   "domain": "jupiter.money",
+   "category": "fintech",
+   "aliases": [
+    "jupiter-money"
+   ],
+   "file": "png/jupiter.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://jupiter.money/content/images/size/w256h256/2021/07/Frame-10.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "fi-money",
+   "name": "Fi Money",
+   "domain": "fi.money",
+   "category": "fintech",
+   "aliases": [
+    "epifi",
+    "fi"
+   ],
+   "file": "png/fi-money.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://fi.money/favicon.ico?1b6c98f8c747778d",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "niyo",
+   "name": "Niyo",
+   "domain": "goniyo.com",
+   "category": "fintech",
+   "aliases": [
+    "niyo-global"
+   ],
+   "file": "png/niyo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://goniyo.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "onecard",
+   "name": "OneCard",
+   "domain": "getonecard.app",
+   "category": "fintech",
+   "aliases": [
+    "one-card"
+   ],
+   "file": "png/onecard.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://getonecard.app/images/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "navi",
+   "name": "Navi",
+   "domain": "navi.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/navi.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://navi.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "kreditbee",
+   "name": "KreditBee",
+   "domain": "kreditbee.in",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/kreditbee.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.kreditbee.in/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "moneyview",
+   "name": "MoneyView",
+   "domain": "moneyview.in",
+   "category": "fintech",
+   "aliases": [
+    "money-view"
+   ],
+   "file": "png/moneyview.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://moneyview.in/favicon/android-icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "fibe",
+   "name": "Fibe",
+   "domain": "fibe.in",
+   "category": "fintech",
+   "aliases": [
+    "earlysalary"
+   ],
+   "file": "png/fibe.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.fibe.in/favicon/web-app-manifest-512x512.png?v=20260512",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "lendingkart",
+   "name": "Lendingkart",
+   "domain": "lendingkart.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/lendingkart.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://media.lendingkart.com/wp-content/uploads/2021/03/cropped-Group-13-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "paisabazaar",
+   "name": "Paisabazaar",
+   "domain": "paisabazaar.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "svg/paisabazaar.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Paisabazaar-logo.svg",
+   "licence": "Public domain",
+   "author": "w:Paisabazaar"
+  },
+  {
+   "slug": "bankbazaar",
+   "name": "BankBazaar",
+   "domain": "bankbazaar.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/bankbazaar.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.bankbazaar.com/images/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "groww",
+   "name": "Groww",
+   "domain": "groww.in",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/groww.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://groww.in/groww-logo-270.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zerodha",
+   "name": "Zerodha",
+   "domain": "zerodha.com",
+   "category": "fintech",
+   "aliases": [
+    "kite"
+   ],
+   "file": "svg/zerodha.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Zerodha_logo.svg",
+   "licence": "Public domain",
+   "author": "TradeNova"
+  },
+  {
+   "slug": "upstox",
+   "name": "Upstox",
+   "domain": "upstox.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/upstox.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://upstox.com/marketing-page-assets/favicon/favicon-196x196.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "dhan",
+   "name": "Dhan",
+   "domain": "dhan.co",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/dhan.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://dhan.co/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "indmoney",
+   "name": "INDmoney",
+   "domain": "indmoney.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/indmoney.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.indmoney.com:443/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "smallcase",
+   "name": "smallcase",
+   "domain": "smallcase.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/smallcase.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.smallcase.com/static/favicon/android-icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "kuvera",
+   "name": "Kuvera",
+   "domain": "kuvera.in",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/kuvera.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://assets-web.kuvera.in/v2/_next/assets/images/wealth/common/fav_icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "et-money",
+   "name": "ET Money",
+   "domain": "etmoney.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/et-money.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://img.smartspends.com/static/images/etmoney/brand/logo-app-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "scripbox",
+   "name": "Scripbox",
+   "domain": "scripbox.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/scripbox.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://scripbox.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sensibull",
+   "name": "Sensibull",
+   "domain": "sensibull.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/sensibull.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://sensibull.com/favicon-48x48.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tickertape",
+   "name": "Tickertape",
+   "domain": "tickertape.in",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/tickertape.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.tickertape.in:443/images/favicon/favicon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "khatabook",
+   "name": "Khatabook",
+   "domain": "khatabook.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "okcredit",
+   "name": "OkCredit",
+   "domain": "okcredit.in",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/okcredit.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://okcredit.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "vyapar",
+   "name": "Vyapar",
+   "domain": "vyaparapp.in",
+   "category": "fintech",
+   "aliases": [],
+   "file": "svg/vyapar.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Vyapar_App_Logo.svg",
+   "licence": "Public domain",
+   "author": "Vyapar App"
+  },
+  {
+   "slug": "jar",
+   "name": "Jar",
+   "domain": "myjar.app",
+   "category": "fintech",
+   "aliases": [
+    "jar-app"
+   ],
+   "file": "png/jar.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.myjar.app/wp-content/uploads/2025/08/jar_logo_512_2-1-300x300.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "fampay",
+   "name": "Fampay",
+   "domain": "famapp.in",
+   "category": "fintech",
+   "aliases": [
+    "famapp"
+   ],
+   "file": "png/fampay.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.famapp.in/assets/localImages/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "policyx",
+   "name": "PolicyX",
+   "domain": "policyx.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/policyx.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.policyx.com/images/new-faviconpx.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ditto-insurance",
+   "name": "Ditto Insurance",
+   "domain": "joinditto.in",
+   "category": "fintech",
+   "aliases": [
+    "ditto"
+   ],
+   "file": "png/ditto-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://joinditto.in/web-app-manifest-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "perfios",
+   "name": "Perfios",
+   "domain": "perfios.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/perfios.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://perfios.ai/wp-content/uploads/2020/02/cropped-perfios-favicon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "setu",
+   "name": "Setu",
+   "domain": "setu.co",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/setu.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://framerusercontent.com/images/mbFRne9qNTrOhiqc0h2DJuE0FDw.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "signzy",
+   "name": "Signzy",
+   "domain": "signzy.com",
+   "category": "fintech",
+   "aliases": [],
+   "file": "png/signzy.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.signzy.com/icon.ico?9af30be1c4417de5",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tata-aia-life",
+   "name": "Tata AIA Life",
+   "domain": "tataaia.com",
+   "category": "insurance",
+   "aliases": [
+    "tata-aia"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tata-aig",
+   "name": "Tata AIG",
+   "domain": "tataaig.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/tata-aig.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.tataaig.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bajaj-allianz",
+   "name": "Bajaj Allianz",
+   "domain": "bajajallianz.com",
+   "category": "insurance",
+   "aliases": [
+    "bajaj-general",
+    "bajaj-life"
+   ],
+   "file": "png/bajaj-allianz.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.bajajgeneralinsurance.com/content/dam/bagic/index/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "kotak-life",
+   "name": "Kotak Life",
+   "domain": "kotaklife.com",
+   "category": "insurance",
+   "aliases": [
+    "kotak-life-insurance"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pnb-metlife",
+   "name": "PNB MetLife",
+   "domain": "pnbmetlife.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "svg/pnb-metlife.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:PNB_MetLife_India_Logo.svg",
+   "licence": "Public domain",
+   "author": "PNB MetLife India Insurance Company"
+  },
+  {
+   "slug": "canara-hsbc-life",
+   "name": "Canara HSBC Life",
+   "domain": "canarahsbclife.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "aditya-birla-health-insurance",
+   "name": "Aditya Birla Health Insurance",
+   "domain": "adityabirlacapital.com",
+   "category": "insurance",
+   "aliases": [
+    "abhi"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "care-health-insurance",
+   "name": "Care Health Insurance",
+   "domain": "careinsurance.com",
+   "category": "insurance",
+   "aliases": [
+    "care-health"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "manipalcigna",
+   "name": "ManipalCigna",
+   "domain": "manipalcigna.com",
+   "category": "insurance",
+   "aliases": [
+    "manipal-cigna"
+   ],
+   "file": "png/manipalcigna.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.manipalcigna.com/favicon.ico?favicon.0b3bf435.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "acko",
+   "name": "Acko",
+   "domain": "acko.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "svg/acko.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:ACKO_new_logo.svg",
+   "licence": "CC0",
+   "author": "ACKO General Insurance"
+  },
+  {
+   "slug": "hdfc-ergo",
+   "name": "HDFC ERGO",
+   "domain": "hdfcergo.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/hdfc-ergo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.hdfcergo.com/assets/images/android-icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "united-india-insurance",
+   "name": "United India Insurance",
+   "domain": "uiic.co.in",
+   "category": "insurance",
+   "aliases": [
+    "uiic"
+   ],
+   "file": "png/united-india-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://uiic.co.in/web/sites/default/files/logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "oriental-insurance",
+   "name": "Oriental Insurance",
+   "domain": "orientalinsurance.org.in",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/oriental-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://orientalinsurance.org.in/logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "national-insurance",
+   "name": "National Insurance",
+   "domain": "nationalinsurance.nic.co.in",
+   "category": "insurance",
+   "aliases": [
+    "nicl"
+   ],
+   "file": "png/national-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://nationalinsurance.nic.co.in/sites/default/files/favicon_3.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "royal-sundaram",
+   "name": "Royal Sundaram",
+   "domain": "royalsundaram.in",
+   "category": "insurance",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "chola-ms",
+   "name": "Chola MS",
+   "domain": "cholainsurance.com",
+   "category": "insurance",
+   "aliases": [
+    "cholamandalam-ms"
+   ],
+   "file": "png/chola-ms.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.cholainsurance.com/o/chola-corporate-theme/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "iffco-tokio",
+   "name": "IFFCO Tokio",
+   "domain": "iffcotokio.co.in",
+   "category": "insurance",
+   "aliases": [],
+   "file": "svg/iffco-tokio.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:IFFCO_TOKIO_Logo.svg",
+   "licence": "CC BY-SA 4.0",
+   "author": "IFFCO-TOKIO"
+  },
+  {
+   "slug": "sbi-general-insurance",
+   "name": "SBI General Insurance",
+   "domain": "sbigeneral.in",
+   "category": "insurance",
+   "aliases": [
+    "sbi-general"
+   ],
+   "file": "png/sbi-general-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://sbigeneral.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "future-generali",
+   "name": "Future Generali",
+   "domain": "futuregenerali.in",
+   "category": "insurance",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ageas-federal-life",
+   "name": "Ageas Federal Life",
+   "domain": "ageasfederal.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/ageas-federal-life.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.ageasfederal.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bharti-axa-life",
+   "name": "Bharti AXA Life",
+   "domain": "bhartiaxa.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/bharti-axa-life.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.bhartiaxa.com:443/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "edelweiss-life",
+   "name": "Edelweiss Life",
+   "domain": "edelweisslife.in",
+   "category": "insurance",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "max-life-insurance",
+   "name": "Max Life Insurance",
+   "domain": "axismaxlife.com",
+   "category": "insurance",
+   "aliases": [
+    "axis-max-life"
+   ],
+   "file": "png/max-life-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.axismaxlife.com/corp-static/icons/icon-256x256.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "reliance-general-insurance",
+   "name": "Reliance General Insurance",
+   "domain": "reliancegeneral.co.in",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/reliance-general-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.indusindinsurance.com/documents/20119/2686151/Favicon_48X48px/3fc2d70d-5c6d-345f-50e9-71e9d414e907",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "universal-sompo",
+   "name": "Universal Sompo",
+   "domain": "universalsompo.com",
+   "category": "insurance",
+   "aliases": [],
+   "file": "png/universal-sompo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.universalsompo.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zuno-general-insurance",
+   "name": "Zuno General Insurance",
+   "domain": "hizuno.com",
+   "category": "insurance",
+   "aliases": [
+    "zuno"
+   ],
+   "file": "png/zuno-general-insurance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.hizuno.com:443/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sbi-mutual-fund",
+   "name": "SBI Mutual Fund",
+   "domain": "sbimf.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "sbimf"
+   ],
+   "file": "svg/sbi-mutual-fund.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:SBI_Mutual_Fund_Logo.svg",
+   "licence": "Public domain",
+   "author": "SBI Mutual Fund"
+  },
+  {
+   "slug": "icici-prudential-mutual-fund",
+   "name": "ICICI Prudential Mutual Fund",
+   "domain": "icicipruamc.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "icici-pru-mf"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "kotak-mutual-fund",
+   "name": "Kotak Mutual Fund",
+   "domain": "kotakmf.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "kotakmf"
+   ],
+   "file": "png/kotak-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.kotakmf.com:443/assets/favicon/favicon-144.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "axis-mutual-fund",
+   "name": "Axis Mutual Fund",
+   "domain": "axismf.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "axismf"
+   ],
+   "file": "svg/axis-mutual-fund.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Axis_Mutual_Fund_Logo.svg",
+   "licence": "Public domain",
+   "author": "Axis Mutual Fund"
+  },
+  {
+   "slug": "dsp-mutual-fund",
+   "name": "DSP Mutual Fund",
+   "domain": "dspim.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "dspmf"
+   ],
+   "file": "png/dsp-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.dspim.com/assets/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "mirae-asset-mutual-fund",
+   "name": "Mirae Asset Mutual Fund",
+   "domain": "miraeassetmf.co.in",
+   "category": "mutual-fund",
+   "aliases": [
+    "mirae-asset"
+   ],
+   "file": "png/mirae-asset-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.miraeassetmf.co.in/img/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tata-mutual-fund",
+   "name": "Tata Mutual Fund",
+   "domain": "tatamutualfund.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "tatamf"
+   ],
+   "file": "png/tata-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.tatamutualfund.com:443/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bandhan-mutual-fund",
+   "name": "Bandhan Mutual Fund",
+   "domain": "bandhanmutual.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "idfc-mutual-fund"
+   ],
+   "file": "png/bandhan-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://bandhanmutual.com/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "edelweiss-mutual-fund",
+   "name": "Edelweiss Mutual Fund",
+   "domain": "edelweissmf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "franklin-templeton-india",
+   "name": "Franklin Templeton India",
+   "domain": "franklintempletonindia.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "franklin-templeton"
+   ],
+   "file": "png/franklin-templeton-india.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.franklintempletonindia.com/assets/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "invesco-mutual-fund",
+   "name": "Invesco Mutual Fund",
+   "domain": "invescomutualfund.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "invesco-india"
+   ],
+   "file": "png/invesco-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.invescomutualfund.com/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "canara-robeco-mutual-fund",
+   "name": "Canara Robeco Mutual Fund",
+   "domain": "canararobeco.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "canara-robeco"
+   ],
+   "file": "png/canara-robeco-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.canararobeco.com/wp-content/uploads/2026/09/Favicon-Dark-logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "hsbc-mutual-fund",
+   "name": "HSBC Mutual Fund",
+   "domain": "assetmanagement.hsbc.co.in",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/hsbc-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.assetmanagement.hsbc.co.in/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "motilal-oswal-mutual-fund",
+   "name": "Motilal Oswal Mutual Fund",
+   "domain": "motilaloswalmf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/motilal-oswal-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.motilaloswalmf.com/content/dam/motilal-mf/favicon-MF.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pgim-india-mutual-fund",
+   "name": "PGIM India Mutual Fund",
+   "domain": "pgimindiamf.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "pgim-india"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sundaram-mutual-fund",
+   "name": "Sundaram Mutual Fund",
+   "domain": "sundarammutual.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "lic-mutual-fund",
+   "name": "LIC Mutual Fund",
+   "domain": "licmf.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "licmf"
+   ],
+   "file": "png/lic-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.licmf.com/assets/images/Browser-Icon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "baroda-bnp-paribas-mutual-fund",
+   "name": "Baroda BNP Paribas Mutual Fund",
+   "domain": "barodabnpparibasmf.in",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/baroda-bnp-paribas-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.barodabnpparibasmf.in/assets/images/favicon.ico?randno=786",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "mahindra-manulife-mutual-fund",
+   "name": "Mahindra Manulife Mutual Fund",
+   "domain": "mahindramanulife.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/mahindra-manulife-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://mahindramanulife.com/favicon-32x32.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "quant-mutual-fund",
+   "name": "quant Mutual Fund",
+   "domain": "quantmutual.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "quant-mf"
+   ],
+   "file": "png/quant-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://quantmutual.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ppfas-mutual-fund",
+   "name": "PPFAS Mutual Fund",
+   "domain": "amc.ppfas.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "parag-parikh",
+    "ppfas"
+   ],
+   "file": "png/ppfas-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://amc.ppfas.com/img/fevicons/AMC.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "union-mutual-fund",
+   "name": "Union Mutual Fund",
+   "domain": "unionmf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "navi-mutual-fund",
+   "name": "Navi Mutual Fund",
+   "domain": "navimutualfund.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/navi-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://navi.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "groww-mutual-fund",
+   "name": "Groww Mutual Fund",
+   "domain": "growwmf.in",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zerodha-fund-house",
+   "name": "Zerodha Fund House",
+   "domain": "zerodhafundhouse.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "zerodha-mf"
+   ],
+   "file": "png/zerodha-fund-house.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.zerodhacasefunds.com/favicon/android-icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "iti-mutual-fund",
+   "name": "ITI Mutual Fund",
+   "domain": "itiamc.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/iti-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://itiamc.com/assets/images/logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "jm-financial-mutual-fund",
+   "name": "JM Financial Mutual Fund",
+   "domain": "jmfinancialmf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/jm-financial-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.jmfinancialmf.com/Fav-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "quantum-mutual-fund",
+   "name": "Quantum Mutual Fund",
+   "domain": "quantumamc.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/quantum-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.quantumamc.com/assets/images/favicon.WEBP",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "shriram-mutual-fund",
+   "name": "Shriram Mutual Fund",
+   "domain": "shriramamc.in",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/shriram-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.shriramamc.in:443/favicon.ico?favicon.0~iafu3v2_wg-.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "trust-mutual-fund",
+   "name": "Trust Mutual Fund",
+   "domain": "trustmf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "nj-mutual-fund",
+   "name": "NJ Mutual Fund",
+   "domain": "njmutualfund.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/nj-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.njmutualfund.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "samco-mutual-fund",
+   "name": "Samco Mutual Fund",
+   "domain": "samcomf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/samco-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.samcomf.com//images/favicon/android-icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bank-of-india-mutual-fund",
+   "name": "Bank of India Mutual Fund",
+   "domain": "boimf.in",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/bank-of-india-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.boimf.in/assets/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "taurus-mutual-fund",
+   "name": "Taurus Mutual Fund",
+   "domain": "taurusmutualfund.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/taurus-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://taurusmutualfund.com/themes/custom/taurus/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "helios-mutual-fund",
+   "name": "Helios Mutual Fund",
+   "domain": "heliosmf.in",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/helios-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://heliosmf.in/assets/images/Final-Mutual-fund-Favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "old-bridge-mutual-fund",
+   "name": "Old Bridge Mutual Fund",
+   "domain": "oldbridgemf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/old-bridge-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://oldbridgemf.com/img/favicon-192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "whiteoak-capital-mutual-fund",
+   "name": "WhiteOak Capital Mutual Fund",
+   "domain": "whiteoakamc.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "whiteoak"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "360-one-mutual-fund",
+   "name": "360 ONE Mutual Fund",
+   "domain": "360.one",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/360-one-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.360.one/assets/favicons/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "angel-one-mutual-fund",
+   "name": "Angel One Mutual Fund",
+   "domain": "angelonemf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/angel-one-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://angelonemf.com/assets/icons/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "jio-blackrock-mutual-fund",
+   "name": "Jio BlackRock Mutual Fund",
+   "domain": "jioblackrockamc.com",
+   "category": "mutual-fund",
+   "aliases": [
+    "jio-blackrock"
+   ],
+   "file": "png/jio-blackrock-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.jioblackrockamc.com/icon-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "unifi-mutual-fund",
+   "name": "Unifi Mutual Fund",
+   "domain": "unifimf.com",
+   "category": "mutual-fund",
+   "aliases": [],
+   "file": "png/unifi-mutual-fund.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://unifimf.com/wp-content/uploads/fund-sheets/favicon.webp",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "flipkart",
+   "name": "Flipkart",
+   "domain": "flipkart.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "svg/flipkart.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Flipkart_logo_(2026).svg",
+   "licence": "Public domain",
+   "author": "Flipkart"
+  },
+  {
+   "slug": "myntra",
+   "name": "Myntra",
+   "domain": "myntra.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "meesho",
+   "name": "Meesho",
+   "domain": "meesho.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zepto",
+   "name": "Zepto",
+   "domain": "zeptonow.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "svg/zepto.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Zepto_Logo.svg",
+   "licence": "Public domain",
+   "author": "Unknown authorUnknown author"
+  },
+  {
+   "slug": "blinkit",
+   "name": "Blinkit",
+   "domain": "blinkit.com",
+   "category": "commerce",
+   "aliases": [
+    "grofers"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bigbasket",
+   "name": "BigBasket",
+   "domain": "bigbasket.com",
+   "category": "commerce",
+   "aliases": [
+    "bb-now"
+   ],
+   "file": "png/bigbasket.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://bigbasket.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "swiggy-instamart",
+   "name": "Swiggy Instamart",
+   "domain": "swiggy.com",
+   "category": "commerce",
+   "aliases": [
+    "instamart"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "jiomart",
+   "name": "JioMart",
+   "domain": "jiomart.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "svg/jiomart.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:JioMart_logo.svg",
+   "licence": "Public domain",
+   "author": "en:JioMart"
+  },
+  {
+   "slug": "ajio",
+   "name": "AJIO",
+   "domain": "ajio.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tata-neu",
+   "name": "Tata Neu",
+   "domain": "tataneu.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "svg/tata-neu.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Tata_Neu_Logo.svg",
+   "licence": "CC0",
+   "author": "Unknown authorUnknown author"
+  },
+  {
+   "slug": "tata-cliq",
+   "name": "Tata CLiQ",
+   "domain": "tatacliq.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/tata-cliq.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.tatacliq.com/images/icons/icon-384x384_v1.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "croma",
+   "name": "Croma",
+   "domain": "croma.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "reliance-digital",
+   "name": "Reliance Digital",
+   "domain": "reliancedigital.in",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/reliance-digital.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.jiostore.online/v2/jmd-asp/jdprod/wrkr/jioretailer/company/1/applications/645a057875d8c4882b096f7e/application/pictures/free-logo/512x512/OhLa8p_da-Reliance-Digital.webp",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "lenskart",
+   "name": "Lenskart",
+   "domain": "lenskart.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "boat",
+   "name": "boAt",
+   "domain": "boat-lifestyle.com",
+   "category": "commerce",
+   "aliases": [
+    "boat-lifestyle"
+   ],
+   "file": "png/boat.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.boat-lifestyle.com/cdn/shop/files/32x32_256x256.png_32x32_2d0995d9-ec86-4c14-b928-71101777194c_96x96.png?v=1647426716",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sugar-cosmetics",
+   "name": "SUGAR Cosmetics",
+   "domain": "sugarcosmetics.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/sugar-cosmetics.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.sugarcosmetics.com/cdn/shop/files/Favicon-SUGAR_1_15359a4f-dd7b-494b-97c2-f669e202d299.png?v=1734606387&width=180",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pepperfry",
+   "name": "Pepperfry",
+   "domain": "pepperfry.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "svg/pepperfry.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Pepperfry_logo.svg",
+   "licence": "Public domain",
+   "author": "Pepperfry"
+  },
+  {
+   "slug": "urban-ladder",
+   "name": "Urban Ladder",
+   "domain": "urbanladder.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/urban-ladder.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.swadeshonline.com/v2/patient-paper-41f385/swad-p/t.resize(w:24,h:24)/company/17/applications/65f437fae78851028707daee/application/pictures/favicon/original/XVpqCruQw-Urban-Ladder.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "licious",
+   "name": "Licious",
+   "domain": "licious.in",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/licious.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.licious.in:443/image/licious_favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "country-delight",
+   "name": "Country Delight",
+   "domain": "countrydelight.in",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/country-delight.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://countrydelight.in/assets/icons/icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "snapdeal",
+   "name": "Snapdeal",
+   "domain": "snapdeal.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/snapdeal.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.snapdeal.com/img/icons/finalFavicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "shopclues",
+   "name": "ShopClues",
+   "domain": "shopclues.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/shopclues.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.shopclues.com:443/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "purplle",
+   "name": "Purplle",
+   "domain": "purplle.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/purplle.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://media6.ppl-media.com/mediafiles/ecomm/promo/1728289250_384x384.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bewakoof",
+   "name": "Bewakoof",
+   "domain": "bewakoof.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/bewakoof.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://images.bewakoof.com/lib/icon/app-logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "the-souled-store",
+   "name": "The Souled Store",
+   "domain": "thesouledstore.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/the-souled-store.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.thesouledstore.com:443/images/tsslogo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "decathlon-india",
+   "name": "Decathlon India",
+   "domain": "decathlon.in",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/decathlon-india.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdncontent.decathlon.in/svelte/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ikea-india",
+   "name": "IKEA India",
+   "domain": "ikea.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/ikea-india.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.ikea.com/global/en/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "spencers",
+   "name": "Spencer's",
+   "domain": "spencers.in",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zivame",
+   "name": "Zivame",
+   "domain": "zivame.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pharmeasy",
+   "name": "Pharmeasy",
+   "domain": "pharmeasy.in",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/pharmeasy.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://pharmeasy.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tata-1mg",
+   "name": "Tata 1mg",
+   "domain": "1mg.com",
+   "category": "commerce",
+   "aliases": [
+    "1mg"
+   ],
+   "file": "svg/tata-1mg.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:TATA_1mg_Logo.svg",
+   "licence": "Public domain",
+   "author": "TATA 1mg"
+  },
+  {
+   "slug": "netmeds",
+   "name": "Netmeds",
+   "domain": "netmeds.com",
+   "category": "commerce",
+   "aliases": [],
+   "file": "png/netmeds.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.pixelbin.io/v2/plain-cake-860195/netmed/t.resize(w:24,h:24)/nmz/company/2/applications/65f562c1504a59a67f529ad4/application/pictures/favicon/original/F-lAHFqfB-Netmeds-Marketplace-Ltd.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "apollo-24-7",
+   "name": "Apollo 24/7",
+   "domain": "apollo247.com",
+   "category": "commerce",
+   "aliases": [
+    "apollo247"
+   ],
+   "file": "png/apollo-24-7.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.apollo247.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "practo",
+   "name": "Practo",
+   "domain": "practo.com",
+   "category": "health",
+   "aliases": [],
+   "file": "png/practo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.practo.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "cult-fit",
+   "name": "cult.fit",
+   "domain": "cult.fit",
+   "category": "health",
+   "aliases": [
+    "cultfit",
+    "curefit"
+   ],
+   "file": "png/cult-fit.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.cult.fit/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "healthifyme",
+   "name": "HealthifyMe",
+   "domain": "healthifyme.com",
+   "category": "health",
+   "aliases": [
+    "healthify"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "tata-health",
+   "name": "Tata Health",
+   "domain": "tatahealth.com",
+   "category": "health",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ola",
+   "name": "Ola",
+   "domain": "olacabs.com",
+   "category": "mobility",
+   "aliases": [
+    "ola-cabs"
+   ],
+   "file": "png/ola.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.olacabs.com/static/frontend/Ola/Cabs/en_US/Magento_Theme/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "rapido",
+   "name": "Rapido",
+   "domain": "rapido.bike",
+   "category": "mobility",
+   "aliases": [],
+   "file": "png/rapido.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://rapido.bike/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "namma-yatri",
+   "name": "Namma Yatri",
+   "domain": "nammayatri.in",
+   "category": "mobility",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "yulu",
+   "name": "Yulu",
+   "domain": "yulu.bike",
+   "category": "mobility",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zoomcar",
+   "name": "Zoomcar",
+   "domain": "zoomcar.com",
+   "category": "mobility",
+   "aliases": [],
+   "file": "png/zoomcar.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.zoomcar.com/fav/favicon-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "porter",
+   "name": "Porter",
+   "domain": "porter.in",
+   "category": "mobility",
+   "aliases": [],
+   "file": "png/porter.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://dom-content-vault-prod-cdn-assets.porter.in/favicon_241b415eda/favicon_241b415eda.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "shadowfax",
+   "name": "Shadowfax",
+   "domain": "shadowfax.in",
+   "category": "mobility",
+   "aliases": [],
+   "file": "png/shadowfax.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://shadowfax.in/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "shiprocket",
+   "name": "Shiprocket",
+   "domain": "shiprocket.in",
+   "category": "mobility",
+   "aliases": [],
+   "file": "png/shiprocket.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://sr-website.shiprocket.in/wp-content/uploads/2025/09/srFavicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "xpressbees",
+   "name": "Xpressbees",
+   "domain": "xpressbees.com",
+   "category": "mobility",
+   "aliases": [],
+   "file": "png/xpressbees.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.xpressbees.com/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ecom-express",
+   "name": "Ecom Express",
+   "domain": "ecomexpress.in",
+   "category": "mobility",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "dunzo",
+   "name": "Dunzo",
+   "domain": "dunzo.com",
+   "category": "mobility",
+   "aliases": [],
+   "file": "svg/dunzo.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Dunzo_Logo.svg",
+   "licence": "CC BY-SA 4.0",
+   "author": "Dunzo Digital Pvt Ltd"
+  },
+  {
+   "slug": "goibibo",
+   "name": "Goibibo",
+   "domain": "goibibo.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "svg/goibibo.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Goibibo_Logo.svg",
+   "licence": "Public domain",
+   "author": "Unknown authorUnknown author"
+  },
+  {
+   "slug": "cleartrip",
+   "name": "Cleartrip",
+   "domain": "cleartrip.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "png/cleartrip.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://static-assets-ct.flixcart.com/ct/assets/resources/air-desktop-pwa/public/assets/icons/cleartrip-96x96.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "redbus",
+   "name": "redBus",
+   "domain": "redbus.in",
+   "category": "travel",
+   "aliases": [],
+   "file": "svg/redbus.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:RedBus_Logo_(2015-present).svg",
+   "licence": "Public domain",
+   "author": "Unknown authorUnknown author"
+  },
+  {
+   "slug": "oyo",
+   "name": "OYO",
+   "domain": "oyorooms.com",
+   "category": "travel",
+   "aliases": [
+    "oravel"
+   ],
+   "file": "png/oyo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://assets.oyoroomscdn.com/pwa/icons/oyo-logo-512x512.jpg",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "treebo",
+   "name": "Treebo",
+   "domain": "treebo.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "png/treebo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://images.treebohotels.com/images/Icons/pwa-icon.png?h=32&w=32",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "fabhotels",
+   "name": "FabHotels",
+   "domain": "fabhotels.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "png/fabhotels.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://static.fabhotels.com/img/icons/android-icon-192x192_v1.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "air-india",
+   "name": "Air India",
+   "domain": "airindia.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "svg/air-india.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Air_India_logo_(2007%E2%80%932023).svg",
+   "licence": "Public domain",
+   "author": "Air India"
+  },
+  {
+   "slug": "akasa-air",
+   "name": "Akasa Air",
+   "domain": "akasaair.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "svg/akasa-air.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Akasa_Air_logo.svg",
+   "licence": "Public domain",
+   "author": "Akasa Air"
+  },
+  {
+   "slug": "air-india-express",
+   "name": "Air India Express",
+   "domain": "airindiaexpress.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "svg/air-india-express.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Air_India_Express_Logo.svg",
+   "licence": "Public domain",
+   "author": "Unknown authorUnknown author"
+  },
+  {
+   "slug": "vistara",
+   "name": "Vistara",
+   "domain": "airvistara.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "svg/vistara.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Vistara_Logo.svg",
+   "licence": "Public domain",
+   "author": "Tata SIA Airlines Limited"
+  },
+  {
+   "slug": "indigo",
+   "name": "IndiGo",
+   "domain": "goindigo.in",
+   "category": "travel",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "spicejet",
+   "name": "SpiceJet",
+   "domain": "spicejet.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "png/spicejet.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.spicejet.com/images/icons-512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "digiyatra",
+   "name": "DigiYatra",
+   "domain": "digiyatra.com",
+   "category": "travel",
+   "aliases": [
+    "digi-yatra"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "confirmtkt",
+   "name": "ConfirmTkt",
+   "domain": "confirmtkt.com",
+   "category": "travel",
+   "aliases": [],
+   "file": "png/confirmtkt.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://image.moengage.com/confirmtktmoengage/20190719131336940829X1IVIKlogo192x192pngcompConfirmTkt.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "indian-railways",
+   "name": "Indian Railways",
+   "domain": "indianrail.gov.in",
+   "category": "travel",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "swiggy",
+   "name": "Swiggy",
+   "domain": "swiggy.com",
+   "category": "food",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zomato",
+   "name": "Zomato",
+   "domain": "zomato.com",
+   "category": "food",
+   "aliases": [],
+   "file": "svg/zomato.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Zomato_Logo.svg",
+   "licence": "Public domain",
+   "author": "Zomato"
+  },
+  {
+   "slug": "eatsure",
+   "name": "EatSure",
+   "domain": "eatsure.com",
+   "category": "food",
+   "aliases": [
+    "rebel-foods"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "faasos",
+   "name": "Faasos",
+   "domain": "faasos.io",
+   "category": "food",
+   "aliases": [],
+   "file": "svg/faasos.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Faasos_Logo.svg",
+   "licence": "Public domain",
+   "author": "Faasos"
+  },
+  {
+   "slug": "dominos-india",
+   "name": "Domino's India",
+   "domain": "dominos.co.in",
+   "category": "food",
+   "aliases": [],
+   "file": "png/dominos-india.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.dominos.co.in/brand-jfl-discovery-ui/public/dist/default/images/global/logos/logo_256.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "haldirams",
+   "name": "Haldiram's",
+   "domain": "haldirams.com",
+   "category": "food",
+   "aliases": [
+    "haldirams"
+   ],
+   "file": "svg/haldirams.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Haldiram%27s_Logo_SVG.svg",
+   "licence": "Public domain",
+   "author": "Haldiram's"
+  },
+  {
+   "slug": "amul",
+   "name": "Amul",
+   "domain": "amul.com",
+   "category": "food",
+   "aliases": [],
+   "file": "svg/amul.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Amul_official_logo.svg",
+   "licence": "Public domain",
+   "author": "Prolix"
+  },
+  {
+   "slug": "mother-dairy",
+   "name": "Mother Dairy",
+   "domain": "motherdairy.com",
+   "category": "food",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "parle",
+   "name": "Parle",
+   "domain": "parleproducts.com",
+   "category": "food",
+   "aliases": [
+    "parle-g"
+   ],
+   "file": "png/parle.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://parleproducts.com/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "bisleri",
+   "name": "Bisleri",
+   "domain": "bisleri.com",
+   "category": "food",
+   "aliases": [],
+   "file": "svg/bisleri.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Bisleri_logo.svg",
+   "licence": "Public domain",
+   "author": "Bisleri"
+  },
+  {
+   "slug": "chaayos",
+   "name": "Chaayos",
+   "domain": "chaayos.com",
+   "category": "food",
+   "aliases": [],
+   "file": "png/chaayos.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://chaayos.com/cdn/shop/files/favicon-32x32_32x32.png?v=1679060649",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "third-wave-coffee",
+   "name": "Third Wave Coffee",
+   "domain": "thirdwavecoffee.in",
+   "category": "food",
+   "aliases": [],
+   "file": "png/third-wave-coffee.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://thirdwavecoffee.in/cdn/shop/t/35/assets/favicon.png?v=105361898770435314471731674042",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "blue-tokai",
+   "name": "Blue Tokai",
+   "domain": "bluetokaicoffee.com",
+   "category": "food",
+   "aliases": [],
+   "file": "png/blue-tokai.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://bluetokaicoffee.com/cdn/shop/files/faveconnew_32x32.png?v=1708418918",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "paper-boat",
+   "name": "Paper Boat",
+   "domain": "paperboatdrinks.com",
+   "category": "food",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "mtr-foods",
+   "name": "MTR Foods",
+   "domain": "mtrfoods.com",
+   "category": "food",
+   "aliases": [
+    "mtr"
+   ],
+   "file": "svg/mtr-foods.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:MTR_Foods_Logo.svg",
+   "licence": "Public domain",
+   "author": "MTR Foods"
+  },
+  {
+   "slug": "aashirvaad",
+   "name": "Aashirvaad",
+   "domain": "aashirvaad.com",
+   "category": "food",
+   "aliases": [],
+   "file": "png/aashirvaad.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://aashirvaad.com/content/dam/itc-foods-brands/aashirvaad/home/favicon%20icon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "byjus",
+   "name": "BYJU'S",
+   "domain": "byjus.com",
+   "category": "education",
+   "aliases": [
+    "byjus"
+   ],
+   "file": "svg/byjus.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:BYJU%27S_logo.svg",
+   "licence": "Public domain",
+   "author": "Byju's"
+  },
+  {
+   "slug": "unacademy",
+   "name": "Unacademy",
+   "domain": "unacademy.com",
+   "category": "education",
+   "aliases": [],
+   "file": "svg/unacademy.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Unacademy-logo-official.svg",
+   "licence": "Public domain",
+   "author": "Unacademy"
+  },
+  {
+   "slug": "physics-wallah",
+   "name": "Physics Wallah",
+   "domain": "pw.live",
+   "category": "education",
+   "aliases": [
+    "physicswallah",
+    "pw"
+   ],
+   "file": "svg/physics-wallah.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Physics_wallah_logo.svg",
+   "licence": "Public domain",
+   "author": "Physics Wallah"
+  },
+  {
+   "slug": "vedantu",
+   "name": "Vedantu",
+   "domain": "vedantu.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/vedantu.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.vedantu.com/static/images/favicon/favicon-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "upgrad",
+   "name": "upGrad",
+   "domain": "upgrad.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/upgrad.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.upgrad.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "simplilearn",
+   "name": "Simplilearn",
+   "domain": "simplilearn.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/simplilearn.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.simplilearn.com/static-frs/images/favicon/mstile-310x310_v2.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "scaler",
+   "name": "Scaler",
+   "domain": "scaler.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/scaler.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.scaler.com/favicon.ico?favicon.0j7c6zbq3jvq6.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "testbook",
+   "name": "Testbook",
+   "domain": "testbook.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/testbook.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://testbook.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "adda247",
+   "name": "Adda247",
+   "domain": "adda247.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/adda247.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.adda247.com/static/images/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "great-learning",
+   "name": "Great Learning",
+   "domain": "mygreatlearning.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/great-learning.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.mygreatlearning.com:443/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "classplus",
+   "name": "Classplus",
+   "domain": "classplus.co",
+   "category": "education",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "eruditus",
+   "name": "Eruditus",
+   "domain": "eruditus.com",
+   "category": "education",
+   "aliases": [],
+   "file": "png/eruditus.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://images.ctfassets.net/wkud0epjdpn7/2tENNgTJ5voBaOoCas6LYF/0ca3998f66b5806621424e294be5ac75/eruditus-hero.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "lead-school",
+   "name": "LEAD School",
+   "domain": "leadschool.in",
+   "category": "education",
+   "aliases": [],
+   "file": "png/lead-school.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://leadschool.in/wp-content/uploads/2021/10/cropped-favicon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "jiohotstar",
+   "name": "JioHotstar",
+   "domain": "hotstar.com",
+   "category": "media",
+   "aliases": [
+    "disney-hotstar",
+    "hotstar",
+    "jiocinema"
+   ],
+   "file": "png/jiohotstar.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://secure-media.hotstar.com/web-assets/prod/jv-jhs_favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sonyliv",
+   "name": "SonyLIV",
+   "domain": "sonyliv.com",
+   "category": "media",
+   "aliases": [],
+   "file": "png/sonyliv.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.sonyliv.com:443/assets/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zee5",
+   "name": "ZEE5",
+   "domain": "zee5.com",
+   "category": "media",
+   "aliases": [],
+   "file": "svg/zee5.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Zee5_Logo_2018-2025.svg",
+   "licence": "Public domain",
+   "author": "Zee5"
+  },
+  {
+   "slug": "mx-player",
+   "name": "MX Player",
+   "domain": "mxplayer.in",
+   "category": "media",
+   "aliases": [],
+   "file": "svg/mx-player.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:MX_Player_Logo.svg",
+   "licence": "Public domain",
+   "author": "MX Player"
+  },
+  {
+   "slug": "gaana",
+   "name": "Gaana",
+   "domain": "gaana.com",
+   "category": "media",
+   "aliases": [],
+   "file": "svg/gaana.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Gaana_logo.svg",
+   "licence": "Public domain",
+   "author": "Times Internet"
+  },
+  {
+   "slug": "jiosaavn",
+   "name": "JioSaavn",
+   "domain": "jiosaavn.com",
+   "category": "media",
+   "aliases": [
+    "saavn"
+   ],
+   "file": "svg/jiosaavn.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:JioSaavn_Logo.svg",
+   "licence": "Public domain",
+   "author": "Jio Platforms"
+  },
+  {
+   "slug": "wynk-music",
+   "name": "Wynk Music",
+   "domain": "wynk.in",
+   "category": "media",
+   "aliases": [
+    "wynk"
+   ],
+   "file": "png/wynk-music.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://wynk.in/assets/icons/icon-384x384.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sharechat",
+   "name": "ShareChat",
+   "domain": "sharechat.com",
+   "category": "media",
+   "aliases": [],
+   "file": "png/sharechat.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://sharechat.com/assets/icons/favicon-96x96.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "moj",
+   "name": "Moj",
+   "domain": "mojapp.in",
+   "category": "media",
+   "aliases": [],
+   "file": "png/moj.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://mojapp.in/assets/icons/Logo_512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "josh",
+   "name": "Josh",
+   "domain": "myjosh.in",
+   "category": "media",
+   "aliases": [],
+   "file": "png/josh.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://myjosh.in/images/fav.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "dailyhunt",
+   "name": "Dailyhunt",
+   "domain": "dailyhunt.in",
+   "category": "media",
+   "aliases": [],
+   "file": "png/dailyhunt.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://dailyhunt.in/_assets/img/favicon-192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "inshorts",
+   "name": "Inshorts",
+   "domain": "inshorts.com",
+   "category": "media",
+   "aliases": [],
+   "file": "png/inshorts.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://inshorts.com/assets/images/logo_512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pratilipi",
+   "name": "Pratilipi",
+   "domain": "pratilipi.com",
+   "category": "media",
+   "aliases": [],
+   "file": "png/pratilipi.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://framerusercontent.com/images/XkbZnB1gAnw6wL36MEBwpIPHI.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pocket-fm",
+   "name": "Pocket FM",
+   "domain": "pocketfm.com",
+   "category": "media",
+   "aliases": [],
+   "file": "png/pocket-fm.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://pocketfm.com/icons/logo-store-256.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "kuku-fm",
+   "name": "Kuku FM",
+   "domain": "kukufm.com",
+   "category": "media",
+   "aliases": [],
+   "file": "png/kuku-fm.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://d1l07mcd18xic4.cloudfront.net/static/kukuIcons/android-icon-192x192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "aha",
+   "name": "Aha",
+   "domain": "aha.video",
+   "category": "media",
+   "aliases": [],
+   "file": "png/aha.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.aha.video/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "altt",
+   "name": "ALTT",
+   "domain": "altt.co.in",
+   "category": "media",
+   "aliases": [
+    "altbalaji"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "dream11",
+   "name": "Dream11",
+   "domain": "dream11.com",
+   "category": "gaming",
+   "aliases": [],
+   "file": "svg/dream11.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Dream11_Logo.svg",
+   "licence": "Public domain",
+   "author": "Dream11"
+  },
+  {
+   "slug": "mpl",
+   "name": "MPL",
+   "domain": "mpl.live",
+   "category": "gaming",
+   "aliases": [
+    "mobile-premier-league"
+   ],
+   "file": "png/mpl.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.mpl.live:443/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "my11circle",
+   "name": "My11Circle",
+   "domain": "my11circle.com",
+   "category": "gaming",
+   "aliases": [],
+   "file": "png/my11circle.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://rcmg.in/fantasy/landingimg/acquistion/my11circle-fav-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zupee",
+   "name": "Zupee",
+   "domain": "zupee.com",
+   "category": "gaming",
+   "aliases": [],
+   "file": "png/zupee.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://static-perf1.zupee.com/blog-images/uploads/2024/10/zupee_favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "winzo",
+   "name": "WinZO",
+   "domain": "winzogames.com",
+   "category": "gaming",
+   "aliases": [
+    "winzo"
+   ],
+   "file": "png/winzo.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://assets.zoworld.app/zo-backoffice/file-uploads/website/zo-play/favicon_1793190342448.webp",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "rummycircle",
+   "name": "Rummycircle",
+   "domain": "rummycircle.com",
+   "category": "gaming",
+   "aliases": [],
+   "file": "png/rummycircle.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.rummycircle.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "jio",
+   "name": "Jio",
+   "domain": "jio.com",
+   "category": "telecom",
+   "aliases": [
+    "reliance-jio"
+   ],
+   "file": "svg/jio.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Reliance_Jio_Logo.svg",
+   "licence": "Public domain",
+   "author": "Reliance Jio"
+  },
+  {
+   "slug": "bsnl",
+   "name": "BSNL",
+   "domain": "bsnl.co.in",
+   "category": "telecom",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "act-fibernet",
+   "name": "ACT Fibernet",
+   "domain": "actcorp.in",
+   "category": "telecom",
+   "aliases": [
+    "act"
+   ],
+   "file": "png/act-fibernet.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.actcorp.in/sites/default/files/favicon_1.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "excitel",
+   "name": "Excitel",
+   "domain": "excitel.com",
+   "category": "telecom",
+   "aliases": [],
+   "file": "png/excitel.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.excitel.com/wp-content/uploads/2022/08/favicon1.webp",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "hathway",
+   "name": "Hathway",
+   "domain": "hathway.com",
+   "category": "telecom",
+   "aliases": [],
+   "file": "png/hathway.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.hathway.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "zoho",
+   "name": "Zoho",
+   "domain": "zoho.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "svg/zoho.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:ZOHO_logo_2023.svg",
+   "licence": "Public domain",
+   "author": "Zoho Corporation"
+  },
+  {
+   "slug": "postman",
+   "name": "Postman",
+   "domain": "postman.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/postman.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.postman.com/_mk-www-next/icons/android-chrome-256x256.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "browserstack",
+   "name": "BrowserStack",
+   "domain": "browserstack.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/browserstack.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://bstackprod.kinsta.cloud/wp-content/themes/browserstack/img/brand-v2/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "chargebee",
+   "name": "Chargebee",
+   "domain": "chargebee.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/chargebee.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.chargebee.com:443/static/resources/brand/apple-touch-icon.png?v=1",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "inmobi",
+   "name": "InMobi",
+   "domain": "inmobi.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "svg/inmobi.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:InMobi_logo.svg",
+   "licence": "Public domain",
+   "author": "InMobi"
+  },
+  {
+   "slug": "glance",
+   "name": "Glance",
+   "domain": "glance.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/glance.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://glance.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ather-energy",
+   "name": "Ather Energy",
+   "domain": "atherenergy.com",
+   "category": "tech",
+   "aliases": [
+    "ather"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ultraviolette",
+   "name": "Ultraviolette",
+   "domain": "ultraviolette.com",
+   "category": "tech",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "ola-krutrim",
+   "name": "Ola Krutrim",
+   "domain": "olakrutrim.com",
+   "category": "tech",
+   "aliases": [
+    "krutrim"
+   ],
+   "file": "png/ola-krutrim.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.olakrutrim.com/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sarvam-ai",
+   "name": "Sarvam AI",
+   "domain": "sarvam.ai",
+   "category": "tech",
+   "aliases": [
+    "sarvam"
+   ],
+   "file": "png/sarvam-ai.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.sarvam.ai/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "unstop",
+   "name": "Unstop",
+   "domain": "unstop.com",
+   "category": "tech",
+   "aliases": [
+    "dare2compete"
+   ],
+   "file": "svg/unstop.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Unstop-logo.svg",
+   "licence": "CC0",
+   "author": "Mayanktyagi20290"
+  },
+  {
+   "slug": "naukri",
+   "name": "Naukri",
+   "domain": "naukri.com",
+   "category": "tech",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "apna",
+   "name": "Apna",
+   "domain": "apna.co",
+   "category": "tech",
+   "aliases": [
+    "apna-jobs"
+   ],
+   "file": "png/apna.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://apna.co/android-chrome-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "linkedin-india",
+   "name": "LinkedIn India",
+   "domain": "linkedin.com",
+   "category": "tech",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "truecaller",
+   "name": "Truecaller",
+   "domain": "truecaller.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "svg/truecaller.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Truecaller_Logo.svg",
+   "licence": "Public domain",
+   "author": "TrueCaller"
+  },
+  {
+   "slug": "nobroker",
+   "name": "NoBroker",
+   "domain": "nobroker.in",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/nobroker.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://images.nobroker.in/static/img/logos/icon_512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "housing-com",
+   "name": "Housing.com",
+   "domain": "housing.com",
+   "category": "tech",
+   "aliases": [
+    "housing"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "99acres",
+   "name": "99acres",
+   "domain": "99acres.com",
+   "category": "tech",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "magicbricks",
+   "name": "MagicBricks",
+   "domain": "magicbricks.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/magicbricks.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.staticmb.com/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "cardekho",
+   "name": "CarDekho",
+   "domain": "cardekho.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/cardekho.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://stimg.cardekho.com/pwa/img/cd_logo_N_512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "cars24",
+   "name": "Cars24",
+   "domain": "cars24.com",
+   "category": "tech",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "spinny",
+   "name": "Spinny",
+   "domain": "spinny.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/spinny.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://spn-sta.spinny.com/spinny-web/static-images/assets/images/app/icons/assets/Spinny-logo-512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "urban-company",
+   "name": "Urban Company",
+   "domain": "urbancompany.com",
+   "category": "tech",
+   "aliases": [
+    "urbanclap"
+   ],
+   "file": "png/urban-company.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.urbancompany.com/img/images/growth/home-screen/1688650021762-cc2e3d.jpeg?bucket=urbanclap-prod&quality=80&format=auto",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "justdial",
+   "name": "Justdial",
+   "domain": "justdial.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "svg/justdial.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Justdial_Logo.svg",
+   "licence": "Public domain",
+   "author": "JD"
+  },
+  {
+   "slug": "quikr",
+   "name": "Quikr",
+   "domain": "quikr.com",
+   "category": "tech",
+   "aliases": [],
+   "file": "png/quikr.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.quikr.com/public/core/images/pwa/ic_logo_512x512.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "olx-india",
+   "name": "OLX India",
+   "domain": "olx.in",
+   "category": "tech",
+   "aliases": [
+    "olx"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "digilocker",
+   "name": "DigiLocker",
+   "domain": "digilocker.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/digilocker.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.digilocker.gov.in/digilocker-landing-page/assets/img/meta/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "aadhaar",
+   "name": "Aadhaar",
+   "domain": "uidai.gov.in",
+   "category": "government",
+   "aliases": [
+    "uidai"
+   ],
+   "file": "png/aadhaar.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://uidai.gov.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "umang",
+   "name": "UMANG",
+   "domain": "web.umang.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/umang.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://media.umangapp.in/cdn/landing/theme/icons/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "india-post",
+   "name": "India Post",
+   "domain": "indiapost.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/india-post.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.indiapost.gov.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "income-tax-department",
+   "name": "Income Tax Department",
+   "domain": "incometax.gov.in",
+   "category": "government",
+   "aliases": [
+    "income-tax",
+    "itr"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "gst",
+   "name": "GST",
+   "domain": "gst.gov.in",
+   "category": "government",
+   "aliases": [
+    "gstn"
+   ],
+   "file": "png/gst.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.gst.gov.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "epfo",
+   "name": "EPFO",
+   "domain": "epfindia.gov.in",
+   "category": "government",
+   "aliases": [
+    "epf"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "mygov",
+   "name": "MyGov",
+   "domain": "mygov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "svg/mygov.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:MyGov_logo.svg",
+   "licence": "Public domain",
+   "author": "Government of Bangladesh"
+  },
+  {
+   "slug": "ondc",
+   "name": "ONDC",
+   "domain": "ondc.org",
+   "category": "government",
+   "aliases": [],
+   "file": "png/ondc.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://ondc.org/public/assets/ondc_top_logo_transparent.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "gem",
+   "name": "GeM",
+   "domain": "gem.gov.in",
+   "category": "government",
+   "aliases": [
+    "government-e-marketplace"
+   ],
+   "file": "png/gem.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://assets-bg.gem.gov.in/resources/images/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "abha",
+   "name": "ABHA",
+   "domain": "abdm.gov.in",
+   "category": "government",
+   "aliases": [
+    "abdm",
+    "ayushman-bharat"
+   ],
+   "file": "png/abha.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://abdm.gov.in/logo192.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "rbi",
+   "name": "RBI",
+   "domain": "rbi.org.in",
+   "category": "government",
+   "aliases": [
+    "reserve-bank-of-india"
+   ],
+   "file": "png/rbi.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://rbi.org.in/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "sebi",
+   "name": "SEBI",
+   "domain": "sebi.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/sebi.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.sebi.gov.in/images/icons/sebi-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "nse",
+   "name": "NSE",
+   "domain": "nseindia.com",
+   "category": "government",
+   "aliases": [
+    "national-stock-exchange"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "isro",
+   "name": "ISRO",
+   "domain": "isro.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "election-commission-of-india",
+   "name": "Election Commission of India",
+   "domain": "eci.gov.in",
+   "category": "government",
+   "aliases": [
+    "eci"
+   ],
+   "file": "svg/election-commission-of-india.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Election_Commission_of_India_Logo.svg",
+   "licence": "Public domain",
+   "author": "Election Commission of India"
+  },
+  {
+   "slug": "passport-seva",
+   "name": "Passport Seva",
+   "domain": "passportindia.gov.in",
+   "category": "government",
+   "aliases": [
+    "passport"
+   ],
+   "file": "png/passport-seva.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.passportindia.gov.in/psp/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "parivahan",
+   "name": "Parivahan",
+   "domain": "parivahan.gov.in",
+   "category": "government",
+   "aliases": [
+    "sarathi",
+    "vahan"
+   ],
+   "file": "png/parivahan.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://parivahan.gov.in/sites/default/files/parivahan_fevicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "nps",
+   "name": "NPS",
+   "domain": "npscra.nsdl.co.in",
+   "category": "government",
+   "aliases": [
+    "national-pension-system"
+   ],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "irdai",
+   "name": "IRDAI",
+   "domain": "irdai.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/irdai.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://irdai.gov.in/o/irdai-theme/images/favicon.ico",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "pfrda",
+   "name": "PFRDA",
+   "domain": "pfrda.org.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/pfrda.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://pfrda.org.in/documents/33652/0/favicon.png/b0df93d7-7693-e0a5-338b-247fc766481a",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "nhai",
+   "name": "NHAI",
+   "domain": "nhai.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "make-in-india",
+   "name": "Make in India",
+   "domain": "makeinindia.com",
+   "category": "government",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "startup-india",
+   "name": "Startup India",
+   "domain": "startupindia.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/startup-india.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://www.startupindia.gov.in/content/dam/invest-india/favicon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "digital-india",
+   "name": "Digital India",
+   "domain": "digitalindia.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/digital-india.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.digitalindiacorporation.in/wp-content/uploads/2024/10/images.png",
+   "licence": null,
+   "author": null
+  }
+ ]
+}

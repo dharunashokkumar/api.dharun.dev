@@ -90,6 +90,11 @@ type apiGroup struct {
 }
 
 var (
+	logoImageParams = []param{
+		{Name: "format", In: "query", Type: "string", Enum: []string{"svg", "png"}, Doc: "Image format. Default svg."},
+		{Name: "size", In: "query", Type: "integer", Doc: "PNG width and height in pixels, " + strconv.Itoa(pngMinSize) + " to " + strconv.Itoa(pngMaxSize) + ". Default " + strconv.Itoa(pngDefaultSize) + "."},
+		{Name: "fallback", In: "query", Type: "string", Enum: []string{"monogram", "none"}, Doc: "What an unknown name gets: monogram (the default, an initials tile) or none (404)."},
+	}
 	limitParam       = param{Name: "limit", In: "query", Type: "integer", Doc: "Results per page, 1 to 100."}
 	offsetParam      = param{Name: "offset", In: "query", Type: "integer", Doc: "Results to skip."}
 	stateFilter      = param{Name: "state", In: "query", Type: "string", Doc: "State code or name, for example TN or Tamil Nadu."}
@@ -104,19 +109,19 @@ var baseCatalog = []apiGroup{
 		Category:  "money",
 		Title:     "Company logos",
 		Tagline:   "Logos and details for companies listed on NSE and BSE.",
-		Intro:     "Put a ticker in the URL and get the logo back as SVG or PNG. Every company listed on NSE, those listed only on BSE, and REITs and InvITs. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO), an ISIN, or the old ticker of a renamed company. A bare ticker prefers NSE. Delisted companies are kept and marked.",
+		Intro:     "Put a ticker in the URL and get the logo back as SVG or PNG. Every company listed on NSE, those listed only on BSE, and REITs and InvITs; a symbol that is not an Indian listing falls through to the brand, global stock and asset logo sets. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO), an ISIN, or the old ticker of a renamed company. A bare ticker prefers NSE. Delisted companies are kept and marked.",
 		SourceKey: "logos",
 		Endpoints: []endpoint{
 			{
 				Path: "/v1/logos/{symbol}", Summary: "Logo image for a listed company", Image: true,
-				Doc:     "Returns the image itself, ready for an <img> tag. A listed company without a published logo gets an initials tile, marked with the X-Logo-Fallback: monogram header. Unknown symbols return 404 unless fallback=monogram is set.",
+				Doc:     "Returns the image itself, ready for an <img> tag. A listed company without a published logo gets an initials tile, marked with the X-Logo-Fallback: monogram header. An unknown symbol also gets the tile, with status 200, the headers X-Logo-Fallback: monogram and X-Logo-Known: false, and a one-day cache lifetime, so a logo added later shows up soon; fallback=none answers 404 instead. A symbol that is not an Indian listing is looked up in the brand, global stock and asset logo sets, in that order, and X-Logo-Set says which answered (india, brand, stock or asset). Unknown names are counted (the name only) so that their logos can be added. A 304 answer, or a PNG this server has already drawn, does not count against the rate limit.",
 				Example: "/v1/logos/TCS",
 				Params: []param{
 					{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or earlier ticker. A .svg or .png suffix selects the format."},
 					{Name: "format", In: "query", Type: "string", Enum: []string{"svg", "png"}, Doc: "Image format. Default svg."},
 					{Name: "size", In: "query", Type: "integer", Doc: "PNG width and height in pixels, " + strconv.Itoa(pngMinSize) + " to " + strconv.Itoa(pngMaxSize) + ". Default " + strconv.Itoa(pngDefaultSize) + "."},
-					{Name: "fallback", In: "query", Type: "string", Enum: []string{"monogram"}, Doc: "Return an initials tile instead of 404 for unknown symbols."},
-					{Name: "exchange", In: "query", Type: "string", Enum: []string{"nse", "bse"}, Doc: "Force an exchange."},
+					{Name: "fallback", In: "query", Type: "string", Enum: []string{"monogram", "none"}, Doc: "What an unknown symbol gets: monogram (the default, an initials tile) or none (404)."},
+					{Name: "exchange", In: "query", Type: "string", Enum: append([]string{"nse", "bse"}, lower(stockExchangeList)...), Doc: "Force an exchange: nse or bse for the Indian listing, or a global exchange for the global stocks."},
 				},
 			},
 			{
@@ -140,6 +145,56 @@ var baseCatalog = []apiGroup{
 					{Name: "delisted", In: "query", Type: "string", Enum: []string{"true", "false"}, Doc: "Include delisted companies. Default false."},
 					limitParam, offsetParam,
 				},
+			},
+		},
+	},
+	{
+		ID:          "world-logos",
+		Category:    "money",
+		Title:       "Brand, stock and asset logos",
+		Tagline:     "Logos for unlisted Indian brands, global stocks, crypto, indices, ETFs and commodities.",
+		Intro:       "Three logo sets beside the NSE and BSE listing, with the same options: SVG or PNG, any size, and an initials tile instead of a broken image for a name that matches nothing (X-Logo-Known: false; fallback=none answers 404). Brands are unlisted Indian names people expect, such as PhonePe, Zepto, UPI, DigiLocker, the mutual fund houses and insurers; their artwork is a free-licence file from Wikimedia Commons or the brand site's own icon, and each answer says which. Global stocks are every share on NASDAQ, NYSE and NYSE American and the 500 largest companies on each of LSE, Tokyo, Hong Kong, Xetra and Frankfurt, Euronext, Toronto, ASX and SIX. Assets are the 500 largest coins, the main Indian and world indices, NSE ETFs and the largest US ETFs, and commodities drawn for this API. As with company logos, a 304 answer or an already drawn PNG does not count against the rate limit. The company logos address /v1/logos also looks in these sets, in that order, when a symbol is not an Indian listing, and says where the answer came from in X-Logo-Set.",
+		SourceKey:   "stock-logos",
+		MoreSources: []string{"brand-logos", "asset-logos"},
+		Endpoints: []endpoint{
+			{
+				Path: "/v1/brand-logos/{name}", Summary: "Logo of an unlisted Indian brand", Image: true,
+				Doc:     "Returns the image itself. Looked up by name, slug, an earlier or common name, or the brand's domain (phonepe, Google Pay, gpay, phonepe.com). A brand known only by its site icon is a 256-pixel picture; format=svg wraps it in an SVG.",
+				Example: "/v1/brand-logos/phonepe",
+				Params: append([]param{{Name: "name", In: "path", Type: "string", Required: true, Doc: "Brand name, slug, alias or domain. A .svg or .png suffix selects the format."}},
+					append(logoImageParams, param{Name: "category", In: "query", Type: "string", Enum: brandCategorys, Doc: "Only brands of this category."})...),
+			},
+			{
+				Path: "/v1/brand-logos", Summary: "Search the brands",
+				Doc:     "Brands whose name, slug, alias or domain starts with q, or every brand. Each has its logo addresses and, under artwork, where the picture came from and its licence.",
+				Example: "/v1/brand-logos?q=pay&limit=5",
+				Params:  []param{{Name: "q", In: "query", Type: "string", Doc: "Start of a name, alias or domain."}, {Name: "category", In: "query", Type: "string", Enum: brandCategorys, Doc: "Only this category."}, limitParam, offsetParam},
+			},
+			{
+				Path: "/v1/stock-logos/{symbol}", Summary: "Logo of a global stock", Image: true,
+				Doc:     "Returns the image itself. A ticker (AAPL), exchange-qualified ticker (NASDAQ:AAPL), Yahoo Finance symbol (VOD.L, 0700.HK, SAP.DE), ISIN or company name (apple). When a ticker is used on several exchanges the largest company wins unless exchange is given.",
+				Example: "/v1/stock-logos/AAPL",
+				Params: append([]param{{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or name. A .svg or .png suffix selects the format."}},
+					append(logoImageParams, param{Name: "exchange", In: "query", Type: "string", Enum: stockExchangeList, Doc: "Only this exchange."})...),
+			},
+			{
+				Path: "/v1/stock-logos", Summary: "Search the global stocks",
+				Doc:     "Stocks whose ticker, name or ISIN starts with q, largest first, or every stock.",
+				Example: "/v1/stock-logos?q=micro&limit=5",
+				Params:  []param{{Name: "q", In: "query", Type: "string", Doc: "Start of a ticker or name."}, {Name: "exchange", In: "query", Type: "string", Enum: stockExchangeList, Doc: "Only this exchange."}, limitParam, offsetParam},
+			},
+			{
+				Path: "/v1/asset-logos/{symbol}", Summary: "Logo of a coin, index, ETF or commodity", Image: true,
+				Doc:     "Returns the image itself. BTC (also BTCUSD, BTC-INR), NIFTY50, SENSEX, SPX, NIFTYBEES, GOLD, CRUDEOIL. kind settles a symbol used by two kinds.",
+				Example: "/v1/asset-logos/BTC",
+				Params: append([]param{{Name: "symbol", In: "path", Type: "string", Required: true, Doc: "Symbol or name. A .svg or .png suffix selects the format."}},
+					append(logoImageParams, param{Name: "kind", In: "query", Type: "string", Enum: assetKinds, Doc: "Only this kind."})...),
+			},
+			{
+				Path: "/v1/asset-logos", Summary: "Search coins, indices, ETFs and commodities",
+				Doc:     "Assets whose symbol or name starts with q, largest first, or every asset of a kind.",
+				Example: "/v1/asset-logos?kind=index&limit=5",
+				Params:  []param{{Name: "q", In: "query", Type: "string", Doc: "Start of a symbol or name."}, {Name: "kind", In: "query", Type: "string", Enum: assetKinds, Doc: "Only this kind."}, limitParam, offsetParam},
 			},
 		},
 	},

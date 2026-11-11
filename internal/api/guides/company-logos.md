@@ -33,17 +33,21 @@ Asking for twice the size you display keeps it sharp on high-density screens.
 
 A listed company that has no published logo yet, often a recent IPO, always gets a tile of its initials, with the `X-Logo-Fallback: monogram` header. `/v1/companies/{symbol}` shows this as `"hasLogo": false`.
 
-An unknown symbol answers `404`, which shows as a broken image. With `fallback=monogram` it answers with the initials tile instead, and sets the same header so you can tell:
+An unknown symbol gets the same tile, so an `<img>` tag never shows a broken image. It answers `200` with `X-Logo-Fallback: monogram` and `X-Logo-Known: false`, and is cached for one day only, so a logo added later replaces it soon. Names that match nothing are counted (the name, never who asked) and their logos added.
 
-```html
-<img src="https://api.dharun.dev/v1/logos/NEWCO?fallback=monogram" alt="NewCo" width="32" height="32">
+To tell a tile from a real logo, read the headers:
+
+```sh
+curl -sI "https://api.dharun.dev/v1/logos/NEWCO" | grep -i '^x-logo'
 ```
+
+To detect a miss with the status code instead, add `fallback=none` to the address: an unknown symbol then answers `404`.
 
 ## A React component
 
 ```jsx
 export function CompanyLogo({ symbol, size = 32 }) {
-  const src = `https://api.dharun.dev/v1/logos/${encodeURIComponent(symbol)}?format=png&size=${size * 2}&fallback=monogram`;
+  const src = `https://api.dharun.dev/v1/logos/${encodeURIComponent(symbol)}?format=png&size=${size * 2}`;
   return <img src={src} alt={symbol} width={size} height={size} loading="lazy" style={{ borderRadius: 6 }} />;
 }
 ```

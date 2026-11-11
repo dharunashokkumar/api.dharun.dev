@@ -78,7 +78,7 @@ func TestAttacksAndErrorsAreLabelled(t *testing.T) {
 	}
 
 	// Not attacks: a company called Shell, and a code image of a script.
-	_, entry = send(http.MethodGet, "/v1/logos/SHELL", "")
+	_, entry = send(http.MethodGet, "/v1/logos/SHELL?fallback=none", "")
 	expect(entry, "", "", "", entry["error"].(string))
 	_, entry = send(http.MethodGet, "/v1", "")
 	expect(entry, "", "", "", "")

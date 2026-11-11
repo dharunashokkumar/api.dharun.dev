@@ -151,3 +151,28 @@ func TestPlaces(t *testing.T) {
 		t.Error("Svalbard in June should have no sunrise")
 	}
 }
+
+// Days that answered "no crossing found" (500 on /v1/panchang) before the crossing search
+// counted a wrapped step as crossed (da07127). Production answered 1,027 such 500s on
+// 29-30 Oct and 9-10 Nov 2026; on 9 Nov the old search failed only west of India.
+func TestCrossingWrapRegressions(t *testing.T) {
+	kolkata, _ := time.LoadLocation("Asia/Kolkata")
+	london, _ := time.LoadLocation("Europe/London")
+	cases := []struct {
+		date  string
+		place Place
+	}{
+		{"2026-11-09", Place{Latitude: 51.5074, Longitude: -0.1278, Zone: london}},
+		{"2026-01-20", Place{Latitude: 28.6139, Longitude: 77.2090, Zone: kolkata}},
+		{"2026-12-09", Place{Latitude: 28.6139, Longitude: 77.2090, Zone: kolkata}},
+		{"2027-01-09", Place{Latitude: 28.6139, Longitude: 77.2090, Zone: kolkata}},
+		{"2027-04-07", Place{Latitude: 28.6139, Longitude: 77.2090, Zone: kolkata}},
+		{"2027-05-08", Place{Latitude: 28.6139, Longitude: 77.2090, Zone: kolkata}},
+	}
+	for _, c := range cases {
+		day, _ := time.ParseInLocation("2006-01-02", c.date, c.place.Zone)
+		if _, err := Compute(day.Add(12*time.Hour), c.place); err != nil {
+			t.Errorf("%s at %.2f,%.2f (%s): %v", c.date, c.place.Latitude, c.place.Longitude, c.place.Zone, err)
+		}
+	}
+}

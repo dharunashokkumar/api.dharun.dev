@@ -46,6 +46,7 @@ type metrics struct {
 	failures    map[string]uint64 // route|status|code of error answers
 	attacks     map[string]uint64 // type|where, from the attack package's fixed lists
 	visitors    *visitors
+	missedLogos *missedLogos
 	totals      lifetimeTotals
 	totalsDirty bool
 
@@ -64,21 +65,22 @@ type lifetimeTotals struct {
 
 func newMetrics(version, stateDir string, datasets func() []datasetState) *metrics {
 	m := &metrics{
-		version:   version,
-		datasets:  datasets,
-		startedAt: time.Now(),
-		requests:  map[string]uint64{},
-		durations: map[string]*histogram{},
-		logos:     map[string]uint64{},
-		countries: map[string]uint64{},
-		states:    map[string]uint64{},
-		origins:   map[string]uint64{},
-		failures:  map[string]uint64{},
-		attacks:   map[string]uint64{},
-		visitors:  newVisitors(stateDir),
-		totals:    lifetimeTotals{Since: time.Now().UTC().Format("2006-01-02"), Requests: map[string]uint64{}},
-		stop:      make(chan struct{}),
-		done:      make(chan struct{}),
+		version:     version,
+		datasets:    datasets,
+		startedAt:   time.Now(),
+		requests:    map[string]uint64{},
+		durations:   map[string]*histogram{},
+		logos:       map[string]uint64{},
+		countries:   map[string]uint64{},
+		states:      map[string]uint64{},
+		origins:     map[string]uint64{},
+		failures:    map[string]uint64{},
+		attacks:     map[string]uint64{},
+		visitors:    newVisitors(stateDir),
+		missedLogos: newMissedLogos(stateDir),
+		totals:      lifetimeTotals{Since: time.Now().UTC().Format("2006-01-02"), Requests: map[string]uint64{}},
+		stop:        make(chan struct{}),
+		done:        make(chan struct{}),
 	}
 	if stateDir != "" {
 		m.statePath = filepath.Join(stateDir, "totals.json")
@@ -108,11 +110,12 @@ func (m *metrics) saveLoop() {
 	}
 }
 
-// save writes the totals and the visitor sketches.
+// save writes the totals, the visitor sketches and the missed logo names.
 func (m *metrics) save() {
 	if m.statePath == "" {
 		return
 	}
+	m.missedLogos.save()
 	m.mu.Lock()
 	var totals []byte
 	if m.totalsDirty {
@@ -221,7 +224,8 @@ func (m *metrics) origin(from traffic.Origin) {
 	m.mu.Unlock()
 }
 
-// observeLogo records a logo lookup. result is found, fallback or not_found.
+// observeLogo records a logo lookup. result is found, fallback (a known company without a
+// logo), unknown (the tile for a symbol that matched nothing) or not_found (fallback=none).
 func (m *metrics) observeLogo(format, result string) {
 	m.mu.Lock()
 	m.logos[format+"|"+result]++

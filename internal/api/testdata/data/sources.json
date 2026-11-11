@@ -155,5 +155,32 @@
     "version": "e3419eb0-f6ad30d1-3292eb71-80a0659f",
     "retrieved": "2026-10-16T06:56:19Z",
     "attribution": "Which registry answers for each domain, network and AS number, from IANA's RDAP bootstrap registries (CC0). Registration details come live from that registry."
+  },
+  "brand-logos": {
+    "name": "Indian brand logos",
+    "publisher": "Wikimedia Commons contributors; the brands' own websites",
+    "url": "https://github.com/dharunashokkumar/api.dharun.dev/tree/main/data/brand-logos",
+    "licence": "Logos are trademarks of the brands they identify; Commons files under their own free licence (public domain, CC0, CC BY, CC BY-SA), named per brand",
+    "retrieved": "2026-11-11",
+    "attribution": "Brand logos and trademarks belong to their respective owners. Commons artwork by the authors named in each entry.",
+    "notes": "A hand-kept list of unlisted Indian brands; tools/fetch_brand_logos.py records each file's origin in metadata.json."
+  },
+  "stock-logos": {
+    "name": "Global stock logos",
+    "publisher": "TradingView (logo files and listings)",
+    "url": "https://www.tradingview.com/",
+    "licence": "Logos are trademarks of the companies they identify",
+    "retrieved": "2026-11-11",
+    "attribution": "Company logos and trademarks belong to their respective owners.",
+    "notes": "Collected by tools/scrape_world_logos.py: every share on NASDAQ, NYSE and NYSE American, the 500 largest on each other major market."
+  },
+  "asset-logos": {
+    "name": "Crypto, index, ETF and commodity logos",
+    "publisher": "TradingView; spothq/cryptocurrency-icons (CC0 1.0); api.dharun.dev (commodity icons)",
+    "url": "https://github.com/spothq/cryptocurrency-icons",
+    "licence": "Coin, index and fund marks belong to their owners; spothq icons CC0 1.0; commodity icons drawn for this API",
+    "retrieved": "2026-11-11",
+    "attribution": "Marks belong to their respective owners. Crypto icons by spothq (CC0).",
+    "notes": "Collected by tools/scrape_world_logos.py."
   }
 }

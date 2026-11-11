@@ -1,0 +1,73 @@
+{
+ "generated_at": "2026-11-11T05:49:53+00:00",
+ "source": {
+  "provider": "Wikimedia Commons (files under a free licence); the brands' own site icons",
+  "note": "brands.json is kept by hand. Updated with tools/fetch_brand_logos.py."
+ },
+ "logos": [
+  {
+   "slug": "phonepe",
+   "name": "PhonePe",
+   "domain": "phonepe.com",
+   "category": "payments",
+   "aliases": [],
+   "file": "svg/phonepe.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:PhonePe_Logo.svg",
+   "licence": "Public domain",
+   "author": "PhonePe"
+  },
+  {
+   "slug": "google-pay",
+   "name": "Google Pay",
+   "domain": "pay.google.com",
+   "category": "payments",
+   "aliases": [
+    "googlepay",
+    "gpay",
+    "tez"
+   ],
+   "file": "svg/google-pay.svg",
+   "artwork": "commons",
+   "artwork_url": "https://commons.wikimedia.org/wiki/File:Google_Pay_Logo.svg",
+   "licence": "Public domain",
+   "author": "Google"
+  },
+  {
+   "slug": "cred",
+   "name": "CRED",
+   "domain": "cred.club",
+   "category": "payments",
+   "aliases": [],
+   "file": "png/cred.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://web-images.credcdn.in/v2/_next/assets/icons/logo.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "digilocker",
+   "name": "DigiLocker",
+   "domain": "digilocker.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": "png/digilocker.png",
+   "artwork": "site-icon",
+   "artwork_url": "https://cdn.digilocker.gov.in/digilocker-landing-page/assets/img/meta/apple-touch-icon.png",
+   "licence": null,
+   "author": null
+  },
+  {
+   "slug": "nhai",
+   "name": "NHAI",
+   "domain": "nhai.gov.in",
+   "category": "government",
+   "aliases": [],
+   "file": null,
+   "artwork": "none",
+   "artwork_url": null,
+   "licence": null,
+   "author": null
+  }
+ ]
+}

@@ -2,7 +2,7 @@
 
 > Logos and details for companies listed on NSE and BSE.
 
-Put a ticker in the URL and get the logo back as SVG or PNG. Every company listed on NSE, those listed only on BSE, and REITs and InvITs. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO), an ISIN, or the old ticker of a renamed company. A bare ticker prefers NSE. Delisted companies are kept and marked.
+Put a ticker in the URL and get the logo back as SVG or PNG. Every company listed on NSE, those listed only on BSE, and REITs and InvITs; a symbol that is not an Indian listing falls through to the brand, global stock and asset logo sets. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO), an ISIN, or the old ticker of a renamed company. A bare ticker prefers NSE. Delisted companies are kept and marked.
 
 Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
 
@@ -10,15 +10,15 @@ Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ...,
 
 `GET /v1/logos/{symbol}`
 
-Returns the image itself, ready for an <img> tag. A listed company without a published logo gets an initials tile, marked with the X-Logo-Fallback: monogram header. Unknown symbols return 404 unless fallback=monogram is set.
+Returns the image itself, ready for an <img> tag. A listed company without a published logo gets an initials tile, marked with the X-Logo-Fallback: monogram header. An unknown symbol also gets the tile, with status 200, the headers X-Logo-Fallback: monogram and X-Logo-Known: false, and a one-day cache lifetime, so a logo added later shows up soon; fallback=none answers 404 instead. A symbol that is not an Indian listing is looked up in the brand, global stock and asset logo sets, in that order, and X-Logo-Set says which answered (india, brand, stock or asset). Unknown names are counted (the name only) so that their logos can be added. A 304 answer, or a PNG this server has already drawn, does not count against the rate limit.
 
 Parameters:
 
 - `symbol` (path, required): Ticker, exchange-qualified ticker, Yahoo symbol, ISIN or earlier ticker. A .svg or .png suffix selects the format.
 - `format` (query): Image format. Default svg. One of: svg, png.
 - `size` (query): PNG width and height in pixels, 16 to 512. Default 128.
-- `fallback` (query): Return an initials tile instead of 404 for unknown symbols. One of: monogram.
-- `exchange` (query): Force an exchange. One of: nse, bse.
+- `fallback` (query): What an unknown symbol gets: monogram (the default, an initials tile) or none (404). One of: monogram, none.
+- `exchange` (query): Force an exchange: nse or bse for the Indian listing, or a global exchange for the global stocks. One of: nse, bse, nasdaq, nyse, amex, lse, tse, hkex, xetr, fwb, euronext, tsx, asx, six.
 
 Example: https://api.dharun.dev/v1/logos/TCS?utm_medium=skill (returns the image itself)
 

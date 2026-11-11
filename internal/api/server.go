@@ -209,6 +209,9 @@ type requestInfo struct {
 	// body is the start of a body sent to a path no route took, kept only to see whether
 	// it is an attack.
 	body []byte
+	// cached marks an answer that cost the server nothing to make: a 304, or a picture
+	// already in the PNG cache. Logo routes give such a request its charge back.
+	cached bool
 }
 
 type infoKey struct{}
@@ -281,7 +284,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	header := writer.Header()
 	header.Set("Access-Control-Allow-Origin", "*")
-	header.Set("Access-Control-Expose-Headers", "ETag, X-Logo-Fallback")
+	header.Set("Access-Control-Expose-Headers", "ETag, X-Logo-Fallback, X-Logo-Known")
 	header.Set("Cross-Origin-Resource-Policy", "cross-origin")
 	header.Set("X-Content-Type-Options", "nosniff")
 	header.Set("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -488,8 +491,16 @@ func (s *Server) handle(route string, cost int, pattern string, handler http.Han
 			defer release()
 		}
 		handler(w, r)
+		// A logo answered from cache does not count against the allowance (Dharun,
+		// 2026-11-11): apps that show many logos are the callers most often refused.
+		if details.cached && charge > 0 && freeWhenCached[route] {
+			s.limiter.refund(client, charge)
+		}
 	})
 }
+
+// freeWhenCached names the routes whose cached answers are free.
+var freeWhenCached = map[string]bool{"logo": true, "brand_logo": true, "stock_logo": true, "asset_logo": true}
 
 // takeSlot waits up to wait for a place in pool. When none comes free it answers 503
 // itself and reports false; otherwise it returns the function that gives the place back.
@@ -571,6 +582,18 @@ func (l *rateLimiter) allow(key string, cost int) bool {
 	defer l.mu.Unlock()
 	l.counts[key] += cost
 	return l.counts[key] <= l.perMinute
+}
+
+// refund gives back units charged for a request that turned out to cost nothing.
+func (l *rateLimiter) refund(key string, cost int) {
+	if l.perMinute <= 0 {
+		return
+	}
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	if l.counts[key] -= cost; l.counts[key] <= 0 {
+		delete(l.counts, key)
+	}
 }
 
 func (l *rateLimiter) close() { close(l.stop) }

@@ -1,0 +1,146 @@
+{
+ "generated_at": "2026-11-11T05:38:42+00:00",
+ "source": {
+  "provider": "TradingView scanner; spothq/cryptocurrency-icons (CC0 1.0); commodity icons drawn for this API",
+  "url": "https://scanner.tradingview.com/coin/scan",
+  "note": "The 500 largest coins, a fixed list of indices, every NSE ETF and the 300 largest US ETFs. Updated with tools/scrape_world_logos.py."
+ },
+ "logos": [
+  {
+   "id": "COMMODITY:GOLD",
+   "symbol": "GOLD",
+   "exchange": null,
+   "kind": "commodity",
+   "name": "Gold",
+   "aliases": [
+    "XAU",
+    "XAUUSD",
+    "GOLDM",
+    "GOLDPETAL"
+   ],
+   "file": "drawn/gold.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": null,
+   "currency": null,
+   "market_cap": null,
+   "artwork": "drawn",
+   "logo_id": null
+  },
+  {
+   "id": "COMMODITY:SILVER",
+   "symbol": "SILVER",
+   "exchange": null,
+   "kind": "commodity",
+   "name": "Silver",
+   "aliases": [
+    "XAG",
+    "XAGUSD",
+    "SILVERM",
+    "SILVERMIC"
+   ],
+   "file": "drawn/silver.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": null,
+   "currency": null,
+   "market_cap": null,
+   "artwork": "drawn",
+   "logo_id": null
+  },
+  {
+   "id": "CRYPTO:BTC",
+   "symbol": "BTC",
+   "exchange": null,
+   "kind": "crypto",
+   "name": "Bitcoin",
+   "aliases": [],
+   "file": "cc0/btc.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": null,
+   "currency": null,
+   "market_cap": 1482647764654.46,
+   "artwork": "spothq-cc0",
+   "logo_id": null
+  },
+  {
+   "id": "CRYPTO:ETH",
+   "symbol": "ETH",
+   "exchange": null,
+   "kind": "crypto",
+   "name": "Ethereum",
+   "aliases": [],
+   "file": "cc0/eth.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": null,
+   "currency": null,
+   "market_cap": 252463362175.37643,
+   "artwork": "spothq-cc0",
+   "logo_id": null
+  },
+  {
+   "id": "NSE:NIFTYBEES",
+   "symbol": "NIFTYBEES",
+   "exchange": "NSE",
+   "kind": "etf",
+   "name": "Nippon India ETF Nifty 50 BeES",
+   "aliases": [],
+   "file": "svg/nippon-life-india-asset.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": "INF204KB14I2",
+   "currency": "INR",
+   "market_cap": null,
+   "artwork": "tradingview",
+   "logo_id": "nippon-life-india-asset"
+  },
+  {
+   "id": "INDEX:SENSEX",
+   "symbol": "SENSEX",
+   "exchange": "BSE",
+   "kind": "index",
+   "name": "BSE Sensex",
+   "aliases": [
+    "BSESENSEX",
+    "SENSEX30"
+   ],
+   "file": "svg/indices_bse-sensex.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": null,
+   "currency": null,
+   "market_cap": null,
+   "artwork": "tradingview",
+   "logo_id": "indices/bse-sensex"
+  },
+  {
+   "id": "INDEX:NIFTY50",
+   "symbol": "NIFTY50",
+   "exchange": "NSE",
+   "kind": "index",
+   "name": "Nifty 50",
+   "aliases": [
+    "CNXNIFTY",
+    "NIFTY",
+    "NIFTY 50"
+   ],
+   "file": "svg/indices_nifty-50.svg",
+   "country": null,
+   "sector": null,
+   "industry": null,
+   "isin": null,
+   "currency": null,
+   "market_cap": null,
+   "artwork": "tradingview",
+   "logo_id": "indices/nifty-50"
+  }
+ ]
+}

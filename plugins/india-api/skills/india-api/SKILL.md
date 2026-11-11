@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE company logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois (RDAP), TLS certificate and website speed checks from India, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
+description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE, brand, global stock and crypto logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois (RDAP), TLS certificate and website speed checks from India, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -62,6 +62,15 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/logos/{symbol}`: Logo image for a listed company. Example: `/v1/logos/TCS?utm_medium=skill`
 - `GET /v1/companies/{symbol}`: Details of a listed company. Example: `/v1/companies/RELIANCE?utm_medium=skill`
 - `GET /v1/companies`: Search listed companies. Example: `/v1/companies?q=tata&limit=5&utm_medium=skill`
+
+**Brand, stock and asset logos** ([references/world-logos.md](references/world-logos.md)): Logos for unlisted Indian brands, global stocks, crypto, indices, ETFs and commodities.
+
+- `GET /v1/brand-logos/{name}`: Logo of an unlisted Indian brand. Example: `/v1/brand-logos/phonepe?utm_medium=skill`
+- `GET /v1/brand-logos`: Search the brands. Example: `/v1/brand-logos?q=pay&limit=5&utm_medium=skill`
+- `GET /v1/stock-logos/{symbol}`: Logo of a global stock. Example: `/v1/stock-logos/AAPL?utm_medium=skill`
+- `GET /v1/stock-logos`: Search the global stocks. Example: `/v1/stock-logos?q=micro&limit=5&utm_medium=skill`
+- `GET /v1/asset-logos/{symbol}`: Logo of a coin, index, ETF or commodity. Example: `/v1/asset-logos/BTC?utm_medium=skill`
+- `GET /v1/asset-logos`: Search coins, indices, ETFs and commodities. Example: `/v1/asset-logos?kind=index&limit=5&utm_medium=skill`
 
 **IFSC and banks** ([references/ifsc.md](references/ifsc.md)): IFSC to bank and branch.
 

@@ -134,6 +134,7 @@ func writeBody(w http.ResponseWriter, r *http.Request, status int, body []byte, 
 		}
 		header.Set("ETag", etag)
 		if (r.Method == http.MethodGet || r.Method == http.MethodHead) && noneMatch(r.Header.Get("If-None-Match"), etag) {
+			info(r).cached = true
 			w.WriteHeader(http.StatusNotModified)
 			return
 		}
