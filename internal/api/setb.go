@@ -14,6 +14,8 @@ func (s *Server) registerSetB() {
 	s.registerNAVHistory()
 	s.registerBullion()
 	s.registerRates()
+	s.registerBankCodes()
+	s.handle("sectors", costLight, "GET /v1/sectors", s.handleSectors)
 }
 
 type indexView struct {

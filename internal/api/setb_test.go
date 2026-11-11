@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"net/url"
 	"testing"
 )
 
@@ -94,4 +95,24 @@ func TestRatesAndExpiries(t *testing.T) {
 		}
 	}
 	expectStatus(t, "/v1/expiries?year=2024", http.StatusBadRequest)
+}
+
+func TestBankCodesAndSectors(t *testing.T) {
+	micr := expectStatus(t, "/v1/micr/400240003", http.StatusOK).json(t)["data"].([]any)
+	if len(micr) != 1 || micr[0].(map[string]any)["ifsc"] != "HDFC0000001" {
+		t.Errorf("micr %v", micr)
+	}
+	if swift := expectStatus(t, "/v1/swift/HDFCINBB", http.StatusOK).json(t)["data"].([]any); len(swift) < 2 {
+		t.Errorf("swift %v", swift)
+	}
+	expectStatus(t, "/v1/micr/12345", http.StatusBadRequest)
+	sectors := expectStatus(t, "/v1/sectors", http.StatusOK).json(t)["data"].([]any)
+	if len(sectors) == 0 {
+		t.Fatal("no sectors")
+	}
+	name := sectors[0].(map[string]any)["sector"].(string)
+	one := expectStatus(t, "/v1/sectors?sector="+url.QueryEscape(name), http.StatusOK).json(t)["data"].([]any)[0].(map[string]any)
+	if len(one["largest"].([]any)) == 0 {
+		t.Errorf("sector %v", one)
+	}
 }

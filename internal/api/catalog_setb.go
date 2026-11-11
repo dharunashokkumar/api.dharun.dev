@@ -4,6 +4,22 @@ package api
 
 func withSetB(groups []apiGroup) []apiGroup {
 	for i := range groups {
+		if groups[i].ID == "ifsc" {
+			groups[i].Endpoints = append(groups[i].Endpoints,
+				endpoint{Path: "/v1/micr/{code}", Summary: "Branch from a MICR code", Example: "/v1/micr/400240003",
+					Doc:    "The nine-digit code at the foot of a cheque, to the bank branch and its IFSC.",
+					Params: []param{{Name: "code", In: "path", Type: "string", Required: true, Doc: "Nine digits."}}},
+				endpoint{Path: "/v1/swift/{code}", Summary: "Branches with a SWIFT code", Example: "/v1/swift/HDFCINBB",
+					Params: []param{{Name: "code", In: "path", Type: "string", Required: true, Doc: "8 or 11 characters, such as HDFCINBB."}}},
+			)
+		}
+		if groups[i].ID == "logos" {
+			groups[i].Endpoints = append(groups[i].Endpoints,
+				endpoint{Path: "/v1/sectors", Summary: "Sectors and industries of listed companies", Example: "/v1/sectors",
+					Doc:    "Every sector and industry of the NSE and BSE listed companies with how many companies each has; give sector to list its industries and largest companies.",
+					Params: []param{{Name: "sector", In: "query", Type: "string", Doc: "One sector, as listed."}}},
+			)
+		}
 		if groups[i].ID == "mutual-funds" {
 			groups[i].MoreSources = append(groups[i].MoreSources, "nav-history")
 			groups[i].Endpoints = append(groups[i].Endpoints,
