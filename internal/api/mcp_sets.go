@@ -19,7 +19,7 @@ var toolSetRules = []struct {
 	words []string
 }{
 	{"network", []string{"dns", "email", "traceroute", "whois", "tls", "ipv6", "probe", "icon", "lookup_ip", "preview_link", "read_web_page"}},
-	{"files", []string{"image", "pdf", "barcode", "qr_code", "invoice", "typst", "speech", "audio", "transcribe", "noise", "background", "chart", "code_image", "read_text_in_image"}},
+	{"files", []string{"image", "pdf", "barcode", "qr_code", "invoice", "typst", "speech", "audio", "transcribe", "noise", "background", "chart", "code_image", "read_text_in_image", "document", "aadhaar"}},
 	{"dates", []string{"holiday", "today", "panchang", "sun_moon", "festival", "date", "cron", "time_zone", "working", "satellite"}},
 	{"money", []string{"calculate", "gst", "rbi", "gold", "mutual", "expiries", "index", "compan", "logo", "ifsc", "bank", "upi", "payment", "words", "indian_number", "hsn"}},
 	{"text", []string{"translat", "moderate", "embed", "rerank", "chunk", "redact", "tamil", "braille", "keyboard", "letters", "compare_texts", "data_format", "hash", "jwt", "regex", "thirukkural", "fake", "ids", "color"}},

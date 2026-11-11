@@ -10,6 +10,7 @@ import (
 	"errors"
 	"io"
 	"math"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -46,6 +47,9 @@ type Block struct{ Lines []Line }
 type Page struct {
 	Width, Height float64
 	Blocks        []Block
+	// CellGap is the gap between words, in line heights, that starts a new table cell;
+	// zero means 0.4, right for a PDF's text layer.
+	CellGap float64
 }
 
 // ParseBBox reads pdftotext -bbox-layout output.
@@ -158,9 +162,12 @@ func isRoman(s string) bool {
 	return strings.Trim(strings.ToLower(s), "ivx") == ""
 }
 
-// Markdown turns pages into Markdown: a line taller than the body text by a quarter or
-// more becomes a heading (the tallest #, then ## and ###), bulleted and numbered lines
-// become lists, and the rest of each block one paragraph. Pages are separated by a rule.
+// Markdown turns pages into Markdown. Lines are rebuilt by their height on the page, so
+// text laid out in columns reads across; tables (see Tables) are written as Markdown
+// tables where they stand; a line taller than the body text by a fifth or more becomes a
+// heading (the tallest size #, the next ##, the rest ###); bulleted and numbered lines become lists; and
+// lines close together of one size are joined into paragraphs. A page number alone at
+// the top or bottom of a page is left out, and pages are separated by a rule.
 func Markdown(pages []Page) string {
 	var heights []float64
 	for _, p := range pages {
@@ -173,61 +180,106 @@ func Markdown(pages []Page) string {
 		}
 	}
 	body := median(heights)
+	// Heading sizes, tallest first: sizes within a twentieth of each other are one level.
+	var sizes []float64
+	for _, p := range pages {
+		for _, r := range pageRows(p) {
+			if body > 0 && r.height() >= 1.18*body && len(r.words) <= 20 {
+				sizes = append(sizes, r.height())
+			}
+		}
+	}
+	sort.Sort(sort.Reverse(sort.Float64Slice(sizes)))
+	var levels []float64
+	for _, h := range sizes {
+		if n := len(levels); n == 0 || h < levels[n-1]*0.95 {
+			levels = append(levels, h)
+		}
+	}
 	level := func(h float64) int {
-		if body <= 0 {
+		if body <= 0 || h < 1.18*body {
 			return 0
 		}
-		ratio := h / body
-		switch {
-		case ratio >= 1.8:
-			return 1
-		case ratio >= 1.4:
-			return 2
-		case ratio >= 1.18:
-			return 3
+		for i, top := range levels {
+			if h >= top*0.95 {
+				return min(i+1, 3)
+			}
 		}
-		return 0
+		return 3
 	}
 	var out []string
 	for pi, p := range pages {
 		if pi > 0 {
 			out = append(out, "---")
 		}
-		// Running headers and footers (page numbers) are left out: a line alone in a
-		// block in the top or bottom twentieth of the page that is only a number.
-		for _, b := range p.Blocks {
-			var paragraph []string
-			flush := func() {
-				if len(paragraph) > 0 {
-					out = append(out, joinHyphenated(paragraph))
-					paragraph = nil
-				}
+		rows := pageRows(p)
+		tables := findTables(rows)
+		var paragraph []string
+		var last *row
+		flush := func() {
+			if len(paragraph) > 0 {
+				out = append(out, joinHyphenated(paragraph))
+				paragraph = nil
 			}
-			for _, l := range b.Lines {
-				text := l.Text()
-				if len(b.Lines) == 1 && (l.Y1 < p.Height*0.05 || l.Y0 > p.Height*0.95) {
-					if _, err := strconv.Atoi(strings.Trim(text, " -–")); err == nil {
-						continue
-					}
-				}
-				if n := level(l.Height()); n > 0 && len(l.Words) <= 20 {
-					flush()
-					out = append(out, strings.Repeat("#", n)+" "+text)
-					continue
-				}
-				if item, ok, numbered := listMarker(text); ok {
-					flush()
-					if numbered {
-						out = append(out, "1. "+item)
-					} else {
-						out = append(out, "- "+item)
-					}
-					continue
-				}
-				paragraph = append(paragraph, text)
-			}
-			flush()
+			last = nil
 		}
+		for i := 0; i < len(rows); i++ {
+			if t, ok := tables[i]; ok {
+				flush()
+				out = append(out, strings.TrimRight(MarkdownTable(t.table), "\n"))
+				i = t.end - 1
+				continue
+			}
+			r := rows[i]
+			text := r.text()
+			// Things side by side (a name on the left, a title on the right) stay apart.
+			spread := false
+			if cells := r.cells(); len(cells) > 1 {
+				parts := make([]string, 0, len(cells))
+				for j, c := range cells {
+					if j > 0 && c[0].X0-cells[j-1][len(cells[j-1])-1].X1 > 4*r.height() {
+						spread = true
+					}
+					parts = append(parts, row{words: c}.text())
+				}
+				if spread {
+					text = strings.Join(parts, " · ")
+				}
+			}
+			if r.y1 < p.Height*0.06 || r.y0 > p.Height*0.94 {
+				if pageNumber.MatchString(text) {
+					continue
+				}
+			}
+			if n := level(r.height()); n > 0 && len(r.words) <= 20 {
+				flush()
+				out = append(out, strings.Repeat("#", n)+" "+text)
+				continue
+			}
+			if item, ok, numbered := listMarker(text); ok {
+				flush()
+				if numbered {
+					out = append(out, "1. "+escapeLead(item))
+				} else {
+					out = append(out, "- "+escapeLead(item))
+				}
+				continue
+			}
+			// A new paragraph after a gap, a change of size, or a line that starts
+			// elsewhere than the one before.
+			if spread {
+				flush()
+				out = append(out, escapeLead(text))
+				continue
+			}
+			if last != nil && (r.y0-last.y1 > 0.6*r.height() || math.Abs(r.height()-last.height()) > 0.15*r.height() ||
+				math.Abs(r.words[0].X0-last.words[0].X0) > 2*r.height()) {
+				flush()
+			}
+			paragraph = append(paragraph, escapeLead(text))
+			last = &rows[i]
+		}
+		flush()
 	}
 	// Join list items of one list without blank lines between them.
 	var b strings.Builder
@@ -244,6 +296,32 @@ func Markdown(pages []Page) string {
 		b.WriteString(part)
 	}
 	return b.String()
+}
+
+var pageNumber = regexp.MustCompile(`(?i)^(page\s+)?[-–]?\s*\d{1,4}\s*[-–]?(\s*(of|/)\s*\d{1,4})?$`)
+
+// escapeLead keeps a line that starts with a Markdown mark from being read as one.
+func escapeLead(s string) string {
+	if s != "" && strings.ContainsRune("#>|=+", rune(s[0])) {
+		return "\\" + s
+	}
+	return s
+}
+
+func pageRows(p Page) []row {
+	var lines []Line
+	for _, b := range p.Blocks {
+		lines = append(lines, b.Lines...)
+	}
+	return mergeRows(lines, p.CellGap)
+}
+
+func (r row) text() string {
+	parts := make([]string, len(r.words))
+	for i, w := range r.words {
+		parts[i] = w.Text
+	}
+	return strings.Join(parts, " ")
 }
 
 // joinHyphenated joins a paragraph's lines, mending words broken with a hyphen.
@@ -274,54 +352,79 @@ type Table struct {
 	Rows    [][]string `json:"rows"`
 }
 
-// Tables finds tables: three or more lines in a row whose words fall into the same two
-// or more columns, the columns being the gaps that run down every one of those lines.
+// Tables finds tables: three or more rows in a row whose cells line up in the same two or
+// more columns. A column is the stretch across the page that cells of those rows cover;
+// a row whose cells would join two columns, or mostly fall outside them, ends the table.
 func Tables(pages []Page) []Table {
-	var tables []Table
+	tables := []Table{}
 	for pi, p := range pages {
-		var lines []Line
-		for _, b := range p.Blocks {
-			lines = append(lines, b.Lines...)
-		}
-		// pdftotext can split one visual row into several blocks: rebuild rows by y.
-		rows := mergeRows(lines)
-		var run []row
-		flush := func() {
-			if t, ok := tableFrom(run); ok {
-				t.Page = pi + 1
-				tables = append(tables, t)
-			}
-			run = nil
-		}
-		for _, r := range rows {
-			if len(r.cells()) >= 2 {
-				if len(run) > 0 && r.y0-run[len(run)-1].y1 > 3*math.Max(r.height(), 1) {
-					flush()
-				}
-				run = append(run, r)
-			} else {
-				flush()
+		rows := pageRows(p)
+		found := findTables(rows)
+		for i := range rows {
+			if t, ok := found[i]; ok {
+				t.table.Page = pi + 1
+				tables = append(tables, t.table)
 			}
 		}
-		flush()
 	}
 	return tables
+}
+
+type foundTable struct {
+	table Table
+	end   int // the row after the table
+}
+
+// findTables returns the tables of a page by the row each starts at.
+func findTables(rows []row) map[int]foundTable {
+	found := map[int]foundTable{}
+	start := 0
+	var spans []span
+	flush := func(end int) {
+		if t, ok := tableFrom(rows[start:end], spans); ok {
+			found[start] = foundTable{t, end}
+		}
+		start, spans = end, nil
+	}
+	for i, r := range rows {
+		cells := r.cells()
+		if len(cells) < 2 {
+			flush(i)
+			start = i + 1
+			continue
+		}
+		if i > start {
+			last := rows[i-1]
+			if r.y0-last.y1 > 2.5*math.Max(r.height(), 1) || !fits(spans, cells) {
+				flush(i)
+			}
+		}
+		spans = addSpans(spans, cells)
+	}
+	flush(len(rows))
+	return found
 }
 
 type row struct {
 	words  []Word
 	y0, y1 float64
+	gap    float64 // a gap wider than this many heights starts a new cell
 }
 
 func (r row) height() float64 { return r.y1 - r.y0 }
 
-// cells splits a row where the gap between words is wider than one and a half times the
-// row's height (an ordinary space is about a quarter of it).
+// cells splits a row where the gap between words is wider than an ordinary space: in a
+// PDF's text layer a space is about a fifth of the line's height, so a gap of two fifths
+// starts a new cell. OCR boxes are tighter than font boxes, and their pages set CellGap.
 func (r row) cells() [][]Word {
+	gap := r.gap
+	if gap <= 0 {
+		gap = 0.4
+	}
 	var out [][]Word
 	var current []Word
 	for i, w := range r.words {
-		if i > 0 && w.X0-r.words[i-1].X1 > 1.5*math.Max(r.height(), 4) {
+		if i > 0 && w.X0-r.words[i-1].X1 > math.Max(gap*r.height(), 3) {
 			out = append(out, current)
 			current = nil
 		}
@@ -333,17 +436,21 @@ func (r row) cells() [][]Word {
 	return out
 }
 
-func mergeRows(lines []Line) []row {
+func mergeRows(lines []Line, gap float64) []row {
+	lines = append([]Line(nil), lines...)
 	sort.SliceStable(lines, func(i, j int) bool { return lines[i].Y0 < lines[j].Y0 })
 	var rows []row
 	for _, l := range lines {
+		if len(l.Words) == 0 {
+			continue
+		}
 		mid := (l.Y0 + l.Y1) / 2
 		if n := len(rows); n > 0 && mid >= rows[n-1].y0 && mid <= rows[n-1].y1 {
 			rows[n-1].words = append(rows[n-1].words, l.Words...)
 			rows[n-1].y0, rows[n-1].y1 = math.Min(rows[n-1].y0, l.Y0), math.Max(rows[n-1].y1, l.Y1)
 			continue
 		}
-		rows = append(rows, row{words: append([]Word(nil), l.Words...), y0: l.Y0, y1: l.Y1})
+		rows = append(rows, row{words: append([]Word(nil), l.Words...), y0: l.Y0, y1: l.Y1, gap: gap})
 	}
 	for i := range rows {
 		sort.Slice(rows[i].words, func(a, b int) bool { return rows[i].words[a].X0 < rows[i].words[b].X0 })
@@ -351,50 +458,66 @@ func mergeRows(lines []Line) []row {
 	return rows
 }
 
-// tableFrom aligns a run of rows on column starts that most rows share.
-func tableFrom(run []row) (Table, bool) {
-	if len(run) < 3 {
-		return Table{}, false
-	}
-	// Column edges: the left x of every cell, clustered within a few points.
-	var starts []float64
-	for _, r := range run {
-		for _, c := range r.cells() {
-			starts = append(starts, c[0].X0)
+type span struct{ x0, x1 float64 }
+
+func cellSpan(c []Word) span { return span{c[0].X0, c[len(c)-1].X1} }
+
+func (a span) overlaps(b span) bool { return a.x0 < b.x1 && b.x0 < a.x1 }
+
+// fits says whether a row's cells line up with a table's columns: none joins two columns,
+// and at least half fall in one.
+func fits(spans []span, cells [][]Word) bool {
+	inside := 0
+	for _, c := range cells {
+		n := 0
+		for _, s := range spans {
+			if cellSpan(c).overlaps(s) {
+				n++
+			}
 		}
+		if n > 1 {
+			return false
+		}
+		inside += n
 	}
-	sort.Float64s(starts)
-	var edges []float64
-	var counts []int
-	for _, x := range starts {
-		if n := len(edges); n > 0 && x-edges[n-1] < 12 {
-			counts[n-1]++
+	return inside*2 >= len(cells)
+}
+
+// addSpans widens the columns by a row's cells, joining any that come to overlap.
+func addSpans(spans []span, cells [][]Word) []span {
+	for _, c := range cells {
+		spans = append(spans, cellSpan(c))
+	}
+	sort.Slice(spans, func(i, j int) bool { return spans[i].x0 < spans[j].x0 })
+	var out []span
+	for _, s := range spans {
+		if n := len(out); n > 0 && s.x0 < out[n-1].x1 {
+			out[n-1].x1 = math.Max(out[n-1].x1, s.x1)
 			continue
 		}
-		edges, counts = append(edges, x), append(counts, 1)
+		out = append(out, s)
 	}
-	var columns []float64
-	for i, x := range edges {
-		if counts[i]*2 >= len(run) {
-			columns = append(columns, x)
-		}
-	}
-	if len(columns) < 2 {
+	return out
+}
+
+// tableFrom puts each cell of a run of rows in the column it falls in.
+func tableFrom(run []row, spans []span) (Table, bool) {
+	if len(run) < 3 || len(spans) < 2 {
 		return Table{}, false
 	}
-	t := Table{Columns: len(columns)}
+	t := Table{Columns: len(spans)}
 	for _, r := range run {
-		cells := make([]string, len(columns))
+		cells := make([]string, len(spans))
 		for _, c := range r.cells() {
 			col := 0
-			for i, x := range columns {
-				if c[0].X0 >= x-12 {
+			for i, s := range spans {
+				if cellSpan(c).overlaps(s) {
 					col = i
 				}
 			}
-			var parts []string
-			for _, w := range c {
-				parts = append(parts, w.Text)
+			parts := make([]string, len(c))
+			for i, w := range c {
+				parts[i] = w.Text
 			}
 			text := strings.Join(parts, " ")
 			if cells[col] != "" {

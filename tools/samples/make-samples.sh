@@ -11,6 +11,9 @@
 #   locked.pdf    document.pdf behind the password india, for /v1/pdf/unlock
 #   clip.mp4      two seconds of ffmpeg's test picture and a tone, for the video tools
 #   table.csv     three post offices, for the spreadsheet tools
+#   invoice.pdf   the documented GST invoice example, made by this API, for the document readers
+#   einvoice-qr.png  a QR code shaped like a GST e-invoice's signed QR (not signed), drawn by this API
+#   idcard.png    a made-up identity card with a pattern number and a QR code, for Aadhaar masking
 #   badge.svg     a small flag drawn by hand, for SVG to PNG (written once, not by this script)
 #
 # Needs typst, piper (with the en_US-ljspeech-medium voice in $VOICES), ffmpeg, vips and Go:
@@ -39,6 +42,13 @@ server=$!
 for _ in $(seq 50); do curl -fs http://127.0.0.1:18080/healthz >/dev/null && break; sleep 0.2; done
 curl -fs "http://127.0.0.1:18080/v1/qr?text=https://api.dharun.dev&format=png&size=360" -o "$work/qr.png"
 curl -fs "http://127.0.0.1:18080/v1/barcode/ean13?text=890123456789&format=png&scale=3&height=150" -o "$work/ean.png"
+# invoice.pdf: the documented example invoice, for the document readers (2026-11-11).
+python3 -I -c 'import re,sys; print(re.search(r"const invoiceExample = `(.*?)`", open(sys.argv[1]).read(), re.S).group(1))' internal/api/catalog_files.go \
+  | curl -fs -X POST -H "Content-Type: application/json" --data-binary @- http://127.0.0.1:18080/v1/invoice -o "$out/invoice.pdf"
+curl -fs -G --data-urlencode "text=$(go run ./tools/samples/einvoiceqr)" "http://127.0.0.1:18080/v1/qr?format=png&size=600" -o "$out/einvoice-qr.png"
+curl -fs "http://127.0.0.1:18080/v1/qr?text=SAMPLE%20CARD%20-%20NOT%20A%20REAL%20DOCUMENT&format=svg" -o "$work/qr.svg"
+cp tools/samples/idcard.typ "$work/"
+compile --format png --ppi 300 --root "$work" "$work/idcard.typ" "$out/idcard.png"
 cp tools/samples/codes.typ "$work/"
 compile --format png --ppi 96 --root "$work" "$work/codes.typ" "$work/codes-big.png"
 vips copy "$work/codes-big.png" "$out/codes.png[compression=9,keep=none]"

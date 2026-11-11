@@ -68,6 +68,7 @@ JavaScript and Python.
 | [QR, UPI QR and barcodes](https://api.dharun.dev/docs/codes) | `/v1/qr?text=hello`, `/v1/upi-qr?pa=shop@okaxis&am=250`, `POST /v1/barcode/read` | QR codes, UPI payment QR codes and links, barcodes; reading codes from a photo |
 | [GST invoice](https://api.dharun.dev/docs/invoice) | `POST /v1/invoice` | A GST tax invoice PDF from JSON: CGST and SGST or IGST, HSN summary, amount in words, UPI QR |
 | [OCR](https://api.dharun.dev/docs/ocr) | `POST /v1/ocr?lang=eng+tam` | Text from photos, scans and scanned PDFs in English and ten Indian languages |
+| [Document reading](https://api.dharun.dev/docs/documents) | `POST /v1/doc/markdown`, `/doc/tables`, `/doc/invoice`, `/doc/einvoice-qr`, `/doc/mask-aadhaar` | PDFs and scans to Markdown and tables, GST invoices read and checked, e-invoice QR codes, Aadhaar numbers masked in pictures |
 | [Image tools](https://api.dharun.dev/docs/image-tools) | `POST /v1/image/convert?format=webp&width=800` | Resize and convert (WebP, AVIF, HEIC in), remove backgrounds, perceptual hashes |
 | [PDF tools](https://api.dharun.dev/docs/pdf) | `POST /v1/pdf/merge`, `/pages`, `/rotate`, `/compress`, `/text`, `/render` | Merge, split, rotate, compress, read text, draw pages |
 | [Typst to PDF](https://api.dharun.dev/docs/typst) | `/v1/typst?text=...` | Typst documents to PDF or PNG, with Indian scripts |

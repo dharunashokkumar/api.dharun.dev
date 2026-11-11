@@ -387,6 +387,14 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/media/waveform`: Waveform picture. Example: `/v1/media/waveform?width=800&height=160&utm_medium=skill`
 - `GET /v1/media/thumbnail`: A frame from a video. Example: `/v1/media/thumbnail?at=1&utm_medium=skill`
 
+**Document reading** ([references/documents.md](references/documents.md)): PDFs and scans to Markdown and tables, GST invoices read and checked, e-invoice QR codes, Aadhaar masking.
+
+- `GET /v1/doc/markdown`: PDF or scan to Markdown. Example: `/v1/doc/markdown?utm_medium=skill`
+- `GET /v1/doc/tables`: Tables in a PDF or scan. Example: `/v1/doc/tables?utm_medium=skill`
+- `GET /v1/doc/invoice`: Read and check a GST invoice. Example: `/v1/doc/invoice?utm_medium=skill`
+- `GET /v1/doc/einvoice-qr`: Read a GST e-invoice's signed QR code. Example: `/v1/doc/einvoice-qr?utm_medium=skill`
+- `GET /v1/doc/mask-aadhaar`: Mask an Aadhaar number in a picture. Example: `/v1/doc/mask-aadhaar?utm_medium=skill`
+
 ### Developer tools
 
 **Regex tester** ([references/regex.md](references/regex.md)): Run a regular expression against a text and see every match, explained.

@@ -141,6 +141,10 @@ post_check /v1/pdf/info document.pdf application/pdf application/json '"pages":2
 post_check /v1/barcode/read codes.png image/png application/json '"ean13"'
 post_check /v1/pdf/text document.pdf application/pdf application/json 'India API sample document'
 post_check /v1/ocr receipt.png image/png application/json 'MURUGAN'
+post_check /v1/doc/markdown invoice.pdf application/pdf application/json 'Basmati rice'
+post_check /v1/doc/invoice invoice.pdf application/pdf application/json 'INV-2026-0042'
+post_check /v1/doc/einvoice-qr einvoice-qr.png image/png application/json '33AABCS1429B1Z1'
+post_check /v1/doc/mask-aadhaar idcard.png image/png image/png
 post_check /v1/image/info photo.jpg image/jpeg application/json '"width":853'
 post_check "/v1/image/convert?format=webp&width=200" photo.jpg image/jpeg image/webp
 post_json "/v1/invoice?format=json" '{"number":"T-1","date":"2026-10-14","seller":{"name":"A","address":"Namakkal","gstin":"33AABCS1429B1Z1"},"buyer":{"name":"B","address":"Bengaluru","gstin":"29AAACK6812C1ZS"},"items":[{"description":"Rice","hsn":"1006","rate":100,"gst_rate":5}]}' application/json '"igst":5'

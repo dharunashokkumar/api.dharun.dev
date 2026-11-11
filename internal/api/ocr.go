@@ -123,74 +123,23 @@ func (s *Server) handleOCR(w http.ResponseWriter, r *http.Request, in uploadInpu
 	ctx, cancel := context.WithTimeout(r.Context(), 85*time.Second)
 	defer cancel()
 
-	var pictures []string
-	switch kind := pictureKind(data); {
-	case isPDF(data):
-		first, last, ok := pageRange(in, r)
-		if !ok {
-			s.badRequest(w, r, "first and last are page numbers, first from 1 and last not before first.")
-			return
-		}
-		last = min(last, first+ocrMaxPages-1)
-		path := filepath.Join(dir, "in.pdf")
-		if err := os.WriteFile(path, data, 0o600); err != nil {
-			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-			return
-		}
-		if _, err := s.run(ctx, job{program: "pdftoppm", args: []string{"-r", ocrDPI, "-gray", "-png", "-f", itoa(first), "-l", itoa(last), path, filepath.Join(dir, "page")}, dir: dir, timeout: 60 * time.Second}); err != nil {
-			s.toolFailed(w, r, err, "read the PDF")
-			return
-		}
-		pictures, _ = filepath.Glob(filepath.Join(dir, "page-*.png"))
-		sort.Slice(pictures, func(a, b int) bool { return pageNumber(pictures[a]) < pageNumber(pictures[b]) })
-		if len(pictures) == 0 {
-			s.badRequest(w, r, "The PDF has no pages in that range.")
-			return
-		}
-	case kind != "":
-		path := filepath.Join(dir, "in."+kind)
-		if err := os.WriteFile(path, data, 0o600); err != nil {
-			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-			return
-		}
-		pictures = []string{path}
-	default:
-		// HEIC, AVIF and the rest: libvips turns them into a PNG Tesseract can read.
-		path := filepath.Join(dir, "in")
-		out := filepath.Join(dir, "in.png")
-		if err := os.WriteFile(path, data, 0o600); err != nil {
-			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-			return
-		}
-		if _, err := s.run(ctx, job{program: "vips", args: []string{"thumbnail", path, out, "10000", "--size", "down"}, dir: dir, timeout: 30 * time.Second}); err != nil {
-			s.notPicture(w, r)
-			return
-		}
-		pictures = []string{out}
+	pictures, ok := s.ocrPictures(ctx, w, r, in, dir)
+	if !ok {
+		return
 	}
 
 	result := ocrResult{Language: language, Pages: []ocrPage{}}
 	var texts []string
 	var confidence, words float64
 	for i, picture := range pictures {
-		base := filepath.Join(dir, "out-"+itoa(i))
-		_, err := s.run(ctx, job{
-			program: "tesseract",
-			args:    []string{picture, base, "-l", language, "--oem", "1", "--psm", "3", "txt", "tsv"},
-			dir:     dir, env: []string{"OMP_THREAD_LIMIT=1"}, timeout: 60 * time.Second,
-		})
+		page, err := s.tesseract(ctx, dir, picture, i, language, "3")
 		if err != nil {
 			s.toolFailed(w, r, err, "read text from the picture")
 			return
 		}
-		text, _ := os.ReadFile(base + ".txt")
-		table, _ := os.ReadFile(base + ".tsv")
-		page := readTesseractTSV(table)
-		page.Page = i + 1
 		if isPDF(data) {
 			page.Page = pageNumber(picture)
 		}
-		page.Text = strings.TrimSpace(strings.ReplaceAll(string(text), "\f", ""))
 		confidence += page.Confidence * float64(len(page.Words))
 		words += float64(len(page.Words))
 		if !withWords {
@@ -208,6 +157,80 @@ func (s *Server) handleOCR(w http.ResponseWriter, r *http.Request, in uploadInpu
 		note += " At most " + itoa(ocrMaxPages) + " pages per request; use first and last for the rest. A PDF with real text is read faster and better by /v1/pdf/text."
 	}
 	s.ok(w, r, result, meta{Note: note}, cacheNone)
+}
+
+// ocrPictures turns an upload into pictures Tesseract reads: a PDF's pages (first to
+// last, at most ocrMaxPages) drawn at 300 dpi, a picture as it is, or any other format
+// libvips can read as a PNG. It answers the request itself when it cannot.
+func (s *Server) ocrPictures(ctx context.Context, w http.ResponseWriter, r *http.Request, in uploadInput, dir string) ([]string, bool) {
+	data := in.Files[0].Data
+	var pictures []string
+	switch kind := pictureKind(data); {
+	case isPDF(data):
+		first, last, ok := pageRange(in, r)
+		if !ok {
+			s.badRequest(w, r, "first and last are page numbers, first from 1 and last not before first.")
+			return nil, false
+		}
+		last = min(last, first+ocrMaxPages-1)
+		path := filepath.Join(dir, "in.pdf")
+		if err := os.WriteFile(path, data, 0o600); err != nil {
+			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+			return nil, false
+		}
+		if _, err := s.run(ctx, job{program: "pdftoppm", args: []string{"-r", ocrDPI, "-gray", "-png", "-f", itoa(first), "-l", itoa(last), path, filepath.Join(dir, "page")}, dir: dir, timeout: 60 * time.Second}); err != nil {
+			s.toolFailed(w, r, err, "read the PDF")
+			return nil, false
+		}
+		pictures, _ = filepath.Glob(filepath.Join(dir, "page-*.png"))
+		sort.Slice(pictures, func(a, b int) bool { return pageNumber(pictures[a]) < pageNumber(pictures[b]) })
+		if len(pictures) == 0 {
+			s.badRequest(w, r, "The PDF has no pages in that range.")
+			return nil, false
+		}
+	case kind != "":
+		path := filepath.Join(dir, "in."+kind)
+		if err := os.WriteFile(path, data, 0o600); err != nil {
+			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+			return nil, false
+		}
+		pictures = []string{path}
+	default:
+		// HEIC, AVIF and the rest: libvips turns them into a PNG Tesseract can read.
+		path := filepath.Join(dir, "in")
+		out := filepath.Join(dir, "in.png")
+		if err := os.WriteFile(path, data, 0o600); err != nil {
+			s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
+			return nil, false
+		}
+		if _, err := s.run(ctx, job{program: "vips", args: []string{"thumbnail", path, out, "10000", "--size", "down"}, dir: dir, timeout: 30 * time.Second}); err != nil {
+			s.notPicture(w, r)
+			return nil, false
+		}
+		pictures = []string{out}
+	}
+
+	return pictures, true
+}
+
+// tesseract reads one picture with the page segmentation mode psm (3 is automatic,
+// 11 sparse text, for cards and receipts).
+func (s *Server) tesseract(ctx context.Context, dir, picture string, i int, language, psm string) (ocrPage, error) {
+	base := filepath.Join(dir, "out-"+itoa(i))
+	_, err := s.run(ctx, job{
+		program: "tesseract",
+		args:    []string{picture, base, "-l", language, "--oem", "1", "--psm", psm, "txt", "tsv"},
+		dir:     dir, env: []string{"OMP_THREAD_LIMIT=1"}, timeout: 60 * time.Second,
+	})
+	if err != nil {
+		return ocrPage{}, err
+	}
+	text, _ := os.ReadFile(base + ".txt")
+	table, _ := os.ReadFile(base + ".tsv")
+	page := readTesseractTSV(table)
+	page.Page = i + 1
+	page.Text = strings.TrimSpace(strings.ReplaceAll(string(text), "\f", ""))
+	return page, nil
 }
 
 // pageNumber reads the page number pdftoppm writes into a file name: page-07.png.

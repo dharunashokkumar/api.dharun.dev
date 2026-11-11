@@ -2,7 +2,7 @@
 
 Free, open source reference data and checks for India, for Claude. The plugin adds two things:
 
-- **The India API skill**, which tells Claude when to use the API and how to call it: pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO codes, NSE and BSE company logos, mutual fund NAVs, HSN codes, UPI QR codes, numbers in words in lakh and crore, transliteration, panchang and more. 70 APIs in all.
+- **The India API skill**, which tells Claude when to use the API and how to call it: pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO codes, NSE and BSE company logos, mutual fund NAVs, HSN codes, UPI QR codes, numbers in words in lakh and crore, transliteration, panchang and more. 71 APIs in all.
 - **The India API MCP server** at `https://api.dharun.dev/mcp`, so Claude can look these up by itself. It needs no key for most tools; a free key from https://api.dharun.dev/signup, set as an `Authorization: Bearer` header in the MCP configuration, raises the limits and will be needed for the model tools.
 
 ## What it sends and where
