@@ -25,7 +25,7 @@ const (
 	productName = "India API"
 	siteName    = "api.dharun.dev"
 	siteTagline = "Free, open source APIs for Indian data"
-	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company, brand, global stock and crypto logos, UPI QR codes, number to words in lakh and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation and speech to text in Indian languages, embeddings, moderation and more. No API key needed for most endpoints (a free key raises the limits), open CORS, an MCP server for AI assistants, free tool pages and a playground. Open source under AGPL-3.0."
+	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company, brand, global stock and crypto logos, UPI QR codes, number to words in lakh and crore, festivals, gold, RBI and mutual fund rates, GST invoices as PDF, reading invoices, bank statements and other documents, OCR in Indian languages, PDF and image tools, translation and speech to text in Indian languages, embeddings, moderation and more. No API key needed for most endpoints (a free key raises the limits), open CORS, an MCP server for AI assistants, free tool pages and a playground. Open source under AGPL-3.0."
 
 	publicOrigin = "https://api.dharun.dev" // where the skill and the registry entry point
 	repoURL      = "https://github.com/dharunashokkumar/api.dharun.dev"

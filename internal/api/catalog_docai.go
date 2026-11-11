@@ -16,7 +16,7 @@ var docParams = []param{
 func withDocAI(groups []apiGroup) []apiGroup {
 	return append(groups, apiGroup{
 		ID: "documents", Category: "files", Title: "Document reading",
-		Tagline: "PDFs and scans to Markdown and tables, GST invoices read and checked, e-invoice QR codes, Aadhaar masking.",
+		Tagline: "PDFs and scans to Markdown and tables; invoices, receipts, cheques and bank statements read and checked; Aadhaar masking and redaction.",
 		Intro:   "These read documents without a language model, so they are fast and never make text up. A PDF's own text is read with the position of every word; a scan or photo is read with OCR (Tesseract). Headings come from the size of the text, tables from words that line up in columns, and an invoice's fields from their labels. Files are read and deleted; nothing is kept or logged." + keyNote,
 		Endpoints: []endpoint{
 			{
@@ -58,6 +58,38 @@ func withDocAI(groups []apiGroup) []apiGroup {
 					{Name: "all", In: "query", Type: "string", Enum: []string{"true", "false"}, Doc: "true covers every digit. Default false (the last four stay)."},
 					{Name: "qr", In: "query", Type: "string", Enum: []string{"true", "false"}, Doc: "false leaves QR codes uncovered. Default true."},
 				},
+			},
+			{
+				Path: "/v1/doc/receipt", Key: true, Summary: "Read a shop receipt", Private: true,
+				Doc:     "From a photo or PDF of a bill: the merchant (its first line), GSTIN, date, the lines that end in an amount, tax and total, the way it was paid when the bill says, and a check that the lines add up to the total." + formNote,
+				Example: "/v1/doc/receipt?lang=eng%2Btam",
+				Upload:  &upload{Accepts: docNote, Types: docTypes, Sample: "receipt.png"},
+				Params:  docParams,
+			},
+			{
+				Path: "/v1/doc/cheque", Key: true, Summary: "Read a cheque", Private: true,
+				Doc:     "From a photo of a cheque leaf: the IFSC, the MICR line (cheque number and nine-digit MICR code), the account number when printed with a label, and the date; the IFSC and MICR code are looked up in RBI's branch list and checked against each other." + formNote,
+				Example: "/v1/doc/cheque",
+				Upload:  &upload{Accepts: docNote, Types: docTypes, Sample: "cheque.png"},
+				Params:  docParams,
+			},
+			{
+				Path: "/v1/doc/statement", Key: true, Summary: "Bank statement to transactions", Private: true,
+				Doc:     "Every transaction of a bank statement: date, description (lines that run on are joined), reference, debit, credit and balance, with each balance checked against the one before. Columns are found by the header row, so most banks' text PDFs work; a scan is read with OCR. format=csv returns a CSV file." + formNote,
+				Example: "/v1/doc/statement",
+				Upload:  &upload{Accepts: docNote, Types: docTypes, Sample: "statement.pdf"},
+				Params: append([]param{
+					{Name: "format", In: "query", Type: "string", Enum: []string{"json", "csv"}, Doc: "json (default) or csv."},
+				}, docParams...),
+			},
+			{
+				Path: "/v1/doc/redact", Key: true, Summary: "Redact a PDF or picture", Private: true, Output: "pdf",
+				Doc:     "Finds the identifiers that /v1/text/redact finds (Aadhaar, PAN, GSTIN, phone numbers, email addresses, card and account numbers, UPI handles and more) in a PDF or picture and returns it with each covered in black. A PDF comes back as pictures of its pages, so no text survives under a box. X-Redacted counts what was covered by type; 422 when nothing was found. Names are not found; check the result before you share it." + formNote,
+				Example: "/v1/doc/redact",
+				Upload:  &upload{Accepts: docNote, Types: docTypes, Sample: "statement.pdf"},
+				Params: append([]param{
+					{Name: "types", In: "query", Type: "string", Doc: "Which kinds to cover, comma-separated, as in /v1/text/redact. Default all."},
+				}, docParams...),
 			},
 		},
 	})

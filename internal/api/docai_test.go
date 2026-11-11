@@ -148,3 +148,75 @@ func blankPNG(t *testing.T) []byte {
 	}
 	return b.Bytes()
 }
+
+func init() {
+	statement, _ := sampleFile("statement.pdf")
+	cheque, _ := sampleFile("cheque.png")
+	receipt, _ := sampleFile("receipt.png")
+	pdf := `{"file":"` + base64.StdEncoding.EncodeToString(statement) + `"}`
+	mcpTestCalls["read_bank_statement"] = pdf
+	mcpTestCalls["redact_document"] = `{"file":"` + base64.StdEncoding.EncodeToString(statement) + `","types":"pan,email"}`
+	mcpTestCalls["read_cheque"] = `{"file":"` + base64.StdEncoding.EncodeToString(cheque) + `"}`
+	mcpTestCalls["read_receipt"] = `{"file":"` + base64.StdEncoding.EncodeToString(receipt) + `","lang":"eng+tam"}`
+}
+
+func TestDocStatement(t *testing.T) {
+	requireProgram(t, "pdftotext")
+	statement := sampleOf(t, "statement.pdf")
+	got := postBody(t, "/v1/doc/statement", "application/pdf", statement)
+	if got.status != http.StatusOK {
+		t.Fatalf("statement = %d: %s", got.status, got.body)
+	}
+	list := got.json(t)["data"].([]any)
+	if len(list) != 7 || list[2].(map[string]any)["credit"] != 45000.0 {
+		t.Errorf("statement: %s", got.body)
+	}
+	got = postBody(t, "/v1/doc/statement?format=csv", "application/pdf", statement)
+	rows, err := csv.NewReader(bytes.NewReader(got.body)).ReadAll()
+	if err != nil || len(rows) != 8 || rows[7][3] != "18000.00" {
+		t.Errorf("csv: %v %v", rows, err)
+	}
+}
+
+func TestDocRedactPDF(t *testing.T) {
+	requireProgram(t, "pdftotext", "pdftoppm")
+	statement := sampleOf(t, "statement.pdf")
+	got := postBody(t, "/v1/doc/redact?types=pan,email,phone", "application/pdf", statement)
+	if got.status != http.StatusOK || got.header.Get("Content-Type") != "application/pdf" {
+		t.Fatalf("redact = %d %s: %s", got.status, got.header.Get("Content-Type"), got.body)
+	}
+	if want := "email=1,pan=1,phone=1"; got.header.Get("X-Redacted") != want {
+		t.Errorf("X-Redacted = %q, want %q", got.header.Get("X-Redacted"), want)
+	}
+	// The result is pictures: its text layer is empty, so the PAN cannot be copied out.
+	text := postBody(t, "/v1/pdf/text", "application/pdf", got.body)
+	if strings.Contains(string(text.body), "ABCPS1234D") {
+		t.Error("PAN still in the PDF's text")
+	}
+	if got := postBody(t, "/v1/doc/redact?types=gstin", "application/pdf", statement); got.status != http.StatusUnprocessableEntity {
+		t.Errorf("nothing to redact = %d", got.status)
+	}
+	if got := postBody(t, "/v1/doc/redact?types=nonsense", "application/pdf", statement); got.status != http.StatusBadRequest {
+		t.Errorf("bad types = %d", got.status)
+	}
+}
+
+func TestDocChequeAndReceipt(t *testing.T) {
+	requireProgram(t, "tesseract")
+	got := postBody(t, "/v1/doc/cheque", "image/png", sampleOf(t, "cheque.png"))
+	if got.status != http.StatusOK {
+		t.Fatalf("cheque = %d: %s", got.status, got.body)
+	}
+	data := got.json(t)["data"].(map[string]any)
+	if data["ifsc"] != "HDFC0000001" || data["micr"] != "400240003" || data["cheque_number"] != "000123" || data["branch"] == nil {
+		t.Errorf("cheque: %s", got.body)
+	}
+	got = postBody(t, "/v1/doc/receipt?lang=eng%2Btam", "image/png", sampleOf(t, "receipt.png"))
+	if got.status != http.StatusOK {
+		t.Fatalf("receipt = %d: %s", got.status, got.body)
+	}
+	data = got.json(t)["data"].(map[string]any)
+	if data["total"] != 1250.0 || data["gstin"] != "33AABCS1429B1Z1" {
+		t.Errorf("receipt: %s", got.body)
+	}
+}

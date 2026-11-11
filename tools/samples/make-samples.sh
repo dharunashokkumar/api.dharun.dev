@@ -14,6 +14,8 @@
 #   invoice.pdf   the documented GST invoice example, made by this API, for the document readers
 #   einvoice-qr.png  a QR code shaped like a GST e-invoice's signed QR (not signed), drawn by this API
 #   idcard.png    a made-up identity card with a pattern number and a QR code, for Aadhaar masking
+#   statement.pdf a made-up bank statement, for the statement reader and redaction
+#   cheque.png    a made-up cheque with one real branch's IFSC and MICR code, for the cheque reader
 #   badge.svg     a small flag drawn by hand, for SVG to PNG (written once, not by this script)
 #
 # Needs typst, piper (with the en_US-ljspeech-medium voice in $VOICES), ffmpeg, vips and Go:
@@ -49,6 +51,8 @@ curl -fs -G --data-urlencode "text=$(go run ./tools/samples/einvoiceqr)" "http:/
 curl -fs "http://127.0.0.1:18080/v1/qr?text=SAMPLE%20CARD%20-%20NOT%20A%20REAL%20DOCUMENT&format=svg" -o "$work/qr.svg"
 cp tools/samples/idcard.typ "$work/"
 compile --format png --ppi 300 --root "$work" "$work/idcard.typ" "$out/idcard.png"
+compile tools/samples/statement.typ "$out/statement.pdf"
+compile --format png --ppi 200 tools/samples/cheque.typ "$out/cheque.png"
 cp tools/samples/codes.typ "$work/"
 compile --format png --ppi 96 --root "$work" "$work/codes.typ" "$work/codes-big.png"
 vips copy "$work/codes-big.png" "$out/codes.png[compression=9,keep=none]"

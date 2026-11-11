@@ -1,6 +1,6 @@
 # Document reading API
 
-> PDFs and scans to Markdown and tables, GST invoices read and checked, e-invoice QR codes, Aadhaar masking.
+> PDFs and scans to Markdown and tables; invoices, receipts, cheques and bank statements read and checked; Aadhaar masking and redaction.
 
 These read documents without a language model, so they are fast and never make text up. A PDF's own text is read with the position of every word; a scan or photo is read with OCR (Tesseract). Headings come from the size of the text, tables from words that line up in columns, and an invoice's fields from their labels. Files are read and deleted; nothing is kept or logged. Needs a free API key once keys are required (see /keys).
 
@@ -103,3 +103,89 @@ Parameters:
 - `qr` (query): false leaves QR codes uncovered. Default true. One of: true, false.
 
 Example: `POST` https://api.dharun.dev/v1/doc/mask-aadhaar?utm_medium=skill (returns the image itself)
+
+## Read a shop receipt
+
+`POST /v1/doc/receipt`
+
+From a photo or PDF of a bill: the merchant (its first line), GSTIN, date, the lines that end in an amount, tax and total, the way it was paid when the bill says, and a check that the lines add up to the total. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, or a picture of a page (JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF), up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/receipt.png
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `first` (query): PDF: first page. Default 1.
+- `last` (query): PDF: last page. A PDF's own text is read up to 500 pages, a scan up to 10.
+- `ocr` (query): PDF: auto (default) reads the PDF's own text and uses OCR only when there is none; true always uses OCR; false never. One of: auto, true, false.
+- `lang` (query): OCR languages, as in /v1/ocr: up to three of eng, hin, tam, tel, kan, mal, ben, guj, pan, ori, mar joined by +. Default eng.
+
+Example: `POST` https://api.dharun.dev/v1/doc/receipt?lang=eng%2Btam&utm_medium=skill
+
+## Read a cheque
+
+`POST /v1/doc/cheque`
+
+From a photo of a cheque leaf: the IFSC, the MICR line (cheque number and nine-digit MICR code), the account number when printed with a label, and the date; the IFSC and MICR code are looked up in RBI's branch list and checked against each other. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, or a picture of a page (JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF), up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/cheque.png
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `first` (query): PDF: first page. Default 1.
+- `last` (query): PDF: last page. A PDF's own text is read up to 500 pages, a scan up to 10.
+- `ocr` (query): PDF: auto (default) reads the PDF's own text and uses OCR only when there is none; true always uses OCR; false never. One of: auto, true, false.
+- `lang` (query): OCR languages, as in /v1/ocr: up to three of eng, hin, tam, tel, kan, mal, ben, guj, pan, ori, mar joined by +. Default eng.
+
+Example: `POST` https://api.dharun.dev/v1/doc/cheque?utm_medium=skill
+
+## Bank statement to transactions
+
+`POST /v1/doc/statement`
+
+Every transaction of a bank statement: date, description (lines that run on are joined), reference, debit, credit and balance, with each balance checked against the one before. Columns are found by the header row, so most banks' text PDFs work; a scan is read with OCR. format=csv returns a CSV file. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, or a picture of a page (JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF), up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/statement.pdf
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `format` (query): json (default) or csv. One of: json, csv.
+- `first` (query): PDF: first page. Default 1.
+- `last` (query): PDF: last page. A PDF's own text is read up to 500 pages, a scan up to 10.
+- `ocr` (query): PDF: auto (default) reads the PDF's own text and uses OCR only when there is none; true always uses OCR; false never. One of: auto, true, false.
+- `lang` (query): OCR languages, as in /v1/ocr: up to three of eng, hin, tam, tel, kan, mal, ben, guj, pan, ori, mar joined by +. Default eng.
+
+Example: `POST` https://api.dharun.dev/v1/doc/statement?utm_medium=skill
+
+## Redact a PDF or picture
+
+`POST /v1/doc/redact`
+
+Finds the identifiers that /v1/text/redact finds (Aadhaar, PAN, GSTIN, phone numbers, email addresses, card and account numbers, UPI handles and more) in a PDF or picture and returns it with each covered in black. A PDF comes back as pictures of its pages, so no text survives under a box. X-Redacted counts what was covered by type; 422 when nothing was found. Names are not found; check the result before you share it. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
+
+Send: A PDF, or a picture of a page (JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF), up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/statement.pdf
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
+
+What you send is never written to the log, and the answer is not cached.
+
+Parameters:
+
+- `types` (query): Which kinds to cover, comma-separated, as in /v1/text/redact. Default all.
+- `first` (query): PDF: first page. Default 1.
+- `last` (query): PDF: last page. A PDF's own text is read up to 500 pages, a scan up to 10.
+- `ocr` (query): PDF: auto (default) reads the PDF's own text and uses OCR only when there is none; true always uses OCR; false never. One of: auto, true, false.
+- `lang` (query): OCR languages, as in /v1/ocr: up to three of eng, hin, tam, tel, kan, mal, ben, guj, pan, ori, mar joined by +. Default eng.
+
+Example: `POST` https://api.dharun.dev/v1/doc/redact?utm_medium=skill (returns the PDF itself)

@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Indian reference data from the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, holidays and working days, RTO vehicle codes, NSE and BSE, brand, global stock and crypto logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), money calculators (SIP, EMI, GST, income tax), batch lookups, transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, embeddings and reranking, whois, TLS and website speed checks, and more. Use when an app needs Indian data, Indian-language AI or document tools, or the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle code, listed company, income tax or EMI. No API key needed for most endpoints.
+description: Indian reference data from the free India API (api.dharun.dev): pincodes, IFSC and bank branches, GSTIN and PAN checks, holidays and working days, festivals, RTO codes, NSE and BSE companies and logos, mutual fund NAVs and returns, gold, silver and RBI rates, HSN codes, UPI QR codes, numbers in lakh and crore, money calculators (SIP, EMI, GST, income tax), transliteration, panchang, GST invoices as PDF, reading invoices, receipts, cheques and bank statements, PDF to Markdown, Aadhaar masking, OCR in Indian languages, PDF and image tools, speech in and out, translation between English and 22 Indian languages, Roman typing to Indian scripts, moderation including Hinglish, embeddings and reranking, and more. Use when an app needs Indian data, Indian-language AI or document tools, or the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle code, listed company, income tax or EMI. No API key needed for most endpoints.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -387,13 +387,17 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/media/waveform`: Waveform picture. Example: `/v1/media/waveform?width=800&height=160&utm_medium=skill`
 - `GET /v1/media/thumbnail`: A frame from a video. Example: `/v1/media/thumbnail?at=1&utm_medium=skill`
 
-**Document reading** ([references/documents.md](references/documents.md)): PDFs and scans to Markdown and tables, GST invoices read and checked, e-invoice QR codes, Aadhaar masking.
+**Document reading** ([references/documents.md](references/documents.md)): PDFs and scans to Markdown and tables; invoices, receipts, cheques and bank statements read and checked; Aadhaar masking and redaction.
 
 - `GET /v1/doc/markdown`: PDF or scan to Markdown. Example: `/v1/doc/markdown?utm_medium=skill`
 - `GET /v1/doc/tables`: Tables in a PDF or scan. Example: `/v1/doc/tables?utm_medium=skill`
 - `GET /v1/doc/invoice`: Read and check a GST invoice. Example: `/v1/doc/invoice?utm_medium=skill`
 - `GET /v1/doc/einvoice-qr`: Read a GST e-invoice's signed QR code. Example: `/v1/doc/einvoice-qr?utm_medium=skill`
 - `GET /v1/doc/mask-aadhaar`: Mask an Aadhaar number in a picture. Example: `/v1/doc/mask-aadhaar?utm_medium=skill`
+- `GET /v1/doc/receipt`: Read a shop receipt. Example: `/v1/doc/receipt?lang=eng%2Btam&utm_medium=skill`
+- `GET /v1/doc/cheque`: Read a cheque. Example: `/v1/doc/cheque?utm_medium=skill`
+- `GET /v1/doc/statement`: Bank statement to transactions. Example: `/v1/doc/statement?utm_medium=skill`
+- `GET /v1/doc/redact`: Redact a PDF or picture. Example: `/v1/doc/redact?utm_medium=skill`
 
 ### Developer tools
 
