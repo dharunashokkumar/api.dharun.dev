@@ -169,6 +169,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/address/parse`: Read an Indian address. Example: `/v1/address/parse?text=12%2C%20Anna%20Salai%2C%20Mount%20Road%2C%20Chennai%2C%20Tamil%20Nadu%20600002&utm_medium=skill`
 
+**Helplines** ([references/helplines.md](references/helplines.md)): National emergency and helpline numbers.
+
+- `GET /v1/helplines`: National helplines. Example: `/v1/helplines?q=cyber&utm_medium=skill`
+
 ### Dates and calendars
 
 **Holidays** ([references/holidays.md](references/holidays.md)): Bank, government and stock market holidays.
@@ -198,6 +202,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/dates/{date}`: One date in Indian calendars. Example: `/v1/dates/2026-11-11?utm_medium=skill`
 - `GET /v1/dates/diff`: Age and the span between dates. Example: `/v1/dates/diff?from=1995-08-15&to=2026-11-11&utm_medium=skill`
+
+**Festivals** ([references/festivals.md](references/festivals.md)): Hindu, Tamil, Sikh, Jain, Buddhist, Islamic and Christian festival dates for any year, computed.
+
+- `GET /v1/festivals/{year}`: Festivals in a year. Example: `/v1/festivals/2026?month=11&utm_medium=skill`
+- `GET /v1/festivals/{year}.ics`: Festivals as a calendar to subscribe to. Example: `/v1/festivals/2026.ics?state=TN&utm_medium=skill`
 
 ### Language and text
 
@@ -244,6 +253,14 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/translate`: Translate text. Example: `/v1/translate?from=en&to=ta&text=The+train+to+Chennai+leaves+at+6+pm.+Please+reach+the+station+early.&utm_medium=skill`
 - `GET /v1/translate/languages`: Languages. Example: `/v1/translate/languages?utm_medium=skill`
+
+**Indic text tools** ([references/indic.md](references/indic.md)): Letters as readers count them, dictionary order, look-alike fixes, braille and keyboard layouts.
+
+- `GET /v1/indic/aksharas`: Split into letters and count them. Example: `/v1/indic/aksharas?text=%E0%A4%95%E0%A5%8D%E0%A4%B7%E0%A4%A4%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%AF&utm_medium=skill`
+- `GET /v1/indic/sort`: Dictionary order. Example: `/v1/indic/sort?lang=ta&words=%E0%AE%95%E0%AE%9F%E0%AE%B2%E0%AF%8D,%E0%AE%85%E0%AE%AE%E0%AF%8D%E0%AE%AE%E0%AE%BE,%E0%AE%86%E0%AE%B1%E0%AF%81&utm_medium=skill`
+- `GET /v1/indic/normalise`: Fix look-alike letters. Example: `/v1/indic/normalise?text=%E0%A4%85%E0%A4%BE%E0%A4%AE&utm_medium=skill`
+- `GET /v1/braille`: Bharati braille. Example: `/v1/braille?text=%E0%A4%A8%E0%A4%AE%E0%A4%B8%E0%A5%8D%E0%A4%A4%E0%A5%87&utm_medium=skill`
+- `GET /v1/keyboard/convert`: QWERTY keys and Indian layouts. Example: `/v1/keyboard/convert?layout=tamil99&text=vphhkf&utm_medium=skill`
 
 ### Network and contact checks
 

@@ -253,6 +253,21 @@ func (s *Server) sendCalendar(w http.ResponseWriter, r *http.Request, year int, 
 	if state != "" {
 		name += " (" + state + ")"
 	}
+	events := make([]calendarEvent, 0, len(holidays))
+	for _, h := range holidays {
+		events = append(events, calendarEvent{Date: h.Date, Key: h.Type + "|" + h.Region, Name: h.Name,
+			Description: h.Type + " holiday, " + h.Region + ". From " + s.origin(r) + "/v1/holidays/" + strconv.Itoa(year)})
+	}
+	writeCalendar(w, r, name, "Holidays", events)
+}
+
+// calendarEvent is one all-day event of a calendar feed.
+type calendarEvent struct {
+	Date, Key, Name, Description string
+}
+
+// writeCalendar answers with an iCalendar feed (RFC 5545) of all-day events.
+func writeCalendar(w http.ResponseWriter, r *http.Request, name, product string, events []calendarEvent) {
 	var out strings.Builder
 	line := func(text string) {
 		// Lines are folded at 75 octets, continuation lines start with a space.
@@ -269,7 +284,7 @@ func (s *Server) sendCalendar(w http.ResponseWriter, r *http.Request, year int, 
 	escape := strings.NewReplacer(`\`, `\\`, ";", `\;`, ",", `\,`, "\n", `\n`)
 	line("BEGIN:VCALENDAR")
 	line("VERSION:2.0")
-	line("PRODID:-//India API//Holidays//EN")
+	line("PRODID:-//India API//" + product + "//EN")
 	line("CALSCALE:GREGORIAN")
 	line("METHOD:PUBLISH")
 	line("X-WR-CALNAME:" + escape.Replace(name))
@@ -277,19 +292,19 @@ func (s *Server) sendCalendar(w http.ResponseWriter, r *http.Request, year int, 
 	line("REFRESH-INTERVAL;VALUE=DURATION:P1D")
 	line("X-PUBLISHED-TTL:P1D")
 	stamp := time.Now().UTC().Format("20060102T150405Z")
-	for _, h := range holidays {
-		day, err := time.Parse("2006-01-02", h.Date)
+	for _, e := range events {
+		day, err := time.Parse("2006-01-02", e.Date)
 		if err != nil {
 			continue
 		}
-		sum := sha1.Sum([]byte(h.Date + "|" + h.Type + "|" + h.Region + "|" + h.Name))
+		sum := sha1.Sum([]byte(e.Date + "|" + e.Key + "|" + e.Name))
 		line("BEGIN:VEVENT")
 		line("UID:" + hex.EncodeToString(sum[:8]) + "@api.dharun.dev")
 		line("DTSTAMP:" + stamp)
 		line("DTSTART;VALUE=DATE:" + day.Format("20060102"))
 		line("DTEND;VALUE=DATE:" + day.AddDate(0, 0, 1).Format("20060102"))
-		line("SUMMARY:" + escape.Replace(h.Name))
-		line("DESCRIPTION:" + escape.Replace(h.Type+" holiday, "+h.Region+". From "+s.origin(r)+"/v1/holidays/"+strconv.Itoa(year)))
+		line("SUMMARY:" + escape.Replace(e.Name))
+		line("DESCRIPTION:" + escape.Replace(e.Description))
 		line("TRANSP:TRANSPARENT")
 		line("END:VEVENT")
 	}

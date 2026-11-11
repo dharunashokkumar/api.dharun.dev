@@ -43,6 +43,7 @@ func (s *Server) registerRoutes() {
 	s.registerPart4()
 	s.registerSetA()
 	s.registerSetD()
+	s.registerSetC()
 	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 

@@ -92,6 +92,9 @@ JavaScript and Python.
 | [Audio and video tools](https://api.dharun.dev/docs/media) | `POST /v1/media/convert?format=mp3`, `/trim`, `/waveform`, `/thumbnail` | Convert, cut, draw a waveform, take a frame |
 | [Request bins](https://api.dharun.dev/docs/hooks) | `POST /v1/hooks` | A private address that records webhooks for a day |
 | [Throwaway databases](https://api.dharun.dev/docs/db) | `POST /v1/db` | A private SQLite database for a day, SQL over HTTPS |
+| [Festivals](https://api.dharun.dev/docs/festivals) | `/v1/festivals/2026`, `/v1/festivals/2026.ics?state=TN` | Hindu, Tamil, Sikh, Jain, Buddhist, Islamic and Christian festival dates 1950 to 2100, computed from the panchang with each rule given |
+| [Indic text tools](https://api.dharun.dev/docs/indic) | `/v1/indic/aksharas?text=...`, `/v1/braille?text=...`, `/v1/keyboard/convert?layout=tamil99` | Letters as readers count them, dictionary order, look-alike fixes, Bharati braille, InScript and Tamil99 keys |
+| [Helplines](https://api.dharun.dev/docs/helplines) | `/v1/helplines?q=cyber` | National emergency and helpline numbers |
 
 ## One shape everywhere
 

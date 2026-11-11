@@ -242,6 +242,7 @@ type todayView struct {
 	State          string         `json:"state,omitempty"`
 	Working        map[string]any `json:"working"`
 	Holidays       []holidayView  `json:"holidays"`
+	Festivals      any            `json:"festivals"`
 	Market         any            `json:"market,omitempty"`
 	Sun            any            `json:"sun,omitempty"`
 	Panchang       map[string]any `json:"panchang,omitempty"`
@@ -326,6 +327,7 @@ func (s *Server) handleToday(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	view.Festivals = todaysFestivals(time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC), state)
 	if query.Get("date") == "" {
 		var market any
 		if s.inner(r, "/v1/market/status", &market) {

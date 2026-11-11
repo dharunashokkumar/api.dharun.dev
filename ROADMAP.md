@@ -509,6 +509,11 @@ data and status.
 | Screenshot, HTML to PDF | `/v1/screenshot`, `/v1/html/pdf` | Headless Chromium behind a loopback proxy that sends every connection through the guard; Key. **Needs Debian's `chromium` in the container (infrastructure request)**; answers 503 until then | Built, waiting for infrastructure |
 | Request bins | `/v1/hooks`, `/v1/hook/{id}` | In memory, a day, last 100 requests; making one is a key route; a public `demo` bin | Built |
 | Throwaway databases | `/v1/db`, `/v1/db/{id}/query` | SQLite in a temporary file, 10 MB, a day, ATTACH/VACUUM/PRAGMA refused; a read-only public `demo` | Built |
+| Festivals | `/v1/festivals/{year}`, `.ics`; in `/v1/today` | Computed (`internal/festivals`) from the panchang's new moons, sankrantis and tithis at the moment each custom names (sunrise; sunset for Diwali; midday for Ganesh Chaturthi; afternoon for Dussehra; Bhadra for Holika Dahan; the evening nakshatra for Karthigai Deepam); checked against 31 published dates of 2025 and 2026; Islamic dates tabular, marked expected | Built |
+| Indic text tools | `/v1/indic/{aksharas,sort,normalise}` | Pure logic; sort by CLDR collation (`x/text/collate`) | Built |
+| Braille | `/v1/braille` | Bharati braille cells typed from the standard, other scripts through Devanagari; Grade 1 only; to be checked by a braille reader | Built |
+| Keyboard layouts | `/v1/keyboard/convert` | InScript (Hindi) and Tamil99 typed from the standards | Built |
+| Helplines | `/v1/helplines` | 24 national numbers typed from the ministries' pages; yearly review | Built |
 
 ### Ideas not scheduled yet
 
@@ -518,7 +523,6 @@ From the first brainstorm, kept so they are not lost. None has a source or a dec
 |---|---|
 | Index constituents with weights (Nifty 50, Bank Nifty, Sensex) | A source that may be republished; companies already list their index memberships |
 | Corporate actions (splits, bonus issues, dividends, record dates) | Same: exchange filings are public, redistribution terms are not clear |
-| Festival dates (Tamil, Hindu, Islamic calendars) | Hindu and Tamil festivals follow from the panchang, planned as its next step; Islamic dates depend on moon sighting |
 | State government holidays | Each state's own notification, typed in by hand like the central list |
 | Colleges and universities (AISHE), school boards | Check the AISHE portal's reuse terms |
 
