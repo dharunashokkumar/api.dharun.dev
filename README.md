@@ -80,6 +80,11 @@ JavaScript and Python.
 | [Number to words](https://api.dharun.dev/docs/words) | `/v1/words/1,25,000?lang=ta` | Lakh and crore spelling in English, Hindi, Tamil |
 | [Format checks](https://api.dharun.dev/docs/validate) | `/v1/validate/gstin/27AAPFU0939F1ZV` | GSTIN, PAN and IFSC structure and check characters |
 | [States](https://api.dharun.dev/docs/states) | `/v1/states/TN` | State codes, GST codes, vehicle prefixes |
+| [Number formatting](https://api.dharun.dev/docs/format) | `/v1/format/number/123456789.5` | Lakh and crore grouping, 12.35 Cr short forms, rupees, words, Indian-script digits |
+| [Indian date tools](https://api.dharun.dev/docs/dates) | `/v1/dates/2026-11-11`, `/v1/dates/diff?from=1995-08-15` | Financial and assessment year, quarter, Saka, Tamil and Hijri dates, ages |
+| [UPI handles and payment QR](https://api.dharun.dev/docs/upi) | `/v1/upi-handles/okhdfcbank`, `/v1/qr/parse?text=upi://...` | The app and bank behind a handle; a UPI or Bharat QR code's fields with the checksum checked |
+| [README badges](https://api.dharun.dev/docs/badges) | `/v1/badge/market`, `/v1/badge?label=&message=` | Market open or closed, next holiday, dataset freshness, or your own |
+| [Address reader](https://api.dharun.dev/docs/address) | `/v1/address/parse?text=...` | A written address split into house, street, city, state and pincode, checked against the post offices |
 
 ## One shape everywhere
 

@@ -122,6 +122,16 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/calc/capital-gains`: Capital gains tax. Example: `/v1/calc/capital-gains?asset=equity&bought=2023-01-10&sold=2025-01-10&cost=100000&price=400000&utm_medium=skill`
 - `GET /v1/calc/trade`: Share trade charges. Example: `/v1/calc/trade?buy=1000&sell=1100&quantity=100&kind=delivery&brokerage=20&utm_medium=skill`
 
+**Indian number formatting** ([references/format.md](references/format.md)): Lakh and crore grouping, 1.2 Cr short forms, rupees and Indian-script digits.
+
+- `GET /v1/format/number/{number}`: Format a number the Indian way. Example: `/v1/format/number/123456789.5?utm_medium=skill`
+
+**UPI handles and payment QR codes** ([references/upi.md](references/upi.md)): Which app and bank is behind @okaxis, and what a UPI or Bharat QR code says.
+
+- `GET /v1/upi-handles`: Known UPI handles. Example: `/v1/upi-handles?utm_medium=skill`
+- `GET /v1/upi-handles/{handle}`: Look up a UPI handle. Example: `/v1/upi-handles/okhdfcbank?utm_medium=skill`
+- `GET /v1/qr/parse`: Read a UPI or Bharat QR code's text. Example: `/v1/qr/parse?text=upi%3A%2F%2Fpay%3Fpa%3Dshop%40okaxis%26pn%3DSri%2520Murugan%2520Stores%26am%3D250%26cu%3DINR%26mc%3D5411&utm_medium=skill`
+
 ### Places and transport
 
 **Pincodes** ([references/pincode.md](references/pincode.md)): Pincode to post office, district and state.
@@ -155,6 +165,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/states`: All states and union territories. Example: `/v1/states?utm_medium=skill`
 - `GET /v1/states/{code}`: One state. Example: `/v1/states/TN?utm_medium=skill`
 
+**Address reader** ([references/address.md](references/address.md)): A free-text Indian address split into house, street, locality, city, state and pincode, checked.
+
+- `GET /v1/address/parse`: Read an Indian address. Example: `/v1/address/parse?text=12%2C%20Anna%20Salai%2C%20Mount%20Road%2C%20Chennai%2C%20Tamil%20Nadu%20600002&utm_medium=skill`
+
 ### Dates and calendars
 
 **Holidays** ([references/holidays.md](references/holidays.md)): Bank, government and stock market holidays.
@@ -179,6 +193,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Today in India** ([references/today.md](references/today.md)): India's "now" in one call: date, financial year, working days, holidays, market and panchang.
 
 - `GET /v1/today`: Today in India. Example: `/v1/today?state=TN&pincode=600001&utm_medium=skill`
+
+**Indian date tools** ([references/dates.md](references/dates.md)): Financial and assessment year, quarter, the Saka, Tamil and Hijri dates, and ages.
+
+- `GET /v1/dates/{date}`: One date in Indian calendars. Example: `/v1/dates/2026-11-11?utm_medium=skill`
+- `GET /v1/dates/diff`: Age and the span between dates. Example: `/v1/dates/diff?from=1995-08-15&to=2026-11-11&utm_medium=skill`
 
 ### Language and text
 
@@ -318,6 +337,12 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Batch lookups** ([references/batch.md](references/batch.md)): Up to 1,000 lookups in one request.
 
 - `GET /v1/batch`: Many lookups in one request. Example: `/v1/batch?utm_medium=skill`
+
+**README badges** ([references/badges.md](references/badges.md)): Small SVG badges: market open or closed, the next holiday, a dataset's freshness, or your own.
+
+- `GET /v1/badge`: A badge of your own. Example: `/v1/badge?label=made%20in&message=India&color=orange&utm_medium=skill`
+- `GET /v1/badge/{kind}`: Market or holiday badge. Example: `/v1/badge/market?utm_medium=skill`
+- `GET /v1/badge/dataset/{name}`: Dataset freshness badge. Example: `/v1/badge/dataset/ifsc?utm_medium=skill`
 
 ### Sky and radio
 

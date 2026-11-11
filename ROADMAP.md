@@ -483,6 +483,21 @@ the update a script run by hand (the server never fetches from TradingView).
 | Placeholders | `/v1/placeholder/{size}` | Pure logic | Built |
 | Chart images | `/v1/chart` (GET or JSON POST) | Pure logic | Built |
 
+### The whole idea catalogue (plan Parts 4 to 9, `docs/plan/05` and `06`, branch `growth-catalogue`)
+
+Dharun, 2026-11-11: build everything in the catalogue. Built in batches; each row says its
+data and status.
+
+| API | Address | Data | Status |
+|---|---|---|---|
+| Number formatting | `/v1/format/number/{n}` | Pure logic (`internal/indiafmt`): lakh and crore, short forms, rupees, words, nine scripts' digits | Built |
+| Indian date tools | `/v1/dates/{date}`, `/v1/dates/diff` | Pure logic: financial and assessment year, Saka, tabular Hijri, Tamil solar date and Vikram year from the panchang, ages | Built |
+| UPI handles | `/v1/upi-handles`, `/v1/upi-handles/{handle}` | Typed from NPCI's list of UPI apps and their partner banks (its page refuses scripts, so by hand; review twice a year) | Built |
+| Payment QR text | `/v1/qr/parse` | Pure logic (`internal/payqr`): UPI links and EMVCo strings with the CRC check; Private | Built |
+| README badges | `/v1/badge`, `/v1/badge/{market,holiday}`, `/v1/badge/dataset/{name}` | Market status, holidays, dataset sources | Built |
+| Address reader | `/v1/address/parse` | Rules, checked against the pincode data; Private | Built |
+| Company cross-search | `/v1/companies?q=` | Already searched ticker, earlier tickers, ISIN and name | Was built |
+
 ### Ideas not scheduled yet
 
 From the first brainstorm, kept so they are not lost. None has a source or a decision yet.
@@ -494,7 +509,6 @@ From the first brainstorm, kept so they are not lost. None has a source or a dec
 | Festival dates (Tamil, Hindu, Islamic calendars) | Hindu and Tamil festivals follow from the panchang, planned as its next step; Islamic dates depend on moon sighting |
 | State government holidays | Each state's own notification, typed in by hand like the central list |
 | Colleges and universities (AISHE), school boards | Check the AISHE portal's reuse terms |
-| Symbol, ISIN, BSE code and company name cross-reference | Mostly served by `/v1/companies` already; a search across all four would finish it |
 
 ## 7. Getting it used
 

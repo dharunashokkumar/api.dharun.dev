@@ -164,3 +164,9 @@ check "/v1/avatar/Priya%20Raman" image/svg+xml "<svg"
 check /v1/placeholder/600x400 image/svg+xml "<svg"
 check "/v1/chart?type=bar&labels=A,B&values=1,2" image/svg+xml "<svg"
 post_json /v1/batch '{"kind":"pincode","values":["637001","600001"]}' application/json '"district":"Namakkal"'
+check /v1/format/number/123456789.5 application/json '"indian":"12,34,56,789.5"'
+check /v1/dates/2026-11-11 application/json '"20 Kartika 1948 Saka"'
+check /v1/upi-handles/okhdfcbank application/json '"Google Pay"'
+check "/v1/qr/parse?text=upi%3A%2F%2Fpay%3Fpa%3Dshop%40okaxis" application/json '"payee":"shop@okaxis"'
+check "/v1/badge?label=made%20in&message=India" image/svg+xml "<svg"
+check "/v1/address/parse?text=Gandhi%20Road%2C%20Namakkal%20637001" application/json '"pincodeChecked":true'
