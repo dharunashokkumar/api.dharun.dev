@@ -519,6 +519,9 @@ data and status.
 | Gold, silver and platinum | `/v1/bullion`, `/v1/bullion/history` | Server-only dataset `bullion` from ibjarates.com every 2 hours, history kept from the first refresh; high risk (private association), agreed 2026-11-11 | Built |
 | RBI rates, INR reference rates | `/v1/rates`, `/v1/fx` | Server-only dataset `rbi-rates`: the "Current Rates" box of rbi.org.in every 3 hours (policy rates, CRR, SLR, FBIL rates, base rate and MCLR ranges, deposit rates, T-bill cut-offs, G-sec yields), history kept; the Sensex figure there is left out (no live share prices) | Built |
 | Derivative expiries | `/v1/expiries` | Computed from the exchange rules in force from 1 September 2025 and the market holiday list | Built |
+| MICR and SWIFT | `/v1/micr/{code}`, `/v1/swift/{code}` | The IFSC dataset's own columns | Built |
+| Sectors and industries | `/v1/sectors` | The company list (logos dataset) | Built |
+| IPO calendar, corporate actions, results calendar, FII/DII flows | | NSE's pages answer programs only through a browser session, which this project does not imitate (no bot-check circumvention). **Waiting for Dharun**: another source (BSE files, SEBI filings) or leave out | Blocked |
 
 ### Ideas not scheduled yet
 

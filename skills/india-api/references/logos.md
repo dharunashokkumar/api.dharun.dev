@@ -53,6 +53,18 @@ Parameters:
 
 Example: https://api.dharun.dev/v1/companies?q=tata&limit=5&utm_medium=skill
 
+## Sectors and industries of listed companies
+
+`GET /v1/sectors`
+
+Every sector and industry of the NSE and BSE listed companies with how many companies each has; give sector to list its industries and largest companies.
+
+Parameters:
+
+- `sector` (query): One sector, as listed.
+
+Example: https://api.dharun.dev/v1/sectors?utm_medium=skill
+
 ## Guides
 
 - [Show NSE and BSE company logos in your app](https://api.dharun.dev/guides/company-logos.md): Put a listed company's logo in an img tag by ticker or ISIN, as SVG or sized PNG, with an initials tile when no logo exists.

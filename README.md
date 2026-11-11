@@ -100,6 +100,8 @@ JavaScript and Python.
 | [Mutual fund returns](https://api.dharun.dev/docs/mutual-funds) | `/v1/mutual-funds/122639/returns`, `/history` | 1 month to 10 year returns (CAGR), SIP XIRR, month-end NAV history |
 | [RBI rates and exchange rates](https://api.dharun.dev/docs/rates) | `/v1/rates`, `/v1/fx?currency=USD` | Repo rate, CRR, SLR, MCLR range, bond yields; FBIL reference rates with history |
 | [Derivative expiries](https://api.dharun.dev/docs/expiries) | `/v1/expiries?exchange=nse&year=2026` | NSE and BSE weekly and monthly expiry dates, moved for holidays |
+| [MICR and SWIFT](https://api.dharun.dev/docs/ifsc) | `/v1/micr/400240003`, `/v1/swift/HDFCINBB` | The branch behind a cheque's MICR code or a SWIFT code |
+| [Sectors](https://api.dharun.dev/docs/logos) | `/v1/sectors?sector=...` | Sectors and industries of listed companies, with counts and the largest companies |
 
 ## One shape everywhere
 

@@ -57,6 +57,28 @@ Parameters:
 
 Example: https://api.dharun.dev/v1/banks?q=gramin&utm_medium=skill
 
+## Branch from a MICR code
+
+`GET /v1/micr/{code}`
+
+The nine-digit code at the foot of a cheque, to the bank branch and its IFSC.
+
+Parameters:
+
+- `code` (path, required): Nine digits.
+
+Example: https://api.dharun.dev/v1/micr/400240003?utm_medium=skill
+
+## Branches with a SWIFT code
+
+`GET /v1/swift/{code}`
+
+Parameters:
+
+- `code` (path, required): 8 or 11 characters, such as HDFCINBB.
+
+Example: https://api.dharun.dev/v1/swift/HDFCINBB?utm_medium=skill
+
 ## Guides
 
 - [Show the bank and branch for an IFSC code](https://api.dharun.dev/guides/ifsc-bank-branch.md): Turn an IFSC into a bank name, branch and address, and check that the branch takes NEFT, RTGS, IMPS or UPI before you send money there.

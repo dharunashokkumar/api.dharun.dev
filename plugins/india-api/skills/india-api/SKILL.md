@@ -62,6 +62,7 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/logos/{symbol}`: Logo image for a listed company. Example: `/v1/logos/TCS?utm_medium=skill`
 - `GET /v1/companies/{symbol}`: Details of a listed company. Example: `/v1/companies/RELIANCE?utm_medium=skill`
 - `GET /v1/companies`: Search listed companies. Example: `/v1/companies?q=tata&limit=5&utm_medium=skill`
+- `GET /v1/sectors`: Sectors and industries of listed companies. Example: `/v1/sectors?utm_medium=skill`
 
 **Brand, stock and asset logos** ([references/world-logos.md](references/world-logos.md)): Logos for unlisted Indian brands, global stocks, crypto, indices, ETFs and commodities.
 
@@ -78,6 +79,8 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/ifsc`: Search a bank's branches. Example: `/v1/ifsc?bank=SBIN&state=TN&q=namakkal&utm_medium=skill`
 - `GET /v1/banks/{code}`: Bank for a four-letter code. Example: `/v1/banks/HDFC?utm_medium=skill`
 - `GET /v1/banks`: Search banks. Example: `/v1/banks?q=gramin&utm_medium=skill`
+- `GET /v1/micr/{code}`: Branch from a MICR code. Example: `/v1/micr/400240003?utm_medium=skill`
+- `GET /v1/swift/{code}`: Branches with a SWIFT code. Example: `/v1/swift/HDFCINBB?utm_medium=skill`
 
 **QR codes and barcodes** ([references/codes.md](references/codes.md)): QR codes, UPI payment QR codes and barcodes as SVG or PNG, and reading them from a photo.
 
