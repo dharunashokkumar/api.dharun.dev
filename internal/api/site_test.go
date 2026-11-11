@@ -294,7 +294,7 @@ func TestSkill(t *testing.T) {
 			t.Errorf("skill does not cover %s", group.ID)
 		}
 		for _, e := range group.Endpoints {
-			if !strings.Contains(skill, "`GET "+e.Path+"`") {
+			if !strings.Contains(skill, "`"+e.Path+"`") {
 				t.Errorf("skill does not list %s", e.Path)
 			}
 		}

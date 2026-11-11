@@ -29,7 +29,12 @@ func testAccounts(t *testing.T) (http.Handler, core.App, *mailbox) {
 	if err := app.Bootstrap(); err != nil {
 		t.Fatal(err)
 	}
-	t.Cleanup(func() { app.ResetBootstrapState() })
+	t.Cleanup(func() {
+		// PocketBase finishes some work after it answers (sending a login code runs in
+		// the background); shutting it down under that work is a data race.
+		time.Sleep(500 * time.Millisecond)
+		app.ResetBootstrapState()
+	})
 	if err := app.RunAllMigrations(); err != nil {
 		t.Fatal(err)
 	}

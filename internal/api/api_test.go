@@ -64,6 +64,9 @@ func TestMain(m *testing.M) {
 	buildLiveFixture(panicker{}, testLive, "air-quality", filepath.Join("testdata", "data"), dataset.Source{
 		Name: "Air quality (test, real rows of 2026-11-11)", Licence: "Government Open Data License - India", Attribution: "Air quality from CPCB, via data.gov.in.",
 	})
+	buildLiveFixture(panicker{}, testLive, "lgd", filepath.Join("testdata", "data"), dataset.Source{
+		Name: "Local Government Directory (test, real rows of 2026-11-11)", Licence: "Government Open Data License - India", Attribution: "LGD codes via data.gov.in.",
+	})
 	buildLiveFixture(panicker{}, testLive, "nav-history", filepath.Join("testdata", "data"), dataset.Source{
 		Name: "Mutual fund NAV history (synthetic test data)", Licence: "Test data", Attribution: "Made up for tests: 15% a year.",
 	})

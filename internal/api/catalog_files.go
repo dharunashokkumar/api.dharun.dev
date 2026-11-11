@@ -19,7 +19,7 @@ type upload struct {
 	JSON bool
 }
 
-var catalog = withLaw(withGovData(withDocAI(withSetE(withSetB(withSetC(withSetD(withSetA(withPart4(withNetworkTools(withAITools(withFileTools(baseCatalog))))))))))))
+var catalog = withLGD(withLaw(withGovData(withDocAI(withSetE(withSetB(withSetC(withSetD(withSetA(withPart4(withNetworkTools(withAITools(withFileTools(baseCatalog)))))))))))))
 
 const formNote = " Options go in the query string, or as form fields when the file is sent as multipart/form-data."
 

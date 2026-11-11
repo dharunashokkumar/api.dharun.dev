@@ -53,14 +53,12 @@ print(body["data"]["branch"], body["data"]["bank"]["name"])
 
 ## Endpoints
 
-Each API's full parameters, enums and examples are in `references/<id>.md`.
+Each API's endpoints, methods, parameters, enums and examples are in `references/<id>.md`; read it before calling an API you have not used.
 {{range .Categories}}
 ### {{.Title}}
 {{range .Groups}}
-**{{.Title}}** ([references/{{.ID}}.md](references/{{.ID}}.md)): {{.Tagline}}
-{{range .Endpoints}}
-- `GET {{.Path}}`: {{.Summary}}. Example: `{{tag .Example "skill"}}`
+- **{{.Title}}** ([references/{{.ID}}.md](references/{{.ID}}.md)): {{.Tagline}} {{range $i, $e := .Endpoints}}{{if $i}}, {{end}}`{{$e.Path}}`{{end}}. Example: `{{tag (index .Endpoints 0).Example "skill"}}`
 {{- end}}
-{{end}}{{end}}
+{{end}}
 More: OpenAPI at {{.Origin}}/openapi.json, guides at {{.Origin}}/guides, the full documentation in one file at {{.Origin}}/llms-full.txt.
 {{end}}
