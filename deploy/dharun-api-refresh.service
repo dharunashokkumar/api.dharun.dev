@@ -12,6 +12,9 @@ WorkingDirectory=/opt/dharun-api/current
 StateDirectory=dharun-api
 Environment=SEED_DIR=/opt/dharun-api/current/seed
 Environment=DATA_DIR=/var/lib/dharun-api/data
+# Keys some sources need (DATA_GOV_IN_KEY for data.gov.in), root-owned, mode 600. Optional:
+# without it those datasets are skipped quietly.
+EnvironmentFile=-/etc/dharun-api/refresh.env
 # Each dataset decides whether it is due (weekly for IFSC, monthly for RTO codes and
 # holidays). The running API notices a new copy within seconds; no restart is needed.
 ExecStart=/opt/dharun-api/current/apidata refresh
