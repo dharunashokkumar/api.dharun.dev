@@ -267,7 +267,7 @@ log on key routes only.
 - [x] Pages: `/signup`, `/login`, `/account`, `/account/verify`, `/account/reset`,
       `/account/oauth`, `/keys`; privacy and security pages; FAQ.
 - [x] The accounts binary is in the release bundle and in NOTICES.
-- [ ] **Infrastructure request (section 12)**: nothing works on the server until it is done.
+- [x] **Infrastructure request (section 12)**: done on the homelab side (Dharun, 2026-11-11). Checked there, not from this repo; the live check comes after the push.
 - [ ] Set `KEY_REQUIRED_FROM` (at least 30 days after keys are live) and announce it
       on `/changelog`.
 - [ ] `internal/deploytest` and the install test for the second unit (comes with the
