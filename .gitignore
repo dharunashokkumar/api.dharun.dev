@@ -9,3 +9,6 @@ __pycache__/
 *.log
 # Private notes about the production server (homelab facts), never published
 *.local.md
+
+# Keys and secrets never belong in this public repository.
+*.key

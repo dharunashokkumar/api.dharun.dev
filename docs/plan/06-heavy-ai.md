@@ -26,7 +26,7 @@ the server already. Every endpoint is an upload, Private, key only.
 | | Bank statement to rows | `POST /v1/doc/statement` | Statement PDF to dated transactions. Layouts differ by bank; start with the text-layer PDFs of the largest banks. High demand, the most work |
 | | Redact a document | `POST /v1/doc/redact` | The text redaction that exists, applied to a PDF or image: personal details covered in the returned file |
 
-**Status (2026-11-11):** all nine endpoints are built on branch `growth-catalogue`. The e-invoice signature is not verified yet (the key's source needs agreeing).
+**Status (2026-11-11):** all nine endpoints are built on branch `growth-catalogue`. The e-invoice QR is decoded but its signature is not checked: dropped (Dharun, 2026-11-11), as no published key could be found.
 
 Limits to state on the pages: these read what is printed; they do not prove a document
 is genuine (the e-invoice signature check is the exception).
