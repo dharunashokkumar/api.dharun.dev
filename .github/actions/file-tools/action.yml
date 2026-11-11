@@ -38,8 +38,11 @@ runs:
         else
           # A stalled mirror connection is dropped after 30 seconds and retried.
           echo 'Acquire::Retries "5"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/80-ci-retries >/dev/null
-          # Ubuntu's own and Azure's mirrors stalled for hours on 2026-11-11; kernel.org's
-          # mirror carries the same archive, security updates included.
+          # On 2026-11-11 the runners could not resolve any ubuntu.com name for hours;
+          # kernel.org's mirror carries the same archive, security updates included. The
+          # runner image lists its mirrors in apt-mirrors.txt (mirror+file:), not in the
+          # sources, so both are pointed there.
+          echo "https://mirrors.edge.kernel.org/ubuntu/" | sudo tee /etc/apt/apt-mirrors.txt >/dev/null
           sudo sed -i -E 's#https?://((azure\.)?archive|security)\.ubuntu\.com/ubuntu/?#https://mirrors.edge.kernel.org/ubuntu/#g' \
             /etc/apt/sources.list.d/*.sources /etc/apt/sources.list 2>/dev/null || true
           sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" update -q
