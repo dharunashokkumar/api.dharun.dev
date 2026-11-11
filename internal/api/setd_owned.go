@@ -1,8 +1,7 @@
 package api
 
 // Set D tools that hold something for their caller or fetch a page for them: request
-// bins, throwaway databases, link previews, web pages as Markdown, screenshots and HTML
-// to PDF. Making a bin or a database goes through the key gate (catalog Key), so after
+// bins, throwaway databases, link previews and web pages as Markdown. Making a bin or a database goes through the key gate (catalog Key), so after
 // KEY_REQUIRED_FROM it needs a key; what is made is read back with the secret it was
 // given, never by anyone else. Everything is kept for a day at most.
 
@@ -16,7 +15,6 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
-	"net"
 	"net/http"
 	"net/url"
 	"os"
@@ -60,8 +58,6 @@ func (s *Server) registerSetDOwned() {
 	s.handle("db", costLight, "POST /v1/db/{id}/delete", s.handleDBDelete)
 	s.handle("unfurl", costProbe, "GET /v1/unfurl", s.handleUnfurl)
 	s.handle("read", costProbe, "GET /v1/read", s.handleRead)
-	s.handle("screenshot", costModel, "GET /v1/screenshot", s.handleScreenshot)
-	s.handle("html_pdf", costModel, "POST /v1/html/pdf", s.handleHTMLToPDF)
 }
 
 // ---- what callers own ----
@@ -860,176 +856,4 @@ func (s *Server) handleRead(w http.ResponseWriter, r *http.Request) {
 	}
 	s.ok(w, r, map[string]any{"url": final.String(), "status": resp.StatusCode, "title": page.Title, "description": page.Description, "language": page.Language, "words": page.Words, "markdown": page.Markdown},
 		meta{Note: "One page, read from India and turned into Markdown (the main content unless full=true). The site's robots.txt is respected; a site gets at most 10 reads a minute from every caller together."}, "private, no-store")
-}
-
-// ---- a browser: screenshots and HTML to PDF ----
-
-// guardedProxy is an HTTP proxy on the loopback address for one browser run: every
-// connection the browser makes goes through the guard, so a page cannot reach the
-// server's own network.
-// pageHost is the name the browser is given for a page sent in the request body. It is
-// answered by the proxy itself, so the page has an ordinary web origin and can never
-// reach files on the server, as a file:// page could.
-const pageHost = "page.invalid"
-
-func (s *Server) guardedProxy(ctx context.Context, page []byte) (string, func(), error) {
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
-	if err != nil {
-		return "", nil, err
-	}
-	guard := s.guard(80, 443)
-	transport := &http.Transport{Proxy: nil, DialContext: guard.DialContext, ResponseHeaderTimeout: 10 * time.Second, DisableKeepAlives: true}
-	server := &http.Server{ReadHeaderTimeout: 5 * time.Second, Handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method == http.MethodConnect {
-			upstream, err := guard.DialContext(r.Context(), "tcp", r.Host)
-			if err != nil {
-				http.Error(w, "refused", http.StatusForbidden)
-				return
-			}
-			hijacker, ok := w.(http.Hijacker)
-			if !ok {
-				upstream.Close()
-				return
-			}
-			w.WriteHeader(http.StatusOK)
-			client, _, err := hijacker.Hijack()
-			if err != nil {
-				upstream.Close()
-				return
-			}
-			go func() { io.Copy(upstream, client); upstream.Close() }()
-			io.Copy(client, upstream)
-			client.Close()
-			return
-		}
-		if r.URL.Host == pageHost && page != nil {
-			w.Header().Set("Content-Type", "text/html; charset=utf-8")
-			w.Write(page)
-			return
-		}
-		if r.URL.Scheme != "http" {
-			http.Error(w, "refused", http.StatusForbidden)
-			return
-		}
-		r.RequestURI = ""
-		resp, err := transport.RoundTrip(r)
-		if err != nil {
-			http.Error(w, "refused", http.StatusBadGateway)
-			return
-		}
-		defer resp.Body.Close()
-		for k, v := range resp.Header {
-			w.Header()[k] = v
-		}
-		w.WriteHeader(resp.StatusCode)
-		io.Copy(w, io.LimitReader(resp.Body, 20<<20))
-	})}
-	go server.Serve(listener)
-	stop := func() {
-		server.Close()
-		transport.CloseIdleConnections()
-	}
-	go func() { <-ctx.Done(); stop() }()
-	return "http://" + listener.Addr().String(), stop, nil
-}
-
-func (s *Server) browser(ctx context.Context, dir string, page []byte, args ...string) error {
-	proxy, stop, err := s.guardedProxy(ctx, page)
-	if err != nil {
-		return err
-	}
-	defer stop()
-	base := []string{"--headless=new", "--disable-gpu", "--hide-scrollbars", "--mute-audio", "--no-first-run", "--no-default-browser-check",
-		"--disable-extensions", "--disable-sync", "--disable-background-networking", "--disable-component-update", "--disable-dev-shm-usage",
-		"--proxy-server=" + proxy, "--proxy-bypass-list=<-loopback>", "--user-data-dir=" + filepath.Join(dir, "profile"),
-		"--virtual-time-budget=8000", "--timeout=20000"}
-	if os.Getenv("BROWSER_NO_SANDBOX") == "1" {
-		base = append(base, "--no-sandbox")
-	}
-	_, err = s.run(ctx, job{program: "chromium", args: append(base, args...), dir: dir, timeout: 40 * time.Second, env: []string{"HOME=" + dir}})
-	return err
-}
-
-func (s *Server) handleScreenshot(w http.ResponseWriter, r *http.Request) {
-	info(r).private = true
-	query := r.URL.Query()
-	target, host, err := probeURL(query.Get("url"))
-	if err != nil {
-		s.badRequest(w, r, "Give url: an http or https address.")
-		return
-	}
-	width, height := 1280, 800
-	if raw := query.Get("width"); raw != "" {
-		if width, err = strconv.Atoi(raw); err != nil || width < 320 || width > 1920 {
-			s.badRequest(w, r, "width is 320 to 1920.")
-			return
-		}
-	}
-	if raw := query.Get("height"); raw != "" {
-		if height, err = strconv.Atoi(raw); err != nil || height < 240 || height > 4000 {
-			s.badRequest(w, r, "height is 240 to 4000.")
-			return
-		}
-	}
-	if _, err := s.guard(80, 443).Resolve(r.Context(), host); err != nil {
-		s.failNetwork(w, r, host, err)
-		return
-	}
-	release, ok := s.startCheck(w, r, host)
-	if !ok {
-		return
-	}
-	defer release()
-	dir, done, err := workspace()
-	if err != nil {
-		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-		return
-	}
-	defer done()
-	out := filepath.Join(dir, "shot.png")
-	if err := s.browser(r.Context(), dir, nil, "--window-size="+itoa(width)+","+itoa(height), "--screenshot="+out, target.String()); err != nil {
-		s.toolFailed(w, r, err, "take the screenshot")
-		return
-	}
-	data, err := os.ReadFile(out)
-	if err != nil {
-		s.toolFailed(w, r, err, "take the screenshot")
-		return
-	}
-	sendFile(w, r, data, "image/png", "screenshot.png")
-}
-
-func (s *Server) handleHTMLToPDF(w http.ResponseWriter, r *http.Request) {
-	info(r).private = true
-	raw, ok := s.readJSONBody(w, r)
-	if !ok {
-		return
-	}
-	var body struct {
-		HTML string `json:"html"`
-	}
-	if json.Unmarshal(raw, &body) == nil && body.HTML != "" {
-		raw = []byte(body.HTML)
-	}
-	if len(strings.TrimSpace(string(raw))) == 0 {
-		s.badRequest(w, r, `Send JSON {"html": "<!doctype html>..."}, or the HTML document itself as the body.`)
-		return
-	}
-	dir, done, err := workspace()
-	if err != nil {
-		s.fail(w, r, http.StatusInternalServerError, "internal_error", "Internal error.")
-		return
-	}
-	defer done()
-	out := filepath.Join(dir, "page.pdf")
-	if err := s.browser(r.Context(), dir, raw, "--no-pdf-header-footer", "--print-to-pdf="+out, "http://"+pageHost+"/"); err != nil {
-		s.toolFailed(w, r, err, "print the page")
-		return
-	}
-	data, err := os.ReadFile(out)
-	if err != nil {
-		s.toolFailed(w, r, err, "print the page")
-		return
-	}
-	sendFile(w, r, data, "application/pdf", "page.pdf")
 }

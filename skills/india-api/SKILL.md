@@ -336,12 +336,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/icon/{domain}`: Icon for a website. Example: `/v1/icon/github.com?utm_medium=skill`
 
-**Web pages** ([references/web.md](references/web.md)): Link previews, a page as Markdown for agents, screenshots, HTML to PDF, and HTML and Markdown to each other.
+**Web pages** ([references/web.md](references/web.md)): Link previews, a page as Markdown for agents, and HTML and Markdown to each other.
 
 - `GET /v1/unfurl`: Link preview data. Example: `/v1/unfurl?url=https://dharun.dev&utm_medium=skill`
 - `GET /v1/read`: A web page as Markdown. Example: `/v1/read?url=https://dharun.dev&utm_medium=skill`
-- `GET /v1/screenshot`: Screenshot of a page. Example: `/v1/screenshot?url=https://dharun.dev&width=1280&height=800&utm_medium=skill`
-- `GET /v1/html/pdf`: HTML to PDF. Example: `/v1/html/pdf?utm_medium=skill`
 - `GET /v1/markdown`: HTML and Markdown to each other. Example: `/v1/markdown?to=html&text=%23%20Hello%0A%0A*India*%20API&utm_medium=skill`
 
 ### Files, documents and media

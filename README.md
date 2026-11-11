@@ -89,7 +89,7 @@ JavaScript and Python.
 | [Data format tools](https://api.dharun.dev/docs/data-tools) | `POST /v1/convert?to=yaml`, `POST /v1/diff`, `POST /v1/sheet/to-json` | JSON, YAML, TOML, CSV and XML to each other; text and JSON differences; XLSX and CSV to JSON and back |
 | [Developer utilities](https://api.dharun.dev/docs/dev-utils) | `/v1/cron?expr=...`, `/v1/uuid?kind=uuid7`, `/v1/time?at=3pm&to=PST` | Cron in words with next runs, UUIDs and ULIDs, hashes and HMACs, JWT decoding, user agents, time zones |
 | [Colours](https://api.dharun.dev/docs/colors) | `/v1/color/ff9933`, `/v1/color/contrast?fg=&bg=` | Hex, RGB, HSL and OKLCH, WCAG contrast with a passing suggestion, a picture's palette |
-| [Web pages](https://api.dharun.dev/docs/web) | `/v1/unfurl?url=`, `/v1/read?url=`, `/v1/screenshot?url=` | Link previews, a page as Markdown for agents (robots.txt respected), screenshots, HTML to PDF |
+| [Web pages](https://api.dharun.dev/docs/web) | `/v1/unfurl?url=`, `/v1/read?url=` | Link previews, a page as Markdown for agents (robots.txt respected) |
 | [Audio and video tools](https://api.dharun.dev/docs/media) | `POST /v1/media/convert?format=mp3`, `/trim`, `/waveform`, `/thumbnail` | Convert, cut, draw a waveform, take a frame |
 | [Request bins](https://api.dharun.dev/docs/hooks) | `POST /v1/hooks` | A private address that records webhooks for a day |
 | [Throwaway databases](https://api.dharun.dev/docs/db) | `POST /v1/db` | A private SQLite database for a day, SQL over HTTPS |

@@ -50,18 +50,18 @@ whose terms are unclear or restrictive; each needs its own decision.
 | ★ | Idea | Address | Source | Refresh | Risk |
 |---|---|---|---|---|---|
 | ★ | **Index constituents** | `/v1/indices`, `/v1/indices/{name}` | NSE Indices and BSE constituent lists (CSV files) | Monthly | medium |
-| ★ | **IPO calendar** | `/v1/ipos` | NSE and BSE public issue pages; SEBI filings | Daily | medium |
+| ★ | ~~IPO calendar~~ (dropped, Dharun 2026-11-11) | `/v1/ipos` | NSE and BSE public issue pages; SEBI filings | Daily | medium |
 | ★ | **Mutual fund history and returns** | `/v1/mutual-funds/{code}/history`, `/returns` | AMFI's historical NAV download. Returns over 1, 3, 5 years, rolling returns, SIP result computed here | Daily | medium (the AMFI decision exists) |
-| | Corporate actions | `/v1/corporate-actions` | Exchange corporate action lists: dividends, splits, bonus, record dates | Daily | medium |
-| | Results and board meeting calendar | `/v1/results-calendar` | Exchange announcements | Daily | medium |
+| | ~~Corporate actions~~ (dropped, Dharun 2026-11-11) | `/v1/corporate-actions` | Exchange corporate action lists: dividends, splits, bonus, record dates | Daily | medium |
+| | ~~Results and board meeting calendar~~ (dropped, Dharun 2026-11-11) | `/v1/results-calendar` | Exchange announcements | Daily | medium |
 | | Derivatives calendar | `/v1/expiries` | Computed from the exchange rules and the holiday data: weekly and monthly expiry dates, moved for holidays | With rule changes | low |
-| | Institutional flows | `/v1/fii-dii` | The daily FII and DII figures the exchanges publish | Daily | medium |
+| | ~~Institutional flows~~ (dropped, Dharun 2026-11-11) | `/v1/fii-dii` | The daily FII and DII figures the exchanges publish | Daily | medium |
 | | Sectors and industries | `/v1/sectors` | The industry classification the exchanges publish, joined to companies | Monthly | medium |
 | ★ | **Gold and silver rates** | `/v1/bullion` | IBJA's published daily rates | Twice daily | high |
-| | Fuel prices | `/v1/fuel?city=` | The oil companies' published city prices; PPAC | Daily | high |
+| | ~~Fuel prices~~ (dropped, Dharun 2026-11-11) | `/v1/fuel?city=` | The oil companies' published city prices; PPAC | Daily | high |
 | | INR reference rates | `/v1/fx` | FBIL (open since October: terms unread) | Daily | medium |
 | | Policy and savings rates | `/v1/rates` | RBI repo and reverse repo, small savings rates, cost inflation index, typed from the notifications | On change | low |
-| | Inflation | `/v1/cpi` | MOSPI's consumer price index releases | Monthly | low |
+| | ~~Inflation~~ (dropped, Dharun 2026-11-11) | `/v1/cpi` | MOSPI's consumer price index releases | Monthly | low |
 | | Bank codes | `/v1/micr/{code}`, SWIFT | MICR is in the IFSC data already; SWIFT lists are compiled privately | With IFSC | low / high |
 | | Card number prefix | `/v1/bin/{prefix}` | Open BIN lists: network, type, issuing bank. Quality varies; Private | Monthly | medium |
 
@@ -111,7 +111,7 @@ Pure logic unless noted. Small each; best built several at a time.
 | | Image extras | `/v1/image/...` | Icon pack from one picture, blur placeholder (ThumbHash), SVG to PNG (cleaned first), watermark |
 | | PDF extras | `/v1/pdf/...` | Watermark, page numbers, images to PDF, password removal when the caller gives it |
 | | Audio and video | `/v1/media/...` | Convert, trim, waveform image, video thumbnail with ffmpeg. Key only |
-| | Screenshot and HTML to PDF | `/v1/screenshot` | Needs a headless browser (200 to 500 MB a run). Key only, guarded client, last in line |
+| | ~~Screenshot and HTML to PDF~~ | | Dropped (Dharun, 2026-11-11): no Chromium on the server |
 | | Spreadsheets | `/v1/sheet` | XLSX or CSV to JSON and back |
 | | Throwaway database | `/v1/db` | In the roadmap as Open; still blocked by how a database port would reach the public |
 
@@ -169,5 +169,5 @@ chose all the calculators, income tax included.
 - [x] MCP tools: `calculate_indian_money`, `today_in_india`, `batch_lookup`, `make_chart_image`.
 - [x] Number formatting, Indian date tools, UPI handle lookup, QR parse, badges, address
       reader; company cross-search was already `/v1/companies` (2026-11-11, branch `growth-catalogue`).
-- [x] Set D, every item (2026-11-11, branch `growth-catalogue`); screenshot and HTML to PDF wait for Chromium on the server.
+- [x] Set D, every item (2026-11-11, branch `growth-catalogue`); screenshot and HTML to PDF dropped (no Chromium).
 - [ ] Sets B, C, D, E: each data source to be agreed with Dharun first (Parts 5 and 6).

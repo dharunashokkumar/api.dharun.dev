@@ -229,7 +229,6 @@ func TestUnfurlAndRead(t *testing.T) {
 	}
 	expectStatus(t, "/v1/read?url=https://pages.site.in/private/page", http.StatusForbidden)
 	expectStatus(t, "/v1/unfurl?url=https://inside.site.in/", http.StatusUnprocessableEntity)
-	expectStatus(t, "/v1/screenshot?url=https://inside.site.in/", http.StatusUnprocessableEntity)
 }
 
 func TestRobots(t *testing.T) {

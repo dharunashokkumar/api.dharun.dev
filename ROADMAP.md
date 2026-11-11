@@ -294,8 +294,8 @@ the docs pages and the guide. github.com's icon fell back to the tile: its home 
 512 KB (icons are in the head), and a home page that cannot be read still leaves
 `/favicon.ico` to try.
 
-Screenshot and HTML to PDF need a headless browser (200 to 500 MB each) and are the last
-candidates; Typst covers most of the PDF need.
+Screenshot and HTML to PDF were built and then dropped (Dharun, 2026-11-11): they need
+Chromium on the server, which is not wanted; Typst covers the PDF need.
 
 Added 2026-10-14. Traceroute was built ahead of the rest of round 4 (Dharun,
 2026-10-14); the TLS fingerprint stays Open:
@@ -506,7 +506,6 @@ data and status.
 | Audio and video | `/v1/media/{convert,trim,waveform,thumbnail}` | ffmpeg; Key | Built |
 | Link previews | `/v1/unfurl` | The guarded client, as the probe; Private | Built |
 | Web page to Markdown | `/v1/read` | Guarded client, robots.txt (RFC 9309), 10 a minute per site; Key | Built |
-| Screenshot, HTML to PDF | `/v1/screenshot`, `/v1/html/pdf` | Headless Chromium behind a loopback proxy that sends every connection through the guard; Key. **Needs Debian's `chromium` in the container (infrastructure request)**; answers 503 until then | Built, waiting for infrastructure |
 | Request bins | `/v1/hooks`, `/v1/hook/{id}` | In memory, a day, last 100 requests; making one is a key route; a public `demo` bin | Built |
 | Throwaway databases | `/v1/db`, `/v1/db/{id}/query` | SQLite in a temporary file, 10 MB, a day, ATTACH/VACUUM/PRAGMA refused; a read-only public `demo` | Built |
 | Festivals | `/v1/festivals/{year}`, `.ics`; in `/v1/today` | Computed (`internal/festivals`) from the panchang's new moons, sankrantis and tithis at the moment each custom names (sunrise; sunset for Diwali; midday for Ganesh Chaturthi; afternoon for Dussehra; Bhadra for Holika Dahan; the evening nakshatra for Karthigai Deepam); checked against 31 published dates of 2025 and 2026; Islamic dates tabular, marked expected | Built |
@@ -525,7 +524,7 @@ data and status.
 | Agent notes | `/v1/kv`, `/v1/kv/{id}/{key}` | Saved in `STATE_DIR/agent-notes.json`, 1 MB a store, 30 days after the last write | Built |
 | MCP tool sets | `/mcp?tools=`, `find_tool`, `/v1/mcp-tools` | Sets from the tool names: files, money, network, text, dates, places | Built |
 | Document reading | `/v1/doc/markdown`, `/doc/tables`, `/doc/invoice`, `/doc/einvoice-qr`, `/doc/receipt`, `/doc/cheque`, `/doc/statement`, `/doc/redact`, `/doc/mask-aadhaar` | No language model (`internal/docai`): pdftotext word positions or Tesseract words; headings from text size, tables from aligned columns, invoice fields by label with GST checks; e-invoice QR decoded (the signature is **not yet verified**: NIC's public key is only found in a procedure PDF on its trial portal, so the source needs agreeing); Aadhaar masking by Verhoeff-checked digit groups plus the QR code; receipts, cheques (IFSC and MICR looked up in the IFSC data), statements by their header row with every balance checked; redaction with the `/v1/text/redact` rules, a PDF returned as pictures of its pages; Key, Private | Built |
-| IPO calendar, corporate actions, results calendar, FII/DII flows | | NSE's pages answer programs only through a browser session, which this project does not imitate (no bot-check circumvention). **Waiting for Dharun**: another source (BSE files, SEBI filings) or leave out | Blocked |
+| IPO calendar, corporate actions, results calendar, FII/DII flows, fuel prices, CPI | | Dropped (Dharun, 2026-11-11): NSE answers programs only through a browser session (not imitated), the oil companies' page is behind a bot check, MOSPI's API does not answer | Dropped |
 
 ### Ideas not scheduled yet
 

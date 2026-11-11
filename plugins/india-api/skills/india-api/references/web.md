@@ -1,6 +1,6 @@
 # Web pages API
 
-> Link previews, a page as Markdown for agents, screenshots, HTML to PDF, and HTML and Markdown to each other.
+> Link previews, a page as Markdown for agents, and HTML and Markdown to each other.
 
 Pages are fetched from India through the same guard as the probe: public addresses and the usual ports only, at most 10 fetches of one site a minute from every caller together. The reader respects robots.txt. Addresses are never logged.
 
@@ -37,44 +37,6 @@ Parameters:
 - `format` (query): markdown answers with the Markdown itself. One of: json, markdown.
 
 Example: https://api.dharun.dev/v1/read?url=https://dharun.dev&utm_medium=skill
-
-## Screenshot of a page
-
-`GET /v1/screenshot`
-
-A PNG of a page as a desktop browser draws it. Every connection the browser makes goes through the guard. Needs a free API key once keys are required (see /keys).
-
-Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
-
-What you send is never written to the log, and the answer is not cached.
-
-Parameters:
-
-- `url` (query, required): The page.
-- `width` (query): 320 to 1920. Default 1280.
-- `height` (query): 240 to 4000. Default 800.
-
-Example: https://api.dharun.dev/v1/screenshot?url=https://dharun.dev&width=1280&height=800&utm_medium=skill (returns the image itself)
-
-## HTML to PDF
-
-`POST /v1/html/pdf`
-
-Prints an HTML document as a browser would, with its CSS. Pictures and fonts it links to are fetched through the guard. Needs a free API key once keys are required (see /keys).
-
-Send: JSON {"html": "<!doctype html>..."}, or the HTML document itself as text/html.
-
-Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
-
-What you send is never written to the log, and the answer is not cached.
-
-Example: `POST` https://api.dharun.dev/v1/html/pdf?utm_medium=skill (returns the PDF itself)
-
-Example body (invoice.json):
-
-```json
-{"html": "<!doctype html><title>Bill</title><h1>Sri Murugan Stores</h1><p>Rice, 5 kg: Rs 300</p>"}
-```
 
 ## HTML and Markdown to each other
 
