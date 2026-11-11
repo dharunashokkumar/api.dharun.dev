@@ -10,15 +10,17 @@ Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free 
 
 `POST /v1/batch`
 
-Answers { data: [{kind, value, status, data or error}], meta }. With format=ndjson, one JSON line per answer instead.
+Answers { data: [{kind, value, status, data or error}], meta }. With format=ndjson, one JSON line per answer instead. Send a CSV file as text/csv with kind (and column, the header of the column holding the values; by default the column named like the kind) to get the same file back with each answer's fields added as columns: a spreadsheet of pincodes comes back with district and state.
 
-Send: JSON: {"kind": "pincode", "values": [...]} for one kind, or {"lookups": [{"kind": "ifsc", "value": "..."}, ...]} for a mix. Kinds: airport, bank, company, gstin, hsn, ifsc, ifsc-format, pan, phone, pincode, rto, state, station, words.
+Send: JSON: {"kind": "pincode", "values": [...]} for one kind, or {"lookups": [{"kind": "ifsc", "value": "..."}, ...]} for a mix. Kinds: airport, bank, company, gstin, hsn, ifsc, ifsc-format, pan, phone, pincode, rto, state, station, words. Or a CSV file (text/csv) to enrich.
 
 What you send is never written to the log, and the answer is not cached.
 
 Parameters:
 
-- `format` (query): Default json. One of: json, ndjson.
+- `format` (query): Default json; csv with a CSV body. One of: json, ndjson, csv.
+- `kind` (query): With a CSV body: the lookup, such as pincode or ifsc.
+- `column` (query): With a CSV body: the header of the column holding the values.
 
 Example: `POST` https://api.dharun.dev/v1/batch?utm_medium=skill
 

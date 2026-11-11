@@ -137,11 +137,13 @@ func withPart4(groups []apiGroup) []apiGroup {
 			Intro:   "Pincodes, IFSC codes, banks, phone numbers, RTO codes, HSN codes, companies, states, airports, stations, GSTIN and PAN checks and number to words, many at once. Each answer is exactly what the lookup's own endpoint returns, in the order sent. Ten lookups cost one unit of the rate limit. What you send is never logged.",
 			Endpoints: []endpoint{{
 				Path: "/v1/batch", Summary: "Many lookups in one request", Private: true,
-				Upload:      &upload{Accepts: `JSON: {"kind": "pincode", "values": [...]} for one kind, or {"lookups": [{"kind": "ifsc", "value": "..."}, ...]} for a mix. Kinds: ` + strings.Join(batchKindNames(), ", ") + ".", Types: []string{"application/json"}, JSON: true},
-				Doc:         "Answers { data: [{kind, value, status, data or error}], meta }. With format=ndjson, one JSON line per answer instead.",
+				Upload:      &upload{Accepts: `JSON: {"kind": "pincode", "values": [...]} for one kind, or {"lookups": [{"kind": "ifsc", "value": "..."}, ...]} for a mix. Kinds: ` + strings.Join(batchKindNames(), ", ") + ". Or a CSV file (text/csv) to enrich.", Types: []string{"application/json", "text/csv"}, JSON: true},
+				Doc:         "Answers { data: [{kind, value, status, data or error}], meta }. With format=ndjson, one JSON line per answer instead. Send a CSV file as text/csv with kind (and column, the header of the column holding the values; by default the column named like the kind) to get the same file back with each answer's fields added as columns: a spreadsheet of pincodes comes back with district and state.",
 				Example:     "/v1/batch",
 				ExampleBody: batchExample,
-				Params:      []param{{Name: "format", In: "query", Type: "string", Enum: []string{"json", "ndjson"}, Doc: "Default json."}},
+				Params: []param{{Name: "format", In: "query", Type: "string", Enum: []string{"json", "ndjson", "csv"}, Doc: "Default json; csv with a CSV body."},
+					{Name: "kind", In: "query", Type: "string", Doc: "With a CSV body: the lookup, such as pincode or ifsc."},
+					{Name: "column", In: "query", Type: "string", Doc: "With a CSV body: the header of the column holding the values."}},
 			}},
 		},
 		apiGroup{

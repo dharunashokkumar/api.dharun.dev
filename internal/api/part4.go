@@ -5,8 +5,11 @@ package api
 // in pictures.go; the calendar feeds in holidays.go.
 
 import (
+	"bytes"
 	"context"
+	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -161,8 +164,13 @@ func (s *Server) handleBatch(w http.ResponseWriter, r *http.Request) {
 		s.fail(w, r, http.StatusRequestEntityTooLarge, "too_large", "A batch body may be at most 2 MB.")
 		return
 	}
+	contentType := strings.ToLower(r.Header.Get("Content-Type"))
+	if strings.HasPrefix(contentType, "text/csv") || strings.EqualFold(r.URL.Query().Get("format"), "csv") && !strings.HasPrefix(contentType, "application/json") {
+		s.batchCSV(w, r, raw)
+		return
+	}
 	if err := json.Unmarshal(raw, &body); err != nil {
-		s.badRequest(w, r, `Send JSON: {"kind": "pincode", "values": ["637001", "600001"]} or {"lookups": [{"kind": "ifsc", "value": "SBIN0000001"}]}.`)
+		s.badRequest(w, r, `Send JSON: {"kind": "pincode", "values": ["637001", "600001"]} or {"lookups": [{"kind": "ifsc", "value": "SBIN0000001"}]}, or a CSV file as text/csv with kind and column.`)
 		return
 	}
 	items := body.Lookups
@@ -183,29 +191,8 @@ func (s *Server) handleBatch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	answers := make([]batchAnswer, len(items))
-	outer := info(r)
 	for i, item := range items {
-		kind := strings.ToLower(item.Kind)
-		address := strings.Replace(batchKinds[kind], "{}", url.PathEscape(strings.TrimSpace(item.Value)), 1)
-		// Each lookup is charged as part of the batch: the inner request costs nothing more.
-		ctx := context.WithValue(r.Context(), infoKey{}, &requestInfo{internal: true, client: "batch|" + outer.bucket, cred: outer.cred})
-		inner, err := http.NewRequestWithContext(ctx, http.MethodGet, address, nil)
-		answers[i] = batchAnswer{Kind: kind, Value: item.Value}
-		if err != nil || item.Value == "" {
-			answers[i].Status = http.StatusBadRequest
-			answers[i].Error = json.RawMessage(`{"code":"bad_request","message":"Empty or unusable value."}`)
-			continue
-		}
-		inner.Host = r.Host
-		recorder := &memoryWriter{header: http.Header{}}
-		s.mux.ServeHTTP(recorder, inner)
-		answers[i].Status = recorder.status
-		var envelope struct {
-			Data  json.RawMessage `json:"data"`
-			Error json.RawMessage `json:"error"`
-		}
-		json.Unmarshal(recorder.body.Bytes(), &envelope)
-		answers[i].Data, answers[i].Error = envelope.Data, envelope.Error
+		answers[i] = s.batchLookup(r, strings.ToLower(item.Kind), item.Value)
 	}
 	if strings.EqualFold(r.URL.Query().Get("format"), "ndjson") {
 		var out strings.Builder
@@ -219,6 +206,158 @@ func (s *Server) handleBatch(w http.ResponseWriter, r *http.Request) {
 	}
 	total := len(answers)
 	s.ok(w, r, answers, meta{Total: &total, Note: "Each answer is what its own endpoint returns for that value, in the order sent. Ten lookups cost one unit of the rate limit."}, "private, no-store")
+}
+
+// batchLookup runs one lookup as its own endpoint answers it, charged to the batch.
+func (s *Server) batchLookup(r *http.Request, kind, value string) batchAnswer {
+	answer := batchAnswer{Kind: kind, Value: value}
+	outer := info(r)
+	address := strings.Replace(batchKinds[kind], "{}", url.PathEscape(strings.TrimSpace(value)), 1)
+	ctx := context.WithValue(r.Context(), infoKey{}, &requestInfo{internal: true, client: "batch|" + outer.bucket, cred: outer.cred})
+	inner, err := http.NewRequestWithContext(ctx, http.MethodGet, address, nil)
+	if err != nil || strings.TrimSpace(value) == "" {
+		answer.Status = http.StatusBadRequest
+		answer.Error = json.RawMessage(`{"code":"bad_request","message":"Empty or unusable value."}`)
+		return answer
+	}
+	inner.Host = r.Host
+	recorder := &memoryWriter{header: http.Header{}}
+	s.mux.ServeHTTP(recorder, inner)
+	answer.Status = recorder.status
+	var envelope struct {
+		Data  json.RawMessage `json:"data"`
+		Error json.RawMessage `json:"error"`
+	}
+	json.Unmarshal(recorder.body.Bytes(), &envelope)
+	answer.Data, answer.Error = envelope.Data, envelope.Error
+	return answer
+}
+
+// batchCSV enriches a CSV file: for each row it looks up the value in one column and
+// adds the answer's fields as new columns (nested ones flattened with a dot), so a
+// spreadsheet of pincodes or IFSC codes comes back with district, bank and so on.
+func (s *Server) batchCSV(w http.ResponseWriter, r *http.Request, raw []byte) {
+	query := r.URL.Query()
+	kind := strings.ToLower(query.Get("kind"))
+	if _, ok := batchKinds[kind]; !ok {
+		s.badRequest(w, r, "With a CSV file, kind names the lookup: "+strings.Join(batchKindNames(), ", ")+".")
+		return
+	}
+	reader := csv.NewReader(bytes.NewReader(bytes.TrimPrefix(raw, []byte("\xef\xbb\xbf"))))
+	reader.FieldsPerRecord = -1
+	records, err := reader.ReadAll()
+	if err != nil || len(records) < 2 {
+		s.badRequest(w, r, "The CSV needs a header row and at least one row.")
+		return
+	}
+	header := records[0]
+	column := -1
+	want := strings.TrimSpace(query.Get("column"))
+	for i, name := range header {
+		if strings.EqualFold(strings.TrimSpace(name), want) || (want == "" && strings.EqualFold(strings.TrimSpace(name), kind)) {
+			column = i
+			break
+		}
+	}
+	if column < 0 {
+		s.badRequest(w, r, "column names the CSV column that holds the values (by its header); without it, a column named "+kind+" is used.")
+		return
+	}
+	rows := records[1:]
+	if len(rows) > batchMax {
+		s.badRequest(w, r, "A CSV may have up to "+strconv.Itoa(batchMax)+" rows.")
+		return
+	}
+	if extra := (len(rows)+9)/10 - 1; extra > 0 && !s.chargeMore(w, r, extra) {
+		return
+	}
+	// The answers' fields, flattened, in the order first seen; then one row each.
+	var added []string
+	seen := map[string]bool{}
+	results := make([]map[string]string, len(rows))
+	for i, row := range rows {
+		value := ""
+		if column < len(row) {
+			value = row[column]
+		}
+		answer := s.batchLookup(r, kind, value)
+		flat := map[string]string{"status": strconv.Itoa(answer.Status)}
+		var data any
+		if json.Unmarshal(answer.Data, &data) == nil {
+			flattenInto(flat, "", data)
+		}
+		keys := make([]string, 0, len(flat))
+		for k := range flat {
+			if k != "status" {
+				keys = append(keys, k)
+			}
+		}
+		sort.Strings(keys)
+		for _, k := range append([]string{"status"}, keys...) {
+			if !seen[k] {
+				seen[k] = true
+				added = append(added, k)
+			}
+		}
+		results[i] = flat
+	}
+	var out bytes.Buffer
+	writer := csv.NewWriter(&out)
+	head := append([]string{}, header...)
+	for _, k := range added {
+		head = append(head, kind+"."+k)
+	}
+	writer.Write(head)
+	for i, row := range rows {
+		line := append([]string{}, row...)
+		for len(line) < len(header) {
+			line = append(line, "")
+		}
+		for _, k := range added {
+			line = append(line, results[i][k])
+		}
+		writer.Write(line)
+	}
+	writer.Flush()
+	w.Header().Set("Content-Disposition", `attachment; filename="enriched.csv"`)
+	writeBody(w, r, http.StatusOK, out.Bytes(), "text/csv; charset=utf-8", "private, no-store", true)
+}
+
+// flattenInto writes a JSON value's leaves as dotted keys; a list of plain values is
+// joined with "; ", a list of objects gives its first one (pincodes have several post
+// offices) and its length.
+func flattenInto(out map[string]string, prefix string, v any) {
+	key := func(k string) string {
+		if prefix == "" {
+			return k
+		}
+		return prefix + "." + k
+	}
+	switch x := v.(type) {
+	case map[string]any:
+		for k, child := range x {
+			flattenInto(out, key(k), child)
+		}
+	case []any:
+		if len(x) == 0 {
+			return
+		}
+		if _, nested := x[0].(map[string]any); nested {
+			out[key("count")] = strconv.Itoa(len(x))
+			flattenInto(out, prefix, x[0])
+			return
+		}
+		parts := make([]string, len(x))
+		for i, item := range x {
+			parts[i] = fmt.Sprint(item)
+		}
+		out[prefix] = strings.Join(parts, "; ")
+	case nil:
+	case float64:
+		out[prefix] = strconv.FormatFloat(x, 'f', -1, 64)
+	default:
+		out[prefix] = fmt.Sprint(x)
+	}
 }
 
 func batchKindNames() []string {
