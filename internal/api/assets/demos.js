@@ -105,4 +105,140 @@
       } catch (e) {}
     });
   }
+  function el(tag, attrs, text) { var n = document.createElement(tag); for (var k in attrs || {}) n.setAttribute(k, attrs[k]); if (text !== undefined) n.textContent = text; return n; }
+  function time(iso) { return iso ? iso.slice(11, 16) : "–"; }
+  function todayISO() { return ist().toISOString().slice(0, 10); }
+
+  if (demo === "satellite-tracker") {
+    async function passes() {
+      var out = $("sat-out"); out.textContent = "…";
+      try {
+        var body = await get("/v1/sat-pass?lat=" + encodeURIComponent($("sat-lat").value) + "&lng=" + encodeURIComponent($("sat-lng").value));
+        if (body.error) throw new Error(body.error.message);
+        var d = body.data, list = el("ol", { class: "chain" });
+        out.textContent = "";
+        out.appendChild(el("p", { class: "lead" }, d.satellite.name + ": " + d.passes.length + " passes in the next three days."));
+        d.passes.forEach(function (p) {
+          list.appendChild(el("li", null, p.rise.time.slice(0, 10) + " · rises " + time(p.rise.time) + " in the " + p.rise.direction + ", highest " + Math.round(p.culmination.elevation) + "° in the " + p.culmination.direction + " at " + time(p.culmination.time) + ", sets " + time(p.set.time) + " in the " + p.set.direction + (p.visible ? " · visible to the eye" : "")));
+        });
+        out.appendChild(list);
+      } catch (e) { out.textContent = e.message || "Could not reach the API."; }
+    }
+    $("sat-go").addEventListener("click", passes);
+    $("sat-here").addEventListener("click", function () {
+      if (!navigator.geolocation) return;
+      navigator.geolocation.getCurrentPosition(function (pos) { $("sat-lat").value = pos.coords.latitude.toFixed(3); $("sat-lng").value = pos.coords.longitude.toFixed(3); passes(); });
+    });
+    passes();
+  }
+
+  if (demo === "path-from-india") {
+    $("path-go").addEventListener("click", async function () {
+      var out = $("path-out"); out.textContent = ""; out.appendChild(el("li", null, "Tracing… about ten seconds."));
+      try {
+        var body = await get("/v1/mtr/" + encodeURIComponent($("path-host").value.trim()));
+        if (body.error) throw new Error(body.error.message);
+        out.textContent = "";
+        body.data.hops.forEach(function (h) {
+          var who = h.private ? "inside the server's own network" : (h.address ? (h.hostname || h.address) + (h.network ? " · " + h.network.organization : "") + (h.country ? " · " + h.country : "") : "no answer");
+          out.appendChild(el("li", null, "Hop " + h.hop + ": " + who + (h.averageMs !== null ? " · " + h.averageMs + " ms" : "")));
+        });
+        out.appendChild(el("li", null, body.data.reached ? "Reached " + body.data.host + " (" + body.data.address + ")." : "The host did not answer the last probes."));
+      } catch (e) { out.textContent = e.message || "Could not reach the API."; }
+    });
+  }
+
+  if (demo === "panchang-dial") {
+    $("dial-date").value = todayISO();
+    async function draw() {
+      var out = $("dial-out"); out.textContent = "…";
+      try {
+        var body = await get("/v1/panchang/" + $("dial-date").value + "?pincode=" + encodeURIComponent($("dial-pin").value));
+        if (body.error) throw new Error(body.error.message);
+        var d = body.data, t = d.tithi[0], n = d.nakshatra[0];
+        var phase = (t.paksha === "shukla" ? t.number : 15 + t.number) / 30; // 0 new moon, 0.5 full
+        var ns = "http://www.w3.org/2000/svg", svg = document.createElementNS(ns, "svg");
+        svg.setAttribute("viewBox", "-110 -110 220 220"); svg.setAttribute("width", "220"); svg.setAttribute("role", "img"); svg.setAttribute("aria-label", t.name + ", " + t.paksha + " paksha");
+        var ring = document.createElementNS(ns, "circle"); ring.setAttribute("r", "100"); ring.setAttribute("fill", "none"); ring.setAttribute("stroke", "currentColor"); ring.setAttribute("stroke-opacity", "0.25"); svg.appendChild(ring);
+        for (var i = 0; i < 30; i++) {
+          var a = (i / 30) * 2 * Math.PI - Math.PI / 2, dot = document.createElementNS(ns, "circle");
+          dot.setAttribute("cx", (100 * Math.cos(a)).toFixed(1)); dot.setAttribute("cy", (100 * Math.sin(a)).toFixed(1)); dot.setAttribute("r", i === Math.round(phase * 30) % 30 ? "7" : "2.5");
+          dot.setAttribute("fill", i === Math.round(phase * 30) % 30 ? "var(--color-accent, #2b50d8)" : "currentColor"); svg.appendChild(dot);
+        }
+        var moon = document.createElementNS(ns, "circle"); moon.setAttribute("r", "45"); moon.setAttribute("fill", "#e9e4d4"); svg.appendChild(moon);
+        var lit = Math.cos(phase * 2 * Math.PI), shade = document.createElementNS(ns, "path");
+        var rx = Math.abs(lit) * 45, waxing = phase < 0.5;
+        shade.setAttribute("d", "M0,-45 A45,45 0 0," + (waxing ? 0 : 1) + " 0,45 A" + rx.toFixed(1) + ",45 0 0," + ((lit > 0) === waxing ? 1 : 0) + " 0,-45 Z");
+        shade.setAttribute("fill", "#22262e"); svg.appendChild(shade);
+        out.textContent = "";
+        out.appendChild(svg);
+        var dl = el("dl", { class: "pairs" });
+        [["Tithi", t.name + " (" + t.tamil + "), " + t.paksha + " paksha, until " + time(t.end)], ["Nakshatra", n.name + " (" + n.tamil + "), until " + time(n.end)],
+          ["Sunrise · sunset", time(d.sunrise) + " · " + time(d.sunset)], ["Rahu kalam", time(d.rahuKalam && d.rahuKalam.start) + " – " + time(d.rahuKalam && d.rahuKalam.end)],
+          ["Place", d.place.name]].forEach(function (p) { dl.appendChild(el("dt", null, p[0])); dl.appendChild(el("dd", null, p[1])); });
+        out.appendChild(dl);
+      } catch (e) { out.textContent = e.message || "Could not reach the API."; }
+    }
+    $("dial-go").addEventListener("click", draw);
+    draw();
+  }
+
+  if (demo === "day-length") {
+    var cities = [["Kanyakumari", "629702"], ["Chennai", "600001"], ["Mumbai", "400001"], ["Kolkata", "700001"], ["Delhi", "110001"], ["Guwahati", "781001"], ["Leh", "194101"]];
+    $("day-date").value = todayISO();
+    async function load() {
+      var out = $("day-out"); out.textContent = "…";
+      var rows = await Promise.all(cities.map(async function (c) {
+        try { var d = (await get("/v1/sun-moon/" + $("day-date").value + "?pincode=" + c[1])).data; return [c[0], d.sun.sunrise, d.sun.sunset, d.sun.dayLengthMinutes]; } catch (e) { return [c[0], "", "", 0]; }
+      }));
+      out.textContent = "";
+      var max = Math.max.apply(null, rows.map(function (r) { return r[3]; }));
+      rows.forEach(function (r) {
+        var line = el("div", { class: "card" }), bar = el("div");
+        bar.style.cssText = "height:10px;border-radius:5px;background:var(--color-accent, #2b50d8);width:" + (max ? (r[3] / max * 100).toFixed(1) : 0) + "%";
+        line.appendChild(el("p", null, r[0] + ": " + Math.floor(r[3] / 60) + " h " + Math.round(r[3] % 60) + " min · sunrise " + time(r[1]) + " · sunset " + time(r[2])));
+        line.appendChild(bar);
+        out.appendChild(line);
+      });
+    }
+    $("day-date").addEventListener("change", load);
+    load();
+  }
+
+  if (demo === "radio-weather") {
+    (async function () {
+      var out = $("radio-out");
+      try {
+        var d = (await get("/v1/propagation")).data;
+        out.textContent = "";
+        out.appendChild(el("p", { class: "big" }, "Geomagnetic field: " + d.kIndex.level + " (K " + d.kIndex.value + ")"));
+        out.appendChild(el("p", { class: "lead" }, "Solar flux " + d.solarFlux.value + ", sunspots " + d.sunspotNumber.value + ", solar wind " + d.solarWindSpeed.value + " km/s, X-rays " + d.xray.class + ". NOAA scales: " + d.noaaScales.radioBlackout + " " + d.noaaScales.solarRadiation + " " + d.noaaScales.geomagneticStorm + "."));
+        var t = el("table"), head = el("tr");
+        ["Band", "Day", "Night"].forEach(function (h) { head.appendChild(el("th", null, h)); });
+        t.appendChild(el("thead")).appendChild(head);
+        var tb = el("tbody");
+        d.bands.forEach(function (b) { var tr = el("tr"); [b.band, b.day, b.night].forEach(function (v) { tr.appendChild(el("td", null, v)); }); tb.appendChild(tr); });
+        t.appendChild(tb);
+        var wrap = el("div", { class: "prose" }); wrap.appendChild(t); out.appendChild(wrap);
+      } catch (e) { out.textContent = "Could not reach the API."; }
+    })();
+  }
+
+  if (demo === "invoice-live") {
+    var timer = null, last = null;
+    async function render() {
+      var invoice = { number: "LIVE-1", date: todayISO(), seller: { name: "Sri Murugan Stores", address: "12 Car Street, Namakkal 637001", gstin: "33AABCS1429B1Z1" },
+        buyer: { name: "Kaveri Traders", address: "4 MG Road", gstin: $("inv-buyer").value.trim() || undefined },
+        items: [{ description: $("inv-item").value, quantity: Number($("inv-qty").value) || 1, rate: Number($("inv-rate").value) || 0, gst_rate: Number($("inv-gst").value) || 0 }] };
+      try {
+        var r = await fetch("/v1/invoice?format=png", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(invoice) });
+        if (!r.ok) { var e = await r.json(); $("inv-out").setAttribute("data-error", e.error.message); return; }
+        if (last) URL.revokeObjectURL(last);
+        last = URL.createObjectURL(await r.blob());
+        $("inv-img").src = last;
+      } catch (e) {}
+    }
+    ["inv-item", "inv-qty", "inv-rate", "inv-gst", "inv-buyer"].forEach(function (id) { $(id).addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(render, 600); }); });
+    render();
+  }
 })();

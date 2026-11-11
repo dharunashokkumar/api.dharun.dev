@@ -205,7 +205,7 @@ pages, yes, now.
 - [x] Demos (4 of 10): market clock, script switcher, logo wall, under the hood.
 - [x] `/changelog` (by hand, `templates/changelog.md`).
 - [x] Nav: Tools, Playground, API key; footer links.
-- [ ] The other six demos (satellite tracker, path from India, panchang dial, day length,
+- [x] The other six demos (2026-11-11): satellite tracker, path from India, panchang dial, day length, radio weather, invoice live. (Planned as: satellite tracker, path from India, panchang dial, day length,
       radio weather, invoice live).
 - [x] The next twenty tool pages (2026-11-11, `site_tools_more.go`, a generic form handler in `tools.js`): GST, EMI, SIP, income tax, HRA, gratuity and PPF calculators, GSTIN and PAN checkers, HSN, RTO, mutual fund NAV, gold rate, IPC to BNS, mandi prices, air quality, festivals, Thirukkural, villages, hospitals, QR codes.
 - [x] CSV enrich on `/v1/batch` (2026-11-11): a CSV body with kind and column comes back with each answer's fields added as columns.

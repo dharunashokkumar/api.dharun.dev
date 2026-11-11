@@ -198,6 +198,24 @@ var demos = []demo{
 	{"under-the-hood", "What happens to one API request | " + productName, "Under the hood",
 		"One request followed through the service: what it cost, which copy of the data answered, how long it took, and the cache headers.",
 		`<div class="card form"><label>Address <input id="hood-url" value="/v1/pincode/637001"></label><div class="row"><button class="key key--primary" type="button" id="hood-go">Follow it</button></div></div><ol class="chain" id="hood-steps"></ol><p class="aside">Every answer carries these headers; <a href="/healthz">/healthz</a> lists the data copies in use.</p>`},
+	{"satellite-tracker", "When can I see the space station? ISS passes over India | " + productName, "Satellite tracker",
+		"The next passes of the International Space Station over your place: when it rises, how high it climbs, where to look.",
+		`<div class="card form"><div class="fields"><label class="field"><span>Latitude</span><input id="sat-lat" value="13.08"></label><label class="field"><span>Longitude</span><input id="sat-lng" value="80.27"></label></div><div class="row"><button class="key key--primary" type="button" id="sat-go">Show passes</button><button class="key" type="button" id="sat-here">Use my location</button></div></div><div id="sat-out"></div><p class="aside">Runs on <a href="/docs/satellites">/v1/sat-pass</a>, from CelesTrak's orbit data.</p>`},
+	{"path-from-india", "The network path from India to a website | " + productName, "Path from India",
+		"Every network hop from a server in Tamil Nadu to a website, with each network's name and the time it takes.",
+		`<div class="card form"><label>Website <input id="path-host" value="dharun.dev"></label><div class="row"><button class="key key--primary" type="button" id="path-go">Trace the path</button></div></div><ol class="chain" id="path-out"></ol><p class="aside">Runs on <a href="/docs/mtr">/v1/mtr</a>, a traceroute from this server. It takes about ten seconds.</p>`},
+	{"panchang-dial", "Today's tithi and nakshatra as a moon dial | " + productName, "Panchang dial",
+		"The moon's phase and today's tithi, nakshatra, yoga and rahu kalam for your place, drawn as a dial.",
+		`<div class="card form"><div class="fields"><label class="field"><span>Pincode</span><input id="dial-pin" value="637001"></label><label class="field"><span>Date</span><input id="dial-date" type="date"></label></div><div class="row"><button class="key key--primary" type="button" id="dial-go">Draw</button></div></div><div class="card" id="dial-out"></div><p class="aside">Runs on <a href="/docs/panchang">/v1/panchang</a>.</p>`},
+	{"day-length", "How long is the day across India? | " + productName, "Day length",
+		"Sunrise, sunset and the length of the day in cities from Kanyakumari to Leh, side by side.",
+		`<div class="card form"><label>Date <input id="day-date" type="date"></label></div><div id="day-out"></div><p class="aside">Runs on <a href="/docs/panchang">/v1/sun-moon</a>.</p>`},
+	{"radio-weather", "HF radio propagation and space weather now | " + productName, "Radio weather",
+		"How the shortwave bands are doing today, from the sun's flux and the Earth's magnetic field: a weather report for radio amateurs.",
+		`<div class="card" id="radio-out">…</div><p class="aside">Runs on <a href="/docs/propagation">/v1/propagation</a>, from NOAA's space weather data.</p>`},
+	{"invoice-live", "GST invoice preview as you type | " + productName, "Invoice live",
+		"Change the items and watch the GST invoice redraw: CGST and SGST or IGST, totals and amount in words.",
+		`<div class="card form"><div class="fields"><label class="field"><span>Item</span><input id="inv-item" value="Basmati rice, 25 kg bag"></label><label class="field"><span>Quantity</span><input id="inv-qty" value="4"></label><label class="field"><span>Rate</span><input id="inv-rate" value="2150"></label><label class="field"><span>GST %</span><input id="inv-gst" value="5"></label><label class="field"><span>Buyer GSTIN</span><input id="inv-buyer" value="29AAACK6812C1ZS"></label></div></div><div class="card" id="inv-out"><img id="inv-img" alt="The invoice" style="width:100%"></div><p class="aside">Runs on <a href="/docs/invoice">/v1/invoice</a> with format=png.</p>`},
 }
 
 func (s *Server) handleDemos(w http.ResponseWriter, r *http.Request) {
@@ -209,7 +227,7 @@ func (s *Server) handleDemos(w http.ResponseWriter, r *http.Request) {
 		}
 		html.WriteString(`</ul>`)
 		p := page{Origin: origin, Path: "/demos", Markdown: "/demos.md", Title: "Demos: what the India API can do | " + productName, Heading: "Demos",
-			Description: "Small live demos built on India API: a market clock, a script switcher for nine Indian scripts, an index logo wall and a request followed under the hood.",
+			Description: "Live demos built on India API: market clock, script switcher, logo wall, ISS passes, network path, panchang dial, day length, radio weather, live GST invoice.",
 			Body:        appPage{Heading: "Demos", Lead: "Small things made with the API, to look at and share.", HTML: template.HTML(html.String())}}
 		p.JSONLD = jsonLD(breadcrumbs(origin, [2]string{"Demos", "/demos"}))
 		return s.renderHTML("app", p)
