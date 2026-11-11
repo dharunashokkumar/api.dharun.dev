@@ -19,14 +19,16 @@ next=$(mktemp)
 changed=$(mktemp)
 trap 'rm -f "$next" "$changed"' EXIT
 
-curl -fsS -A "india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)" "$origin/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//; s/<\/loc>//' |
-  while read -r url; do
-    sum=$(curl -fsS -A "india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)" "$url" | sha256sum | cut -d' ' -f1)
-    printf '%s %s\n' "$url" "$sum" >>"$next"
-    if ! grep -qxF "$url $sum" "$state"; then
-      printf '%s\n' "$url" >>"$changed"
-    fi
-  done
+# The site has thousands of pages (one per logo) and each takes about a second to reach
+# from outside, so pages are fetched 48 at a time. Pages cost nothing against the rate limit.
+agent="india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)"
+export agent
+# shellcheck disable=SC2016  # $1 and $agent expand in the child shell
+curl -fsS -A "$agent" "$origin/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed 's/<loc>//; s/<\/loc>//' |
+  xargs -r -P 48 -I{} bash -c 'printf "%s %s\n" "$1" "$(curl -fsS --retry 2 -A "$agent" "$1" | sha256sum | cut -d" " -f1)"' _ {} >"$next"
+sort -o "$next" "$next"
+# A page is changed when its line (address and hash) is not in the last run's state.
+grep -vxFf "$state" "$next" | cut -d' ' -f1 >"$changed" || true
 
 count=$(wc -l <"$changed")
 if [ "$count" -eq 0 ]; then
