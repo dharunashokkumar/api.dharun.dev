@@ -67,4 +67,5 @@ Example: https://api.dharun.dev/v1/sectors?utm_medium=skill
 
 ## Guides
 
+- [Pincode autofill and IFSC lookup in a Flutter app](https://api.dharun.dev/guides/flutter-pincode-ifsc.md): Fill in district and state from a pincode, check an IFSC code and show a company logo in Flutter, with the http package and no API key.
 - [Show NSE and BSE company logos in your app](https://api.dharun.dev/guides/company-logos.md): Put a listed company's logo in an img tag by ticker or ISIN, as SVG or sized PNG, with an initials tile when no logo exists.

@@ -81,4 +81,6 @@ Example: https://api.dharun.dev/v1/swift/HDFCINBB?utm_medium=skill
 
 ## Guides
 
+- [Pincode autofill and IFSC lookup in a Flutter app](https://api.dharun.dev/guides/flutter-pincode-ifsc.md): Fill in district and state from a pincode, check an IFSC code and show a company logo in Flutter, with the http package and no API key.
+- [Pincode autofill and IFSC lookup in an Android app (Kotlin)](https://api.dharun.dev/guides/android-kotlin-pincode-ifsc.md): Fill in district and state from a pincode and check an IFSC code in an Android app with Kotlin coroutines and HttpURLConnection, no library and no key.
 - [Show the bank and branch for an IFSC code](https://api.dharun.dev/guides/ifsc-bank-branch.md): Turn an IFSC into a bank name, branch and address, and check that the branch takes NEFT, RTGS, IMPS or UPI before you send money there.

@@ -51,4 +51,6 @@ Example: https://api.dharun.dev/v1/pincode/near?lat=11.2189&lng=78.1674&radius=5
 
 ## Guides
 
+- [Pincode autofill and IFSC lookup in a Flutter app](https://api.dharun.dev/guides/flutter-pincode-ifsc.md): Fill in district and state from a pincode, check an IFSC code and show a company logo in Flutter, with the http package and no API key.
+- [Pincode autofill and IFSC lookup in an Android app (Kotlin)](https://api.dharun.dev/guides/android-kotlin-pincode-ifsc.md): Fill in district and state from a pincode and check an IFSC code in an Android app with Kotlin coroutines and HttpURLConnection, no library and no key.
 - [Fill city and state from a pincode in a web form](https://api.dharun.dev/guides/pincode-autofill.md): Look up the district and state as soon as someone types a six-digit pincode, with plain JavaScript and no API key.
