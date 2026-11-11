@@ -235,8 +235,8 @@ sections 3 and 4's password and OAuth logins:
   `*@api.dharun.dev`; its SMTP credentials and a random site secret go to the homelab secret store.
   The setup script (idempotent, prints no secret) lives in the private homelab
   repository, beside the infrastructure request.
-- [ ] Run the SES setup script (it was written here, but the session was not allowed to
-      run it); check DKIM and MAIL FROM show SUCCESS.
+- [x] SES setup script run by Dharun on 2026-11-11: identity created, 6 DNS records added,
+      IAM user and its SMTP credentials stored; DKIM and MAIL FROM SUCCESS, verified for sending.
 - [ ] Google and GitHub login: a later part.
 
 ## Build status (2026-11-11)
