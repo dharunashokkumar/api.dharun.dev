@@ -302,6 +302,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/rag/{id}/query`: Ask a question. Example: `/v1/rag/demo/query?secret=demo&utm_medium=skill`
 - `GET /v1/rag/{id}/delete`: Delete a collection. Example: `/v1/rag/demo/delete?secret=demo&utm_medium=skill`
 
+**IPC to BNS section finder** ([references/law.md](references/law.md)): Which section of the Bharatiya Nyaya Sanhita replaced IPC 302, and the same for CrPC to BNSS and the Evidence Act to BSA.
+
+- `GET /v1/law/{law}/{section}`: A section and its counterpart. Example: `/v1/law/ipc/302?utm_medium=skill`
+- `GET /v1/law/{law}`: Search section titles. Example: `/v1/law/bns?q=murder&utm_medium=skill`
+
 ### Network and contact checks
 
 **IP address location** ([references/ip.md](references/ip.md)): IP address to country, state, city and network.

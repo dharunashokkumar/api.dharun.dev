@@ -1,0 +1,1731 @@
+[
+{
+"section": "1",
+"part": "",
+"title": "Short title, application and commencement",
+"old": "1",
+"old_sections": [
+"1"
+]
+},
+{
+"section": "2",
+"part": "",
+"title": "Definitions",
+"old": "IEA 3 Interpret ation clause",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(a)",
+"part": "",
+"title": "\"Court\"",
+"old": "3, para 1",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(b)",
+"part": "",
+"title": "\"conclusive proof\"",
+"old": "4, para 3",
+"old_sections": [
+"4"
+]
+},
+{
+"section": "2(1)(c)",
+"part": "",
+"title": "\"disproved\"",
+"old": "3, para 8",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(d)",
+"part": "",
+"title": "\"document\"",
+"old": "3, para 5",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(e)",
+"part": "",
+"title": "\"evidence\"",
+"old": "3, para 6",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(f)",
+"part": "",
+"title": "\"fact\"",
+"old": "3, para 2",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(g)",
+"part": "",
+"title": "\"facts in issue\"",
+"old": "3, para 4",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(h)",
+"part": "",
+"title": "\"may presume\"",
+"old": "4, para 1",
+"old_sections": [
+"4"
+]
+},
+{
+"section": "2(1)(i)",
+"part": "",
+"title": "\"not proved\"",
+"old": "3, para 9",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(j)",
+"part": "",
+"title": "\"proved\"",
+"old": "3, para 7",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(k)",
+"part": "",
+"title": "\"relevant\"",
+"old": "3, para 3",
+"old_sections": [
+"3"
+]
+},
+{
+"section": "2(1)(l)",
+"part": "",
+"title": "\"shall presume\"",
+"old": "4, para 2",
+"old_sections": [
+"4"
+]
+},
+{
+"section": "2(2)",
+"part": "",
+"title": "Words and expressions",
+"old": "",
+"old_sections": []
+},
+{
+"section": "3",
+"part": "",
+"title": "Evidence maybe given of facts in issue and relevant facts",
+"old": "5",
+"old_sections": [
+"5"
+]
+},
+{
+"section": "4",
+"part": "",
+"title": "Relevancy of facts forming part of same transaction",
+"old": "6",
+"old_sections": [
+"6"
+]
+},
+{
+"section": "5",
+"part": "",
+"title": "Facts which are occasion, cause or effect of facts in issue or relevant facts",
+"old": "7",
+"old_sections": [
+"7"
+]
+},
+{
+"section": "6",
+"part": "",
+"title": "Motive, preparation and previous or subsequent conduct",
+"old": "8",
+"old_sections": [
+"8"
+]
+},
+{
+"section": "7",
+"part": "",
+"title": "Facts necessary to explain or introduce fact in issue or relevant facts",
+"old": "9",
+"old_sections": [
+"9"
+]
+},
+{
+"section": "8",
+"part": "",
+"title": "Things said or done by conspirator in reference to common design",
+"old": "10",
+"old_sections": [
+"10"
+]
+},
+{
+"section": "9",
+"part": "",
+"title": "When facts not otherwise relevant become relevant",
+"old": "11",
+"old_sections": [
+"11"
+]
+},
+{
+"section": "10",
+"part": "",
+"title": "Facts tending to enable Court to determine amount are relevant in suits for damages",
+"old": "12",
+"old_sections": [
+"12"
+]
+},
+{
+"section": "11",
+"part": "",
+"title": "Facts relevant when right or custom is in question",
+"old": "13",
+"old_sections": [
+"13"
+]
+},
+{
+"section": "12",
+"part": "",
+"title": "Facts showing existence of state of mind, or of body or bodily feeling",
+"old": "14",
+"old_sections": [
+"14"
+]
+},
+{
+"section": "13",
+"part": "",
+"title": "Facts bearing on question whether act was accidental or intentional",
+"old": "15",
+"old_sections": [
+"15"
+]
+},
+{
+"section": "14",
+"part": "",
+"title": "Existence of course of business when relevant",
+"old": "16",
+"old_sections": [
+"16"
+]
+},
+{
+"section": "15",
+"part": "",
+"title": "Admission defined",
+"old": "17",
+"old_sections": [
+"17"
+]
+},
+{
+"section": "16",
+"part": "",
+"title": "Admission by party to proceeding or his agent",
+"old": "18",
+"old_sections": [
+"18"
+]
+},
+{
+"section": "17",
+"part": "",
+"title": "Admissions by persons whose position must be proved as against party to suit",
+"old": "19",
+"old_sections": [
+"19"
+]
+},
+{
+"section": "18",
+"part": "",
+"title": "Admissions by persons expressly referred to by party to suit",
+"old": "20",
+"old_sections": [
+"20"
+]
+},
+{
+"section": "19",
+"part": "",
+"title": "Proof of admissions against persons making them, and by or on their behalf",
+"old": "21",
+"old_sections": [
+"21"
+]
+},
+{
+"section": "20",
+"part": "",
+"title": "When oral admissions as to contents of documents are relevant",
+"old": "22",
+"old_sections": [
+"22"
+]
+},
+{
+"section": "21",
+"part": "",
+"title": "Admissions in civil cases when relevant",
+"old": "23",
+"old_sections": [
+"23"
+]
+},
+{
+"section": "22(1)",
+"part": "First proviso to section",
+"title": "Confession caused by inducement, threat, coercion or promise, when irrelevant in criminal proceeding. Confession made after removal of impression caused by inducement, threat or promise, relevant",
+"old": "24 28",
+"old_sections": [
+"24",
+"28"
+]
+},
+{
+"section": "22",
+"part": "Second proviso to section",
+"title": "Confession otherwise relevant not to become irrelevant because of promise of secrecy, etc",
+"old": "29",
+"old_sections": [
+"29"
+]
+},
+{
+"section": "22",
+"part": "",
+"title": "",
+"old": "",
+"old_sections": []
+},
+{
+"section": "23(1)",
+"part": "",
+"title": "Confession to police officer",
+"old": "25",
+"old_sections": [
+"25"
+]
+},
+{
+"section": "23(2)",
+"part": "Proviso to section",
+"title": "Confession by accused while in custody of police not to be proved against him. How much of information received from accused may be proved",
+"old": "26 27",
+"old_sections": [
+"26",
+"27"
+]
+},
+{
+"section": "23",
+"part": "",
+"title": "",
+"old": "",
+"old_sections": []
+},
+{
+"section": "24",
+"part": "",
+"title": "Consideration of proved confession affecting person making it and others jointly under trial for same offence",
+"old": "30",
+"old_sections": [
+"30"
+]
+},
+{
+"section": "25",
+"part": "",
+"title": "Admissions not conclusive proof, but may estop",
+"old": "31",
+"old_sections": [
+"31"
+]
+},
+{
+"section": "26",
+"part": "",
+"title": "Cases in which statement of relevant fact by person who is dead or cannot be found, etc., is relevant",
+"old": "32",
+"old_sections": [
+"32"
+]
+},
+{
+"section": "27",
+"part": "",
+"title": "Relevancy of certain evidence for proving, in subsequent proceeding, truth of facts therein stated",
+"old": "33",
+"old_sections": [
+"33"
+]
+},
+{
+"section": "28",
+"part": "",
+"title": "Entries in books of account when relevant",
+"old": "34",
+"old_sections": [
+"34"
+]
+},
+{
+"section": "29",
+"part": "",
+"title": "Relevancy of entry in public record or an electronic record made in performance of duty",
+"old": "35",
+"old_sections": [
+"35"
+]
+},
+{
+"section": "30",
+"part": "",
+"title": "Relevancy of statements in maps, charts and plans",
+"old": "36",
+"old_sections": [
+"36"
+]
+},
+{
+"section": "31",
+"part": "",
+"title": "Relevancy of statement as to fact of public nature contained in certain Acts or notifications",
+"old": "37",
+"old_sections": [
+"37"
+]
+},
+{
+"section": "32",
+"part": "",
+"title": "Relevancy of statements as to any law contained in law books including electronic or digital form",
+"old": "38",
+"old_sections": [
+"38"
+]
+},
+{
+"section": "33",
+"part": "",
+"title": "What evidence to be given when statement forms part of a conversation, document, electronic record, book or series of letters or papers",
+"old": "39",
+"old_sections": [
+"39"
+]
+},
+{
+"section": "34",
+"part": "",
+"title": "Previous judgments relevant to bar a second suit or trial",
+"old": "40",
+"old_sections": [
+"40"
+]
+},
+{
+"section": "35",
+"part": "",
+"title": "Relevancy of certain judgments in probate, etc., jurisdiction",
+"old": "41",
+"old_sections": [
+"41"
+]
+},
+{
+"section": "36",
+"part": "",
+"title": "Relevancy and effect of judgments, orders or decrees, other than those mentioned in section35[41 IEA]",
+"old": "42",
+"old_sections": [
+"42"
+]
+},
+{
+"section": "37",
+"part": "",
+"title": "Judgments, etc., other than those mentioned in sections 34, 35 and 36 [40to 42 IEA] when relevant",
+"old": "43",
+"old_sections": [
+"43"
+]
+},
+{
+"section": "38",
+"part": "",
+"title": "Fraud or collusion in obtaining judgment, or incompetency of Court, may be proved",
+"old": "44",
+"old_sections": [
+"44"
+]
+},
+{
+"section": "39(1)",
+"part": "",
+"title": "Opinions of experts",
+"old": "45",
+"old_sections": [
+"45"
+]
+},
+{
+"section": "39(2)",
+"part": "",
+"title": "Opinion of Examiner of Electronic Evidence",
+"old": "45A",
+"old_sections": [
+"45A"
+]
+},
+{
+"section": "40",
+"part": "",
+"title": "Facts bearing upon opinions of experts",
+"old": "46",
+"old_sections": [
+"46"
+]
+},
+{
+"section": "41(1)",
+"part": "",
+"title": "Opinion as to handwriting and signature, when relevant",
+"old": "47",
+"old_sections": [
+"47"
+]
+},
+{
+"section": "41(2)",
+"part": "",
+"title": "Opinion as to electronic signature, when relevant",
+"old": "47A",
+"old_sections": [
+"47A"
+]
+},
+{
+"section": "42",
+"part": "",
+"title": "Opinion as to existence of general custom or right, when relevant",
+"old": "48",
+"old_sections": [
+"48"
+]
+},
+{
+"section": "43",
+"part": "",
+"title": "Opinion as to usages, tenets, etc., when relevant",
+"old": "49",
+"old_sections": [
+"49"
+]
+},
+{
+"section": "44",
+"part": "",
+"title": "Opinion on relationship, when relevant",
+"old": "50",
+"old_sections": [
+"50"
+]
+},
+{
+"section": "45",
+"part": "",
+"title": "Grounds of opinion, when relevant",
+"old": "51",
+"old_sections": [
+"51"
+]
+},
+{
+"section": "46",
+"part": "",
+"title": "In civil cases character to prove conduct imputed, irrelevant",
+"old": "52",
+"old_sections": [
+"52"
+]
+},
+{
+"section": "47",
+"part": "",
+"title": "In criminal cases previous good character relevant",
+"old": "53",
+"old_sections": [
+"53"
+]
+},
+{
+"section": "48",
+"part": "",
+"title": "Evidence of character or previous sexual experience not relevant in certain cases",
+"old": "53A",
+"old_sections": [
+"53A"
+]
+},
+{
+"section": "49",
+"part": "",
+"title": "Previous bad character not relevant, except in reply",
+"old": "54",
+"old_sections": [
+"54"
+]
+},
+{
+"section": "50",
+"part": "",
+"title": "Character as affecting damages",
+"old": "55",
+"old_sections": [
+"55"
+]
+},
+{
+"section": "51",
+"part": "",
+"title": "Fact judicially noticeable need not be proved",
+"old": "56",
+"old_sections": [
+"56"
+]
+},
+{
+"section": "52",
+"part": "",
+"title": "Facts of which Court shall take judicial notice",
+"old": "57",
+"old_sections": [
+"57"
+]
+},
+{
+"section": "53",
+"part": "",
+"title": "Facts admitted need not be proved",
+"old": "58",
+"old_sections": [
+"58"
+]
+},
+{
+"section": "54",
+"part": "",
+"title": "Proof of facts by oral evidence",
+"old": "59",
+"old_sections": [
+"59"
+]
+},
+{
+"section": "55",
+"part": "",
+"title": "Oral evidence to be direct",
+"old": "60",
+"old_sections": [
+"60"
+]
+},
+{
+"section": "56",
+"part": "",
+"title": "Proof of contents of documents",
+"old": "61",
+"old_sections": [
+"61"
+]
+},
+{
+"section": "57",
+"part": "",
+"title": "Primary evidence",
+"old": "62",
+"old_sections": [
+"62"
+]
+},
+{
+"section": "58",
+"part": "",
+"title": "Secondary evidence",
+"old": "63",
+"old_sections": [
+"63"
+]
+},
+{
+"section": "59",
+"part": "",
+"title": "Proof of documents by primary evidence",
+"old": "64",
+"old_sections": [
+"64"
+]
+},
+{
+"section": "60",
+"part": "",
+"title": "Cases in which secondary evidence relating to documents may be given",
+"old": "65",
+"old_sections": [
+"65"
+]
+},
+{
+"section": "61",
+"part": "",
+"title": "Electronic or digital record",
+"old": "",
+"old_sections": []
+},
+{
+"section": "62",
+"part": "",
+"title": "Special provisions as to evidence relating to electronic record",
+"old": "65A",
+"old_sections": [
+"65A"
+]
+},
+{
+"section": "63",
+"part": "",
+"title": "Admissibility of electronic records",
+"old": "65B",
+"old_sections": [
+"65B"
+]
+},
+{
+"section": "64",
+"part": "",
+"title": "Rules as to notice to produce",
+"old": "66",
+"old_sections": [
+"66"
+]
+},
+{
+"section": "65",
+"part": "",
+"title": "Proof of signature and handwriting of person alleged to have signed or written document produced",
+"old": "67",
+"old_sections": [
+"67"
+]
+},
+{
+"section": "66",
+"part": "",
+"title": "Proof as to electronic signature",
+"old": "67A",
+"old_sections": [
+"67A"
+]
+},
+{
+"section": "67",
+"part": "",
+"title": "Proof of execution of document required by law to be attested",
+"old": "68",
+"old_sections": [
+"68"
+]
+},
+{
+"section": "68",
+"part": "",
+"title": "Proof where no attesting witness found",
+"old": "69",
+"old_sections": [
+"69"
+]
+},
+{
+"section": "69",
+"part": "",
+"title": "Admission of execution by party to attested document",
+"old": "70",
+"old_sections": [
+"70"
+]
+},
+{
+"section": "70",
+"part": "",
+"title": "Proof when attesting witness denies execution",
+"old": "71",
+"old_sections": [
+"71"
+]
+},
+{
+"section": "71",
+"part": "",
+"title": "Proof of document not required by law to be attested",
+"old": "72",
+"old_sections": [
+"72"
+]
+},
+{
+"section": "72",
+"part": "",
+"title": "Comparison of signature, writing or seal with others admitted or proved",
+"old": "73",
+"old_sections": [
+"73"
+]
+},
+{
+"section": "73",
+"part": "",
+"title": "Proof as to verification of digital signature",
+"old": "73A",
+"old_sections": [
+"73A"
+]
+},
+{
+"section": "74(1)",
+"part": "",
+"title": "Public and private documents",
+"old": "74",
+"old_sections": [
+"74"
+]
+},
+{
+"section": "74(2)",
+"part": "",
+"title": "Public and private documents",
+"old": "75",
+"old_sections": [
+"75"
+]
+},
+{
+"section": "75",
+"part": "",
+"title": "Certified copies of public documents",
+"old": "76",
+"old_sections": [
+"76"
+]
+},
+{
+"section": "76",
+"part": "",
+"title": "Proof of documents by production of certified copies",
+"old": "77",
+"old_sections": [
+"77"
+]
+},
+{
+"section": "77",
+"part": "",
+"title": "Proof of other official documents",
+"old": "78",
+"old_sections": [
+"78"
+]
+},
+{
+"section": "78",
+"part": "",
+"title": "Presumption as to genuineness of certified copies",
+"old": "79",
+"old_sections": [
+"79"
+]
+},
+{
+"section": "79",
+"part": "",
+"title": "Presumption as to documents produced as record of evidence, etc",
+"old": "80",
+"old_sections": [
+"80"
+]
+},
+{
+"section": "80",
+"part": "",
+"title": "Presumption as to Gazettes, newspapers, [private Acts of parliament] and other documents",
+"old": "81",
+"old_sections": [
+"81"
+]
+},
+{
+"section": "81",
+"part": "",
+"title": "Presumption as to Gazettes in electronic or digital record",
+"old": "81A",
+"old_sections": [
+"81A"
+]
+},
+{
+"section": "82",
+"part": "",
+"title": "Presumption as to maps or plans made by authority of Government",
+"old": "83",
+"old_sections": [
+"83"
+]
+},
+{
+"section": "83",
+"part": "",
+"title": "Presumption as to collections of laws and reports of decisions",
+"old": "84",
+"old_sections": [
+"84"
+]
+},
+{
+"section": "84",
+"part": "",
+"title": "Presumption as to powers-of- attorney",
+"old": "85",
+"old_sections": [
+"85"
+]
+},
+{
+"section": "85",
+"part": "",
+"title": "Presumption as to electronic agreements",
+"old": "85A",
+"old_sections": [
+"85A"
+]
+},
+{
+"section": "86",
+"part": "",
+"title": "Presumption as to electronic records and electronic signatures",
+"old": "85B",
+"old_sections": [
+"85B"
+]
+},
+{
+"section": "87",
+"part": "",
+"title": "Presumption as to Electronic Signature Certificates",
+"old": "85C",
+"old_sections": [
+"85C"
+]
+},
+{
+"section": "88",
+"part": "",
+"title": "Presumption as to certified copies of foreign judicial records",
+"old": "86",
+"old_sections": [
+"86"
+]
+},
+{
+"section": "89",
+"part": "",
+"title": "Presumption as to books, maps and charts",
+"old": "87",
+"old_sections": [
+"87"
+]
+},
+{
+"section": "90",
+"part": "",
+"title": "Presumption as to electronic messages",
+"old": "88A",
+"old_sections": [
+"88A"
+]
+},
+{
+"section": "91",
+"part": "",
+"title": "Presumption as to due execution, etc., of documents not produced",
+"old": "89",
+"old_sections": [
+"89"
+]
+},
+{
+"section": "92",
+"part": "",
+"title": "Presumption as to documents thirty years old",
+"old": "90",
+"old_sections": [
+"90"
+]
+},
+{
+"section": "93",
+"part": "",
+"title": "Presumption as to electronic records five years old",
+"old": "90A",
+"old_sections": [
+"90A"
+]
+},
+{
+"section": "94",
+"part": "",
+"title": "Evidence of terms of contracts, grants and other dispositions of property reduced to form of document",
+"old": "91",
+"old_sections": [
+"91"
+]
+},
+{
+"section": "95",
+"part": "",
+"title": "Exclusion of evidence of oral agreement",
+"old": "92",
+"old_sections": [
+"92"
+]
+},
+{
+"section": "96",
+"part": "",
+"title": "Exclusion of evidence to explain or amend ambiguous document",
+"old": "93",
+"old_sections": [
+"93"
+]
+},
+{
+"section": "97",
+"part": "",
+"title": "Exclusion of evidence against application of document to existing facts",
+"old": "94",
+"old_sections": [
+"94"
+]
+},
+{
+"section": "98",
+"part": "",
+"title": "Evidence as to document unmeaning in reference to existing facts",
+"old": "95",
+"old_sections": [
+"95"
+]
+},
+{
+"section": "99",
+"part": "",
+"title": "Evidence as to application of language which can apply to one only of several persons",
+"old": "96",
+"old_sections": [
+"96"
+]
+},
+{
+"section": "100",
+"part": "",
+"title": "Evidence as to application of language to one of two sets of facts, to neither of which the whole correctly applies",
+"old": "97",
+"old_sections": [
+"97"
+]
+},
+{
+"section": "101",
+"part": "",
+"title": "Evidence as to meaning of illegible characters, etc",
+"old": "98",
+"old_sections": [
+"98"
+]
+},
+{
+"section": "102",
+"part": "",
+"title": "Who may give evidence of agreement varying terms of document",
+"old": "99",
+"old_sections": [
+"99"
+]
+},
+{
+"section": "103",
+"part": "",
+"title": "Saving of provisions of Indian Succession Act relating to wills",
+"old": "100",
+"old_sections": [
+"100"
+]
+},
+{
+"section": "104",
+"part": "",
+"title": "Burden of proof",
+"old": "101",
+"old_sections": [
+"101"
+]
+},
+{
+"section": "105",
+"part": "",
+"title": "On whom burden of proof lies",
+"old": "102",
+"old_sections": [
+"102"
+]
+},
+{
+"section": "106",
+"part": "",
+"title": "Burden of proof as to particular fact",
+"old": "103",
+"old_sections": [
+"103"
+]
+},
+{
+"section": "107",
+"part": "",
+"title": "Burden of proving fact to be proved to make evidence admissible",
+"old": "104",
+"old_sections": [
+"104"
+]
+},
+{
+"section": "108",
+"part": "",
+"title": "Burden of proving that case of accused comes within exceptions",
+"old": "105",
+"old_sections": [
+"105"
+]
+},
+{
+"section": "109",
+"part": "",
+"title": "Burden of proving fact especially within knowledge",
+"old": "106",
+"old_sections": [
+"106"
+]
+},
+{
+"section": "110",
+"part": "",
+"title": "Burden of proving death of person known to have been alive within thirty years",
+"old": "107",
+"old_sections": [
+"107"
+]
+},
+{
+"section": "111",
+"part": "",
+"title": "Burden of proving that person is alive who has not been heard of for seven years",
+"old": "108",
+"old_sections": [
+"108"
+]
+},
+{
+"section": "112",
+"part": "",
+"title": "Burden of proof as to relationship in the cases of partners, landlord and tenant, principal and agent",
+"old": "109",
+"old_sections": [
+"109"
+]
+},
+{
+"section": "113",
+"part": "",
+"title": "Burden of proof as to ownership",
+"old": "110",
+"old_sections": [
+"110"
+]
+},
+{
+"section": "114",
+"part": "",
+"title": "Proof of good faith in transactions where one party is in relation of active confidence",
+"old": "111",
+"old_sections": [
+"111"
+]
+},
+{
+"section": "115",
+"part": "",
+"title": "Presumption as to certain offences",
+"old": "111A",
+"old_sections": [
+"111A"
+]
+},
+{
+"section": "116",
+"part": "",
+"title": "Birth during marriage, conclusive proof of legitimacy",
+"old": "112",
+"old_sections": [
+"112"
+]
+},
+{
+"section": "117",
+"part": "",
+"title": "Presumption as to abetment of suicide by a married woman",
+"old": "113A",
+"old_sections": [
+"113A"
+]
+},
+{
+"section": "118",
+"part": "",
+"title": "Presumption as to dowry death",
+"old": "113B",
+"old_sections": [
+"113B"
+]
+},
+{
+"section": "119",
+"part": "",
+"title": "Court may presume existence of certain facts",
+"old": "114",
+"old_sections": [
+"114"
+]
+},
+{
+"section": "120",
+"part": "",
+"title": "Presumption as to absence of consent in certain prosecution for rape",
+"old": "114A",
+"old_sections": [
+"114A"
+]
+},
+{
+"section": "121",
+"part": "",
+"title": "Estoppel",
+"old": "115",
+"old_sections": [
+"115"
+]
+},
+{
+"section": "122",
+"part": "",
+"title": "Estoppel of tenant and of licensee of person in possession",
+"old": "116",
+"old_sections": [
+"116"
+]
+},
+{
+"section": "123",
+"part": "",
+"title": "Estoppel of acceptor of bill of exchange, bailee or licensee",
+"old": "117",
+"old_sections": [
+"117"
+]
+},
+{
+"section": "124",
+"part": "",
+"title": "Who may testify",
+"old": "118",
+"old_sections": [
+"118"
+]
+},
+{
+"section": "125",
+"part": "",
+"title": "Witness unable to communicate verbally",
+"old": "119",
+"old_sections": [
+"119"
+]
+},
+{
+"section": "126",
+"part": "",
+"title": "Competency of husband and wife as witnesses in certain cases",
+"old": "120",
+"old_sections": [
+"120"
+]
+},
+{
+"section": "127",
+"part": "",
+"title": "Judges and Magistrates",
+"old": "121",
+"old_sections": [
+"121"
+]
+},
+{
+"section": "128",
+"part": "",
+"title": "Communications during marriage",
+"old": "122",
+"old_sections": [
+"122"
+]
+},
+{
+"section": "129",
+"part": "",
+"title": "Evidence as to affairs of State",
+"old": "123",
+"old_sections": [
+"123"
+]
+},
+{
+"section": "130",
+"part": "",
+"title": "Official communications",
+"old": "124",
+"old_sections": [
+"124"
+]
+},
+{
+"section": "131",
+"part": "",
+"title": "Information as to commission of offences",
+"old": "125",
+"old_sections": [
+"125"
+]
+},
+{
+"section": "132(1)",
+"part": "&(2)",
+"title": "Professional communications",
+"old": "126",
+"old_sections": [
+"126"
+]
+},
+{
+"section": "132(3)",
+"part": "",
+"title": "Professional communications to apply interpreters, etc\"",
+"old": "127",
+"old_sections": [
+"127"
+]
+},
+{
+"section": "133",
+"part": "",
+"title": "Privilege not waived by volunteering evidence",
+"old": "128",
+"old_sections": [
+"128"
+]
+},
+{
+"section": "134",
+"part": "",
+"title": "Confidential communication with legal advisers",
+"old": "129",
+"old_sections": [
+"129"
+]
+},
+{
+"section": "135",
+"part": "",
+"title": "Production of title-deeds of witness not a party",
+"old": "130",
+"old_sections": [
+"130"
+]
+},
+{
+"section": "136",
+"part": "",
+"title": "Production of documents or electronic records which another person, having possession, could refuse to produce",
+"old": "131",
+"old_sections": [
+"131"
+]
+},
+{
+"section": "137",
+"part": "",
+"title": "Witness not excused from answering on ground that answer will criminate",
+"old": "132",
+"old_sections": [
+"132"
+]
+},
+{
+"section": "138",
+"part": "",
+"title": "Accomplice",
+"old": "133",
+"old_sections": [
+"133"
+]
+},
+{
+"section": "139",
+"part": "",
+"title": "Number of witnesses",
+"old": "134",
+"old_sections": [
+"134"
+]
+},
+{
+"section": "140",
+"part": "",
+"title": "Order of production and examination of witnesses",
+"old": "135",
+"old_sections": [
+"135"
+]
+},
+{
+"section": "141",
+"part": "",
+"title": "Judge to decide as to admissibility of evidence",
+"old": "136",
+"old_sections": [
+"136"
+]
+},
+{
+"section": "142",
+"part": "",
+"title": "Examination of witnesses",
+"old": "137",
+"old_sections": [
+"137"
+]
+},
+{
+"section": "143",
+"part": "",
+"title": "Order of examinations",
+"old": "138",
+"old_sections": [
+"138"
+]
+},
+{
+"section": "144",
+"part": "",
+"title": "Cross- examination of person called to produce a document",
+"old": "139",
+"old_sections": [
+"139"
+]
+},
+{
+"section": "145",
+"part": "",
+"title": "Witnesses to character",
+"old": "140",
+"old_sections": [
+"140"
+]
+},
+{
+"section": "146(1)",
+"part": "",
+"title": "Leading questions",
+"old": "141",
+"old_sections": [
+"141"
+]
+},
+{
+"section": "146(2)",
+"part": "&(3)",
+"title": "When they (leading) must not be asked",
+"old": "142",
+"old_sections": [
+"142"
+]
+},
+{
+"section": "146(4)",
+"part": "",
+"title": "When they (leading) may be asked",
+"old": "143",
+"old_sections": [
+"143"
+]
+},
+{
+"section": "147",
+"part": "",
+"title": "Evidence as to matters in writing",
+"old": "144",
+"old_sections": [
+"144"
+]
+},
+{
+"section": "148",
+"part": "",
+"title": "Cross- examination as to previous statements in writing",
+"old": "145",
+"old_sections": [
+"145"
+]
+},
+{
+"section": "149",
+"part": "",
+"title": "Questions lawful in cross- examination",
+"old": "146",
+"old_sections": [
+"146"
+]
+},
+{
+"section": "150",
+"part": "",
+"title": "When witness to be compelled to answer",
+"old": "147",
+"old_sections": [
+"147"
+]
+},
+{
+"section": "151",
+"part": "",
+"title": "Court to decide when question shall be asked and when witness compelled to answer",
+"old": "148",
+"old_sections": [
+"148"
+]
+},
+{
+"section": "152",
+"part": "",
+"title": "Question not to be asked without reasonable grounds",
+"old": "149",
+"old_sections": [
+"149"
+]
+},
+{
+"section": "153",
+"part": "",
+"title": "Procedure of Court in case of question being asked without reasonable grounds",
+"old": "150",
+"old_sections": [
+"150"
+]
+},
+{
+"section": "154",
+"part": "",
+"title": "Indecent and scandalous questions",
+"old": "151",
+"old_sections": [
+"151"
+]
+},
+{
+"section": "155",
+"part": "",
+"title": "Questions intended to insult or annoy",
+"old": "152",
+"old_sections": [
+"152"
+]
+},
+{
+"section": "156",
+"part": "",
+"title": "Exclusion of evidence to contradict answers to questions testing veracity",
+"old": "153",
+"old_sections": [
+"153"
+]
+},
+{
+"section": "157",
+"part": "",
+"title": "Question by party to his own witness",
+"old": "154",
+"old_sections": [
+"154"
+]
+},
+{
+"section": "158",
+"part": "",
+"title": "Impeaching credit of witness",
+"old": "155",
+"old_sections": [
+"155"
+]
+},
+{
+"section": "159",
+"part": "",
+"title": "Questions tending to corroborate evidence of relevant fact, admissible",
+"old": "156",
+"old_sections": [
+"156"
+]
+},
+{
+"section": "160",
+"part": "",
+"title": "Former statements of witness may be proved to corroborate later testimony as to same fact",
+"old": "157",
+"old_sections": [
+"157"
+]
+},
+{
+"section": "161",
+"part": "",
+"title": "What matters may be proved in connection with proved statement relevant under section 26 or 27. [ section 32 or 33]",
+"old": "158",
+"old_sections": [
+"158"
+]
+},
+{
+"section": "162",
+"part": "",
+"title": "Refreshing memory",
+"old": "159",
+"old_sections": [
+"159"
+]
+},
+{
+"section": "163",
+"part": "",
+"title": "Testimony to facts stated in document mentioned in section 162[159]",
+"old": "160",
+"old_sections": [
+"160"
+]
+},
+{
+"section": "164",
+"part": "",
+"title": "Right of adverse party as to writing used to refresh memory",
+"old": "161",
+"old_sections": [
+"161"
+]
+},
+{
+"section": "165",
+"part": "",
+"title": "Production of documents",
+"old": "162",
+"old_sections": [
+"162"
+]
+},
+{
+"section": "166",
+"part": "",
+"title": "Giving, as evidence, of document called for and produced on notice",
+"old": "163",
+"old_sections": [
+"163"
+]
+},
+{
+"section": "167",
+"part": "",
+"title": "Using, as evidence, of document production of which was refused on notice",
+"old": "164",
+"old_sections": [
+"164"
+]
+},
+{
+"section": "168",
+"part": "",
+"title": "Judge's power to put questions or order production",
+"old": "165",
+"old_sections": [
+"165"
+]
+},
+{
+"section": "169",
+"part": "",
+"title": "No new trial for improper admission or rejection of evidence",
+"old": "167",
+"old_sections": [
+"167"
+]
+},
+{
+"section": "170",
+"part": "",
+"title": "Repeal and savings",
+"old": "",
+"old_sections": []
+}
+]

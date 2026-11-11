@@ -49,6 +49,7 @@ func (s *Server) registerRoutes() {
 	s.registerDocAI()
 	s.registerDocAIMore()
 	s.registerGovData()
+	s.registerLaw()
 	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 
