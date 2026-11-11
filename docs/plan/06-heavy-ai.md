@@ -33,6 +33,18 @@ is genuine (the e-invoice signature check is the exception).
 
 ## Part 8: a small hosted LLM
 
+**Measured 2026-11-11** (`~/llm-measure.sh` on Dharun's laptop, 16 cores; llama.cpp v0.9.0, 4-bit GGUF, llama-server chat API; same eight tasks for each: Hindi and Tamil summary, factual answer, sentiment, a polite Tamil reply, and an English JSON extraction):
+
+| Model (licence) | Speed | Memory | Result |
+|---|---|---|---|
+| Qwen 2.5 0.5B Instruct (Apache-2.0) | 51 tok/s | 0.6 GB | Unusable in Hindi and Tamil: echoes, loops, wrong answers |
+| Qwen 2.5 1.5B Instruct (Apache-2.0) | 25 tok/s | 1.8 GB | Hindi summary and sentiment fine; wrong capital of India; Tamil refused or looped |
+| SmolLM2 1.7B Instruct (Apache-2.0) | 23 tok/s | 2.2 GB | Unusable: answers in English or echoes |
+| Phi 3.5 mini (MIT) | 12 tok/s | 4.3 GB | Best Hindi; invents facts; Tamil wrong |
+
+All four did the English JSON extraction right. **Conclusion: none can be offered for Hindi or Tamil generation.** Options for Dharun: (a) English-only task endpoints (extraction, classification) on Qwen 2.5 1.5B; (b) measure Indic-trained or newer multilingual small models next (for example Sarvam-1 2B, Gemma 3 1B/4B, Qwen 3 1.7B/4B, Llama 3.2 3B), same script with new rows; (c) drop the chat. Decision pending.
+
+
 **What the machine can do.** CPU only, 10 cores. A model of about 1 billion parameters
 at 4-bit should give tens of tokens a second, a 3 to 4 billion one perhaps 10 to 20;
 measure on the server before promising anything. Memory 1 to 3 GB while loaded, inside
