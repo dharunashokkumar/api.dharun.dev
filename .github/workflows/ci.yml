@@ -49,7 +49,11 @@ jobs:
       # deploy/install.sh does) and the release carries the rest. With all of them here,
       # REQUIRE_TOOLS makes a missing one a failure instead of a skipped test.
       - name: Install the programs the file tools run
+        # A stalled mirror connection is dropped after 30 seconds and retried, instead of
+        # hanging the job.
+        timeout-minutes: 15
         run: |
+          echo 'Acquire::Retries "5"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/80-ci-retries >/dev/null
           sudo apt-get update -q
           sudo apt-get install -y -q --no-install-recommends \
             tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-kan \
