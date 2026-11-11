@@ -99,6 +99,9 @@ const cssApp = `
 .tryit[open] > summary::before { transform: rotate(90deg); }
 .tryit .inner { display: grid; gap: var(--space-md); padding: 0 var(--space-md) var(--space-md); }
 .answer { display: grid; gap: var(--space-xs); }
+.pairs { display: grid; grid-template-columns: minmax(8rem, max-content) 1fr; gap: var(--space-2xs) var(--space-md); margin: 0; }
+.pairs dt { color: var(--color-muted); }
+.pairs dd { margin: 0; overflow-wrap: anywhere; }
 .answer .meta { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-md); color: var(--color-muted); font: 500 var(--text-xs)/1.3 var(--font-outlier); }
 .answer .meta b { color: var(--color-ink); }
 .answer pre { max-height: 28rem; overflow: auto; }

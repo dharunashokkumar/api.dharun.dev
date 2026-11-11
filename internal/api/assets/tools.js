@@ -190,6 +190,56 @@
   if (tool === "bank-holidays") form.elements.year.value = today().slice(0, 4);
   if (tool === "panchang") form.elements.date.value = today();
 
+  // A generic tool: data-get is the address, with {name} filled from the field of that
+  // name; every other filled-in field goes in the query. JSON answers are shown as a
+  // table (a list) or as label and value (one thing); anything else is a download.
+  function label(key) { return key.replace(/_/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, function (c) { return c.toUpperCase(); }); }
+  function scalar(v) {
+    if (v === null || v === undefined) return "";
+    if (typeof v === "boolean") return v ? "yes" : "no";
+    if (typeof v === "number") return v.toLocaleString("en-IN");
+    if (Array.isArray(v)) return v.every(function (x) { return typeof x !== "object"; }) ? v.join(", ") : v.length + " items";
+    if (typeof v === "object") return Object.keys(v).map(function (k) { return label(k) + ": " + scalar(v[k]); }).join("; ");
+    return String(v);
+  }
+  function showData(data, note) {
+    var box = show();
+    if (Array.isArray(data)) {
+      if (!data.length) { box.appendChild(el("p", null, "Nothing found.")); }
+      else {
+        var keys = Object.keys(data[0]).filter(function (k) { var v = data[0][k]; return v === null || typeof v !== "object" || Array.isArray(v); }).slice(0, 8);
+        box.appendChild(table(data, keys.map(function (k) { return [label(k), function (r) { return scalar(r[k]); }]; })));
+      }
+    } else if (data && typeof data === "object") {
+      var dl = el("dl", { class: "pairs" });
+      Object.keys(data).forEach(function (k) { dl.appendChild(el("dt", null, label(k))); dl.appendChild(el("dd", null, scalar(data[k]))); });
+      var wrap = el("div", { class: "prose" }); wrap.appendChild(dl); box.appendChild(wrap);
+    } else {
+      box.appendChild(el("p", null, scalar(data)));
+    }
+    if (note) box.appendChild(el("p", { class: "aside" }, note));
+  }
+  handlers.generic = async function () {
+    var path = form.getAttribute("data-get"), used = {}, q = new URLSearchParams();
+    path = path.replace(/\{(\w+)\}/g, function (_, name) { used[name] = true; return encodeURIComponent(value(name)); });
+    Array.prototype.forEach.call(form.elements, function (f) {
+      if (!f.name || used[f.name]) return;
+      if (f.type === "checkbox") { if (f.checked) q.set(f.name, "true"); return; }
+      if (f.value.trim()) q.set(f.name, f.value.trim());
+    });
+    var url = path + (q.toString() ? (path.indexOf("?") < 0 ? "?" : "&") + q : "");
+    var response = await fetch(url, { headers: await headers(form.hasAttribute("data-model")) });
+    var type = response.headers.get("Content-Type") || "";
+    if (type.indexOf("application/json") === 0) {
+      var body = await response.json();
+      if (!response.ok) throw new Error(body.error ? body.error.message : "Something went wrong.");
+      showData(body.data, body.meta && body.meta.note);
+      return;
+    }
+    if (!response.ok) throw new Error("Something went wrong.");
+    fileAnswer(await response.blob(), form.getAttribute("data-file") || "download");
+  };
+
   form.addEventListener("submit", async function (event) {
     event.preventDefault();
     var button = form.querySelector("button[type=submit]");

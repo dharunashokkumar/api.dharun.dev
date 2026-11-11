@@ -207,7 +207,8 @@ pages, yes, now.
 - [x] Nav: Tools, Playground, API key; footer links.
 - [ ] The other six demos (satellite tracker, path from India, panchang dial, day length,
       radio weather, invoice live).
-- [ ] The next twenty tool pages, and CSV enrich on `/v1/batch`.
+- [x] The next twenty tool pages (2026-11-11, `site_tools_more.go`, a generic form handler in `tools.js`): GST, EMI, SIP, income tax, HRA, gratuity and PPF calculators, GSTIN and PAN checkers, HSN, RTO, mutual fund NAV, gold rate, IPC to BNS, mandi prices, air quality, festivals, Thirukkural, villages, hospitals, QR codes.
+- [ ] CSV enrich on `/v1/batch`.
 - [ ] Section 5 search items: per-page SEO titles, typed schemas, sitemap dates from
       documentation edits, Search Console first, Flutter and Android guides, client packages.
 - [ ] A headless browser check, only if regressions appear. The scripts were checked with
