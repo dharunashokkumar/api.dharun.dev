@@ -22,6 +22,9 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # A run takes about fifteen minutes; a stuck package mirror fails it instead of
+    # holding the queue for six hours.
+    timeout-minutes: 45
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
