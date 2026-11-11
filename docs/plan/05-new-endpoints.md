@@ -167,6 +167,7 @@ chose all the calculators, income tax included.
       (equity delivery and intraday only).
 - [x] Avatars, placeholders, chart images.
 - [x] MCP tools: `calculate_indian_money`, `today_in_india`, `batch_lookup`, `make_chart_image`.
-- [ ] Number formatting, Indian date tools, UPI handle lookup, QR parse, badges, address
-      reader, company cross-search (the rest of set A).
+- [x] Number formatting, Indian date tools, UPI handle lookup, QR parse, badges, address
+      reader; company cross-search was already `/v1/companies` (2026-11-11, branch `growth-catalogue`).
+- [x] Set D, every item (2026-11-11, branch `growth-catalogue`); screenshot and HTML to PDF wait for Chromium on the server.
 - [ ] Sets B, C, D, E: each data source to be agreed with Dharun first (Parts 5 and 6).
