@@ -17,13 +17,13 @@ import (
 // Mutual fund NAV history, for returns: each scheme's last NAV of every month for ten
 // years, and every NAV of the last 45 days. From AMFI's NAV history download (the same
 // publisher as the mutual-funds dataset; Dharun agreed on 2026-11-11). It exists only
-// as a server's own copy: the first refresh fills the months forty at a time, later ones
+// as a server's own copy: the first refreshes fill the months six at a time, later ones
 // add the new days and the month that just ended, carrying the rest forward.
 
 const (
 	navHistoryMonths    = 120
 	navHistoryDays      = 45
-	navMonthsPerRefresh = 40
+	navMonthsPerRefresh = 6 // AMFI takes about a minute per request: ten years fill in about ten days
 	amfiHistory         = "https://portal.amfiindia.com/DownloadNAVHistoryReport_Po.aspx?frmdt=%s&todt=%s"
 )
 
