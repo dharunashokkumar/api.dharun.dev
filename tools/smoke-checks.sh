@@ -182,7 +182,7 @@ check "/v1/uuid?kind=ulid" application/json '"ids"'
 check "/v1/time?at=2026-11-11%2015:00&to=UTC" application/json '"zones"'
 check /v1/color/ff9933 application/json '"hex":"#ff9933"'
 check "/v1/hooks/demo?secret=demo" application/json '"id":"demo"'
-post_json "/v1/db/demo/query?secret=demo" '{"sql":"SELECT count(*) FROM states"}' application/json '"rows":[[36]]'
+post_json "/v1/db/demo/query?secret=demo" '{"sql":"SELECT count(*) FROM states"}' application/json '"rows":\[\[36\]\]'
 check "/v1/festivals/2025?month=10" application/json '"Diwali (Lakshmi Puja)"'
 check "/v1/festivals/2026.ics" text/calendar "BEGIN:VEVENT"
 check "/v1/keyboard/convert?layout=tamil99&text=vphhkf" application/json '"text":"வணக்கம்"'
