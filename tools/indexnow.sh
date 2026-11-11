@@ -37,11 +37,14 @@ if [ "$count" -eq 0 ]; then
   exit 0
 fi
 
-body=$(jq -n --arg host "$host" --arg key "$key" --arg location "$origin/$key.txt" \
+# Thousands of addresses are too long for one argument, so the body goes in a file.
+body=$(mktemp)
+trap 'rm -f "$next" "$changed" "$body"' EXIT
+jq -n --arg host "$host" --arg key "$key" --arg location "$origin/$key.txt" \
   --rawfile urls "$changed" \
-  '{host: $host, key: $key, keyLocation: $location, urlList: ($urls | split("\n") | map(select(length > 0)))}')
+  '{host: $host, key: $key, keyLocation: $location, urlList: ($urls | split("\n") | map(select(length > 0)))}' >"$body"
 status=$(curl -sS -o /dev/null -w '%{http_code}' -X POST https://api.indexnow.org/indexnow \
-  -H 'Content-Type: application/json; charset=utf-8' --data "$body")
+  -H 'Content-Type: application/json; charset=utf-8' --data-binary "@$body")
 echo "Submitted $count changed pages to IndexNow: HTTP $status"
 case "$status" in
   200 | 202) mv "$next" "$state" ;;
