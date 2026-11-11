@@ -70,7 +70,7 @@ jobs:
         run: go test -race ./internal/...
 
       - name: Lint shell scripts
-        run: shellcheck deploy/*.sh tools/*.sh
+        run: shellcheck deploy/*.sh deploy/sandbox/*.sh tools/*.sh
 
       - name: Check the logo scraper compiles
         run: python3 -m py_compile tools/scrape_logos.py
@@ -138,7 +138,9 @@ jobs:
         id: provenance
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
-          subject-path: dist/dharun-api-linux-amd64.tar.gz
+          subject-path: |
+            dist/dharun-api-linux-amd64.tar.gz
+            dist/sandbox-linux-amd64.tar.gz
 
       - name: Publish the release
         env:
@@ -150,6 +152,7 @@ jobs:
           gh release create "v$VERSION" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --latest \
             dist/dharun-api-linux-amd64.tar.gz dist/dharun-api-linux-amd64.tar.gz.sha256 dist/VERSION \
             dist/espeak-ng-source.tar.gz dist/dharun-api-linux-amd64.tar.gz.intoto.jsonl \
+            dist/sandbox-linux-amd64.tar.gz dist/sandbox-linux-amd64.tar.gz.sha256 \
             --title "v$VERSION" --generate-notes
 
       # Servers only ever need the latest release and the few before it for a rollback.

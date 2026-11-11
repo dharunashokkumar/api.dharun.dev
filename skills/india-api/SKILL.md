@@ -486,6 +486,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/kv/{id}/{key}`: Read or write a note. Example: `/v1/kv/demo/greeting?secret=demo&utm_medium=skill`
 - `GET /v1/kv/{id}/{key}/delete`: Delete a note. Example: `/v1/kv/demo/greeting/delete?secret=demo&utm_medium=skill`
 
+**Run code** ([references/run.md](references/run.md)): Run a Python or JavaScript program once in a throwaway microVM and get its output.
+
+- `GET /v1/run`: Run a program. Example: `/v1/run?utm_medium=skill`
+- `GET /v1/run/languages`: The languages you can run. Example: `/v1/run/languages?utm_medium=skill`
+
 ### Sky and radio
 
 **Satellite passes** ([references/satellites.md](references/satellites.md)): When the ISS and amateur radio satellites pass over you, and where they are now.

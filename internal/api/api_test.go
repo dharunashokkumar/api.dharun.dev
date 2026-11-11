@@ -854,7 +854,8 @@ func TestMCP(t *testing.T) {
 		if outcome["isError"] == true {
 			if message := fmt.Sprint(outcome["content"]); (strings.Contains(message, "not installed") && os.Getenv("REQUIRE_TOOLS") == "") ||
 				(strings.Contains(message, "does not hold") && os.Getenv("REQUIRE_MODELS") == "") ||
-				(strings.Contains(message, "no image renderer") && os.Getenv("RESVG") == "") {
+				(strings.Contains(message, "no image renderer") && os.Getenv("RESVG") == "") ||
+				strings.Contains(message, "not switched on") { // the sandbox, which tests reach in TestRunCode
 				continue
 			}
 			t.Errorf("%s failed: %v", tool.Name, outcome["content"])

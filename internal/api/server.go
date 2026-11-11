@@ -78,6 +78,9 @@ type Config struct {
 	// how many model requests a key may make a day (zero: 500).
 	KeyRateLimitPerMinute int
 	ModelQuotaPerDay      int
+	// SandboxURL and SandboxSecret reach the sandbox controller (Part 9); unset, /v1/run answers 503.
+	SandboxURL    string
+	SandboxSecret string
 	// KeyRequiredFrom is the day keyless calls to the model endpoints stop working.
 	// Zero means no date is set yet: they work, with a notice header.
 	KeyRequiredFrom time.Time
@@ -96,8 +99,9 @@ type Server struct {
 	store *store
 	// owned holds what callers made for themselves: request bins and throwaway databases.
 	owned     ownedStore
-	rag       ragStore // document collections (sete.go)
-	kv        kvStores // agent notes (sete.go)
+	rag       ragStore     // document collections (sete.go)
+	kv        kvStores     // agent notes (sete.go)
+	sandbox   *sandboxRuns // running code (sandbox.go); nil without a controller
 	companies atomic.Pointer[companyIndex]
 	metrics   *metrics
 	limiter   *rateLimiter
