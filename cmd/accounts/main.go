@@ -5,9 +5,10 @@
 //	ACCOUNTS_DIR   where the accounts database lives (default ./accounts). A deploy
 //	               must never touch it: this is the one state that cannot be rebuilt.
 //	ACCOUNTS_ADDR  listen address (default 127.0.0.1:8091)
-//	PUBLIC_ORIGIN  https://api.dharun.dev, for the links in mails
+//	PUBLIC_ORIGIN  https://api.dharun.dev
 //	SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SMTP_TLS, MAIL_FROM, MAIL_FROM_NAME
-//	GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
+//	               the mail service for login codes: Amazon SES, email-smtp.ap-south-1.amazonaws.com,
+//	               port 465 with SMTP_TLS=true, MAIL_FROM=no-reply@api.dharun.dev
 //	ACCOUNTS_MAX_KEYS  keys per account (default 3)
 //
 // The first superuser (for the admin screen, reached through an SSH tunnel only) is
@@ -39,15 +40,13 @@ func main() {
 		PublicOrigin: os.Getenv("PUBLIC_ORIGIN"),
 		SMTP: accounts.SMTP{
 			Host:     os.Getenv("SMTP_HOST"),
-			Port:     envInt("SMTP_PORT", 587),
+			Port:     envInt("SMTP_PORT", 465),
 			Username: os.Getenv("SMTP_USERNAME"),
 			Password: os.Getenv("SMTP_PASSWORD"),
 			TLS:      strings.EqualFold(os.Getenv("SMTP_TLS"), "true"),
 			From:     os.Getenv("MAIL_FROM"),
 			FromName: os.Getenv("MAIL_FROM_NAME"),
 		},
-		GoogleID: os.Getenv("GOOGLE_CLIENT_ID"), GoogleSecret: os.Getenv("GOOGLE_CLIENT_SECRET"),
-		GitHubID: os.Getenv("GITHUB_CLIENT_ID"), GitHubSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
 		MaxKeys: envInt("ACCOUNTS_MAX_KEYS", 3),
 	})
 

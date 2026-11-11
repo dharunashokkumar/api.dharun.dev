@@ -114,6 +114,7 @@ type Server struct {
 	siteSecret []byte
 	challenges *challenges
 	signups    *dailyCounter
+	codeMails  *dailyCounter
 	stopKeys   chan struct{}
 }
 
@@ -163,6 +164,7 @@ func New(cfg Config) (*Server, error) {
 		siteSecret: cfg.SiteSecret,
 		challenges: newChallenges(),
 		signups:    &dailyCounter{},
+		codeMails:  &dailyCounter{},
 		stopKeys:   make(chan struct{}),
 	}
 	go s.keepUsage()

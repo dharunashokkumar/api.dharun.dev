@@ -4,9 +4,9 @@
 // account pages use and reads the keys from its database.
 //
 // What is ours here: the api_keys collection (a key is shown once and stored only as
-// a SHA-256 hash), a cap on keys per account, the disabled switch, the mail templates
-// that link to our own pages, and the settings taken from the environment. Everything
-// security-sensitive (passwords, tokens, OAuth, mail) is PocketBase's.
+// a SHA-256 hash), a cap on keys per account, the disabled switch, login by mailed
+// code only, and the settings taken from the environment. Everything
+// security-sensitive (one-time codes, tokens, mail) is PocketBase's.
 package accounts
 
 import (
@@ -26,31 +26,31 @@ import (
 
 // Config is read from the environment by cmd/accounts.
 type Config struct {
-	// PublicOrigin is where the account pages are, for the links in mails and the OAuth
-	// redirect: https://api.dharun.dev.
+	// PublicOrigin is where the account pages are: https://api.dharun.dev.
 	PublicOrigin string
 	SMTP         SMTP
-	// OAuth client ids and secrets. A provider with no id is left switched off.
-	GoogleID, GoogleSecret string
-	GitHubID, GitHubSecret string
 	// MaxKeys is how many keys an account may hold at once. Zero means 3.
 	MaxKeys int
 }
 
-// SMTP is the mail service for verification and password reset mails.
+// SMTP is the mail service for the login codes (Amazon SES in production, Dharun
+// 2026-11-11).
 type SMTP struct {
 	Host     string
 	Port     int
 	Username string
 	Password string
 	TLS      bool
-	From     string // an address at dharun.dev with SPF and DKIM set
+	From     string // no-reply@api.dharun.dev: SES identity with DKIM and a MAIL FROM domain
 	FromName string
 }
 
 const (
 	usersCollection = "users"
 	keysCollection  = "api_keys"
+	// OTPLength and OTPLife are the login code's digits and how long it works.
+	OTPLength = 6
+	OTPLife   = 10 * time.Minute
 )
 
 // Setup adds India API's parts to a PocketBase app. Call it before the app starts.
@@ -94,33 +94,29 @@ func Prepare(app core.App, cfg Config) error {
 	users.DeleteRule = types.Pointer(owner)
 	// A disabled account cannot log in.
 	users.AuthRule = types.Pointer("disabled = false")
-	users.PasswordAuth.Enabled = true
-	users.PasswordAuth.IdentityFields = []string{core.FieldNameEmail}
-	users.VerificationTemplate = core.EmailTemplate{
-		Subject: "Confirm your India API email",
+	// Login and signup are one thing: a six-digit code mailed to the address (Dharun,
+	// 2026-11-11). No passwords, so none can leak or be guessed; a code proves the
+	// address, and PocketBase marks it verified on the first one. Google and GitHub
+	// logins are a later part of the plan.
+	users.PasswordAuth.Enabled = false
+	users.OTP.Enabled = true
+	users.OTP.Length = OTPLength
+	users.OTP.Duration = int64(OTPLife.Seconds())
+	users.OTP.EmailTemplate = core.EmailTemplate{
+		Subject: "{OTP} is your India API code",
 		Body: `<p>Hello,</p>
-<p>Confirm this address to start using your free India API key:</p>
-<p><a class="btn" href="{APP_URL}/account/verify#{TOKEN}" target="_blank" rel="noopener">Confirm my email</a></p>
-<p>If you did not sign up at api.dharun.dev, ignore this mail. Nothing happens without the click.</p>
+<p>Your India API login code is:</p>
+<p style="font-size:28px;font-weight:600;letter-spacing:4px">{OTP}</p>
+<p>It works once, for 10 minutes. Type it on the page where you asked for it.</p>
+<p>If you did not ask for a code at api.dharun.dev, ignore this mail: nothing happens without it.</p>
 <p>India API</p>`,
 	}
-	users.ResetPasswordTemplate = core.EmailTemplate{
-		Subject: "Reset your India API password",
-		Body: `<p>Hello,</p>
-<p>Choose a new password here (the link works for 30 minutes):</p>
-<p><a class="btn" href="{APP_URL}/account/reset#{TOKEN}" target="_blank" rel="noopener">Choose a new password</a></p>
-<p>If you did not ask for this, ignore this mail; your password stays as it is.</p>
-<p>India API</p>`,
-	}
-	var providers []core.OAuth2ProviderConfig
-	if cfg.GoogleID != "" {
-		providers = append(providers, core.OAuth2ProviderConfig{Name: "google", ClientId: cfg.GoogleID, ClientSecret: cfg.GoogleSecret})
-	}
-	if cfg.GitHubID != "" {
-		providers = append(providers, core.OAuth2ProviderConfig{Name: "github", ClientId: cfg.GitHubID, ClientSecret: cfg.GitHubSecret})
-	}
-	users.OAuth2.Providers = providers
-	users.OAuth2.Enabled = len(providers) > 0
+	users.MFA.Enabled = false
+	users.OAuth2.Enabled = false
+	users.OAuth2.Providers = nil
+	// A mail on every login from a new device would double the mail for no gain: the
+	// code itself already tells the owner someone is logging in.
+	users.AuthAlert.Enabled = false
 	if err := app.Save(users); err != nil {
 		return err
 	}
@@ -275,32 +271,6 @@ func routes(se *core.ServeEvent, cfg Config) {
 		view := viewKey(fresh)
 		return e.JSON(http.StatusOK, map[string]any{"key": key, "id": view.ID, "name": view.Name, "hint": view.Hint, "created": view.Created,
 			"note": "The old key stops working within a minute. This is the only time the new key is shown."})
-	})
-
-	group.POST("/password", func(e *core.RequestEvent) error {
-		var body struct {
-			OldPassword string `json:"oldPassword"`
-			Password    string `json:"password"`
-		}
-		if err := e.BindBody(&body); err != nil || body.Password == "" {
-			return e.BadRequestError("Send oldPassword and password.", nil)
-		}
-		if len(body.Password) < 10 || len(body.Password) > 128 {
-			return e.BadRequestError("A password is 10 to 128 characters.", nil)
-		}
-		record, err := e.App.FindRecordById(usersCollection, e.Auth.Id)
-		if err != nil {
-			return e.NotFoundError("", nil)
-		}
-		if record.GetString("password") != "" && !record.ValidatePassword(body.OldPassword) {
-			return e.BadRequestError("The current password is not right.", nil)
-		}
-		// Setting a password also renews the token key, which logs out every session.
-		record.SetPassword(body.Password)
-		if err := e.App.Save(record); err != nil {
-			return e.BadRequestError("That password was not accepted.", nil)
-		}
-		return e.JSON(http.StatusOK, map[string]any{"changed": true, "note": "Every session is logged out; log in again."})
 	})
 
 	group.POST("/logout-all", func(e *core.RequestEvent) error {

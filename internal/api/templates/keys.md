@@ -14,9 +14,8 @@ A unit is what a request costs: a lookup is 1, real CPU work (pictures, astronom
 
 ## Get a key
 
-1. [Sign up]({{.Origin}}/signup) with an email address and a password, or with Google or GitHub.
-2. Confirm the address from the mail we send (Google and GitHub accounts arrive confirmed).
-3. On [your account page]({{.Origin}}/account), make a key. It is shown once: copy it then. An account holds up to three keys; rotate or revoke them there. A revoked key stops working within a minute.
+1. [Sign up]({{.Origin}}/signup) with your email address. There is no password: we mail you a six-digit code, which works once for 10 minutes. Logging in later works the same way. (Login with Google or GitHub is planned.)
+2. On [your account page]({{.Origin}}/account), make a key. It is shown once: copy it then. An account holds up to three keys; rotate or revoke them there. A revoked key stops working within a minute.
 
 ## Send a key
 
@@ -44,5 +43,5 @@ The free tool pages on this site (such as [image to text]({{.Origin}}/tools/imag
 
 ## What we keep
 
-An account holds your email address, a password hash (when you use a password), the Google or GitHub account id (when you use one), the hashes of your keys (never the keys), when they were made, and how many requests each key made per day and API group. The log line of a request to a model endpoint holds the key's id, so abuse can be traced and stopped; other requests log nothing about keys. Deleting your account on the account page removes all of it at once. See [privacy]({{.Origin}}/privacy).
+An account holds your email address, the hashes of your keys (never the keys), when they were made, and how many requests each key made per day and API group. The log line of a request to a model endpoint holds the key's id, so abuse can be traced and stopped; other requests log nothing about keys. Deleting your account on the account page removes all of it at once. See [privacy]({{.Origin}}/privacy).
 {{end}}

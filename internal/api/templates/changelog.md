@@ -4,7 +4,7 @@ What changed for the people and programs calling India API, newest first. The co
 
 ## November 2026
 
-- **Free API keys.** [Sign up]({{.Origin}}/signup) for a key: {{.KeyLimit}} units a minute per key instead of {{.Limit}} per address, on every endpoint. The model endpoints (OCR, speech to text, text to speech, translation, embeddings, reranking, moderation, Roman typing, background removal, denoise, and name detection in redaction) will need a key after a notice period; until then they answer with an `X-Key-Notice` header. See [API keys]({{.Origin}}/keys).
+- **Free API keys.** [Sign up]({{.Origin}}/signup) with just your email address (we mail you a code; no passwords) for a key: {{.KeyLimit}} units a minute per key instead of {{.Limit}} per address, on every endpoint. The model endpoints (OCR, speech to text, text to speech, translation, embeddings, reranking, moderation, Roman typing, background removal, denoise, and name detection in redaction) will need a key after a notice period; until then they answer with an `X-Key-Notice` header. See [API keys]({{.Origin}}/keys).
 - **Rate-limit headers** on every charged answer: `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`.
 - **Try it on every API page**, a [playground]({{.Origin}}/play), [free tools]({{.Origin}}/tools), [demos]({{.Origin}}/demos) and [company logo pages]({{.Origin}}/logos).
 - **New endpoints:** batch lookups (`POST /v1/batch`), calendar feeds (`/v1/holidays/{year}.ics`), today in India (`/v1/today`), money calculators (`/v1/calc/...`: SIP, lump sum, EMI, GST, income tax, HRA, gratuity, PPF, capital gains, trade charges), avatars (`/v1/avatar/{name}`), placeholder images (`/v1/placeholder/{size}`) and chart images (`/v1/chart`).

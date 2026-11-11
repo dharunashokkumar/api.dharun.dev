@@ -259,6 +259,7 @@ func solve(t *testing.T, server *Server) string {
 type fakeAccounts struct {
 	mu   sync.Mutex
 	seen []string
+	made map[string]bool
 }
 
 func (f *fakeAccounts) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -268,6 +269,24 @@ func (f *fakeAccounts) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	f.mu.Unlock()
 	w.Header().Set("Content-Type", "application/json")
 	switch r.URL.Path {
+	case "/api/collections/users/request-otp":
+		io.WriteString(w, `{"otpId":"otp123"}`)
+	case "/api/collections/users/records":
+		f.mu.Lock()
+		if f.made == nil {
+			f.made = map[string]bool{}
+		}
+		var created struct{ Email string }
+		json.Unmarshal(body, &created)
+		existed := f.made[created.Email]
+		f.made[created.Email] = true
+		f.mu.Unlock()
+		if existed {
+			w.WriteHeader(http.StatusBadRequest)
+			io.WriteString(w, `{"data":{"email":{"code":"validation_not_unique"}}}`)
+			return
+		}
+		io.WriteString(w, `{"id":"user1"}`)
 	case "/api/india/me":
 		if r.Header.Get("Authorization") != "tok" {
 			w.WriteHeader(http.StatusUnauthorized)
@@ -292,7 +311,7 @@ func TestAccountPassThrough(t *testing.T) {
 	server := newTestServer(Config{Version: "t", AccountsURL: upstream.URL, PublicOrigin: "https://api.example"})
 	defer server.Close()
 
-	if got := send(server, "POST", "/account/api/collections/users/auth-with-password", `{"identity":"a@b.c","password":"x"}`); got.Code != http.StatusOK || got.Header().Get("Access-Control-Allow-Origin") != "https://api.example" {
+	if got := send(server, "POST", "/account/api/collections/users/auth-with-otp", `{"otpId":"x","password":"123456"}`); got.Code != http.StatusOK || got.Header().Get("Access-Control-Allow-Origin") != "https://api.example" {
 		t.Errorf("login pass-through = %d %v", got.Code, got.Header())
 	}
 	if got := send(server, "POST", "/account/api/india/keys/abc123def456ghi/revoke", "", "Authorization", "tok"); got.Code != http.StatusOK {
@@ -300,6 +319,7 @@ func TestAccountPassThrough(t *testing.T) {
 	}
 	// The admin screen, superusers, the record API and anything unlisted never pass.
 	for _, path := range []string{"_/", "collections/_superusers/auth-with-password", "collections/users/records", "collections/api_keys/records",
+		"collections/users/auth-with-password", "collections/users/request-otp", "collections/users/auth-with-oauth2", "collections/users/request-password-reset",
 		"india/keys/../../collections/users/records", "settings", "backups", "india/keys/ABC/revoke"} {
 		for _, method := range []string{"GET", "POST"} {
 			if got := send(server, method, "/account/api/"+path, "{}"); got.Code != http.StatusNotFound && got.Code != http.StatusMethodNotAllowed && got.Code != http.StatusTemporaryRedirect {
@@ -323,52 +343,67 @@ func TestAccountPassThrough(t *testing.T) {
 
 	none := newTestServer(Config{Version: "t"})
 	defer none.Close()
-	if got := send(none, "POST", "/account/api/collections/users/auth-with-password", "{}"); got.Code != http.StatusServiceUnavailable || errorCode(got) != "accounts_unavailable" {
+	if got := send(none, "POST", "/account/api/collections/users/auth-with-otp", "{}"); got.Code != http.StatusServiceUnavailable || errorCode(got) != "accounts_unavailable" {
 		t.Errorf("no accounts = %d %s", got.Code, got.Body)
 	}
 }
 
-func TestSignup(t *testing.T) {
+func TestLoginCode(t *testing.T) {
 	accounts := &fakeAccounts{}
 	upstream := httptest.NewServer(accounts)
 	defer upstream.Close()
 	server := newTestServer(Config{Version: "t", AccountsURL: upstream.URL, SignupsPerDay: 2})
 	defer server.Close()
-	signup := func(email, password, proof string) *httptest.ResponseRecorder {
-		body, _ := json.Marshal(map[string]string{"email": email, "password": password, "altcha": proof})
-		return send(server, "POST", "/account/api/signup", string(body), "Content-Type", "application/json")
+	code := func(email, proof string) *httptest.ResponseRecorder {
+		body, _ := json.Marshal(map[string]string{"email": email, "altcha": proof})
+		return send(server, "POST", "/account/api/code", string(body), "Content-Type", "application/json")
 	}
-	if got := signup("a@example.com", "long enough password", "bm9uZQ=="); errorCode(got) != "challenge_failed" {
+	if got := code("a@example.com", "bm9uZQ=="); errorCode(got) != "challenge_failed" {
 		t.Errorf("no proof = %d %s", got.Code, got.Body)
 	}
-	if got := signup("a@mailinator.com", "long enough password", solve(t, server)); got.Code != http.StatusBadRequest || !strings.Contains(got.Body.String(), "Throwaway") {
+	if got := code("a@mailinator.com", solve(t, server)); got.Code != http.StatusBadRequest || !strings.Contains(got.Body.String(), "Throwaway") {
 		t.Errorf("disposable = %d %s", got.Code, got.Body)
 	}
-	if got := signup("a@example.com", "short", solve(t, server)); got.Code != http.StatusBadRequest {
-		t.Errorf("short password = %d", got.Code)
+	if got := code("not an address", solve(t, server)); got.Code != http.StatusBadRequest {
+		t.Errorf("bad address = %d", got.Code)
 	}
 	proof := solve(t, server)
-	if got := signup("Student@Example.com", "long enough password", proof); got.Code != http.StatusOK {
-		t.Fatalf("signup = %d %s", got.Code, got.Body)
+	first := code("Student@Example.com", proof)
+	if first.Code != http.StatusOK || !strings.Contains(first.Body.String(), `"otpId":"otp123"`) {
+		t.Fatalf("code = %d %s", first.Code, first.Body)
 	}
-	if got := signup("b@example.com", "long enough password", proof); errorCode(got) != "challenge_failed" {
+	if got := code("b@example.com", proof); errorCode(got) != "challenge_failed" {
 		t.Errorf("a proof used twice = %d", got.Code)
 	}
-	calls := accounts.calls()
-	if !strings.Contains(calls, "POST /api/collections/users/records") || !strings.Contains(calls, `"email":"student@example.com"`) ||
-		!strings.Contains(calls, "POST /api/collections/users/request-verification") {
-		t.Errorf("signup did not create and mail: %s", calls)
+	// A known address gets the same answer, and only its code.
+	again := code("student@example.com", solve(t, server))
+	if again.Code != http.StatusOK || again.Body.String() != first.Body.String() {
+		t.Errorf("known address answered differently: %s", again.Body)
 	}
-	signup("c@example.com", "long enough password", solve(t, server))
-	if got := signup("d@example.com", "long enough password", solve(t, server)); got.Code != http.StatusTooManyRequests {
-		t.Errorf("third signup from one address with a cap of two = %d", got.Code)
+	calls := accounts.calls()
+	if !strings.Contains(calls, `"email":"student@example.com"`) || strings.Count(calls, "request-otp") != 2 || strings.Contains(calls, `"password":"long`) {
+		t.Errorf("calls: %s", calls)
+	}
+	// Two new accounts a day from one address; past that, known addresses still get codes.
+	code("c@example.com", solve(t, server))
+	before := strings.Count(accounts.calls(), "/records")
+	code("d@example.com", solve(t, server))
+	if strings.Count(accounts.calls(), "/records") != before {
+		t.Error("a third account was made from one address with a cap of two")
+	}
+	// At most ten codes a day for one address.
+	for range codesPerEmail - 2 {
+		code("student@example.com", solve(t, server))
+	}
+	if got := code("student@example.com", solve(t, server)); got.Code != http.StatusTooManyRequests {
+		t.Errorf("eleventh code for one address = %d", got.Code)
 	}
 }
 
 func TestAccountPagesAndAssets(t *testing.T) {
 	server := newTestServer(Config{Version: "t"})
 	defer server.Close()
-	for _, path := range []string{"/signup", "/login", "/account", "/account/verify", "/account/reset", "/account/oauth"} {
+	for _, path := range []string{"/signup", "/login", "/account"} {
 		got := send(server, "GET", path, "")
 		if got.Code != http.StatusOK || !strings.Contains(got.Body.String(), `id="account-app"`) || !strings.Contains(got.Body.String(), "/assets/account.js") {
 			t.Errorf("%s = %d", path, got.Code)

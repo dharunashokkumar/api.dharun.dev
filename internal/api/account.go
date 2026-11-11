@@ -3,8 +3,12 @@ package api
 // The account addresses (growth plan Part 2). The pages (/signup, /login, /account)
 // are ours; the account system behind them is PocketBase (cmd/accounts), which listens
 // on localhost only. The API passes through the few addresses the pages use and never
-// PocketBase's admin screen or its record API. Signup itself goes through the API, which
-// checks the bot challenge, the address and the daily cap before passing it on.
+// PocketBase's admin screen or its record API.
+//
+// Login and signup are one step (Dharun, 2026-11-11): an email address gets a six-digit
+// code by mail (Amazon SES), and the code logs in. Asking for a code goes through the
+// API, which checks the browser challenge, the address and the daily caps, makes the
+// account if there is none yet, and only then asks PocketBase to mail the code.
 
 import (
 	"bytes"
@@ -30,19 +34,12 @@ const costAccount = 12
 // accountPassThrough lists what the pages may reach in the account program, by method
 // and path below /account/api/. Everything else answers 404.
 var accountPassThrough = []struct{ method, path string }{
-	{"GET", "collections/users/auth-methods"},
-	{"POST", "collections/users/auth-with-password"},
-	{"POST", "collections/users/auth-with-oauth2"},
+	{"POST", "collections/users/auth-with-otp"},
 	{"POST", "collections/users/auth-refresh"},
-	{"POST", "collections/users/request-verification"},
-	{"POST", "collections/users/confirm-verification"},
-	{"POST", "collections/users/request-password-reset"},
-	{"POST", "collections/users/confirm-password-reset"},
 	{"GET", "india/me"},
 	{"POST", "india/keys"},
 	{"POST", "india/keys/*/revoke"},
 	{"POST", "india/keys/*/rotate"},
-	{"POST", "india/password"},
 	{"POST", "india/logout-all"},
 	{"POST", "india/delete-account"},
 }
@@ -88,8 +85,8 @@ func idLike(value string) bool {
 }
 
 // accountPaths are kept out of the log entirely: they carry tokens and addresses.
-var accountPaths = []string{"/account/api/{rest...}", "/account/api/signup", "/account/api/challenge", "/account/api/site-token", "/account/api/usage",
-	"/signup", "/login", "/account", "/account/verify", "/account/reset", "/account/oauth"}
+var accountPaths = []string{"/account/api/{rest...}", "/account/api/code", "/account/api/challenge", "/account/api/site-token", "/account/api/usage",
+	"/signup", "/login", "/account"}
 
 func init() {
 	for _, path := range accountPaths {
@@ -100,11 +97,11 @@ func init() {
 func (s *Server) registerAccounts() {
 	s.handle("account", costAccount, "GET /account/api/{rest...}", s.handleAccountPassThrough)
 	s.handle("account", costAccount, "POST /account/api/{rest...}", s.handleAccountPassThrough)
-	s.handle("account", costAccount, "POST /account/api/signup", s.handleSignup)
+	s.handle("account", costAccount, "POST /account/api/code", s.handleCode)
 	s.handle("account", costLight, "GET /account/api/challenge", s.handleChallenge)
 	s.handle("account", costLight, "POST /account/api/site-token", s.handleSiteToken)
 	s.handle("account", costLight, "GET /account/api/usage", s.handleUsage)
-	for _, path := range []string{"/signup", "/signup.md", "/login", "/account", "/account/verify", "/account/reset", "/account/oauth"} {
+	for _, path := range []string{"/signup", "/signup.md", "/login", "/account"} {
 		s.handle("account_page", costFree, "GET "+path, s.handleAccountPage)
 	}
 	s.handle("docs", costFree, "GET /assets/{file}", s.handleAsset)
@@ -179,17 +176,23 @@ func (e accountError) Error() string { return string(e) }
 
 const errNoAccounts = accountError("no accounts on this server")
 
-// ---- signup ----
+// ---- login codes ----
 
-func (s *Server) handleSignup(w http.ResponseWriter, r *http.Request) {
+// codesPerEmail caps the codes one address can be sent a day, so the form cannot be
+// used to flood someone's inbox.
+const codesPerEmail = 10
+
+// handleCode sends a login code. An address with no account gets one made first, within
+// the daily cap of new accounts per caller address. The answer is the same whether the
+// account existed or not, so the form cannot tell anyone who has an account.
+func (s *Server) handleCode(w http.ResponseWriter, r *http.Request) {
 	s.accountHeaders(w, r)
 	var body struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-		Altcha   string `json:"altcha"`
+		Email  string `json:"email"`
+		Altcha string `json:"altcha"`
 	}
 	if err := json.NewDecoder(io.LimitReader(r.Body, 16<<10)).Decode(&body); err != nil {
-		s.badRequest(w, r, "Send email, password and altcha as JSON.")
+		s.badRequest(w, r, "Send email and altcha as JSON.")
 		return
 	}
 	if !s.challenges.verify(s.siteSecret, body.Altcha) {
@@ -197,7 +200,7 @@ func (s *Server) handleSignup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	address, err := mail.ParseAddress(strings.TrimSpace(body.Email))
-	if err != nil || address.Name != "" || !strings.Contains(address.Address, "@") {
+	if err != nil || address.Name != "" || !strings.Contains(address.Address, "@") || len(address.Address) > 254 {
 		s.badRequest(w, r, "That does not look like an email address.")
 		return
 	}
@@ -206,31 +209,42 @@ func (s *Server) handleSignup(w http.ResponseWriter, r *http.Request) {
 		s.badRequest(w, r, "Throwaway email addresses cannot be used. Use an address you keep.")
 		return
 	}
-	if n := len(body.Password); n < 10 || n > 128 {
-		s.badRequest(w, r, "A password is 10 to 128 characters.")
+	if !s.codeMails.take(s.siteHash("mail|"+email), codesPerEmail) {
+		s.fail(w, r, http.StatusTooManyRequests, "rate_limited", "Too many codes for this address today. Try again tomorrow.")
 		return
 	}
-	if !s.signups.take(s.siteHash(s.clientKey(r)), s.cfg.SignupsPerDay) {
-		s.fail(w, r, http.StatusTooManyRequests, "rate_limited", "Too many signups from this address today. Try again tomorrow.")
-		return
+	// Make the account if the cap allows; an existing address answers 400 here and is
+	// simply sent its code.
+	caller := s.siteHash(s.clientKey(r))
+	if s.signups.left(caller, s.cfg.SignupsPerDay) {
+		random := make([]byte, 24)
+		rand.Read(random)
+		password := base64.RawURLEncoding.EncodeToString(random)
+		create, _ := json.Marshal(map[string]string{"email": email, "password": password, "passwordConfirm": password})
+		status, _, _, err := s.accountCall(r, http.MethodPost, "/api/collections/users/records", bytes.NewReader(create), "")
+		if err != nil {
+			s.accountsDown(w, r)
+			return
+		}
+		if status == http.StatusOK {
+			s.signups.take(caller, s.cfg.SignupsPerDay)
+		}
 	}
-	create, _ := json.Marshal(map[string]string{"email": email, "password": body.Password, "passwordConfirm": body.Password})
-	status, raw, _, err := s.accountCall(r, http.MethodPost, "/api/collections/users/records", bytes.NewReader(create), "")
+	request, _ := json.Marshal(map[string]string{"email": email})
+	status, raw, _, err := s.accountCall(r, http.MethodPost, "/api/collections/users/request-otp", bytes.NewReader(request), "")
 	if err != nil {
 		s.accountsDown(w, r)
 		return
 	}
-	// An address that already has an account gets the same answer as a new one, so the
-	// form cannot be used to find out who has an account. Only a refused password is
-	// reported.
-	if status >= 400 && strings.Contains(string(raw), `"password"`) {
-		s.badRequest(w, r, "That password was not accepted. Use 10 to 128 characters.")
+	var answer struct {
+		OTPID string `json:"otpId"`
+	}
+	if status != http.StatusOK || json.Unmarshal(raw, &answer) != nil || answer.OTPID == "" {
+		s.fail(w, r, http.StatusServiceUnavailable, "accounts_unavailable", "The code could not be sent right now. Try again in a minute.")
 		return
 	}
-	verify, _ := json.Marshal(map[string]string{"email": email})
-	s.accountCall(r, http.MethodPost, "/api/collections/users/request-verification", bytes.NewReader(verify), "")
-	s.ok(w, r, map[string]any{"sent": true,
-		"message": "If the address can be used, a confirmation link is on its way. Open it, then log in to make your key."}, meta{}, cacheNone)
+	s.ok(w, r, map[string]any{"otpId": answer.OTPID,
+		"message": "If the address can be used, a six-digit code is on its way. It works once, for 10 minutes."}, meta{}, cacheNone)
 }
 
 // disposableDomain checks the throwaway-domain list the email check uses.
@@ -333,6 +347,16 @@ type dailyCounter struct {
 	mu     sync.Mutex
 	day    string
 	counts map[string]int
+}
+
+// left reports whether who has any of the day's allowance left, without using it.
+func (d *dailyCounter) left(who string, limit int) bool {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	if day := today(); d.day != day {
+		d.day, d.counts = day, map[string]int{}
+	}
+	return d.counts[who] < limit
 }
 
 func (d *dailyCounter) take(who string, limit int) bool {

@@ -212,6 +212,33 @@ other routes. Private routes stay as they are: the input is never logged.
 7. Sandbox design: it assumed GitHub login and Turnstile; update `docs/sandbox-design.md`
    to use these accounts.
 
+## Change of 2026-11-11 (later the same day): codes by mail, no passwords
+
+Dharun: login and signup by a one-time code only, mailed through **Amazon SES** from an
+address at api.dharun.dev; Google and GitHub logins move to a later part. This replaces
+sections 3 and 4's password and OAuth logins:
+
+- `/signup` and `/login` are one form: email address, then the 6-digit code.
+- `POST /account/api/code` (the API's own address): browser proof of work, disposable
+  domains refused, at most 10 codes per email address and 5 new accounts per caller
+  address a day. It makes the account (with a random password nobody knows) if there is
+  none, then asks PocketBase to mail the code (`request-otp`). Same answer whether the
+  account existed or not.
+- `auth-with-otp` logs in and marks the address verified (PocketBase does this). Password
+  login, password reset, verification links and OAuth are switched off and not passed
+  through; the password-change address is gone. The new-device alert mail is off.
+- Mail: SES in ap-south-1 (production access was already granted on the account, used
+  by labs.dharun.dev). Identity `api.dharun.dev` with Easy DKIM, custom MAIL FROM
+  `mail.api.dharun.dev`, DMARC `p=quarantine`, sender `no-reply@api.dharun.dev`. Nothing
+  can sit on `api.dharun.dev` itself (it is a proxied CNAME), so no inbound mail there.
+  IAM user `pve-api-ses`, allowed only `ses:SendRawEmail`/`SendEmail` from
+  `*@api.dharun.dev`; its SMTP credentials and a random site secret go to the homelab secret store.
+  The setup script (idempotent, prints no secret) lives in the private homelab
+  repository, beside the infrastructure request.
+- [ ] Run the SES setup script (it was written here, but the session was not allowed to
+      run it); check DKIM and MAIL FROM show SUCCESS.
+- [ ] Google and GitHub login: a later part.
+
 ## Build status (2026-11-11)
 
 Built, tested and committed; **not pushed** (Dharun: commit only). Dharun's answers of
@@ -256,11 +283,13 @@ To be copied into the private homelab repository; no addresses here.
    as the service user, `ACCOUNTS_DIR=/var/lib/dharun-api/state/accounts`,
    `ACCOUNTS_ADDR=127.0.0.1:8091`, restarted with the API after an update. A deploy must
    never touch `ACCOUNTS_DIR`.
-2. Its env file: `PUBLIC_ORIGIN`, `SMTP_*`, `MAIL_FROM` (an address at dharun.dev with
-   SPF and DKIM), `GOOGLE_CLIENT_*`, `GITHUB_CLIENT_*` (OAuth redirect URL
-   `https://api.dharun.dev/account/oauth`).
+2. Its env file: `PUBLIC_ORIGIN=https://api.dharun.dev`,
+   `SMTP_HOST=email-smtp.ap-south-1.amazonaws.com`, `SMTP_PORT=465`, `SMTP_TLS=true`,
+   `SMTP_USERNAME` and `SMTP_PASSWORD` from the homelab secret store,
+   `MAIL_FROM=no-reply@api.dharun.dev`, `MAIL_FROM_NAME=India API`. Outbound TCP 465 to
+   SES (the internet is open). No OAuth settings.
 3. In the API's env file: `ACCOUNTS_DB=/var/lib/dharun-api/state/accounts/data.db`,
-   `ACCOUNTS_URL=http://127.0.0.1:8091`, `SITE_SECRET` (32 random bytes), later
+   `ACCOUNTS_URL=http://127.0.0.1:8091`, `SITE_SECRET` from the homelab secret store, later
    `KEY_REQUIRED_FROM`. See `deploy/dharun-api.env.example`.
 4. A daily backup of `ACCOUNTS_DIR` (PocketBase's `accounts superuser` and backup
    commands, or a file copy with the unit stopped), and one restore tried.

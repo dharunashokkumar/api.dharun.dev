@@ -1,6 +1,5 @@
-// The account pages: signup, login, the key list, verification, password reset and
-// the return from Google or GitHub. Talks to /account/api/ on this site only. The login
-// token is kept in this browser's localStorage; nothing else is stored.
+// The account pages: login and signup by a mailed code, and the key list. Talks to
+// /account/api/ on this site only. The login token is kept in this browser's localStorage; nothing else is stored.
 (function () {
   "use strict";
   var root = document.getElementById("account-app");
@@ -30,110 +29,38 @@
   function form(el) { var out = {}; new FormData(el).forEach(function (v, k) { out[k] = v; }); return out; }
   function busy(el, on) { el.querySelectorAll("button").forEach(function (b) { b.disabled = on; }); }
 
-  async function oauthButtons() {
-    var box = $("oauth-buttons");
-    if (!box) return;
-    try {
-      var methods = await call("GET", "collections/users/auth-methods");
-      var providers = (methods.oauth2 && methods.oauth2.enabled && methods.oauth2.providers) || [];
-      if (!providers.length) return;
-      box.textContent = "";
-      providers.forEach(function (p) {
-        var button = document.createElement("button");
-        button.type = "button"; button.className = "key"; button.textContent = "Continue with " + (p.displayName || p.name);
-        button.addEventListener("click", function () {
-          try { sessionStorage.setItem("india-oauth", JSON.stringify({ name: p.name, state: p.state, codeVerifier: p.codeVerifier })); } catch (e) {}
-          location.href = p.authURL + encodeURIComponent(location.origin + "/account/oauth");
-        });
-        box.appendChild(button);
-      });
-    } catch (e) {}
-  }
-
-  if (view === "signup") {
-    oauthButtons();
-    $("signup-form").addEventListener("submit", async function (event) {
+  if (view === "code") {
+    if (token()) { location.href = "/account"; return; }
+    var otpId = "", emailForm = $("email-form"), codeForm = $("code-form");
+    emailForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      var el = event.target, values = form(el);
-      busy(el, true);
+      busy(emailForm, true);
       try {
-        say("signup-status", "Running the browser check…");
+        say("code-status", "Running the browser check…");
         var proof = await window.indiaProof();
-        say("signup-status", "Creating your account…");
-        var answer = await call("POST", "signup", { email: values.email, password: values.password, altcha: proof });
-        say("signup-status", answer.data.message, "good");
-        el.reset();
-      } catch (e) { say("signup-status", e.message, "error"); }
-      busy(el, false);
+        say("code-status", "Sending the code…");
+        var answer = await call("POST", "code", { email: form(emailForm).email, altcha: proof });
+        otpId = answer.data.otpId;
+        emailForm.hidden = true;
+        codeForm.hidden = false;
+        say("code-status-2", answer.data.message, "good");
+        codeForm.elements.code.focus();
+      } catch (e) { say("code-status", e.message, "error"); }
+      busy(emailForm, false);
     });
-  }
-
-  if (view === "login") {
-    oauthButtons();
-    $("login-form").addEventListener("submit", async function (event) {
+    codeForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-      var el = event.target, values = form(el);
-      busy(el, true);
+      busy(codeForm, true);
       try {
-        var answer = await call("POST", "collections/users/auth-with-password", { identity: values.email, password: values.password });
+        var answer = await call("POST", "collections/users/auth-with-otp", { otpId: otpId, password: form(codeForm).code.trim() });
         setToken(answer.token);
         location.href = "/account";
       } catch (e) {
-        say("login-status", e.status === 400 ? "That email and password do not match an account with a confirmed address." : e.message, "error");
+        say("code-status-2", e.status === 400 ? "That code is not right, or it is older than 10 minutes." : e.message, "error");
       }
-      busy(el, false);
+      busy(codeForm, false);
     });
-    $("forgot").addEventListener("click", async function () {
-      var email = $("login-form").email.value;
-      if (!email) { say("login-status", "Type your email address first.", "error"); return; }
-      try {
-        await call("POST", "collections/users/request-password-reset", { email: email });
-        say("login-status", "If that address has an account, a reset link is on its way.", "good");
-      } catch (e) { say("login-status", e.message, "error"); }
-    });
-  }
-
-  if (view === "verify") {
-    (async function () {
-      try {
-        await call("POST", "collections/users/confirm-verification", { token: location.hash.slice(1) });
-        history.replaceState(null, "", location.pathname);
-        say("flow-status", "Your email is confirmed. Log in to make your key.", "good");
-        var link = document.createElement("p"); link.innerHTML = '<a class="key key--primary" href="' + (token() ? "/account" : "/login") + '">Continue</a>';
-        root.appendChild(link);
-      } catch (e) { say("flow-status", "This link did not work: it may be used already or too old. Log in and ask for a new one.", "error"); }
-    })();
-  }
-
-  if (view === "reset") {
-    $("reset-form").addEventListener("submit", async function (event) {
-      event.preventDefault();
-      var el = event.target, password = form(el).password;
-      busy(el, true);
-      try {
-        await call("POST", "collections/users/confirm-password-reset", { token: location.hash.slice(1), password: password, passwordConfirm: password });
-        history.replaceState(null, "", location.pathname);
-        say("reset-status", "Saved. You can log in with the new password.", "good");
-      } catch (e) { say("reset-status", "This link did not work: it may be used already or older than 30 minutes.", "error"); }
-      busy(el, false);
-    });
-  }
-
-  if (view === "oauth") {
-    (async function () {
-      var query = new URLSearchParams(location.search), kept = null;
-      try { kept = JSON.parse(sessionStorage.getItem("india-oauth") || "null"); sessionStorage.removeItem("india-oauth"); } catch (e) {}
-      history.replaceState(null, "", location.pathname);
-      if (!kept || query.get("state") !== kept.state || !query.get("code")) {
-        say("flow-status", "That sign-in did not complete. Start again from the login page.", "error");
-        return;
-      }
-      try {
-        var answer = await call("POST", "collections/users/auth-with-oauth2", { provider: kept.name, code: query.get("code"), codeVerifier: kept.codeVerifier, redirectURL: location.origin + "/account/oauth" });
-        setToken(answer.token);
-        location.href = "/account";
-      } catch (e) { say("flow-status", e.message, "error"); }
-    })();
+    $("code-again").addEventListener("click", function () { codeForm.hidden = true; emailForm.hidden = false; codeForm.reset(); });
   }
 
   if (view === "account") {
@@ -205,13 +132,6 @@
       try {
         var answer = await call("POST", "india/keys", { name: form(event.target).name }, true);
         showKey(answer.key); event.target.reset(); load();
-      } catch (e) { say("account-status", e.message, "error"); }
-    });
-    $("password-form").addEventListener("submit", async function (event) {
-      event.preventDefault();
-      try {
-        await call("POST", "india/password", form(event.target), true);
-        setToken(""); location.href = "/login";
       } catch (e) { say("account-status", e.message, "error"); }
     });
     $("logout").addEventListener("click", function () { setToken(""); location.href = "/login"; });

@@ -325,8 +325,11 @@ makes `apidata refresh` copy files instead of downloading them, for tests on a s
 `cmd/accounts` is PocketBase v0.39.11 used as a library (v0.40 needs Go 1.27; read the
 changelog before raising it), with our parts in `internal/accounts`. It listens on
 localhost only; the API passes through the allow-listed addresses in `account.go`
-(`accountPassThrough`, never the admin screen or the record API) and runs signup itself
-(proof of work, disposable domains, a daily cap per address). The key format is
+(`accountPassThrough`, never the admin screen or the record API). Login and signup are
+one step, by a 6-digit code mailed through Amazon SES from `no-reply@api.dharun.dev`
+(no passwords, no OAuth yet): `POST /account/api/code` runs the proof of work, the
+disposable-domain check and the daily caps, makes the account if needed and asks
+PocketBase to mail the code; `auth-with-otp` is passed through. The key format is
 `internal/apikey`; the API reads key hashes from the accounts database (`ACCOUNTS_DB`,
 read-only) every 15 seconds in `keys.go`. `handle` identifies a key or site token,
 charges the key's own allowance (`KEY_RATE_LIMIT_PER_MIN`), sets the `RateLimit-*`

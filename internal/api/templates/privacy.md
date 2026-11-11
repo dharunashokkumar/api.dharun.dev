@@ -21,9 +21,9 @@ When a company logo is asked for by a name that matches no company, that name is
 
 ## Accounts and API keys
 
-An account is optional: most endpoints need none. If you make one, it holds your email address, a password hash (when you sign up with a password), the Google or GitHub account id (when you sign in with one), the SHA-256 hashes of your keys (never the keys themselves), their names and creation dates, and how many requests each key made per day and API group. The usage counts are kept by the API on the server, not in the request log. On the endpoints that need a key, the log line holds the key's id (never the key), so that abuse can be traced to an account and stopped; on every other endpoint nothing about keys is logged. The account system (PocketBase) keeps no request log of its own and never sees your IP address.
+An account is optional: most endpoints need none. If you make one, it holds your email address, the SHA-256 hashes of your keys (never the keys themselves), their names and creation dates, and how many requests each key made per day and API group. The usage counts are kept by the API on the server, not in the request log. On the endpoints that need a key, the log line holds the key's id (never the key), so that abuse can be traced to an account and stopped; on every other endpoint nothing about keys is logged. The account system (PocketBase) keeps no request log of its own and never sees your IP address.
 
-Signing up runs a short proof-of-work check in your browser (it works out a small sum, nothing is loaded from another site), and the number of signups per address per day is counted in memory, by a keyed hash of the address. Throwaway email domains are refused.
+There are no passwords: you log in with a six-digit code mailed to you, which works once for 10 minutes. Asking for a code runs a short proof-of-work check in your browser (it works out a small sum, nothing is loaded from another site), and the number of new accounts per IP address and of codes per email address each day are counted in memory, by keyed hashes. Throwaway email domains are refused.
 
 Delete your account on the account page: the account, its keys and their usage counts go at once.
 
@@ -33,7 +33,7 @@ None. The site sets no cookies and loads no analytics, advertising or third-part
 
 ## Others who see requests
 
-Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. If you make an account, the mail service that delivers the confirmation and password reset mails receives your email address and that mail. If you sign in with Google or GitHub, they learn that you signed in here and give us your email address and account id. The DNS check, the email check and the IPv6 check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give. The TLS check, the HTTP probe and website icons connect to the site you name and fetch from it, with a user agent that names this API; the site sees a request from this server, not from you. Whois sends the domain, address or AS number you ask about to the registry that holds it (for example NIXI for .in, APNIC for Indian IP addresses). A whois lookup of an IP address is not logged.
+Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. If you ask for a login code, Amazon Web Services (Amazon SES), which delivers the mail, receives your email address and the mail with the code. The DNS check, the email check and the IPv6 check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give. The TLS check, the HTTP probe and website icons connect to the site you name and fetch from it, with a user agent that names this API; the site sees a request from this server, not from you. Whois sends the domain, address or AS number you ask about to the registry that holds it (for example NIXI for .in, APNIC for Indian IP addresses). A whois lookup of an IP address is not logged.
 
 ## The data in answers
 

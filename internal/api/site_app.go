@@ -143,49 +143,37 @@ const cssApp = `
 // ---- account pages ----
 
 var accountPages = map[string]struct{ Title, Heading, Lead, View string }{
-	"/signup":         {"Get a free API key | " + productName, "Get a free API key", "An account is free and holds up to three keys. A key raises your limits on every endpoint and will be needed for the model endpoints (OCR, speech, translation, embeddings and the rest).", "signup"},
-	"/login":          {"Log in | " + productName, "Log in", "Log in to make, rotate and revoke your API keys and to see what they used.", "login"},
-	"/account":        {"Your account and API keys | " + productName, "Your API keys", "", "account"},
-	"/account/verify": {"Confirm your email | " + productName, "Confirming your email", "", "verify"},
-	"/account/reset":  {"Choose a new password | " + productName, "Choose a new password", "", "reset"},
-	"/account/oauth":  {"Logging in | " + productName, "Logging in", "", "oauth"},
+	"/signup":  {"Get a free API key | " + productName, "Get a free API key", "An account is free and holds up to three keys. A key raises your limits on every endpoint and will be needed for the model endpoints (OCR, speech, translation, embeddings and the rest). No password: we mail you a code.", "code"},
+	"/login":   {"Log in | " + productName, "Log in", "Type your email address and we mail you a six-digit code. No password to remember.", "code"},
+	"/account": {"Your account and API keys | " + productName, "Your API keys", "", "account"},
 }
 
 const accountForms = `
 <noscript><p class="aside">The account pages need JavaScript: they talk to the account service from your browser. Everything else on this site works without it.</p></noscript>
 <div id="account-app" data-view="{{.View}}">
-{{if eq .View "signup"}}
+{{if eq .View "code"}}
 <div class="app-grid">
-<form class="card form" id="signup-form">
-<h2>Sign up with email</h2>
+<div class="card">
+<form class="form" id="email-form">
+<h2>Your email address</h2>
 <label>Email <input type="email" name="email" autocomplete="email" required></label>
-<label>Password <input type="password" name="password" autocomplete="new-password" minlength="10" maxlength="128" required><small>10 to 128 characters.</small></label>
-<p class="status" id="signup-status" role="status"></p>
-<div class="row"><button class="key key--primary" type="submit">Create my account</button></div>
-<p class="note">A short check runs in your browser first (a small sum it has to work out, instead of a puzzle for you). We then mail you a link to confirm the address. Already have an account? <a href="/login">Log in</a>.</p>
+<p class="status" id="code-status" role="status"></p>
+<div class="row"><button class="key key--primary" type="submit">Send me a code</button></div>
+<p class="note">One step for both: a new address gets an account, a known one logs in. A short check runs in your browser first (a small sum it works out, instead of a puzzle for you).</p>
 </form>
-<div class="card" id="oauth-box">
-<h2>Or use an account you have</h2>
-<div class="row" id="oauth-buttons"><span class="note">Google and GitHub sign-in show here when this server has them switched on.</span></div>
-<p class="note">Google and GitHub learn that you signed in here; we get your email address and account id from them, nothing else. See <a href="/privacy">privacy</a>.</p>
-</div>
+<form class="form" id="code-form" hidden>
+<h2>The code from the mail</h2>
+<label>Six-digit code <input name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
+<p class="status" id="code-status-2" role="status"></p>
+<div class="row"><button class="key key--primary" type="submit">Log in</button><button class="key key--small" type="button" id="code-again">Use another address</button></div>
+<p class="note">It works once, for 10 minutes. Not there? Look in spam, or ask again in a minute.</p>
+</form>
 </div>
 <div class="card"><h2>What a key gives you</h2><ul>
 <li>{{.KeyLimit}} units a minute per key instead of {{.Limit}} per address, on every endpoint, logos included.</li>
 <li>The model endpoints: {{.Quota}} requests a day per key, one at a time.</li>
 <li>Your own allowance: apps on a shared address no longer share one.</li></ul>
-<p class="note">How to send a key, and what changes when: <a href="/keys">API keys</a>.</p></div>
-{{else if eq .View "login"}}
-<div class="app-grid">
-<form class="card form" id="login-form">
-<h2>Email and password</h2>
-<label>Email <input type="email" name="email" autocomplete="email" required></label>
-<label>Password <input type="password" name="password" autocomplete="current-password" required></label>
-<p class="status" id="login-status" role="status"></p>
-<div class="row"><button class="key key--primary" type="submit">Log in</button><button class="key key--small" type="button" id="forgot">Forgot password</button></div>
-<p class="note">No account yet? <a href="/signup">Sign up</a>.</p>
-</form>
-<div class="card" id="oauth-box"><h2>Or</h2><div class="row" id="oauth-buttons"><span class="note">Google and GitHub sign-in show here when this server has them switched on.</span></div></div>
+<p class="note">How to send a key, and what changes when: <a href="/keys">API keys</a>. Login with Google or GitHub is planned.</p></div>
 </div>
 {{else if eq .View "account"}}
 <p class="status" id="account-status" role="status">Loading your account…</p>
@@ -199,15 +187,10 @@ const accountForms = `
 <div class="card"><h2>Use</h2><div id="usage"><p class="note">Counted per key and day (India time), by API group.</p></div></div>
 <div class="card"><h2>Account</h2>
 <p id="account-email"></p>
-<form class="form" id="password-form"><label>Current password <input type="password" name="oldPassword" autocomplete="current-password"><small>Leave empty if you signed in with Google or GitHub.</small></label><label>New password <input type="password" name="password" autocomplete="new-password" minlength="10" maxlength="128" required></label><div class="row"><button class="key" type="submit">Change password</button></div></form>
 <div class="row" style="margin-top:var(--space-lg)"><button class="key" type="button" id="logout">Log out</button><button class="key" type="button" id="logout-all">Log out everywhere</button></div>
 <details style="margin-top:var(--space-lg)"><summary>Delete my account</summary><form class="form" id="delete-form"><p>This removes your account, every key and their usage counts at once. It cannot be undone.</p><label>Type your email address to confirm <input name="confirm" autocomplete="off"></label><div class="row"><button class="key key--danger" type="submit">Delete everything</button></div></form></details>
 </div>
 </div>
-{{else if eq .View "reset"}}
-<form class="card form" id="reset-form"><label>New password <input type="password" name="password" autocomplete="new-password" minlength="10" maxlength="128" required></label><p class="status" id="reset-status" role="status"></p><div class="row"><button class="key key--primary" type="submit">Save the new password</button></div></form>
-{{else}}
-<p class="status" id="flow-status" role="status">One moment…</p>
 {{end}}
 </div>`
 

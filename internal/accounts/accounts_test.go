@@ -110,26 +110,19 @@ func TestAccountLifecycle(t *testing.T) {
 	}); status != http.StatusOK {
 		t.Fatalf("signup = %d %v", status, body)
 	}
-	_, auth := call(t, handler, "POST", "/api/collections/users/auth-with-password", "", map[string]any{"identity": email, "password": password})
-	token, _ := auth["token"].(string)
-	if token == "" {
-		t.Fatalf("login gave no token: %v", auth)
+	// Passwords do not log in: the account's password is a random one nobody knows.
+	if status, _ := call(t, handler, "POST", "/api/collections/users/auth-with-password", "", map[string]any{"identity": email, "password": password}); status == http.StatusOK {
+		t.Error("password login works; only codes should")
 	}
-
-	// No key before the address is confirmed.
-	if status, _ := call(t, handler, "POST", "/api/india/keys", token, map[string]any{"name": "app"}); status != http.StatusForbidden {
-		t.Errorf("key before verification = %d, want 403", status)
+	// A wrong code does not log in; the mailed one does, and confirms the address.
+	otpID := requestCode(t, handler, email)
+	code := codeFrom(t, mails.wait(1))
+	if status, _ := call(t, handler, "POST", "/api/collections/users/auth-with-otp", "", map[string]any{"otpId": otpID, "password": "000000"}); status == http.StatusOK && code != "000000" {
+		t.Error("a wrong code logged in")
 	}
-	if status, body := call(t, handler, "POST", "/api/collections/users/request-verification", "", map[string]any{"email": email}); status != http.StatusNoContent {
-		t.Fatalf("request verification = %d %v", status, body)
-	}
-	mail := mails.wait(1)
-	link := regexp.MustCompile(`https://api\.example/account/verify#([A-Za-z0-9_.\-]+)`).FindStringSubmatch(mail)
-	if link == nil {
-		t.Fatalf("the mail does not link to our page: %q", mail)
-	}
-	if status, body := call(t, handler, "POST", "/api/collections/users/confirm-verification", "", map[string]any{"token": link[1]}); status != http.StatusNoContent {
-		t.Fatalf("confirm = %d %v", status, body)
+	token := loginWith(t, handler, otpID, code)
+	if record, _ := app.FindAuthRecordByEmail("users", email); !record.Verified() {
+		t.Error("a code login did not mark the address verified")
 	}
 
 	status, created := call(t, handler, "POST", "/api/india/keys", token, map[string]any{"name": "my app"})
@@ -176,7 +169,8 @@ func TestAccountLifecycle(t *testing.T) {
 	if err := app.Save(record); err != nil {
 		t.Fatal(err)
 	}
-	if status, _ := call(t, handler, "POST", "/api/collections/users/auth-with-password", "", map[string]any{"identity": email, "password": password}); status == http.StatusOK {
+	otpID = requestCode(t, handler, email)
+	if status, _ := call(t, handler, "POST", "/api/collections/users/auth-with-otp", "", map[string]any{"otpId": otpID, "password": codeFrom(t, mails.wait(2))}); status == http.StatusOK {
 		t.Error("a disabled account logged in")
 	}
 	record.Set("disabled", false)
@@ -196,12 +190,47 @@ func TestAccountLifecycle(t *testing.T) {
 	}
 }
 
-func TestPasswordResetMailLinksToOurPage(t *testing.T) {
+// requestCode asks for a login code, as the API's /account/api/code does.
+func requestCode(t *testing.T, handler http.Handler, email string) string {
+	t.Helper()
+	status, body := call(t, handler, "POST", "/api/collections/users/request-otp", "", map[string]any{"email": email})
+	otpID, _ := body["otpId"].(string)
+	if status != http.StatusOK || otpID == "" {
+		t.Fatalf("request code = %d %v", status, body)
+	}
+	return otpID
+}
+
+func codeFrom(t *testing.T, mail string) string {
+	t.Helper()
+	code := regexp.MustCompile(`>(\d{6})<`).FindStringSubmatch(mail)
+	if code == nil {
+		t.Fatalf("no six-digit code in the mail: %q", mail)
+	}
+	return code[1]
+}
+
+func loginWith(t *testing.T, handler http.Handler, otpID, code string) string {
+	t.Helper()
+	_, auth := call(t, handler, "POST", "/api/collections/users/auth-with-otp", "", map[string]any{"otpId": otpID, "password": code})
+	token, _ := auth["token"].(string)
+	if token == "" {
+		t.Fatalf("code login gave no token: %v", auth)
+	}
+	return token
+}
+
+func TestCodeMailAndUnknownAddress(t *testing.T) {
 	handler, _, mails := testAccounts(t)
-	call(t, handler, "POST", "/api/collections/users/records", "", map[string]any{"email": "a@example.com", "password": "long enough pw", "passwordConfirm": "long enough pw"})
-	call(t, handler, "POST", "/api/collections/users/request-password-reset", "", map[string]any{"email": "a@example.com"})
-	if mail := mails.wait(1); !strings.Contains(mail, "https://api.example/account/reset#") {
-		t.Fatalf("reset mail: %q", mail)
+	// An address with no account gets an id back (so nobody can tell who has one) and no mail.
+	requestCode(t, handler, "nobody@example.com")
+	if mail := mails.wait(1); mail != "" {
+		t.Errorf("mail sent to an address with no account: %q", mail)
+	}
+	call(t, handler, "POST", "/api/collections/users/records", "", map[string]any{"email": "a@example.com", "password": "random long enough", "passwordConfirm": "random long enough"})
+	requestCode(t, handler, "a@example.com")
+	if mail := mails.wait(1); !strings.Contains(mail, "India API login code") || !strings.Contains(mail, "10 minutes") {
+		t.Fatalf("code mail: %q", mail)
 	}
 }
 
