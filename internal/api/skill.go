@@ -18,7 +18,7 @@ import (
 // committed copies differ from what this code makes, and rewrites them with -update.
 // They depend on nothing a server holds, so every server makes the same files.
 
-const skillDescription = "Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE, brand, global stock and crypto logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois (RDAP), TLS certificate and website speed checks from India, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed."
+const skillDescription = "Indian reference data from the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, holidays and working days, RTO vehicle codes, NSE and BSE, brand, global stock and crypto logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), money calculators (SIP, EMI, GST, income tax), batch lookups, transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, embeddings and reranking, whois, TLS and website speed checks, and more. Use when an app needs Indian data, Indian-language AI or document tools, or the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle code, listed company, income tax or EMI. No API key needed for most endpoints."
 
 const mit0 = `MIT No Attribution
 
@@ -111,7 +111,7 @@ func repoFiles() map[string][]byte {
 		files["skills/"+mcpName+"/"+name] = body
 		files["plugins/"+mcpName+"/skills/"+mcpName+"/"+name] = body
 	}
-	pluginDescription := "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR and more). Free, no key."
+	pluginDescription := "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR, calculators and more). Free; no key needed for most."
 	files["plugins/"+mcpName+"/README.md"] = renderMarkdown("plugin-readme", map[string]any{
 		"Count": len(catalog), "Origin": publicOrigin, "Repo": repoSlug, "RepoURL": repoURL, "Name": mcpName, "Market": marketName,
 	})

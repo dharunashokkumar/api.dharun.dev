@@ -211,3 +211,58 @@ other routes. Private routes stay as they are: the input is never logged.
 6. What the log holds about a key.
 7. Sandbox design: it assumed GitHub login and Turnstile; update `docs/sandbox-design.md`
    to use these accounts.
+
+## Build status (2026-11-11)
+
+Built, tested and committed; **not pushed** (Dharun: commit only). Dharun's answers of
+2026-11-11 to the open questions: any SMTP service set in the environment; the
+self-hosted ALTCHA-style proof of work (not Turnstile); the numbers in section 5 as
+proposed, 30 days' notice; no publishable browser keys yet; every model route needs a
+key (denoise, moderation, Roman typing and `names=true` included); the key's id in the
+log on key routes only.
+
+- [x] `cmd/accounts` and `internal/accounts`: PocketBase **v0.39.11** (v0.40.x needs Go
+      1.27, so not yet), users with `disabled` and `tier`, `api_keys` (hash, hint,
+      revoked, cascade delete), at most 3 keys, verified email first, our mail templates,
+      settings from the environment, PocketBase's request log and rate limiter off.
+      Tested against a real PocketBase in a temporary directory (`accounts_test.go`):
+      signup, verification mail, login, keys, revoke, disable, delete, reset mail.
+- [x] `internal/apikey`: `india_live_` + 32 base62 + 6-character checksum; the table
+      query is shared and tested against the real database.
+- [x] API side (`keys.go`, `account.go`): key table reloaded every 15 s, direct lookup
+      with a one-minute memory of misses; `Authorization: Bearer` or `X-API-Key`;
+      keyed allowance; `RateLimit-*` headers everywhere; key gate with quota, one at a
+      time per key, notice header, 401 after `KEY_REQUIRED_FROM`; site tokens; usage in
+      `STATE_DIR/key-usage.json`; pass-through allow-list; signup with proof of work,
+      disposable check and daily cap; usage address for the account page.
+- [x] Catalog `Key` mark, generated into the pages, OpenAPI (`security`,
+      `x-key-required`), `/v1`, skill, plugin and MCP; MCP tool calls carry the key.
+- [x] Pages: `/signup`, `/login`, `/account`, `/account/verify`, `/account/reset`,
+      `/account/oauth`, `/keys`; privacy and security pages; FAQ.
+- [x] The accounts binary is in the release bundle and in NOTICES.
+- [ ] **Infrastructure request (section 12)**: nothing works on the server until it is done.
+- [ ] Set `KEY_REQUIRED_FROM` (at least 30 days after keys are live) and announce it
+      on `/changelog`.
+- [ ] `internal/deploytest` and the install test for the second unit (comes with the
+      `deploy/` change on the homelab side).
+- [ ] A low-quota key in a repository secret for the production check once the date is set.
+- [ ] Sandbox design (`docs/sandbox-design.md`) to be re-read with these accounts (Part 9).
+
+## 12. Infrastructure request (written 2026-11-11, for the homelab side)
+
+To be copied into the private homelab repository; no addresses here.
+
+1. A second unit `dharun-api-accounts.service` running `/opt/dharun-api/current/accounts`
+   as the service user, `ACCOUNTS_DIR=/var/lib/dharun-api/state/accounts`,
+   `ACCOUNTS_ADDR=127.0.0.1:8091`, restarted with the API after an update. A deploy must
+   never touch `ACCOUNTS_DIR`.
+2. Its env file: `PUBLIC_ORIGIN`, `SMTP_*`, `MAIL_FROM` (an address at dharun.dev with
+   SPF and DKIM), `GOOGLE_CLIENT_*`, `GITHUB_CLIENT_*` (OAuth redirect URL
+   `https://api.dharun.dev/account/oauth`).
+3. In the API's env file: `ACCOUNTS_DB=/var/lib/dharun-api/state/accounts/data.db`,
+   `ACCOUNTS_URL=http://127.0.0.1:8091`, `SITE_SECRET` (32 random bytes), later
+   `KEY_REQUIRED_FROM`. See `deploy/dharun-api.env.example`.
+4. A daily backup of `ACCOUNTS_DIR` (PocketBase's `accounts superuser` and backup
+   commands, or a file copy with the unit stopped), and one restore tried.
+5. A superuser for the admin screen, reached only through an SSH tunnel to port 8091.
+6. Memory: about 30 MB more.

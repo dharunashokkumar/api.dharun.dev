@@ -20,6 +20,7 @@ file, so the next one starts from what is true now. Newest first.
 
 | Date | Part | Done | Next |
 |---|---|---|---|
+| 2026-11-11 | 2, 3, 4 | **Built, tested, committed; not pushed** (Dharun: commit only). Part 2: accounts on PocketBase v0.39.11 (`cmd/accounts`), keys (`india_live_...`), keyed limits and `RateLimit-*` headers, the key gate with quota, notice header and 401 after `KEY_REQUIRED_FROM`, site tokens, account pages, `/keys`, privacy. Part 3: try-it panel on every endpoint, `/play` with chains and simulate, ten tool pages, logo pages, four demos, `/changelog`. Part 4: `/v1/batch`, `/v1/holidays/{year}.ics`, `/v1/today`, ten calculators, avatars, placeholders, charts. Details and what is left: the "Build status" section at the end of 03, 04 and 05 | Push when Dharun says. Then the infrastructure request in 03 section 12 (accounts do nothing on the server until then), and set `KEY_REQUIRED_FROM`. Check the 2026-27 income tax rules. Then Part 5 or 6 (sources to agree first), or the rest of Part 3 |
 | 2026-11-11 | 1 | **Part 1 done**, except what Dharun moved: never fail, missed names, the three sets (`/v1/brand-logos` 294 brands, `/v1/stock-logos` 8,799 stocks, `/v1/asset-logos` 1,586 coins, indices, ETFs, commodities) with search addresses, the `find_logo` MCP tool, fall-through from `/v1/logos` with `X-Logo-Set`, cached logo answers free of the rate limit. Collectors: `tools/scrape_world_logos.py`, `tools/fetch_brand_logos.py`. All descriptions, README, roadmap, `CLAUDE.md` updated; `go test ./...` passes, also with `RESVG` | Not done by decision: the Cloudflare cache rule (Dharun: not now) and logo pages (moved to Part 3). After the release: run `apidata missed-logos` on the server after a few days and add the names that matter. Next part: 2 (accounts and keys) |
 | 2026-11-11 | 0 | Panchang 500s explained without the logs: the crossing-search bug fixed in da07127 (released in v1.1.38 on 10 Nov). A regression test (`TestCrossingWrapRegressions`) holds the failing cases. MCP 405s: correct per the MCP spec, no change | The missed-ticker list from the logs is still open: Loki does not answer from the laptop. The API now keeps its own list (Part 1 section 4), so after a few days `apidata missed-logos` on the server gives the same answer |
 
@@ -79,20 +80,11 @@ Parts 4 to 6 can swap or interleave. Parts 7 to 9 depend on Part 2 (keys).
 Collected from the part files, most urgent first.
 
 1. ~~**Logos:** fall-through~~ Answered 2026-11-11: yes, in the fixed order. (02)
-2. **Keys in the browser:** an `<img>` tag cannot send a header. Do logo-heavy web apps
-   get a second kind of key that is safe to publish (limited to named sites), or do they
-   rely on caching? (03, section 6)
-3. **Tool pages against decision 10:** free tools such as "image to text" call endpoints
-   that will need a key. Proposed: the site hands a visitor a short-lived token with a
-   small daily allowance. Agree or not? (04, section 3)
-4. **Mail service** for verification and reset mails, and the **bot check** on signup
-   (Cloudflare Turnstile, or a self-hosted proof-of-work check that loads nothing from
-   another host). (03, sections 3 and 4)
-5. **The numbers:** keyless and keyed allowances, daily quotas for model endpoints, and
-   the length of the notice period (proposed: 30 days). (03, section 5)
-6. **What the log may hold about a key**: proposed, the key's id on key-required routes
-   only, for abuse handling, stated on the privacy page. (03, section 7)
-7. **Programmatic pages** (one page per company logo, per bank, per holiday year): start
-   with company logo pages only, then decide from Search Console? (04, section 5)
+2. ~~Keys in the browser~~ Answered 2026-11-11: start without publishable keys. (03)
+3. ~~Tool pages against decision 10~~ Answered 2026-11-11: yes, a short-lived site token, 10 a day. (04)
+4. ~~Mail service and bot check~~ Answered 2026-11-11: any SMTP in the environment; self-hosted proof of work. (03)
+5. ~~The numbers~~ Answered 2026-11-11: as proposed; 30 days' notice. The date itself is still to be set. (03)
+6. ~~What the log may hold about a key~~ Answered 2026-11-11: the key's id on key routes only. (03)
+7. ~~Programmatic pages~~ Answered 2026-11-11: company logo pages now. (04)
 8. **Which ideas from the catalogue** go into Parts 4, 5 and 6. Each carries a
    recommendation; Dharun marks the ones he wants. (05)

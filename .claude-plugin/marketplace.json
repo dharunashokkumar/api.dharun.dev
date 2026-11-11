@@ -8,7 +8,7 @@
   "plugins": [
     {
       "category": "development",
-      "description": "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR and more). Free, no key.",
+      "description": "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR, calculators and more). Free; no key needed for most.",
       "keywords": [
         "india",
         "pincode",

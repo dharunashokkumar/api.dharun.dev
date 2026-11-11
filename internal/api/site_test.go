@@ -42,7 +42,8 @@ func TestSitePages(t *testing.T) {
 			t.Errorf("%s: %s", entry.Path, clip(body[strings.Index(body, "error"):], 300))
 		}
 		// Nothing is loaded from elsewhere: no scripts, styles or fonts from other hosts.
-		if regexp.MustCompile(`<script[^>]+src=|<link[^>]+rel="stylesheet"|@import|fonts\.googleapis`).MatchString(body) {
+		// The interactive pages load their own scripts from /assets/ on this server.
+		if regexp.MustCompile(`<script[^>]+src="(?:https?:)?//|<script[^>]+src="[^/]|<link[^>]+rel="stylesheet"|@import|fonts\.googleapis`).MatchString(body) {
 			t.Errorf("%s loads something from elsewhere", entry.Path)
 		}
 		match := jsonLD.FindStringSubmatch(body)

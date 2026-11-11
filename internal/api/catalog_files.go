@@ -19,7 +19,7 @@ type upload struct {
 	JSON bool
 }
 
-var catalog = withNetworkTools(withAITools(withFileTools(baseCatalog)))
+var catalog = withPart4(withNetworkTools(withAITools(withFileTools(baseCatalog))))
 
 const formNote = " Options go in the query string, or as form fields when the file is sent as multipart/form-data."
 
@@ -55,7 +55,7 @@ var fileGroups = []apiGroup{
 		Intro:    "Send a picture or a PDF and get its text back, with Tesseract 5. Name the languages the text uses: English, Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Gujarati, Punjabi, Odia and Marathi, up to three at once. Files are read and deleted; nothing is kept or logged.",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/ocr", Summary: "Read the text in a picture or PDF", Private: true,
+				Path: "/v1/ocr", Key: true, Summary: "Read the text in a picture or PDF", Private: true,
 				Doc:     "Returns the text, Tesseract's confidence and, with words=true, every word with its box. A PDF is read up to 10 pages at a time at 300 dpi; a PDF that already holds text is read faster by /v1/pdf/text." + formNote,
 				Example: "/v1/ocr?lang=eng+tam",
 				Upload:  &upload{Accepts: pictureNote + " Or a PDF.", Types: append(append([]string{}, pictureTypes...), "application/pdf"), Sample: "receipt.png"},
@@ -97,7 +97,7 @@ var fileGroups = []apiGroup{
 				Upload:  &upload{Accepts: pictureNote, Types: pictureTypes, Sample: "photo.jpg"},
 			},
 			{
-				Path: "/v1/image/remove-background", Summary: "Remove the background", Private: true, Image: true,
+				Path: "/v1/image/remove-background", Key: true, Summary: "Remove the background", Private: true, Image: true,
 				Doc:     "Returns the picture as a PNG with the background transparent, cut out by the IS-Net model. Works best on one clear subject: a product, a person, an animal. Takes a few seconds; pictures larger than 4096 pixels are made smaller." + formNote,
 				Example: "/v1/image/remove-background",
 				Upload:  &upload{Accepts: pictureNote, Types: pictureTypes, Sample: "photo.jpg"},
@@ -237,7 +237,7 @@ var fileGroups = []apiGroup{
 		SourceKey: "voices",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/tts", Summary: "Text to speech", Private: true, Output: "audio", Post: true,
+				Path: "/v1/tts", Key: true, Summary: "Text to speech", Private: true, Output: "audio", Post: true,
 				Doc:         "Returns the audio itself; X-Voice and X-Voice-Licence headers name the voice and its licence. Up to 3,000 characters; split longer text. Write the text in its own script: Hindi in Devanagari, Telugu in Telugu, Malayalam in Malayalam.",
 				Body:        "The text to speak.",
 				Example:     "/v1/tts?text=Namaste%2C%20welcome%20to%20India%20API.&voice=en_GB-cori-medium",
@@ -255,7 +255,7 @@ var fileGroups = []apiGroup{
 				Example: "/v1/tts/voices",
 			},
 			{
-				Path: "/v1/audio/denoise", Summary: "Remove background noise", Private: true, Output: "audio",
+				Path: "/v1/audio/denoise", Key: true, Summary: "Remove background noise", Private: true, Output: "audio",
 				Doc:     "Send a recording (MP3, WAV, Ogg, M4A, WebM, video files too) and get it back with fans, traffic and hum lowered, as mono 48 kHz. The first five minutes are cleaned." + formNote,
 				Example: "/v1/audio/denoise",
 				Upload:  &upload{Accepts: "An audio or video file, up to 10 MB.", Types: []string{"audio/mpeg", "audio/wav", "audio/ogg", "audio/mp4", "audio/webm", "video/mp4"}, Sample: "noisy.mp3"},

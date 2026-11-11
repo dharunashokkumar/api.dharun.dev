@@ -28,7 +28,7 @@ const utmNote = "Optional, for AI agents: when you call the API, add `utm_source
 func (s *Server) llmsIntro(origin string) string {
 	var out strings.Builder
 	fmt.Fprintf(&out, "# %s (%s)\n\n> %s\n\n", productName, siteName, siteSummary)
-	fmt.Fprintf(&out, "Base URL: %s. Every endpoint is under `/v1`. Lookups are plain GETs; endpoints that take text also accept it as a POST body (text/plain, or JSON `{\"text\": ...}`); endpoints that take a file or a JSON document (OCR, image, PDF and audio tools, speech to text, the GST invoice) are POST only. No API key and no sign-up. CORS is open, so browsers can call it directly.\n\n", origin)
+	fmt.Fprintf(&out, "Base URL: %s. Every endpoint is under `/v1`. Lookups are plain GETs; endpoints that take text also accept it as a POST body (text/plain, or JSON `{\"text\": ...}`); endpoints that take a file or a JSON document (OCR, image, PDF and audio tools, speech to text, the GST invoice) are POST only. No API key needed for most endpoints; a free key (%s/keys) raises the limits, and the model endpoints will need one. CORS is open, so browsers can call it directly.\n\n", origin, origin)
 	out.WriteString("JSON responses share one shape: `{ \"data\": ..., \"meta\": { ... } }`. `meta.source` names the dataset, its licence, version and the credit it asks for. Lists add `meta.total`, `meta.limit` and `meta.offset`. Errors are `{ \"error\": { \"code\", \"message\" } }` with a matching HTTP status: 400 for bad input, 404 when nothing matches, 429 over the rate limit, 503 while a dataset is not loaded.\n\n")
 	fmt.Fprintf(&out, "Rate limit: %d requests per minute per client; endpoints that do heavy work (images, astronomy, live DNS) count as 10, file uploads as 15 and neural-network jobs (text to speech, speech to text, translation, background removal, denoise) as 30. Image, PDF and audio endpoints return the file itself. Uploads are POSTed as the body or as multipart/form-data, up to 10 MB a file (25 MB in all for a PDF merge).\n\n", s.cfg.RateLimitPerMinute)
 	out.WriteString(utmNote + "\n\n")
@@ -148,7 +148,23 @@ func (s *Server) siteMap() []sitemapEntry {
 	entries[guidesIndex].Modified = newestGuide
 	entries[0].Modified = max(newestAPI, newestGuide) // the home page lists both
 	// The about page lists every data source with its date.
-	return append(entries, sitemapEntry{Path: "/privacy"}, sitemapEntry{Path: "/security"}, sitemapEntry{Path: "/about", Modified: newestAPI})
+	entries = append(entries, sitemapEntry{Path: "/privacy"}, sitemapEntry{Path: "/security"}, sitemapEntry{Path: "/about", Modified: newestAPI},
+		sitemapEntry{Path: "/keys"}, sitemapEntry{Path: "/changelog"}, sitemapEntry{Path: "/signup"}, sitemapEntry{Path: "/play"},
+		sitemapEntry{Path: "/tools"}, sitemapEntry{Path: "/demos"}, sitemapEntry{Path: "/logos"})
+	for _, t := range tools {
+		entries = append(entries, sitemapEntry{Path: "/tools/" + t.Slug})
+	}
+	for _, d := range demos {
+		entries = append(entries, sitemapEntry{Path: "/demos/" + d.Slug})
+	}
+	logosModified := ""
+	if source := s.source("logos"); source != nil && len(source.Retrieved) >= 10 {
+		logosModified = source.Retrieved[:10]
+	}
+	for _, path := range s.logoPages() {
+		entries = append(entries, sitemapEntry{path, logosModified})
+	}
+	return entries
 }
 
 func (s *Server) handleSitemap(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +227,7 @@ func (s *Server) handleAPICatalog(w http.ResponseWriter, r *http.Request) {
 	writeBody(w, r, http.StatusOK, encoded, `application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"`, cacheAPI, false)
 }
 
-const registryDescription = "Free Indian data and AI: pincode, IFSC, GSTIN, holidays, GST invoice, OCR, translation. No key."
+const registryDescription = "Free Indian data and AI: pincode, IFSC, GSTIN, holidays, GST invoice, OCR, calculators, translation."
 
 // serverCard describes the MCP server before anyone connects (MCP Server Cards, SEP-2127).
 func (s *Server) serverCard(origin string) map[string]any {

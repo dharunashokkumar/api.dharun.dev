@@ -4,7 +4,7 @@
 
 Computed, not looked up, from the positions of the Sun and the Moon (within seconds of NASA JPL Horizons), with the Lahiri ayanamsa. Gives the five elements with the moments they change, sunrise, sunset, moonrise and moonset, Rahu kalam, Yamagandam, Gulika kalam and Abhijit muhurta, the Tamil month and day, the lunar month both ways it is reckoned, and the Shaka and Vikram years. Names come in English transliteration and, where the Tamil calendar has its own, in Tamil. Festival dates are not given. Counts as 10 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Panchang for a date
 

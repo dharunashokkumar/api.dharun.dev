@@ -4,7 +4,7 @@
 
 Upload a picture and get it back resized or in another format (WebP, AVIF, JPEG, PNG), with its background removed, or as a fingerprint for finding duplicates. HEIC photos from iPhones are read too. Metadata such as the GPS position is always removed. Pictures are processed and deleted; nothing is kept or logged.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Resize and convert a picture
 
@@ -45,6 +45,8 @@ Example: `POST` https://api.dharun.dev/v1/image/info?utm_medium=skill
 Returns the picture as a PNG with the background transparent, cut out by the IS-Net model. Works best on one clear subject: a product, a person, an animal. Takes a few seconds; pictures larger than 4096 pixels are made smaller. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
 
 Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/photo.jpg
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
 
 What you send is never written to the log, and the answer is not cached.
 

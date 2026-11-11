@@ -96,6 +96,12 @@ func (s *Server) handleRedact(w http.ResponseWriter, r *http.Request) {
 	switch strings.ToLower(strings.TrimSpace(in.option(r, "names"))) {
 	case "", "false":
 	case "true":
+		// Finding names runs a model, so it needs a key like the other model endpoints.
+		release, ok := s.keyGate(w, r)
+		if !ok {
+			return
+		}
+		defer release()
 		if utf8.RuneCountInString(in.Text) > redactNamesMaxChars {
 			s.badRequest(w, r, "With names=true the text may be at most 20,000 characters.")
 			return

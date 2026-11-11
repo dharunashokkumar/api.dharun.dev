@@ -58,9 +58,12 @@ type endpoint struct {
 	// Upload marks an endpoint that takes only POST, with a file (or a JSON document) as
 	// its body. Example is then the address the sample is posted to.
 	Upload *upload
-	// Output names what an endpoint returns when it is not JSON and not an image: "pdf"
-	// or "audio".
+	// Output names what an endpoint returns when it is not JSON and not an image: "pdf",
+	// "audio" or "calendar".
 	Output string
+	// Key marks an endpoint that will need a free API key (keys.go): a model endpoint.
+	// Until KEY_REQUIRED_FROM it answers without one, with a notice header.
+	Key bool
 }
 
 // privatePaths holds the paths of the endpoints marked Private. handle reads it when a
@@ -315,6 +318,17 @@ var baseCatalog = []apiGroup{
 				Params: []param{
 					{Name: "year", In: "path", Type: "integer", Required: true, Doc: "Four-digit year."},
 					{Name: "type", In: "query", Type: "string", Enum: holidayTypeNames(), Doc: "Kind of holiday. clearing days are ones on which the market trades but nothing settles."},
+					stateFilter,
+					{Name: "month", In: "query", Type: "integer", Doc: "Month number, 1 to 12."},
+				},
+			},
+			{
+				Path: "/v1/holidays/{year}.ics", Summary: "Holidays as a calendar to subscribe to", Output: "calendar",
+				Doc:     "The same list as an iCalendar feed (RFC 5545): one all-day event per holiday. Add the address to Google Calendar (Other calendars, From URL), Outlook or a phone, and holidays added later appear by themselves. The same filters as the JSON list.",
+				Example: "/v1/holidays/2026.ics?type=bank&state=TN",
+				Params: []param{
+					{Name: "year", In: "path", Type: "integer", Required: true, Doc: "Four-digit year, followed by .ics."},
+					{Name: "type", In: "query", Type: "string", Enum: holidayTypeNames(), Doc: "Kind of holiday."},
 					stateFilter,
 					{Name: "month", In: "query", Type: "integer", Doc: "Month number, 1 to 12."},
 				},

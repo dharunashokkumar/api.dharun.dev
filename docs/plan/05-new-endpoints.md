@@ -150,3 +150,23 @@ Part 5: index constituents, IPO calendar, mutual fund history and returns, gold 
 silver rates.
 Part 6: Places of India, festivals, old law to new law, mandi prices.
 Alongside: link preview data, request bin, search over your own documents, MCP tool sets.
+
+## Build status (2026-11-11)
+
+Part 4 (set A, the recommended picks) built, tested and committed, not pushed. Dharun
+chose all the calculators, income tax included.
+
+- [x] Batch lookups `POST /v1/batch` (14 kinds, up to 1,000, ten per unit, `format=ndjson`).
+- [x] Calendar feeds `/v1/holidays/{year}.ics` (bank, market, central; state filter).
+      Festivals are not in it: there is no festival list yet (set C).
+- [x] Today in India `/v1/today`.
+- [x] Money calculators `/v1/calc/...` (`internal/calc`, with tests against known
+      figures): SIP, lump sum, EMI, GST, income tax 2025-26 and 2026-27, HRA, gratuity,
+      PPF, capital gains, trade charges. **Check before release:** the 2026-27 income tax
+      rules are taken as unchanged from 2025-26, and the F&O STT changes are not modelled
+      (equity delivery and intraday only).
+- [x] Avatars, placeholders, chart images.
+- [x] MCP tools: `calculate_indian_money`, `today_in_india`, `batch_lookup`, `make_chart_image`.
+- [ ] Number formatting, Indian date tools, UPI handle lookup, QR parse, badges, address
+      reader, company cross-search (the rest of set A).
+- [ ] Sets B, C, D, E: each data source to be agreed with Dharun first (Parts 5 and 6).

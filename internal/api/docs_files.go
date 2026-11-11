@@ -32,6 +32,8 @@ func (e endpoint) Kind() string {
 		return "PDF"
 	case e.Output == "audio":
 		return "audio"
+	case e.Output == "calendar":
+		return "calendar"
 	case e.Image:
 		return "image"
 	}
@@ -45,6 +47,8 @@ func (e endpoint) Returns() string {
 		return "returns the PDF itself"
 	case e.Output == "audio":
 		return "returns the audio itself"
+	case e.Output == "calendar":
+		return "returns an iCalendar file (text/calendar) to subscribe to"
 	case e.Image:
 		return "returns the image itself"
 	}
@@ -79,6 +83,8 @@ func outputName(e endpoint, address string) string {
 			return "clean." + format
 		}
 		return "speech." + format
+	case e.Output == "calendar":
+		return "holidays.ics"
 	case format != "":
 		if format == "jpeg" {
 			format = "jpg"
@@ -160,6 +166,8 @@ func outputTypes(e endpoint) map[string]any {
 		}
 	case e.Output == "audio":
 		types = []string{"audio/mpeg", "audio/ogg", "audio/wav"}
+	case e.Output == "calendar":
+		types = []string{"text/calendar"}
 	case e.Image && e.Upload != nil:
 		types = []string{"image/png", "image/webp", "image/jpeg", "image/avif", "image/gif", "image/tiff"}
 	default:

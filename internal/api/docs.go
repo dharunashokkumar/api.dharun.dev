@@ -39,6 +39,8 @@ func (s *Server) registerRoutes() {
 	s.registerSite()
 
 	s.registerMore()
+	s.registerAccounts()
+	s.registerPart4()
 	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 
@@ -68,6 +70,8 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 		Returns string   `json:"returns"`
 		Summary string   `json:"summary"`
 		Example string   `json:"example"`
+		// Key marks an endpoint that will need a free API key.
+		Key bool `json:"key,omitempty"`
 	}
 	type groupView struct {
 		ID        string         `json:"id"`
@@ -89,7 +93,7 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 			if returns == "" {
 				returns = "json"
 			}
-			view.Endpoints = append(view.Endpoints, endpointView{Path: e.Path, Methods: methods, Returns: returns, Summary: e.Summary, Example: traffic.Tag(origin+e.Example, "index")})
+			view.Endpoints = append(view.Endpoints, endpointView{Path: e.Path, Methods: methods, Returns: returns, Summary: e.Summary, Example: traffic.Tag(origin+e.Example, "index"), Key: e.Key})
 		}
 		groups = append(groups, view)
 	}
@@ -141,14 +145,23 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 				}
 				errorResponse := map[string]any{"$ref": "#/components/responses/Error"}
 				operation := func(method string) map[string]any {
-					return map[string]any{
+					op := map[string]any{
 						"operationId": operationID(e.Path) + method,
 						"tags":        []string{group.Title},
 						"summary":     e.Summary,
 						"description": e.Doc,
 						"parameters":  parameters,
-						"responses":   map[string]any{"200": success, "400": errorResponse, "404": errorResponse, "429": errorResponse},
+						"responses":   map[string]any{"200": success, "400": errorResponse, "401": errorResponse, "404": errorResponse, "429": errorResponse},
+						// A key is optional everywhere: it raises the limits.
+						"security": []any{map[string]any{}, map[string]any{"bearerKey": []string{}}, map[string]any{"headerKey": []string{}}},
 					}
+					if e.Key {
+						// Until the notice date a key-less call still works, so the empty
+						// requirement stays; x-key-required says where this is heading.
+						op["x-key-required"] = true
+						op["description"] = e.Doc + " Model endpoint: it will need a free API key from the date on " + origin + "/keys; until then a keyless call works and carries an X-Key-Notice header."
+					}
+					return op
 				}
 				if e.Upload != nil {
 					post := operation("")
@@ -213,6 +226,10 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 			"servers":      []any{map[string]any{"url": origin}},
 			"paths":        paths,
 			"components": map[string]any{
+				"securitySchemes": map[string]any{
+					"bearerKey": map[string]any{"type": "http", "scheme": "bearer", "description": "A free API key from " + origin + "/signup, as Authorization: Bearer india_live_..."},
+					"headerKey": map[string]any{"type": "apiKey", "in": "header", "name": "X-API-Key", "description": "The same key in the X-API-Key header."},
+				},
 				"schemas": map[string]any{
 					"Envelope": map[string]any{
 						"type":     "object",

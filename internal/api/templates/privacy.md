@@ -19,13 +19,21 @@ When a company logo is asked for by a name that matches no company, that name is
 - **Request bodies.** Text you POST to an endpoint is processed in memory and dropped once the answer is sent. Only a body sent to an address this API does not have is read, to see whether it is an attack, as described above. Translation, moderation, name detection, embeddings and the other AI models run on this server; your text is not sent to any other service or used to train anything.
 - **Files you upload.** Pictures, PDFs, recordings and invoices are held in memory, or in a temporary folder only this service can read, while the answer is made, and deleted as soon as it is sent. They are never kept, never used to train anything, and never sent to another service: OCR, image, PDF, speech, speech recognition and noise removal programs all run on this server. When a program fails on a file, the log records only which program failed, not what it was given.
 
+## Accounts and API keys
+
+An account is optional: most endpoints need none. If you make one, it holds your email address, a password hash (when you sign up with a password), the Google or GitHub account id (when you sign in with one), the SHA-256 hashes of your keys (never the keys themselves), their names and creation dates, and how many requests each key made per day and API group. The usage counts are kept by the API on the server, not in the request log. On the endpoints that need a key, the log line holds the key's id (never the key), so that abuse can be traced to an account and stopped; on every other endpoint nothing about keys is logged. The account system (PocketBase) keeps no request log of its own and never sees your IP address.
+
+Signing up runs a short proof-of-work check in your browser (it works out a small sum, nothing is loaded from another site), and the number of signups per address per day is counted in memory, by a keyed hash of the address. Throwaway email domains are refused.
+
+Delete your account on the account page: the account, its keys and their usage counts go at once.
+
 ## Cookies and tracking
 
-None. The site sets no cookies and loads no analytics, advertising or third-party scripts. The documentation remembers which code language you picked in your own browser's storage; it is never sent anywhere.
+None. The site sets no cookies and loads no analytics, advertising or third-party scripts. Your own browser's storage keeps what you choose there, and none of it is sent anywhere unless you send a request with it: which code language you picked in the documentation, the login token and the key you made (on the account page, so the playground and try-it panels can use it), your last playground requests (never those to private endpoints), and for an hour the token the free tool pages use.
 
 ## Others who see requests
 
-Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. The DNS check, the email check and the IPv6 check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give. The TLS check, the HTTP probe and website icons connect to the site you name and fetch from it, with a user agent that names this API; the site sees a request from this server, not from you. Whois sends the domain, address or AS number you ask about to the registry that holds it (for example NIXI for .in, APNIC for Indian IP addresses). A whois lookup of an IP address is not logged.
+Requests pass through Cloudflare, which protects the site and sees them on the way, under its own privacy policy. If you make an account, the mail service that delivers the confirmation and password reset mails receives your email address and that mail. If you sign in with Google or GitHub, they learn that you signed in here and give us your email address and account id. The DNS check, the email check and the IPv6 check send the domain you give to public DNS resolvers, and the traceroute sends probes along the network path to the host you give. The TLS check, the HTTP probe and website icons connect to the site you name and fetch from it, with a user agent that names this API; the site sees a request from this server, not from you. Whois sends the domain, address or AS number you ask about to the registry that holds it (for example NIXI for .in, APNIC for Indian IP addresses). A whois lookup of an IP address is not logged.
 
 ## The data in answers
 

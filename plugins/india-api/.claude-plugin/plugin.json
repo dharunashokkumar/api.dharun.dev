@@ -3,7 +3,7 @@
     "name": "Dharun Ashokkumar",
     "url": "https://dharun.dev"
   },
-  "description": "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR and more). Free, no key.",
+  "description": "Indian reference data for Claude Code: the India API skill plus its MCP server (pincodes, IFSC, GSTIN and PAN checks, holidays, RTO codes, logos, UPI QR, calculators and more). Free; no key needed for most.",
   "displayName": "India API",
   "documentationUrl": "https://api.dharun.dev/docs",
   "homepage": "https://api.dharun.dev/ai",
@@ -30,5 +30,5 @@
   "privacyPolicyUrl": "https://api.dharun.dev/privacy",
   "repository": "https://github.com/dharunashokkumar/api.dharun.dev",
   "supportUrl": "https://github.com/dharunashokkumar/api.dharun.dev/issues",
-  "version": "1.0.0-8d89dcc985f4"
+  "version": "1.0.0-bbbc9e09c61e"
 }

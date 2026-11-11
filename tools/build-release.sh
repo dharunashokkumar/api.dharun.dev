@@ -40,11 +40,13 @@ fi
 tools="${TOOLS:-$PWD/dist/tools}"
 bash tools/fetch-tools.sh "$tools"
 
-# The data tool runs here to build the seeds; both binaries are built for the server.
+# The data tool runs here to build the seeds; the binaries are built for the server.
 go run ./cmd/apidata build -strict -resvg "$resvg" -out "$stage/seed"
 ldflags="-s -w -X main.version=$version"
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/api" ./cmd/api
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/apidata" ./cmd/apidata
+# The account system (PocketBase); it runs as its own unit once the server has one.
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$ldflags" -o "$stage/accounts" ./cmd/accounts
 install -m 755 "$resvg" "$stage/resvg"
 for program in typst deep-filter onnx-run; do
   install -m 755 "$tools/$program" "$stage/$program"

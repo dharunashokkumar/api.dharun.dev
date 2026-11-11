@@ -36,7 +36,7 @@ func withAITools(base []apiGroup) []apiGroup {
 				}
 			}
 			endpoints = append(endpoints, endpoint{
-				Path: "/v1/text/moderate", Summary: "Score text for abuse, Hinglish and Tanglish included", Post: true, Private: true,
+				Path: "/v1/text/moderate", Key: true, Summary: "Score text for abuse, Hinglish and Tanglish included", Post: true, Private: true,
 				Doc: "Three classifiers each score the text from 0 to 1: a general multilingual one (toxic), one for Hindi typed in Roman letters (profanity, harassment, hate_speech, caste, communal, regional, misogyny) and one for Tamil typed in Roman letters (offensive). " +
 					"flagged says whether any score reached the threshold. Up to 4,000 characters; the first 256 tokens are read. Scores are a model's guess: use them to sort or to ask a person, not to decide alone.",
 				Body:        "The text.",
@@ -54,7 +54,7 @@ func withAITools(base []apiGroup) []apiGroup {
 			group.Intro = strings.Replace(group.Intro, "Casual Roman typing (vanakkam) cannot be converted by rule and is not accepted as input.",
 				"Casual Roman typing (vanakkam) cannot be converted by rule: /v1/transliterate/suggest guesses it with a model, as phone keyboards do.", 1)
 			endpoints = append(endpoints, endpoint{
-				Path: "/v1/transliterate/suggest", Summary: "Roman typing to an Indian script (type English, get Tamil)", Post: true, Private: true,
+				Path: "/v1/transliterate/suggest", Key: true, Summary: "Roman typing to an Indian script (type English, get Tamil)", Post: true, Private: true,
 				Doc: "Guesses how words typed in Roman letters are written in an Indian script with IndicXlit (AI4Bharat), giving up to eight suggestions per word, best first, and the text with the best guess for each word. " +
 					"21 languages. Up to 60 words; anything that is not Roman letters is kept as it is.",
 				Body:        "The text in Roman letters.",
@@ -73,7 +73,7 @@ func withAITools(base []apiGroup) []apiGroup {
 			group.Intro = "Turn a recording into text (and subtitles) with Whisper, turn text into natural speech with Piper voices, or clean background noise from a recording with DeepFilterNet. " +
 				"Each voice keeps the licence of the recordings it learnt from: /v1/tts/voices lists them, and two Hindi voices are for non-commercial use only. There is no Tamil, Kannada, Bengali, Gujarati or Marathi voice yet. Nothing you send is kept or logged."
 			endpoints = append([]endpoint{{
-				Path: "/v1/stt", Summary: "Speech to text, with subtitles", Private: true,
+				Path: "/v1/stt", Key: true, Summary: "Speech to text, with subtitles", Private: true,
 				Doc: "Send a recording (MP3, WAV, Ogg, M4A, WebM, video files too) and get the text with timed segments, as JSON, SRT or WebVTT subtitles, or plain text. Whisper small recognises about a hundred languages, Indian ones included; " +
 					"it is good on clear English and fair on Indian languages. task=translate gives English text whatever was spoken. The first five minutes are heard." + formNote,
 				Example: "/v1/stt",
@@ -101,7 +101,7 @@ var aiGroups = []apiGroup{
 		SourceKey: "embeddings", MoreSources: []string{"reranker"},
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/embed", Summary: "Text embeddings", Post: true, Private: true,
+				Path: "/v1/embed", Key: true, Summary: "Text embeddings", Post: true, Private: true,
 				Doc: "Up to 64 texts a request (GET: one or more text parameters; POST: JSON {\"texts\": [...], \"type\": ...}). Each comes back as 384 numbers scaled to length 1, so a dot product is the cosine similarity. " +
 					"Embed questions with type=query and the documents searched with type=passage, as the model was trained. Each text is read up to 512 tokens.",
 				Body:        `JSON: {"texts": ["..."], "type": "query" or "passage"}, or {"text": "..."}.`,
@@ -113,7 +113,7 @@ var aiGroups = []apiGroup{
 				},
 			},
 			{
-				Path: "/v1/rerank", Summary: "Rerank documents for a query", Post: true, Private: true,
+				Path: "/v1/rerank", Key: true, Summary: "Rerank documents for a query", Post: true, Private: true,
 				Doc: "Scores how well each document answers the query, from 0 to 1, and returns them best first with their place in the request. Up to 100 documents of up to 8,000 characters; each pair is read up to 512 tokens. " +
 					"GET takes query and repeated document parameters; POST takes JSON.",
 				Body:        `JSON: {"query": "...", "documents": ["...", "..."], "top": 3}.`,
@@ -136,7 +136,7 @@ var aiGroups = []apiGroup{
 		SourceKey: "translation",
 		Endpoints: []endpoint{
 			{
-				Path: "/v1/translate", Summary: "Translate text", Post: true, Private: true,
+				Path: "/v1/translate", Key: true, Summary: "Translate text", Post: true, Private: true,
 				Doc:         "Translates a sentence at a time and returns the whole translation and each sentence. Up to 2,000 characters and 30 sentences. Write Indian languages in their own script.",
 				Body:        "The text to translate.",
 				Example:     "/v1/translate?from=en&to=ta&text=" + url.QueryEscape(translateExample),

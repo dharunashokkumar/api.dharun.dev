@@ -4,7 +4,7 @@
 
 The assembly (MLA) and parliamentary (MP) constituency of a point or a pincode, with number, name, reserved category, district and state. From the DataMeet community's maps; boundaries are approximate near their edges, assembly seats in six states predate the latest delimitation, and sitting members are not given.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Constituencies of a place
 

@@ -4,7 +4,7 @@
 
 Send a picture or a PDF and get its text back, with Tesseract 5. Name the languages the text uses: English, Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Gujarati, Punjabi, Odia and Marathi, up to three at once. Files are read and deleted; nothing is kept or logged.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Read the text in a picture or PDF
 
@@ -13,6 +13,8 @@ Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ...,
 Returns the text, Tesseract's confidence and, with words=true, every word with its box. A PDF is read up to 10 pages at a time at 300 dpi; a PDF that already holds text is read faster by /v1/pdf/text. Options go in the query string, or as form fields when the file is sent as multipart/form-data.
 
 Send: A picture: JPEG, PNG, WebP, HEIC, AVIF, GIF, BMP or TIFF, up to 10 MB. Or a PDF. Post the file as the request body, or as `multipart/form-data`. Sample file: https://api.dharun.dev/samples/receipt.png
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
 
 What you send is never written to the log, and the answer is not cached.
 

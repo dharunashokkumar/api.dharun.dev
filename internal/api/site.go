@@ -25,7 +25,7 @@ const (
 	productName = "India API"
 	siteName    = "api.dharun.dev"
 	siteTagline = "Free, open source APIs for Indian data"
-	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company, brand, global stock and crypto logos, UPI QR codes, number to words in lakh and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation and speech to text in Indian languages, embeddings, moderation and more. No API key, no sign-up, open CORS, an MCP server for AI assistants. Open source under AGPL-3.0."
+	siteSummary = "Free JSON APIs for Indian data: pincodes, IFSC and banks, GSTIN and PAN checks, holidays and working days, RTO codes, company, brand, global stock and crypto logos, UPI QR codes, number to words in lakh and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation and speech to text in Indian languages, embeddings, moderation and more. No API key needed for most endpoints (a free key raises the limits), open CORS, an MCP server for AI assistants, free tool pages and a playground. Open source under AGPL-3.0."
 
 	publicOrigin = "https://api.dharun.dev" // where the skill and the registry entry point
 	repoURL      = "https://github.com/dharunashokkumar/api.dharun.dev"
@@ -104,7 +104,8 @@ func (s *Server) registerSite() {
 	s.handle("docs", costFree, "GET /guides/{slug}", s.handleGuide)
 	s.handle("docs", costFree, "GET /ai", s.handleAIPage)
 	s.handle("docs", costFree, "GET /ai.md", s.handleAIPage)
-	for _, name := range []string{"privacy", "security", "about"} {
+	s.registerSiteMore()
+	for _, name := range []string{"privacy", "security", "about", "keys", "changelog"} {
 		s.handle("docs", costFree, "GET /"+name, s.handleStaticPage)
 		s.handle("docs", costFree, "GET /"+name+".md", s.handleStaticPage)
 	}
@@ -137,6 +138,7 @@ type page struct {
 	Description string
 	Nav         string // which header link is current: docs, guides, ai
 	Markdown    string // path of the Markdown copy, if any
+	Robots      string // a robots meta value, such as "noindex" for account pages
 	JSONLD      template.JS
 	Body        any
 }
@@ -269,7 +271,8 @@ type faq struct{ Question, Answer string }
 
 func (s *Server) faqs() []faq {
 	return []faq{
-		{"Is it free?", fmt.Sprintf("Yes. There is no API key, no sign-up and no paid plan. Each client can make %d requests a minute; a few endpoints that do heavy work count as more than one.", s.cfg.RateLimitPerMinute)},
+		{"Is it free?", fmt.Sprintf("Yes, and there is no paid plan. Most endpoints need no key: each address gets %d units a minute, and a few endpoints that do heavy work count as more than one. A free API key raises that to %d a minute per key, and the model endpoints (OCR, speech, translation, embeddings and the like) will need one after a notice period.", s.cfg.RateLimitPerMinute, s.cfg.KeyRateLimitPerMinute)},
+		{"Do I need an API key?", "Not for most endpoints. A free key gives you your own, larger allowance; get one at /signup with an email address, Google or GitHub. Send it as Authorization: Bearer <key>. The model endpoints will need a key from the date on /keys."},
 		{"Can I use it in a commercial app?", "Yes. Calling the API puts no licence on your app. The data keeps the licence of its source, named in every response under meta.source; a few sources ask for a credit line. The code examples on this site are MIT-0, so you can paste them anywhere."},
 		{"Where does the data come from?", "From official publications such as the Reserve Bank of India, India Post, NSE and the GST council, and from open datasets such as OurAirports and Wikipedia. Every response says which source it used, its version and when it was retrieved."},
 		{"What do you log?", "One line per request with the path, the status, the time taken and roughly where it came from (country, state, city and internet provider, looked up from the address). IP addresses are never written to the log, and endpoints that take personal values (phone numbers, email addresses, text you send) leave their input out of the log entirely."},
@@ -294,7 +297,7 @@ func (s *Server) handleHome(w http.ResponseWriter, r *http.Request) {
 			Origin: origin, Path: "/",
 			Title:       productName + ": free pincode, IFSC, GSTIN and holiday APIs",
 			Heading:     "Free APIs for India",
-			Description: fmt.Sprintf("Free, open source JSON APIs for Indian data: pincode, IFSC, GSTIN and PAN checks, holidays, RTO codes, UPI QR and %d more. No key, no sign-up. MCP server for AI.", max(len(catalog)-6, 1)),
+			Description: fmt.Sprintf("Free, open source JSON APIs for Indian data: pincode, IFSC, GSTIN and PAN checks, holidays, RTO codes, UPI QR and %d more. No key needed for most. MCP server for AI.", max(len(catalog)-6, 1)),
 			Markdown:    "/index.md",
 			Body: map[string]any{
 				"Categories": categorised(),
@@ -342,7 +345,7 @@ func (s *Server) handleDocsIndex(w http.ResponseWriter, r *http.Request) {
 // docsIndexMarkdown is the Markdown form of /docs: every API with each of its endpoints.
 func (s *Server) docsIndexMarkdown(origin string) []byte {
 	var out strings.Builder
-	fmt.Fprintf(&out, "# API reference\n\nAll %d APIs of %s, with every endpoint. Each name links to its full page: parameters, a real response and code in curl, JavaScript and Python. Base URL: %s. No API key; %d requests a minute per client.\n\n", len(catalog), productName, origin, s.cfg.RateLimitPerMinute)
+	fmt.Fprintf(&out, "# API reference\n\nAll %d APIs of %s, with every endpoint. Each name links to its full page: parameters, a real response and code in curl, JavaScript and Python. Base URL: %s. No API key needed for most endpoints; %d units a minute per address, more with a free key (%s/keys).\n\n", len(catalog), productName, origin, s.cfg.RateLimitPerMinute, origin)
 	for _, category := range categorised() {
 		fmt.Fprintf(&out, "## %s\n\n", category.Title)
 		for _, group := range category.Groups {
@@ -371,6 +374,8 @@ type docEndpoint struct {
 	Sample     *sample
 	PathParams []param
 	Query      []param
+	// TryIt is the panel that sends the request from the visitor's browser.
+	TryIt template.HTML
 }
 
 type codeSample struct{ Lang, Label, Code string }
@@ -383,6 +388,8 @@ type docGroup struct {
 	Guides        []guide
 	Categories    []siteCategory
 	Limit         int
+	KeyLimit      int
+	Quota         int
 	BodyLimit     string
 	Origin        string
 }
@@ -392,7 +399,7 @@ type docGroup struct {
 // where they were read (docs, docs-md, llms, skill).
 func staticDocGroup(origin string, group apiGroup, medium string) docGroup {
 	view := docGroup{apiGroup: group, CategoryTitle: categoryTitle(group.Category), Categories: categorised(),
-		Limit: defaultRateLimit, BodyLimit: byteSize(defaultBodyBytes), Origin: origin}
+		Limit: defaultRateLimit, KeyLimit: defaultKeyRateLimit, Quota: defaultModelQuota, BodyLimit: byteSize(defaultBodyBytes), Origin: origin}
 	for _, e := range group.Endpoints {
 		d := docEndpoint{endpoint: e, Anchor: anchor(e.Summary), URL: traffic.Tag(origin+e.Example, medium),
 			Preview: traffic.Tag(origin+e.Example, "docs-preview")}
@@ -419,7 +426,11 @@ func staticDocGroup(origin string, group apiGroup, medium string) docGroup {
 func (s *Server) docGroup(origin string, group apiGroup, samples bool, medium string) docGroup {
 	view := staticDocGroup(origin, group, medium)
 	view.Limit, view.BodyLimit = s.cfg.RateLimitPerMinute, byteSize(s.cfg.MaxBodyBytes)
+	view.KeyLimit, view.Quota = s.cfg.KeyRateLimitPerMinute, s.cfg.ModelQuotaPerDay
 	if samples {
+		for i := range view.Endpoints {
+			view.Endpoints[i].TryIt = s.tryItPanel(group, view.Endpoints[i].endpoint)
+		}
 		host := strings.TrimPrefix(strings.TrimPrefix(origin, "https://"), "http://")
 		for i := range view.Endpoints {
 			view.Endpoints[i].Sample = s.sample(host, view.Endpoints[i].endpoint)
@@ -562,7 +573,7 @@ func (s *Server) handleAIPage(w http.ResponseWriter, r *http.Request) {
 			Origin: origin, Path: "/ai", Nav: "ai", Markdown: "/ai.md",
 			Title:       "Use " + productName + " with Claude, ChatGPT, Cursor and VS Code (MCP)",
 			Heading:     "Use it from your AI assistant",
-			Description: "Connect the free India API MCP server to Claude, ChatGPT, Cursor, VS Code, Gemini CLI or Codex, or install the Agent Skill. No key, no sign-up.",
+			Description: "Connect the free India API MCP server to Claude, ChatGPT, Cursor, VS Code, Gemini CLI or Codex, or install the Agent Skill. No key needed for most tools.",
 			Body:        s.aiPageData(origin),
 		}
 		p.JSONLD = jsonLD(breadcrumbs(origin, [2]string{"AI tools", "/ai"}),
@@ -596,14 +607,29 @@ func (s *Server) staticPageData(origin string) map[string]any {
 			}
 		}
 	}
+	var keyed []string
+	for _, group := range catalog {
+		for _, e := range group.Endpoints {
+			if e.Key {
+				keyed = append(keyed, e.Path)
+			}
+		}
+	}
+	keyDate := ""
+	if !s.cfg.KeyRequiredFrom.IsZero() {
+		keyDate = s.cfg.KeyRequiredFrom.Format("2 January 2006")
+	}
 	return map[string]any{"Origin": origin, "Repo": repoURL, "RepoSlug": repoSlug, "Sources": sources, "Private": private,
-		"Limit": s.cfg.RateLimitPerMinute, "BodyLimit": byteSize(s.cfg.MaxBodyBytes), "Author": authorName, "AuthorURL": authorURL}
+		"Limit": s.cfg.RateLimitPerMinute, "BodyLimit": byteSize(s.cfg.MaxBodyBytes), "Author": authorName, "AuthorURL": authorURL,
+		"KeyLimit": s.cfg.KeyRateLimitPerMinute, "Quota": s.cfg.ModelQuotaPerDay, "Keyed": keyed, "KeyDate": keyDate, "SiteAllowance": s.cfg.SiteTokenAllowance}
 }
 
 var staticPages = map[string]struct{ Title, Heading, Description string }{
-	"privacy":  {"Privacy: what " + productName + " logs and keeps", "Privacy", "What India API logs, what it never logs, and what happens to the values you send. No cookies, no tracking, no IP addresses in logs."},
-	"security": {"Security: reporting issues and verifying releases | " + productName, "Security", "How to report a vulnerability in India API, how the service limits what it does, and how to verify that a release came from the public source."},
-	"about":    {"About " + productName + ": who builds it, licences and data sources", "About", "Who builds India API, why, the licences of the code and the examples, and every data source with its licence."},
+	"privacy":   {"Privacy: what " + productName + " logs and keeps", "Privacy", "What India API logs, what it never logs, and what happens to the values you send. No cookies, no tracking, no IP addresses in logs."},
+	"security":  {"Security: reporting issues and verifying releases | " + productName, "Security", "How to report a vulnerability in India API, how the service limits what it does, and how to verify that a release came from the public source."},
+	"about":     {"About " + productName + ": who builds it, licences and data sources", "About", "Who builds India API, why, the licences of the code and the examples, and every data source with its licence."},
+	"keys":      {"Free API keys: limits, quotas and how to send a key | " + productName, "API keys", "India API keys are free. A key raises the limit on every endpoint and will be needed for the model endpoints. How to get one, send it and what changes when."},
+	"changelog": {"Changelog: what changed for callers | " + productName, "Changelog", "What changed in India API for the people and programs calling it, newest first: new endpoints, new limits and contract changes."},
 }
 
 // handleStaticPage serves privacy, security and about. Each is written once, as a
@@ -647,6 +673,6 @@ var templateFuncs = map[string]any{
 var markdownFiles embed.FS
 
 var (
-	siteTemplates     = template.Must(template.New("site").Funcs(templateFuncs).Parse(htmlLayout + htmlPages))
+	siteTemplates     = template.Must(template.New("site").Funcs(templateFuncs).Parse(htmlLayout + htmlPages + htmlApp))
 	markdownTemplates = textTemplate.Must(textTemplate.New("md").Funcs(templateFuncs).ParseFS(markdownFiles, "templates/*.md"))
 )

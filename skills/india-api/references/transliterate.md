@@ -4,7 +4,7 @@
 
 Converts by rule between Devanagari, Bengali, Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada and Malayalam, and to ISO 15919, IAST or plain ASCII. ISO 15919 and IAST can also be turned back into any of the scripts. The spelling changes, not the language: this is not translation. Casual Roman typing (vanakkam) cannot be converted by rule: /v1/transliterate/suggest guesses it with a model, as phone keyboards do.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Transliterate text
 
@@ -29,6 +29,8 @@ Example: https://api.dharun.dev/v1/transliterate?to=tamil&text=%E0%A4%A8%E0%A4%A
 Guesses how words typed in Roman letters are written in an Indian script with IndicXlit (AI4Bharat), giving up to eight suggestions per word, best first, and the text with the best guess for each word. 21 languages. Up to 60 words; anything that is not Roman letters is kept as it is.
 
 POST body: The text in Roman letters. Send it as `text/plain`, or as JSON `{"text": "..."}` with the other options beside it.
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
 
 What you send is never written to the log, and the answer is not cached.
 

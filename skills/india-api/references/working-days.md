@@ -4,7 +4,7 @@
 
 Is a date a working day, what is the next one, and what date is N working days away. Bank days follow the Reserve Bank's holidays for a state plus Sundays and the second and fourth Saturdays; market and settlement days follow NSE's trading and clearing holidays. Only years with a published holiday list are answered.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Is a date a working day
 

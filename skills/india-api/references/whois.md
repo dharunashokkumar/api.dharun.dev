@@ -4,7 +4,7 @@
 
 RDAP is the registries' JSON replacement for the old whois protocol. Give a domain, an IP address or an AS number; IANA's bootstrap registry names the registry that answers for it (NIXI for .in and .co.in, Verisign for .com, APNIC for Indian IP addresses), and the registration is fetched from it on the spot. For a domain: the registrar and its abuse contact, when it was registered and when it expires, its status codes, nameservers and DNSSEC. For an IP network or AS number: the range, its name, the organisation that holds it, country and abuse contact. The contacts of the people behind a domain are never returned, and a network held by a person is not named. Domains under the Indian-script top-level domains (.भारत) cannot be looked up: their registry offers no RDAP. Counts as 10 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Look up a registration
 

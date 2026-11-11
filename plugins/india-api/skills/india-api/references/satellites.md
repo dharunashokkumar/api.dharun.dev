@@ -4,7 +4,7 @@
 
 Pass predictions for the space stations (ISS, Tiangong) and about ninety amateur radio satellites, from any Indian pincode or any latitude and longitude: when each rises, how high it gets and where, when it sets, and whether it can be seen with the eye. Computed with SGP4 from CelesTrak's orbit elements, refreshed a few times a day; the elements themselves are not published here. Pass predictions count as 10 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Passes over a place
 

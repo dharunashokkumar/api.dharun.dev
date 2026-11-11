@@ -1,6 +1,6 @@
 {{define "ai"}}# Use India API from your AI assistant
 
-> Connect the MCP server and your assistant can look up pincodes, IFSC codes, holidays and more by itself. No key, no sign-up, nothing to install.
+> Connect the MCP server and your assistant can look up pincodes, IFSC codes, holidays and more by itself. No key needed for most tools, nothing to install. A free key (sent as an `Authorization: Bearer` header from the client configuration) raises the limits and will be needed for the model tools.
 
 MCP server: `{{.Endpoint}}` (Streamable HTTP, stateless, no authentication). Each of the {{len .Tools}} tools returns exactly what the matching REST endpoint returns.
 {{range .Clients}}

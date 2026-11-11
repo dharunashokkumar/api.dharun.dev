@@ -4,7 +4,7 @@
 
 Thiruvalluvar's Thirukkural with a transliteration, G.U. Pope's verse translation (1886) and the prose translation by W.H. Drew and John Lazarus (1840, 1885), organised into 3 paals, 13 iyals and 133 chapters. Only text that is free to share is served; modern commentaries are added once their release into the public domain is confirmed.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## A kural by number
 

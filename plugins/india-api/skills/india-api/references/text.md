@@ -4,7 +4,7 @@
 
 Tools for working with text, especially in AI and retrieval pipelines. Send short text as ?text=, or POST it as text/plain, or as JSON {"text": ...} with the options beside it. Nothing you send is logged or kept. Each request counts as 10 against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Split a document into chunks
 
@@ -84,6 +84,8 @@ Example: https://api.dharun.dev/v1/text/language?text=%E0%AE%85%E0%AE%95%E0%AE%B
 Three classifiers each score the text from 0 to 1: a general multilingual one (toxic), one for Hindi typed in Roman letters (profanity, harassment, hate_speech, caste, communal, regional, misogyny) and one for Tamil typed in Roman letters (offensive). flagged says whether any score reached the threshold. Up to 4,000 characters; the first 256 tokens are read. Scores are a model's guess: use them to sort or to ask a person, not to decide alone.
 
 POST body: The text. Send it as `text/plain`, or as JSON `{"text": "..."}` with the other options beside it.
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
 
 What you send is never written to the log, and the answer is not cached.
 

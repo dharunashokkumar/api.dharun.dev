@@ -33,7 +33,7 @@ notice "Go standard library and runtime (https://go.dev)" "$(go env GOROOT)/LICE
 # onnx-run is built with cgo, so its modules are listed with cgo on.
 modules="$( (CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go list -deps \
   -f '{{with .Module}}{{if not .Main}}{{.Path}} {{.Version}} {{.Dir}}{{end}}{{end}}' \
-  ./cmd/api ./cmd/apidata
+  ./cmd/api ./cmd/apidata ./cmd/accounts
   CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go list -deps \
   -f '{{with .Module}}{{if not .Main}}{{.Path}} {{.Version}} {{.Dir}}{{end}}{{end}}' \
   ./cmd/onnx-run) | sort -u)"

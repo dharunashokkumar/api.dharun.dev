@@ -172,15 +172,20 @@ func (s *Server) chargeMore(w http.ResponseWriter, r *http.Request, units int) b
 	details := info(r)
 	client := details.client
 	if !details.internal {
-		client = s.clientKey(r)
+		client = details.bucket
 	}
-	if s.limiter.allow(client, units) {
+	limit := s.cfg.RateLimitPerMinute
+	if details.cred.kind == "key" {
+		limit = s.cfg.KeyRateLimitPerMinute
+	}
+	if used, ok := s.limiter.allow(client, units, limit); ok {
+		s.limiter.headers(w.Header(), limit, used)
 		return true
 	}
 	s.metrics.rateLimited()
-	w.Header().Set("Retry-After", "60")
+	w.Header().Set("Retry-After", itoa(s.limiter.reset()))
 	s.fail(w, r, http.StatusTooManyRequests, "rate_limited",
-		"Rate limit is "+itoa(s.cfg.RateLimitPerMinute)+" requests per minute; fetching an icon that is not cached yet counts as "+itoa(costProbe)+".")
+		"Rate limit is "+itoa(limit)+" units per minute; fetching an icon that is not cached yet counts as "+itoa(costProbe)+".")
 	return false
 }
 

@@ -189,7 +189,7 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 				continue
 			}
 			if e.Output != "" {
-				if want := map[string]string{"pdf": "application/pdf", "audio": "audio/"}[e.Output]; !strings.HasPrefix(got.header.Get("Content-Type"), want) {
+				if want := map[string]string{"pdf": "application/pdf", "audio": "audio/", "calendar": "text/calendar"}[e.Output]; !strings.HasPrefix(got.header.Get("Content-Type"), want) {
 					t.Errorf("%s: content type %q", e.Example, got.header.Get("Content-Type"))
 				}
 				continue

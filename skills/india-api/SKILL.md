@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Look up Indian reference data with the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, bank, market and government holidays and working days, RTO vehicle codes, NSE and BSE, brand, global stock and crypto logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, multilingual embeddings and reranking, whois (RDAP), TLS certificate and website speed checks from India, and more. Use when building an app that needs Indian data, Indian-language AI or document tools, or when the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle registration or listed company. No API key needed.
+description: Indian reference data from the free India API (api.dharun.dev): pincodes and post offices, IFSC codes and bank branches, GSTIN and PAN format checks, holidays and working days, RTO vehicle codes, NSE and BSE, brand, global stock and crypto logos, mutual fund NAVs, HSN and SAC codes, UPI QR codes, numbers in words (lakh, crore), money calculators (SIP, EMI, GST, income tax), batch lookups, transliteration between Indian scripts, panchang, GST tax invoices as PDF, OCR in Indian languages, PDF and image tools, text to speech and speech to text, translation between English and 22 Indian languages, Roman typing to Indian scripts (vanakkam to வணக்கம்), moderation including Hinglish and Tanglish, embeddings and reranking, whois, TLS and website speed checks, and more. Use when an app needs Indian data, Indian-language AI or document tools, or the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle code, listed company, income tax or EMI. No API key needed for most endpoints.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -9,7 +9,7 @@ metadata:
 
 # India API
 
-Free JSON APIs for Indian data at https://api.dharun.dev: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key, no sign-up, CORS open. Open source (https://github.com/dharunashokkumar/api.dharun.dev).
+Free JSON APIs for Indian data at https://api.dharun.dev: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key needed for most endpoints, CORS open. A free key from https://api.dharun.dev/signup, sent as `Authorization: Bearer <key>`, raises the limits; the model endpoints (OCR, speech, translation, embeddings, moderation, Roman typing, background removal) will need one after a notice period: their answers carry an `X-Key-Notice` header until then. Open source (https://github.com/dharunashokkumar/api.dharun.dev).
 
 ## When to use it
 
@@ -109,6 +109,19 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/invoice`: Make a GST tax invoice. Example: `/v1/invoice?utm_medium=skill`
 
+**Money calculators** ([references/calculators.md](references/calculators.md)): SIP, EMI, GST, income tax, HRA, gratuity, PPF, capital gains and trade charges.
+
+- `GET /v1/calc/sip`: SIP returns. Example: `/v1/calc/sip?monthly=10000&rate=12&years=10&utm_medium=skill`
+- `GET /v1/calc/lumpsum`: Lump sum growth. Example: `/v1/calc/lumpsum?amount=100000&rate=10&years=10&utm_medium=skill`
+- `GET /v1/calc/emi`: Loan EMI and schedule. Example: `/v1/calc/emi?amount=1000000&rate=8.5&years=20&utm_medium=skill`
+- `GET /v1/calc/gst`: GST split. Example: `/v1/calc/gst?amount=1180&rate=18&inclusive=true&utm_medium=skill`
+- `GET /v1/calc/income-tax`: Income tax, old and new regime. Example: `/v1/calc/income-tax?income=1500000&year=2025-26&utm_medium=skill`
+- `GET /v1/calc/hra`: HRA exemption. Example: `/v1/calc/hra?basic=50000&hra=25000&rent=20000&metro=true&utm_medium=skill`
+- `GET /v1/calc/gratuity`: Gratuity. Example: `/v1/calc/gratuity?salary=52000&years=10.6&utm_medium=skill`
+- `GET /v1/calc/ppf`: PPF maturity. Example: `/v1/calc/ppf?yearly=150000&years=15&utm_medium=skill`
+- `GET /v1/calc/capital-gains`: Capital gains tax. Example: `/v1/calc/capital-gains?asset=equity&bought=2023-01-10&sold=2025-01-10&cost=100000&price=400000&utm_medium=skill`
+- `GET /v1/calc/trade`: Share trade charges. Example: `/v1/calc/trade?buy=1000&sell=1100&quantity=100&kind=delivery&brokerage=20&utm_medium=skill`
+
 ### Places and transport
 
 **Pincodes** ([references/pincode.md](references/pincode.md)): Pincode to post office, district and state.
@@ -147,6 +160,7 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Holidays** ([references/holidays.md](references/holidays.md)): Bank, government and stock market holidays.
 
 - `GET /v1/holidays/{year}`: Holidays in a year. Example: `/v1/holidays/2026?type=market&utm_medium=skill`
+- `GET /v1/holidays/{year}.ics`: Holidays as a calendar to subscribe to. Example: `/v1/holidays/2026.ics?type=bank&state=TN&utm_medium=skill`
 
 **Working days** ([references/working-days.md](references/working-days.md)): Bank, market, settlement and government working days.
 
@@ -161,6 +175,10 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 **Sun and moon** ([references/sun-moon.md](references/sun-moon.md)): Sunrise, sunset, twilight, moonrise and the moon's phase for any date and place.
 
 - `GET /v1/sun-moon/{date}`: Sun and moon for a date. Example: `/v1/sun-moon/2026-10-14?pincode=600001&utm_medium=skill`
+
+**Today in India** ([references/today.md](references/today.md)): India's "now" in one call: date, financial year, working days, holidays, market and panchang.
+
+- `GET /v1/today`: Today in India. Example: `/v1/today?state=TN&pincode=600001&utm_medium=skill`
 
 ### Language and text
 
@@ -289,10 +307,17 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 
 - `GET /v1/fake/{kind}`: Generate fake records. Example: `/v1/fake/people?count=3&state=TN&seed=42&utm_medium=skill`
 
-**Generated images** ([references/images.md](references/images.md)): Social preview images and code screenshots from a URL.
+**Generated images** ([references/images.md](references/images.md)): Share images, code screenshots, avatars, placeholders and charts from a URL.
 
 - `GET /v1/og-image`: Social preview image. Example: `/v1/og-image?title=Free%20APIs%20for%20Indian%20developers&subtitle=Pincodes%2C%20IFSC%2C%20holidays%20and%20more&site=api.dharun.dev&utm_medium=skill`
 - `GET /v1/code-image`: Code as an image. Example: `/v1/code-image?language=go&title=main.go&code=package+main%0A%0Aimport+%22fmt%22%0A%0Afunc+main%28%29+%7B%0A%09fmt.Println%28%22%E0%AE%B5%E0%AE%A3%E0%AE%95%E0%AF%8D%E0%AE%95%E0%AE%AE%E0%AF%8D%22%29%0A%7D&utm_medium=skill`
+- `GET /v1/avatar/{name}`: Avatar with initials. Example: `/v1/avatar/Priya%20Raman?utm_medium=skill`
+- `GET /v1/placeholder/{size}`: Placeholder image. Example: `/v1/placeholder/600x400?utm_medium=skill`
+- `GET /v1/chart`: Chart image from numbers. Example: `/v1/chart?type=bar&title=Sales%20by%20quarter&labels=Q1,Q2,Q3,Q4&values=12,19,9,15&utm_medium=skill`
+
+**Batch lookups** ([references/batch.md](references/batch.md)): Up to 1,000 lookups in one request.
+
+- `GET /v1/batch`: Many lookups in one request. Example: `/v1/batch?utm_medium=skill`
 
 ### Sky and radio
 

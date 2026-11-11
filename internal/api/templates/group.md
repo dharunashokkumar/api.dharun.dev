@@ -4,7 +4,7 @@
 
 {{.Intro}}
 
-Base URL `{{.Origin}}`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: {{.Limit}} requests a minute per client.
+Base URL `{{.Origin}}`. No API key needed for most endpoints; a free key ({{.Origin}}/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: {{.Limit}} units a minute per address without a key, {{.KeyLimit}} per key; the `RateLimit-*` headers say what is left.
 {{range .Endpoints}}
 ## {{.Summary}}
 
@@ -20,6 +20,10 @@ POST body: {{.Body}} Send it as `text/plain`, or as JSON `{"text": "..."}` with 
 {{- with .Upload}}
 
 Send: {{.Accepts}}{{if not .JSON}} Post the file as the request body, or as `multipart/form-data`{{if gt .Files 1}} with one field per file{{end}}.{{end}}{{if .Sample}} Sample file: {{$.Origin}}/samples/{{.Sample}}{{end}}
+{{- end}}
+{{- if .Key}}
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on {{$.Origin}}/keys it answers without one and says so in the `X-Key-Notice` header. With a key: {{$.Quota}} model requests a day.
 {{- end}}
 {{- if .Private}}
 

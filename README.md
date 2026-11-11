@@ -3,15 +3,16 @@
 **Free, open source APIs for Indian data.** Pincodes, IFSC and bank branches, GSTIN and PAN
 checks, bank and market holidays, RTO codes, company logos, UPI QR codes, numbers in lakh
 and crore, GST invoices as PDF, OCR in Indian languages, PDF and image tools, translation,
-speech to text and text to speech, and more: 45 APIs behind one consistent JSON shape. No API key, no sign-up, open
-CORS, and an MCP server so AI assistants can use it too.
+speech to text and text to speech, money calculators and more: 48 APIs behind one consistent JSON shape. No API key
+needed for most endpoints (a free key raises the limits), open CORS, free tool pages, a playground, and an MCP server
+so AI assistants can use it too.
 
 [![CI](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml/badge.svg)](https://github.com/dharunashokkumar/api.dharun.dev/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dharunashokkumar/api.dharun.dev/badge)](https://scorecard.dev/viewer/?uri=github.com/dharunashokkumar/api.dharun.dev)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15520/badge)](https://www.bestpractices.dev/projects/15520)
 [![Licence: AGPL-3.0](https://img.shields.io/badge/licence-AGPL--3.0-blue)](LICENSE)
 
-**Documentation: [api.dharun.dev](https://api.dharun.dev)** · [API reference](https://api.dharun.dev/docs) · [Guides](https://api.dharun.dev/guides) · [Use with AI](https://api.dharun.dev/ai) · [OpenAPI](https://api.dharun.dev/openapi.json) · [llms.txt](https://api.dharun.dev/llms.txt)
+**Documentation: [api.dharun.dev](https://api.dharun.dev)** · [API reference](https://api.dharun.dev/docs) · [Playground](https://api.dharun.dev/play) · [Free tools](https://api.dharun.dev/tools) · [API keys](https://api.dharun.dev/keys) · [Guides](https://api.dharun.dev/guides) · [Use with AI](https://api.dharun.dev/ai) · [OpenAPI](https://api.dharun.dev/openapi.json) · [llms.txt](https://api.dharun.dev/llms.txt)
 
 ```bash
 curl https://api.dharun.dev/v1/pincode/637001
@@ -36,7 +37,9 @@ JavaScript and Python.
 | [Pincodes](https://api.dharun.dev/docs/pincode) | `/v1/pincode/637001`, `/v1/pincode/near?lat=&lng=` | Post offices, district, state, coordinates; pincodes near a point |
 | [IFSC and banks](https://api.dharun.dev/docs/ifsc) | `/v1/ifsc/SBIN0000001`, `/v1/banks?q=gramin` | Bank, branch, address, MICR, payment systems; banks and their codes by name |
 | [RTO codes](https://api.dharun.dev/docs/rto) | `/v1/rto/TN-28` | Transport office for a vehicle registration |
-| [Holidays](https://api.dharun.dev/docs/holidays) | `/v1/holidays/2026?type=market` | Bank, central government and stock market holidays |
+| [Holidays](https://api.dharun.dev/docs/holidays) | `/v1/holidays/2026?type=market`, `/v1/holidays/2026.ics?state=TN` | Bank, central government and stock market holidays; a calendar feed to subscribe to |
+| [Today in India](https://api.dharun.dev/docs/today) | `/v1/today?state=TN&pincode=600001` | Date and time in IST, financial year and quarter, working days, today's holidays, market status, panchang in brief |
+| [Money calculators](https://api.dharun.dev/docs/calculators) | `/v1/calc/income-tax?income=1500000`, `/v1/calc/emi?amount=1000000&rate=8.5&years=20` | SIP, lump sum, EMI with schedule, GST split, income tax under both regimes, HRA, gratuity, PPF, capital gains, share trade charges; each names its rule |
 | [Working days](https://api.dharun.dev/docs/working-days) | `/v1/working-days/2026-01-16?calendar=bank&state=TN` | Working day or not, the next one, N working days ahead, T+1 settlement dates; whether NSE is open |
 | [HSN and SAC](https://api.dharun.dev/docs/hsn) | `/v1/hsn/0902`, `/v1/hsn?q=tea` | Tariff codes with descriptions and their chapter |
 | [Mutual funds](https://api.dharun.dev/docs/mutual-funds) | `/v1/mutual-funds/122639` | Latest NAV of a scheme, search by name or fund house |
@@ -69,7 +72,8 @@ JavaScript and Python.
 | [PDF tools](https://api.dharun.dev/docs/pdf) | `POST /v1/pdf/merge`, `/pages`, `/rotate`, `/compress`, `/text`, `/render` | Merge, split, rotate, compress, read text, draw pages |
 | [Typst to PDF](https://api.dharun.dev/docs/typst) | `/v1/typst?text=...` | Typst documents to PDF or PNG, with Indian scripts |
 | [Speech](https://api.dharun.dev/docs/speech) | `POST /v1/stt`, `/v1/tts?text=...&voice=hi`, `POST /v1/audio/denoise` | Speech to text and subtitles with Whisper; text to speech in Hindi, Telugu, Malayalam and English; noise removal |
-| [Generated images](https://api.dharun.dev/docs/images) | `/v1/og-image?title=Hello` | Link preview cards and code images, in ten scripts |
+| [Generated images](https://api.dharun.dev/docs/images) | `/v1/og-image?title=Hello`, `/v1/avatar/Priya%20Raman`, `/v1/chart?values=1,3,2` | Link preview cards, code images, initials avatars, placeholders and bar, line, pie and sparkline charts, in ten scripts |
+| [Batch lookups](https://api.dharun.dev/docs/batch) | `POST /v1/batch` | Up to 1,000 pincode, IFSC, phone, GSTIN and other lookups in one request |
 | [Text tools](https://api.dharun.dev/docs/text) | `/v1/text/chunk`, `/redact`, `/moderate`, `/tokens`, `/language` | Chunking for retrieval, PII and name redaction, moderation with Hinglish and Tanglish, token counts, language detection |
 | [Regex tester](https://api.dharun.dev/docs/regex) | `/v1/regex?pattern=...&text=...` | Every match with its groups, replacement, the pattern explained |
 | [Fake Indian data](https://api.dharun.dev/docs/fake) | `/v1/fake/companies?count=5` | Test people and companies with PAN and GSTIN that pass format checks |
@@ -83,10 +87,15 @@ JavaScript and Python.
   array for list endpoints, which add `meta.total`, `meta.limit` and `meta.offset`.
 - `meta.source` names the dataset, its version, its licence and the credit it asks for.
 - Errors are `{ "error": { "code", "message" } }` with a matching HTTP status.
-- Each client has an allowance of 600 requests a minute. A lookup costs 1; a request that
-  takes real CPU work (image rendering, astronomy, live DNS) costs 10, a file upload 15,
-  and a neural network job (speech, speech to text, translation, background removal,
-  denoise) 30. Embeddings, reranking and moderation count as CPU work.
+- Each address has an allowance of 600 units a minute; a [free API key](https://api.dharun.dev/keys)
+  gives 3,000 a minute per key. A lookup costs 1; a request that takes real CPU work (image
+  rendering, astronomy, live DNS) costs 10, a file upload 15, and a neural network job
+  (speech, speech to text, translation, background removal, denoise) 30. Embeddings,
+  reranking and moderation count as CPU work. The `RateLimit-*` headers say what is left.
+- The model endpoints (OCR, speech, translation, embeddings, reranking, moderation, Roman
+  typing, background removal, denoise, name detection) will need a free key after a notice
+  period; until then their answers carry an `X-Key-Notice` header. Send a key as
+  `Authorization: Bearer <key>` or `X-API-Key`.
 - Text endpoints take `?text=`, or a POST body as `text/plain` or JSON `{"text": "..."}`.
 - Image endpoints return the image itself, ready for an `<img>` tag; PDF and audio
   endpoints return the file.
@@ -241,7 +250,12 @@ Configuration is by environment variable; see
 ```text
 cmd/api            the server
 cmd/apidata        data tool: build, import, refresh, status
-internal/api       routing, endpoints, the website, MCP, metrics
+cmd/accounts       the account system (PocketBase as a library), localhost only
+internal/api       routing, endpoints, the website, MCP, metrics, keys
+internal/api/assets      the scripts of the interactive pages (try-it, playground, tools)
+internal/accounts  accounts, API keys and their collections on PocketBase
+internal/apikey    the key format shared by accounts and the API
+internal/calc      the money calculators and their tax rules
 internal/api/guides      the guides, in Markdown
 internal/api/templates   the Markdown forms of the pages and the skill
 internal/dataset   one file per dataset: how it is built, fetched and checked

@@ -4,7 +4,7 @@
 
 Send the seller, the buyer and the items with their HSN codes and GST rates. The API works out each line's taxable value, CGST and SGST (UTGST in union territories without a legislature) for a sale within the state, or IGST across states, from the GSTINs or the place of supply; adds the HSN-wise tax summary, rounding and the amount in words; and sets it on an A4 page with an optional UPI QR code for the exact amount. Nothing you send is kept or logged.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Make a GST tax invoice
 

@@ -4,7 +4,7 @@
 
 An MTR-style trace from the server's own connection in India: each hop is probed several times, and every hop comes back with its address, name, network (AS) and country, packet loss and round-trip times. Useful to see how Jio, Airtel, BSNL and the rest reach a site, and where along the way delay or loss starts. Only public addresses can be traced. Hops inside private or shared address space are shown without their address. A trace takes several seconds and counts as 20 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Trace the route to a host
 

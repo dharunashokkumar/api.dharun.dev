@@ -4,7 +4,7 @@
 
 Three logo sets beside the NSE and BSE listing, with the same options: SVG or PNG, any size, and an initials tile instead of a broken image for a name that matches nothing (X-Logo-Known: false; fallback=none answers 404). Brands are unlisted Indian names people expect, such as PhonePe, Zepto, UPI, DigiLocker, the mutual fund houses and insurers; their artwork is a free-licence file from Wikimedia Commons or the brand site's own icon, and each answer says which. Global stocks are every share on NASDAQ, NYSE and NYSE American and the 500 largest companies on each of LSE, Tokyo, Hong Kong, Xetra and Frankfurt, Euronext, Toronto, ASX and SIX. Assets are the 500 largest coins, the main Indian and world indices, NSE ETFs and the largest US ETFs, and commodities drawn for this API. As with company logos, a 304 answer or an already drawn PNG does not count against the rate limit. The company logos address /v1/logos also looks in these sets, in that order, when a symbol is not an Indian listing, and says where the answer came from in X-Logo-Set.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Logo of an unlisted Indian brand
 

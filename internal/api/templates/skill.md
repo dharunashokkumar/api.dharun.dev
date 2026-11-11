@@ -9,7 +9,7 @@ metadata:
 
 # India API
 
-Free JSON APIs for Indian data at {{.Origin}}: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key, no sign-up, CORS open. Open source ({{.Repo}}).
+Free JSON APIs for Indian data at {{.Origin}}: pincodes, IFSC and bank branches, GSTIN and PAN format checks, holidays and working days, RTO codes, company logos, mutual fund NAVs, HSN codes, UPI QR codes, Indian number words and more. No API key needed for most endpoints, CORS open. A free key from {{.Origin}}/signup, sent as `Authorization: Bearer <key>`, raises the limits; the model endpoints (OCR, speech, translation, embeddings, moderation, Roman typing, background removal) will need one after a notice period: their answers carry an `X-Key-Notice` header until then. Open source ({{.Repo}}).
 
 ## When to use it
 

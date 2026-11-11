@@ -43,6 +43,16 @@ func run() error {
 			return err
 		}
 	}
+	// KEY_REQUIRED_FROM (a date, 2026-12-15) is the day keyless calls to the model
+	// endpoints stop working, at midnight India time. Unset: no date announced yet.
+	var keyDate time.Time
+	if raw := os.Getenv("KEY_REQUIRED_FROM"); raw != "" {
+		parsed, err := time.ParseInLocation("2006-01-02", raw, time.FixedZone("IST", 5*3600+1800))
+		if err != nil {
+			return fmt.Errorf("KEY_REQUIRED_FROM must be a date such as 2026-12-15: %w", err)
+		}
+		keyDate = parsed
+	}
 	server, err := api.New(api.Config{
 		Version: version,
 		// SEED_DIR holds the datasets that came with the release (build them with: apidata
@@ -65,6 +75,15 @@ func run() error {
 		LogRequests:        envBool("LOG_REQUESTS", true),
 		PNGCacheBytes:      envInt("PNG_CACHE_MB", 32) * 1024 * 1024,
 		StateDir:           stateDir,
+
+		AccountsDB:            os.Getenv("ACCOUNTS_DB"),
+		AccountsURL:           os.Getenv("ACCOUNTS_URL"),
+		KeyRateLimitPerMinute: envInt("KEY_RATE_LIMIT_PER_MIN", 3000),
+		ModelQuotaPerDay:      envInt("MODEL_QUOTA_PER_DAY", 500),
+		KeyRequiredFrom:       keyDate,
+		SiteSecret:            []byte(os.Getenv("SITE_SECRET")),
+		SiteTokenAllowance:    envInt("SITE_TOKEN_DAILY", 10),
+		SignupsPerDay:         envInt("SIGNUPS_PER_DAY", 5),
 	})
 	if err != nil {
 		return err

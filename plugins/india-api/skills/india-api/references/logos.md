@@ -4,7 +4,7 @@
 
 Put a ticker in the URL and get the logo back as SVG or PNG. Every company listed on NSE, those listed only on BSE, and REITs and InvITs; a symbol that is not an Indian listing falls through to the brand, global stock and asset logo sets. A symbol can be a ticker (TCS), an exchange-qualified ticker (NSE:TCS, NSE_TCS), a Yahoo Finance symbol (TCS.NS, AAIL.BO), an ISIN, or the old ticker of a renamed company. A bare ticker prefers NSE. Delisted companies are kept and marked.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Logo image for a listed company
 

@@ -4,7 +4,7 @@
 
 Looks up IPv6 (AAAA) addresses for a domain and for www, for each of its nameservers and for each mail server, and says plainly what is missing. Addresses that are not ordinary public IPv6 (6to4, Teredo, NAT64, private) are pointed out. This is a DNS check only: the server has no IPv6 connection, so it does not try to connect over IPv6. Counts as 10 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Check a domain's IPv6
 

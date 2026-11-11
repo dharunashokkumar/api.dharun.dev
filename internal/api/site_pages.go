@@ -7,7 +7,7 @@ const htmlPages = `
 <section class="container hero" aria-labelledby="hero-title">
 <div>
 <h1 id="hero-title">Free APIs for India.</h1>
-<p class="lead">Pincodes, IFSC, GSTIN, holidays and Indian-language tools, with no key or sign-up.</p>
+<p class="lead">Pincodes, IFSC, GSTIN, holidays and Indian-language tools. No key needed to start; a free key raises the limits.</p>
 <div class="actions"><a class="key key--primary" href="/docs">Browse the APIs</a><a class="key" href="/ai">Use with AI</a></div>
 </div>
 <figure class="console" aria-label="A request to this server and its answer">
@@ -17,7 +17,7 @@ const htmlPages = `
 </section>
 
 <section class="container facts">
-<div><h2 class="t">No key, no sign-up</h2><p>Call it from your server or straight from a browser. CORS is open, and every answer has the same <code>{ data, meta }</code> shape.</p></div>
+<div><h2 class="t">No key to start</h2><p>Call it from your server or straight from a browser. CORS is open, and every answer has the same <code>{ data, meta }</code> shape. A <a href="/keys">free key</a> raises the limits.</p></div>
 <div><h2 class="t">Open source</h2><p>The code is on GitHub under AGPL-3.0. Every response names its data source, its version and its licence.</p></div>
 <div><h2 class="t">Private by default</h2><p>No cookies, no tracking, no IP addresses in the logs. Personal values you send are never logged. <a href="/privacy">Details</a></p></div>
 </section>
@@ -55,7 +55,7 @@ const htmlPages = `
 <div class="container page">
 <header class="pagehead">
 <h1>API reference</h1>
-<p class="lead">Every endpoint is under <code>/v1</code>. Lookups use GET; endpoints that take a file or a document use POST. JSON answers come as <code>{ "data": ..., "meta": ... }</code>; image, PDF and audio endpoints return the file itself. No key; {{.Limit}} requests a minute per client.</p>
+<p class="lead">Every endpoint is under <code>/v1</code>. Lookups use GET; endpoints that take a file or a document use POST. JSON answers come as <code>{ "data": ..., "meta": ... }</code>; image, PDF and audio endpoints return the file itself. No key needed for most: {{.Limit}} units a minute per address, more with a <a href="/keys">free key</a>.</p>
 <nav class="chips" aria-label="Categories">{{range .Categories}}<a href="#{{.ID}}">{{.Title}}</a>{{end}}</nav>
 </header>
 {{range .Categories}}<section class="dircat" id="{{.ID}}"><h2>{{.Title}}</h2><div class="dirs">
@@ -73,7 +73,7 @@ const htmlPages = `
 <h1>{{.Title}} API</h1>
 <p class="lead">{{.Tagline}}</p>
 <p>{{.Intro}}</p>
-<div class="facts-row"><span>Base URL <code>{{.Origin}}</code></span><span>No API key</span><span>{{.Limit}} requests a minute</span><span><a href="/docs/{{.ID}}.md">This page as Markdown</a></span></div>
+<div class="facts-row"><span>Base URL <code>{{.Origin}}</code></span><span><a href="/keys">No key needed</a> for most</span><span>{{.Limit}} units a minute, {{.KeyLimit}} with a free key</span><span><a href="/docs/{{.ID}}.md">This page as Markdown</a></span></div>
 {{if gt (len .Endpoints) 1}}<nav class="chips" aria-label="Endpoints">{{range .Endpoints}}<a href="#{{.Anchor}}">{{.Summary}}</a>{{end}}</nav>{{end}}
 {{range .Endpoints}}
 <section class="endpoint" id="{{.Anchor}}">
@@ -83,6 +83,7 @@ const htmlPages = `
 {{if .Post}}<p>Also takes POST: {{.Body}} Send it as <code>text/plain</code>, or as JSON <code>{"text": "..."}</code> with the other options beside it, up to {{$.Body.BodyLimit}}.</p>{{end}}
 {{with .Upload}}<p>Send: {{.Accepts}}{{if not .JSON}} Post the file as the request body, or as <code>multipart/form-data</code>{{if gt .Files 1}} with one field per file{{end}}.{{end}}{{if .Sample}} Try it with <a href="/samples/{{.Sample}}">this sample</a>.{{end}}</p>{{end}}
 {{if .Returns}}<p>The answer {{.Returns}}; errors are JSON as everywhere else.</p>{{end}}
+{{if .Key}}<p class="aside">Model endpoint: it will need a <a href="/signup">free API key</a>, sent as <code>Authorization: Bearer &lt;key&gt;</code> or <code>X-API-Key</code>. Until the date on <a href="/keys">API keys</a> it answers without one and says so in the <code>X-Key-Notice</code> header. With a key: {{$.Body.Quota}} model requests a day.</p>{{end}}
 {{if .Private}}<p class="note">What you send here is never written to the log, and the answer is not cached.</p>{{end}}
 {{if or .PathParams .Query}}<table class="params"><thead><tr><th>Parameter</th><th>Description</th></tr></thead><tbody>
 {{range .PathParams}}<tr><th><code>{{.Name}}</code><small>path, required</small></th><td>{{.Doc}}{{if .Enum}} One of: {{join .Enum ", "}}.{{end}}</td></tr>
@@ -93,13 +94,15 @@ const htmlPages = `
 {{range .Samples}}<div class="panel" data-lang="{{.Lang}}"><p class="panel-label">{{.Label}}</p><div class="codebox" data-label="{{.Label}}"><pre><code>{{.Code}}</code></pre></div></div>
 {{end}}</div>
 {{if and .Upload .Upload.JSON}}<p class="label">invoice.json</p><div class="codebox" data-label="invoice.json"><pre><code>{{.ExampleBody}}</code></pre></div>{{end}}
+{{.TryIt}}
 {{if and .Image (not .Upload)}}<p class="label">Result</p><div class="preview"><img src="{{.Preview}}" alt="Example: {{.Summary}}" loading="lazy"></div>
 {{else if .Sample}}<p class="label">Response{{if .Sample.Shortened}}, with lists and long text shortened{{end}}</p><div class="codebox" data-label="JSON"><pre class="sample" tabindex="0"><code>{{.Sample.JSON}}</code></pre></div>
 {{end}}</section>
 {{end}}
 {{if .Sources}}<section class="sources"><h2>Data source</h2>{{range .Sources}}<p><a href="{{.URL}}">{{.Name}}</a>{{if .Version}}, {{.Version}}{{end}}. Retrieved {{.Retrieved}}. Licence: {{.Licence}}.{{if .Attribution}} {{.Attribution}}{{end}}</p>{{end}}</section>{{end}}
 {{if .Guides}}<section class="sources"><h2>Guides</h2>{{range .Guides}}<p><a href="/guides/{{.Slug}}">{{.Title}}</a></p>{{end}}</section>{{end}}
-<p class="aside">Using an AI assistant? <a href="/ai">Connect the MCP server</a> and it can call this API by itself.</p>
+<p class="aside">Using an AI assistant? <a href="/ai">Connect the MCP server</a> and it can call this API by itself. Want every endpoint on one bench? <a href="/play">Open the playground</a>.</p>
+<script src="/assets/try.js" defer></script>
 </article>
 <aside class="side" aria-label="All APIs">{{range .Categories}}<h2>{{.Title}}</h2>{{range .Groups}}<a href="/docs/{{.ID}}"{{if eq .ID $.Body.ID}} aria-current="page"{{end}}>{{.Title}}</a>{{end}}{{end}}</aside>
 </div>
@@ -109,7 +112,7 @@ const htmlPages = `
 <div class="container page">
 <header class="pagehead">
 <h1>Use ` + productName + ` from your AI assistant</h1>
-<p class="lead">Connect the MCP server and your assistant can look up pincodes, IFSC codes, holidays and more by itself. No key, no sign-up, nothing to install.</p>
+<p class="lead">Connect the MCP server and your assistant can look up pincodes, IFSC codes, holidays and more by itself. No key needed for most tools, nothing to install.</p>
 </header>
 <div class="article wide">
 <div class="codebox" data-label="MCP server address"><pre><code>{{.Endpoint}}</code></pre></div>

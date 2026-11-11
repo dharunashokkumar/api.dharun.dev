@@ -4,7 +4,7 @@
 
 Connects to a host on port 443 and reports what a browser would care about: whether the certificate is valid for the name and leads to a trusted root, how many days it has left, the chain as the server sends it with each certificate's issuer, key and signature, the TLS version, cipher and HTTP/2 negotiated, OCSP stapling and certificate transparency, and which of TLS 1.0, 1.1, 1.2 and 1.3 the server accepts and whether it takes a weak cipher. Problems come as a plain list, errors and warnings, rather than a grade. Only public addresses are checked, and only port 443. Counts as 20 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Check a host's TLS
 

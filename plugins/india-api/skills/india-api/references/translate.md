@@ -4,7 +4,7 @@
 
 Machine translation by AI4Bharat's IndicTrans2 (distilled models), between English and Assamese, Bengali, Bodo, Dogri, Gujarati, Hindi, Kannada, Kashmiri, Konkani, Maithili, Malayalam, Manipuri, Marathi, Nepali, Odia, Punjabi, Sanskrit, Santali, Sindhi, Tamil, Telugu and Urdu. Between two Indian languages the text goes through English. Web and e-mail addresses and long numbers are kept as they are. Nothing you send is kept or logged.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Translate text
 
@@ -13,6 +13,8 @@ Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ...,
 Translates a sentence at a time and returns the whole translation and each sentence. Up to 2,000 characters and 30 sentences. Write Indian languages in their own script.
 
 POST body: The text to translate. Send it as `text/plain`, or as JSON `{"text": "..."}` with the other options beside it.
+
+Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on https://api.dharun.dev/keys it answers without one and says so in the `X-Key-Notice` header. With a key: 500 model requests a day.
 
 What you send is never written to the log, and the answer is not cached.
 

@@ -67,6 +67,27 @@ type Config struct {
 	// Programs overrides where an outside program is found, by name (typst, piper, ...).
 	// A program not named here is looked for next to the server binary, then on PATH.
 	Programs map[string]string
+
+	// Free API keys (keys.go, account.go). AccountsDB is the accounts program's
+	// database, read-only; AccountsURL is where that program listens (localhost). Empty
+	// means no accounts on this server: keys are refused as unknown, and the account
+	// addresses answer 503.
+	AccountsDB  string
+	AccountsURL string
+	// KeyRateLimitPerMinute is the allowance of a key (zero: 3,000 units). ModelQuota is
+	// how many model requests a key may make a day (zero: 500).
+	KeyRateLimitPerMinute int
+	ModelQuotaPerDay      int
+	// KeyRequiredFrom is the day keyless calls to the model endpoints stop working.
+	// Zero means no date is set yet: they work, with a notice header.
+	KeyRequiredFrom time.Time
+	// SiteSecret signs the tokens the tool pages and the signup check use; empty makes a
+	// new one at start (tokens then end with the process). SiteTokenAllowance is how many
+	// model requests a tool page visitor gets a day once keys are required (zero: 10).
+	SiteSecret         []byte
+	SiteTokenAllowance int
+	// SignupsPerDay caps new accounts per address and day (zero: 5).
+	SignupsPerDay int
 }
 
 // Server holds everything a request needs. It is safe for concurrent use.
@@ -79,12 +100,21 @@ type Server struct {
 	png       *pngCache
 	mux       *http.ServeMux
 	routes    map[string]bool
+	costs     map[string]int  // by path: what a request charges, for the playground
 	private   map[string]bool // route patterns whose input may be personal
 	documents sync.Map        // rendered docs, keyed by name and origin
 	heavy     chan struct{}
 	models    chan struct{} // one per model job running
 	extras    extras
 	logOut    io.Writer // where request log lines go; standard output when nil
+
+	keys       *keyring
+	usage      *keyUsage
+	keyTurns   keyTurns
+	siteSecret []byte
+	challenges *challenges
+	signups    *dailyCounter
+	stopKeys   chan struct{}
 }
 
 // New opens the datasets and prepares a server.
@@ -101,6 +131,21 @@ func New(cfg Config) (*Server, error) {
 	if cfg.ModelConcurrency <= 0 {
 		cfg.ModelConcurrency = 1
 	}
+	if cfg.KeyRateLimitPerMinute <= 0 {
+		cfg.KeyRateLimitPerMinute = defaultKeyRateLimit
+	}
+	if cfg.ModelQuotaPerDay <= 0 {
+		cfg.ModelQuotaPerDay = defaultModelQuota
+	}
+	if cfg.SiteTokenAllowance <= 0 {
+		cfg.SiteTokenAllowance = defaultSiteAllow
+	}
+	if cfg.SignupsPerDay <= 0 {
+		cfg.SignupsPerDay = 5
+	}
+	if len(cfg.SiteSecret) == 0 {
+		cfg.SiteSecret = randomSecret()
+	}
 	s := &Server{
 		cfg:     cfg,
 		store:   newStore(cfg.SeedDir, cfg.DataDir),
@@ -108,10 +153,19 @@ func New(cfg Config) (*Server, error) {
 		png:     newPNGCache(cfg.PNGCacheBytes),
 		mux:     http.NewServeMux(),
 		routes:  map[string]bool{},
+		costs:   map[string]int{},
 		private: map[string]bool{},
 		heavy:   make(chan struct{}, cfg.HeavyConcurrency),
 		models:  make(chan struct{}, cfg.ModelConcurrency),
+
+		keys:       newKeyring(cfg.AccountsDB),
+		usage:      newKeyUsage(cfg.StateDir),
+		siteSecret: cfg.SiteSecret,
+		challenges: newChallenges(),
+		signups:    &dailyCounter{},
+		stopKeys:   make(chan struct{}),
 	}
+	go s.keepUsage()
 	s.extras.start(cfg)
 	s.store.changed = s.datasetChanged
 	for _, name := range s.store.reload() {
@@ -170,6 +224,9 @@ func (s *Server) need(w http.ResponseWriter, r *http.Request, name string) *hand
 
 // Close flushes the lifetime totals and stops background work.
 func (s *Server) Close() {
+	close(s.stopKeys)
+	s.keys.close()
+	s.usage.save()
 	s.limiter.close()
 	s.metrics.close()
 	s.extras.close()
@@ -212,6 +269,12 @@ type requestInfo struct {
 	// cached marks an answer that cost the server nothing to make: a 304, or a picture
 	// already in the PNG cache. Logo routes give such a request its charge back.
 	cached bool
+	// cred is the key or site token the request brought; bucket is what its rate limit
+	// is counted under (the address, or the key). keyRoute marks a request to an
+	// endpoint that will need a key: only there is the key's id written to the log.
+	cred     credential
+	bucket   string
+	keyRoute bool
 }
 
 type infoKey struct{}
@@ -284,7 +347,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	header := writer.Header()
 	header.Set("Access-Control-Allow-Origin", "*")
-	header.Set("Access-Control-Expose-Headers", "ETag, X-Logo-Fallback, X-Logo-Known")
+	header.Set("Access-Control-Expose-Headers", "ETag, X-Logo-Fallback, X-Logo-Known, X-Logo-Set, RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After, X-Key-Notice, X-Quota-Limit, X-Quota-Remaining")
 	header.Set("Cross-Origin-Resource-Policy", "cross-origin")
 	header.Set("X-Content-Type-Options", "nosniff")
 	header.Set("Referrer-Policy", "strict-origin-when-cross-origin")
@@ -294,7 +357,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		details.route = "preflight"
 		details.private = s.privatePath(r)
 		header.Set("Access-Control-Allow-Methods", "GET, HEAD, POST, OPTIONS")
-		header.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Mcp-Session-Id, Mcp-Protocol-Version")
+		header.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-API-Key, X-Site-Token, Mcp-Session-Id, Mcp-Protocol-Version")
 		header.Set("Access-Control-Max-Age", "86400")
 		writer.WriteHeader(http.StatusNoContent)
 	case http.MethodGet, http.MethodHead, http.MethodPost:
@@ -394,6 +457,11 @@ func (s *Server) logRequest(r *http.Request, details *requestInfo, place clientP
 	if status >= 400 && details.code != "" {
 		entry["error"] = details.code
 	}
+	// The key's id (never the key) on the endpoints that need one, so abuse can be traced
+	// to an account and stopped (Dharun, 2026-11-11). Nothing about keys elsewhere.
+	if details.keyRoute && details.cred.keyID != "" {
+		entry["key"] = details.cred.keyID
+	}
 	if found.Type != "" {
 		entry["attack"], entry["attack_in"] = found.Type, found.In
 		// What the attacker sent is kept only where the request's input is logged anyway
@@ -465,23 +533,57 @@ func (s *Server) handle(route string, cost int, pattern string, handler http.Han
 	}
 	private := privatePaths[path]
 	s.private[pattern] = private
+	needsKey, group := keyPaths[path], groupOfPath[path]
+	if old, seen := s.costs[path]; !seen || cost > old {
+		s.costs[path] = cost
+	}
 	s.mux.HandleFunc(pattern, func(w http.ResponseWriter, r *http.Request) {
 		details := info(r)
 		details.route = route
 		details.private = details.private || private
-		charge, client := cost, ""
+		charge, client, limit := cost, "", s.cfg.RateLimitPerMinute
 		if details.internal {
 			charge, client = cost-costLight, details.client
 		} else if cost > 0 {
-			client = s.clientKey(r)
+			cred, problem := s.identify(r)
+			if problem != "" {
+				w.Header().Set("WWW-Authenticate", `Bearer realm="India API", error="invalid_token"`)
+				s.fail(w, r, http.StatusUnauthorized, "invalid_key", problem)
+				return
+			}
+			details.cred, client = cred, s.clientKey(r)
+			if cred.kind == "key" {
+				client = "key:" + cred.keyID
+			}
+			details.bucket = client
 		}
-		if charge > 0 && !s.limiter.allow(client, charge) {
-			details.route = "rate_limited"
-			s.metrics.rateLimited()
-			w.Header().Set("Retry-After", "60")
-			s.fail(w, r, http.StatusTooManyRequests, "rate_limited",
-				fmt.Sprintf("Rate limit is %d requests per minute; this endpoint counts as %d.", s.cfg.RateLimitPerMinute, cost))
-			return
+		if details.cred.kind == "key" {
+			limit = s.cfg.KeyRateLimitPerMinute
+		}
+		if charge > 0 {
+			used, ok := s.limiter.allow(client, charge, limit)
+			s.limiter.headers(w.Header(), limit, used)
+			if !ok {
+				details.route = "rate_limited"
+				s.metrics.rateLimited()
+				w.Header().Set("Retry-After", strconv.Itoa(s.limiter.reset()))
+				message := fmt.Sprintf("Rate limit is %d units per minute; this endpoint counts as %d.", limit, cost)
+				if details.cred.kind != "key" {
+					message += " A free API key raises it to " + strconv.Itoa(s.cfg.KeyRateLimitPerMinute) + ": " + s.origin(r) + "/signup"
+				}
+				s.fail(w, r, http.StatusTooManyRequests, "rate_limited", message)
+				return
+			}
+		}
+		if needsKey {
+			release, ok := s.keyGate(w, r)
+			if !ok {
+				return
+			}
+			defer release()
+		}
+		if details.cred.kind == "key" {
+			s.usage.count(details.cred.keyID, group)
 		}
 		if cost == costHeavy {
 			release, ok := s.takeSlot(w, r, s.heavy, heavyWait)
@@ -544,17 +646,19 @@ func (s *Server) origin(r *http.Request) string {
 	return "http://" + r.Host
 }
 
-// rateLimiter counts cost per client in fixed one-minute windows. Coarse, but it
-// costs one map entry per active client and nothing else.
+// rateLimiter counts cost per client (an address, or a key) in fixed one-minute
+// windows. Coarse, but it costs one map entry per active client and nothing else.
+// perMinute zero switches limiting off.
 type rateLimiter struct {
 	perMinute int
 	mu        sync.Mutex
 	counts    map[string]int
+	started   time.Time
 	stop      chan struct{}
 }
 
 func newRateLimiter(perMinute int) *rateLimiter {
-	limiter := &rateLimiter{perMinute: perMinute, counts: map[string]int{}, stop: make(chan struct{})}
+	limiter := &rateLimiter{perMinute: perMinute, counts: map[string]int{}, started: time.Now(), stop: make(chan struct{})}
 	if perMinute > 0 {
 		go func() {
 			ticker := time.NewTicker(time.Minute)
@@ -564,6 +668,7 @@ func newRateLimiter(perMinute int) *rateLimiter {
 				case <-ticker.C:
 					limiter.mu.Lock()
 					limiter.counts = map[string]int{}
+					limiter.started = time.Now()
 					limiter.mu.Unlock()
 				case <-limiter.stop:
 					return
@@ -574,14 +679,33 @@ func newRateLimiter(perMinute int) *rateLimiter {
 	return limiter
 }
 
-func (l *rateLimiter) allow(key string, cost int) bool {
+// allow charges cost to key, whose allowance is limit units a minute, and reports how
+// much of it is used.
+func (l *rateLimiter) allow(key string, cost, limit int) (int, bool) {
 	if l.perMinute <= 0 {
-		return true
+		return 0, true
 	}
 	l.mu.Lock()
 	defer l.mu.Unlock()
 	l.counts[key] += cost
-	return l.counts[key] <= l.perMinute
+	return l.counts[key], l.counts[key] <= limit
+}
+
+// reset is how many seconds are left in the current window.
+func (l *rateLimiter) reset() int {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+	return max(1, 60-int(time.Since(l.started).Seconds()))
+}
+
+// headers tells a caller where it stands, the same for keyless and keyed calls.
+func (l *rateLimiter) headers(header http.Header, limit, used int) {
+	if l.perMinute <= 0 {
+		return
+	}
+	header.Set("RateLimit-Limit", strconv.Itoa(limit))
+	header.Set("RateLimit-Remaining", strconv.Itoa(max(limit-used, 0)))
+	header.Set("RateLimit-Reset", strconv.Itoa(l.reset()))
 }
 
 // refund gives back units charged for a request that turned out to cost nothing.

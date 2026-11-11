@@ -4,7 +4,7 @@
 
 Fetches a URL from a server in India and times each step: DNS lookup, TCP connect, TLS handshake, time to first byte and download. It follows up to five redirects, lists them, and returns the status, HTTP version, response headers and which CDN answered and from which city (Cloudflare, CloudFront, Fastly, Vercel and others), so you can see whether Indian visitors are served from Mumbai or Chennai or sent abroad. The body is read, counted and hashed, never returned, and cookie values are hidden. Only http on port 80 and https on 443, only public addresses, GET only. Requests are sent with the user agent IndiaAPI-check/1.0 (+https://api.dharun.dev/docs/probe); a site that does not want them can refuse that user agent. Each site gets at most 10 checks a minute from all callers together. Counts as 20 requests against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Time a URL from India
 

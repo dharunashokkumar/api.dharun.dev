@@ -145,3 +145,22 @@ post_check /v1/image/info photo.jpg image/jpeg application/json '"width":853'
 post_check "/v1/image/convert?format=webp&width=200" photo.jpg image/jpeg image/webp
 post_json "/v1/invoice?format=json" '{"number":"T-1","date":"2026-10-14","seller":{"name":"A","address":"Namakkal","gstin":"33AABCS1429B1Z1"},"buyer":{"name":"B","address":"Bengaluru","gstin":"29AAACK6812C1ZS"},"items":[{"description":"Rice","hsn":"1006","rate":100,"gst_rate":5}]}' application/json '"igst":5'
 post_json /v1/invoice '{"number":"T-1","date":"2026-10-14","seller":{"name":"A","address":"Namakkal","gstin":"33AABCS1429B1Z1"},"buyer":{"name":"B","address":"Bengaluru","gstin":"29AAACK6812C1ZS"},"items":[{"description":"Rice","hsn":"1006","rate":100,"gst_rate":5}]}' application/pdf
+# Part 2 to 4 of the growth plan: keys, the interactive site, the new endpoints.
+check /keys text/html "API keys"
+check /signup text/html 'id="account-app"'
+check /account/api/challenge application/json '"algorithm":"SHA-256"'
+check /play text/html 'id="page-data"'
+check /play/samples.json application/json
+check /tools/gst-invoice text/html 'data-tool="gst-invoice"'
+check /demos/market-clock text/html 'data-demo="market-clock"'
+check /logos/TCS text/html "Tata Consultancy"
+check /assets/try.js text/javascript "indiaTry"
+check /changelog text/html "Changelog"
+check "/v1/calc/emi?amount=1000000&rate=8.5&years=20" application/json '"emi":8678.23'
+check "/v1/calc/income-tax?income=1275000&year=2025-26" application/json '"better":"new"'
+check "/v1/holidays/2026.ics?type=market" text/calendar "BEGIN:VEVENT"
+check "/v1/today?state=TN" application/json '"financialYear"'
+check "/v1/avatar/Priya%20Raman" image/svg+xml "<svg"
+check /v1/placeholder/600x400 image/svg+xml "<svg"
+check "/v1/chart?type=bar&labels=A,B&values=1,2" image/svg+xml "<svg"
+post_json /v1/batch '{"kind":"pincode","values":["637001","600001"]}' application/json '"district":"Namakkal"'

@@ -4,7 +4,7 @@
 
 Tests a pattern in JavaScript or RE2 (Go) syntax: every match with its groups and their character offsets, an optional replacement, and the pattern taken apart token by token in plain words. JavaScript patterns run under a one-second limit, since nested quantifiers can take exponentially long; RE2 cannot. Patterns and texts are not logged or kept. Each request counts as 10 against the rate limit.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Test a regular expression
 

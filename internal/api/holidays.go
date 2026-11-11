@@ -1,12 +1,16 @@
 package api
 
 import (
+	"crypto/sha1"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
 	"net/http"
 	"sort"
 	"strconv"
 	"strings"
+	"time"
+	"unicode/utf8"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/dataset"
 )
@@ -106,7 +110,9 @@ func (s *Server) holidaySource(used []string) *sourceRef {
 
 func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
-	year, err := strconv.Atoi(r.PathValue("year"))
+	// /v1/holidays/2027.ics is the same list as a calendar to subscribe to.
+	raw, calendar := strings.CutSuffix(r.PathValue("year"), ".ics")
+	year, err := strconv.Atoi(raw)
 	if err != nil || year < 1900 || year > 2200 {
 		s.badRequest(w, r, "The year must be four digits, for example /v1/holidays/2026.")
 		return
@@ -230,7 +236,65 @@ func (s *Server) handleHolidays(w http.ResponseWriter, r *http.Request) {
 	if len(missing) > 0 {
 		note = fmt.Sprintf("The %s holiday list for %d is not out yet, so those holidays are not included. ", joinWords(missing), year) + note
 	}
+	if calendar {
+		s.sendCalendar(w, r, year, kind, stateCode, holidays)
+		return
+	}
 	s.ok(w, r, holidays, meta{Total: &total, Source: s.holidaySource(used), Note: note}, cacheAPI)
+}
+
+// sendCalendar answers with the holidays as an iCalendar feed (RFC 5545) that Google
+// Calendar, Outlook and phones subscribe to and fetch again by themselves.
+func (s *Server) sendCalendar(w http.ResponseWriter, r *http.Request, year int, kind, state string, holidays []holidayView) {
+	name := "India holidays " + strconv.Itoa(year)
+	if kind != "" {
+		name = strings.ToUpper(kind[:1]) + kind[1:] + " holidays " + strconv.Itoa(year)
+	}
+	if state != "" {
+		name += " (" + state + ")"
+	}
+	var out strings.Builder
+	line := func(text string) {
+		// Lines are folded at 75 octets, continuation lines start with a space.
+		for len(text) > 75 {
+			cut := 75
+			for cut > 0 && !utf8.RuneStart(text[cut]) {
+				cut--
+			}
+			out.WriteString(text[:cut] + "\r\n")
+			text = " " + text[cut:]
+		}
+		out.WriteString(text + "\r\n")
+	}
+	escape := strings.NewReplacer(`\`, `\\`, ";", `\;`, ",", `\,`, "\n", `\n`)
+	line("BEGIN:VCALENDAR")
+	line("VERSION:2.0")
+	line("PRODID:-//India API//Holidays//EN")
+	line("CALSCALE:GREGORIAN")
+	line("METHOD:PUBLISH")
+	line("X-WR-CALNAME:" + escape.Replace(name))
+	line("X-WR-TIMEZONE:Asia/Kolkata")
+	line("REFRESH-INTERVAL;VALUE=DURATION:P1D")
+	line("X-PUBLISHED-TTL:P1D")
+	stamp := time.Now().UTC().Format("20060102T150405Z")
+	for _, h := range holidays {
+		day, err := time.Parse("2006-01-02", h.Date)
+		if err != nil {
+			continue
+		}
+		sum := sha1.Sum([]byte(h.Date + "|" + h.Type + "|" + h.Region + "|" + h.Name))
+		line("BEGIN:VEVENT")
+		line("UID:" + hex.EncodeToString(sum[:8]) + "@api.dharun.dev")
+		line("DTSTAMP:" + stamp)
+		line("DTSTART;VALUE=DATE:" + day.Format("20060102"))
+		line("DTEND;VALUE=DATE:" + day.AddDate(0, 0, 1).Format("20060102"))
+		line("SUMMARY:" + escape.Replace(h.Name))
+		line("DESCRIPTION:" + escape.Replace(h.Type+" holiday, "+h.Region+". From "+s.origin(r)+"/v1/holidays/"+strconv.Itoa(year)))
+		line("TRANSP:TRANSPARENT")
+		line("END:VEVENT")
+	}
+	line("END:VCALENDAR")
+	writeBody(w, r, http.StatusOK, []byte(out.String()), "text/calendar; charset=utf-8", cacheAPI, true)
 }
 
 // joinWords joins names as prose: "a", "a and b", "a, b and c".

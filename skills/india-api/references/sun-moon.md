@@ -4,7 +4,7 @@
 
 The astronomy of a day without the almanac: sunrise, sunset, solar noon and day length; civil, nautical and astronomical twilight; moonrise and moonset; the moon's phase, how much of it is lit and its age; and the next new, first quarter, full and last quarter moons. Computed with the same code as the panchang, and checked against NASA's JPL ephemeris.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Sun and moon for a date
 

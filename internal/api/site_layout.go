@@ -317,7 +317,7 @@ table.params small { display: block; margin-top: var(--space-3xs); color: var(--
 }
 `
 
-const siteCSS = cssStamp + fontFaces + cssTokens + cssBase + cssPage
+const siteCSS = cssStamp + fontFaces + cssTokens + cssBase + cssPage + cssApp
 
 // siteJS adds code tabs (the chosen language is remembered in this browser only), a
 // strip with a copy button over every code block, and colour for JSON answers. Without
@@ -394,6 +394,8 @@ const htmlLayout = `
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{.Title}}</title>
 <meta name="description" content="{{.Description}}">
+{{with .Robots}}<meta name="robots" content="{{.}}">
+{{end}}
 <link rel="canonical" href="{{.Canonical}}">
 <meta name="theme-color" content="#f8fbfe">
 <meta name="author" content="` + authorName + `">
@@ -423,8 +425,11 @@ const htmlLayout = `
 <a class="brand" href="/" aria-label="` + productName + ` home">` + brandMark + `<span>` + productName + `</span></a>
 <nav aria-label="Main">
 <a href="/docs"{{if eq .Nav "docs"}} aria-current="page"{{end}}>Docs</a>
+<a href="/tools"{{if eq .Nav "tools"}} aria-current="page"{{end}}>Tools</a>
+<a href="/play"{{if eq .Nav "play"}} aria-current="page"{{end}}>Playground</a>
 <a href="/guides"{{if eq .Nav "guides"}} aria-current="page"{{end}}>Guides</a>
 <a href="/ai"{{if eq .Nav "ai"}} aria-current="page"{{end}}>AI</a>
+<a href="/account"{{if eq .Nav "account"}} aria-current="page"{{end}}>API key</a>
 <a href="` + repoURL + `">GitHub</a>
 </nav>
 </div></div></header>
@@ -435,7 +440,7 @@ const htmlLayout = `
 <footer class="foot"><div class="container foot-grid">
 <div class="colophon"><a class="brand" href="/" aria-label="` + productName + ` home">` + brandMark + `<span>` + productName + `</span></a><p>` + siteTagline + `. Built by <a href="` + authorURL + `">` + authorName + `</a>.</p></div>
 <div class="links">
-<div><h2>Use it</h2><a href="/docs">API reference</a><a href="/guides">Guides</a><a href="/ai">AI tools</a><a href="/openapi.json">OpenAPI</a><a href="/llms.txt">llms.txt</a></div>
+<div><h2>Use it</h2><a href="/docs">API reference</a><a href="/tools">Free tools</a><a href="/play">Playground</a><a href="/demos">Demos</a><a href="/guides">Guides</a><a href="/ai">AI tools</a><a href="/keys">API keys</a><a href="/changelog">Changelog</a><a href="/openapi.json">OpenAPI</a><a href="/llms.txt">llms.txt</a></div>
 <div><h2>Trust</h2><a href="/privacy">Privacy</a><a href="/security">Security</a><a href="/about">About and licences</a><a href="/healthz">Status</a></div>
 <div><h2>Open source</h2><a href="` + repoURL + `">Source code</a><a href="` + repoURL + `/issues">Report a problem</a><a href="` + repoURL + `/blob/main/LICENSE">AGPL-3.0 licence</a></div>
 </div>

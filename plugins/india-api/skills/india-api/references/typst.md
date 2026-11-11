@@ -4,7 +4,7 @@
 
 Typst is a modern markup language for documents, quicker to write than LaTeX. Send a document and get a PDF, or one page as PNG or SVG. Noto fonts for Latin and nine Indian scripts are available; packages, other files and the network are not, so a document must be self-contained. Each document has 20 seconds.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Compile Typst to PDF
 

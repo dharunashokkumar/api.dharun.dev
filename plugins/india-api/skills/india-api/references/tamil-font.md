@@ -4,7 +4,7 @@
 
 Before Unicode, Tamil was stored in 8-bit encodings that only looked like Tamil in one particular font; anywhere else the same text shows as characters like ¾Á¢ú. This converts such text to Unicode and Unicode back to it, moving the vowel signs that those encodings write before the consonant. TSCII 1.7 is offered now; TAB, TAM and Bamini are planned. The tables are written from the published standard.
 
-Base URL `https://api.dharun.dev`. No API key. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 requests a minute per client.
+Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free key (https://api.dharun.dev/keys) raises the limits, and the model endpoints marked below will need one. Answers are JSON, `{ "data": ..., "meta": { ... } }`, and errors are `{ "error": { "code", "message" } }` with a matching HTTP status. Rate limit: 600 units a minute per address without a key, 3000 per key; the `RateLimit-*` headers say what is left.
 
 ## Convert Tamil text
 

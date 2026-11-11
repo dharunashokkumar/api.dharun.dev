@@ -8,7 +8,7 @@ Report it privately through [GitHub's vulnerability form]({{.Repo}}/security/adv
 
 ## How the service limits harm
 
-- No accounts, no keys and no stored user data, so there is nothing of yours to leak.
+- Accounts are optional. An account holds an email address, a password hash, key hashes (never the keys) and usage counts, in the account program (PocketBase), which listens on the server's own loopback only. Its admin screen is never reachable from the internet; the API passes through only the few addresses the account pages use. A key is shown once and stored only as a SHA-256 hash.
 - Datasets are opened read-only; no request can change them.
 - Every client has a rate limit ({{.Limit}} requests a minute), request bodies are capped at {{.BodyLimit}}, and heavy work runs in a fixed number of slots, so a burst waits in line instead of exhausting the server.
 - The network tools refuse private and reserved addresses, so they cannot be used to reach inside a network.

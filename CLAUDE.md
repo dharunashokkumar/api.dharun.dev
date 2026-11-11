@@ -6,9 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `api.dharun.dev`, named **India API**: free, open source APIs for Indian developers (company
 logos, pincodes, IFSC, RTO codes, holidays, number to words, format checks, GST invoices,
-OCR, PDF, image and speech tools, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
-same service serves the website, the guides and the files for AI agents. No API keys,
-rate limit per IP. Code AGPL-3.0-only; examples, guides' code, skill and plugin MIT-0.
+OCR, PDF, image and speech tools, money calculators, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
+same service serves the website (with try-it panels, a playground, tool pages and demos),
+the guides and the files for AI agents. Light endpoints need no key and are limited per IP;
+a free API key (accounts on PocketBase, `cmd/accounts`) raises the limits, and the model
+endpoints will need one after a notice period. Code AGPL-3.0-only; examples, guides' code,
+skill and plugin MIT-0.
 
 `ROADMAP.md` tracks what is implemented, what is planned and what was rejected, with the
 data source and refresh method for each API. Read it before adding an API, and update it
@@ -317,6 +320,29 @@ GitHub release `models-2026-10` (never pruned: only `v1.1.N` tags are). Changing
 means a new release name and new checksums. `DOWNLOAD_MIRROR=<dir>` (host/path layout)
 makes `apidata refresh` copy files instead of downloading them, for tests on a slow line.
 
+### Keys, accounts and the interactive site (growth plan Parts 2 and 3)
+
+`cmd/accounts` is PocketBase v0.39.11 used as a library (v0.40 needs Go 1.27; read the
+changelog before raising it), with our parts in `internal/accounts`. It listens on
+localhost only; the API passes through the allow-listed addresses in `account.go`
+(`accountPassThrough`, never the admin screen or the record API) and runs signup itself
+(proof of work, disposable domains, a daily cap per address). The key format is
+`internal/apikey`; the API reads key hashes from the accounts database (`ACCOUNTS_DB`,
+read-only) every 15 seconds in `keys.go`. `handle` identifies a key or site token,
+charges the key's own allowance (`KEY_RATE_LIMIT_PER_MIN`), sets the `RateLimit-*`
+headers, and for routes whose catalog entry has `Key` runs `keyGate`: the daily quota
+(`MODEL_QUOTA_PER_DAY`), one request at a time per key, the site token's allowance, and
+after `KEY_REQUIRED_FROM` the 401. A handler that runs a model only for some inputs calls
+`keyGate` itself (`names=true` in redaction). Usage per key goes to
+`STATE_DIR/key-usage.json`; the key's id is logged on key routes only. Mark a new model
+endpoint `Key: true`.
+
+The interactive pages (`site_app.go`, `site_play.go`, `site_tools.go`, `site_more.go`)
+use the `app` template and plain scripts in `internal/api/assets/` served at `/assets/`
+from the binary: no framework, nothing from other hosts. The try-it panel and the
+playground are generated from the catalog (`tryit.go`); a test checks every endpoint has
+a spec with example values. Check a script with `node --check` when you change it.
+
 ### MCP
 
 `mcp.go` is a stateless MCP server (Streamable HTTP) at `POST /mcp`. A tool does not
@@ -416,8 +442,10 @@ refresh (`MemoryMax=512M`, separate unit).
 ## Rules that the code does not show
 
 - **Settled product decisions** (do not reverse as "improvements"): flat `/v1/<resource>`
-  URLs, Go, the `{ data, meta }` envelope with `meta.source` on every response, no API
-  keys, documentation-only website, private monitoring, one container, servers refresh
+  URLs, Go, the `{ data, meta }` envelope with `meta.source` on every response, light
+  endpoints keyless (free keys raise limits; model endpoints need a key after the notice
+  date; 2026-11-11), an interactive site with nothing loaded from other hosts, private
+  monitoring, one container (the accounts program runs beside the API in it), servers refresh
   their own data, every push to `main` deploys. Ask before changing any of them.
 - **Ask Dharun before deciding product questions.** He wants clarifying questions and to
   make the calls himself.

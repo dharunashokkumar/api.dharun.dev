@@ -183,3 +183,32 @@ Search Console:
 2. Pages made from data: start with company logo pages only?
 3. Which demos first.
 4. Tool pages in Hindi and Tamil later (each needs a human review), or English only for good.
+
+## Build status (2026-11-11)
+
+Built, tested and committed, not pushed. Dharun's answers of 2026-11-11: the site
+token, yes (10 model requests a day per address once keys are required); company logo
+pages, yes, now.
+
+- [x] Try-it panel under every endpoint (`tryit.go`, `assets/try.js`): fields from the
+      example, live curl/JavaScript/Python, answer with status, time, limit headers,
+      JSON, image, PDF or audio; error buttons (404, 400). A test checks every endpoint
+      has a spec with path values.
+- [x] Playground `/play`: find, build, headers, share through `#`, history (browser
+      only, never private endpoints), five chains (`playChains`), simulate from
+      `/play/samples.json` with the allowance drawn, a sentence for an assistant, the
+      visitor's key when one was made on this browser.
+- [x] The first ten tool pages at `/tools` (`site_tools.go`, `assets/tools.js`), each with
+      questions, JSON-LD and the API line; model tools send the site token.
+- [x] Company logo pages `/logos`, `/logos/{SYMBOL}` (every listed company, in the
+      sitemap, other spellings redirect), with Markdown forms.
+- [x] Demos (4 of 10): market clock, script switcher, logo wall, under the hood.
+- [x] `/changelog` (by hand, `templates/changelog.md`).
+- [x] Nav: Tools, Playground, API key; footer links.
+- [ ] The other six demos (satellite tracker, path from India, panchang dial, day length,
+      radio weather, invoice live).
+- [ ] The next twenty tool pages, and CSV enrich on `/v1/batch`.
+- [ ] Section 5 search items: per-page SEO titles, typed schemas, sitemap dates from
+      documentation edits, Search Console first, Flutter and Android guides, client packages.
+- [ ] A headless browser check, only if regressions appear. The scripts were checked with
+      `node --check` and against a local server's answers, not in a browser.

@@ -4,7 +4,7 @@ The one place that tracks what `api.dharun.dev` serves, what is being built, wha
 later and what was turned down. Every API lists where its data comes from and how that
 data is refreshed. Update this file in the same change that adds or alters an API.
 
-Last updated: 2026-11-04
+Last updated: 2026-11-11
 
 **Status words:** `Live` released · `Building` in the current round · `Planned` agreed,
 later round · `Open` waiting for a decision · `Not building` turned down, with the reason.
@@ -23,6 +23,7 @@ later round · `Open` waiting for a decision · `Not building` turned down, with
 | Round 3 | AI models (section 6): **live 2026-10-15**, models published in the `models-2026-10` release; every endpoint checked on the live site |
 | Round 4 | Network tools: **live 2026-10-16 in `v1.1.30`** (section 6): whois, TLS check, IPv6 check, HTTP probe, website icons; with the search audit fixes |
 | Open, not scheduled | Disposable services and sandboxes (design only so far), the rest of the Cloudflare automation, TLS fingerprint (section 6) |
+| Growth plan Parts 2 to 4 | **Built 2026-11-11, committed, not pushed** (Dharun: commit only). Keys and accounts, the interactive site, the Part 4 endpoints (section 6, "Accounts and keys", "Interactive site", "Cheap endpoints"). Accounts need the infrastructure request in `docs/plan/03-accounts-and-keys.md` before they work on the server; until then the account addresses answer 503 and keys are refused as unknown |
 
 ## 2. Platform work in round 1
 
@@ -439,6 +440,47 @@ the update a script run by hand (the server never fetches from TradingView).
 | Cloudflare cache rule for the logo addresses | Infrastructure request, with "count what Cloudflare serves from its cache" | Not now (Dharun, 2026-11-11) |
 | Logo pages on the website (`/logos/{SYMBOL}`) | Moved to plan Part 3 (website), after the try-it panel and once Search Console shows the site is indexed | Moved (2026-11-11) |
 
+### Accounts and keys (plan Part 2, `docs/plan/03-accounts-and-keys.md`, built 2026-11-11)
+
+| Part | What | Status |
+|---|---|---|
+| Account system | `cmd/accounts`: PocketBase v0.39.11 as a Go library (v0.40 needs Go 1.27), localhost only; collections and settings in `internal/accounts` (users with `disabled` and `tier`, `api_keys` with the SHA-256 hash, the hint, revoked; cascade delete). PocketBase's own request log and rate limiter are off | Built |
+| Logins | Email and password (mail through any SMTP service set in the environment), Google and GitHub (OAuth client ids in the environment; a provider without an id stays off). Mails link to our `/account/verify` and `/account/reset` pages, the token after `#` | Built |
+| Bot check on signup | Self-hosted proof of work in the ALTCHA scheme (`/account/api/challenge`, `assets/pow.js`), nothing from another host (Dharun, 2026-11-11). Also: disposable domains refused, 5 signups per address a day, 3 keys per account, a verified email before a key | Built |
+| Keys | `india_live_` + 32 base62 + a 6-character checksum (`internal/apikey`). Sent as `Authorization: Bearer` or `X-API-Key`, never in the query. Other bearer tokens are ignored. The API reads the key table from the accounts database every 15 s, read-only, with one direct lookup for a new key | Built |
+| Limits (Dharun, 2026-11-11) | Keyless 600 units a minute per address, as before; 3,000 per key; model routes 500 requests a day per key, one at a time per key; `RateLimit-Limit/Remaining/Reset` on every charged answer, `X-Quota-*` on model routes | Built |
+| Key routes | Every model route (Dharun, 2026-11-11): OCR, speech to text, text to speech, translation, embeddings, reranking, background removal, denoise, moderation, Roman typing suggestions, and `names=true` in redaction. Marked `Key` in the catalog: docs, OpenAPI (`security`, `x-key-required`), `/v1`, skill and MCP generated from it | Built |
+| Notice period | `KEY_REQUIRED_FROM` (a date). Unset or before it: answered as before with `X-Key-Notice`; from it: 401 `key_required`. 30 days' notice proposed; the date is Dharun's to set | Built; date not set |
+| Site tokens | The tool pages get a signed one-hour token tied to the address (after the same proof of work), allowing 10 model requests a day per address once keys are required (Dharun, 2026-11-11) | Built |
+| Log | The key's id on key routes only (Dharun, 2026-11-11); usage per key, day and group in `STATE_DIR/key-usage.json` | Built |
+| Pages | `/signup`, `/login`, `/account` (make, rotate, revoke, use, password, log out everywhere, delete), `/keys`, privacy and security pages updated | Built |
+| Server side | Second unit, env file, backup of `STATE_DIR/accounts/`, mail service, OAuth apps | Infrastructure request (written in `docs/plan/03-accounts-and-keys.md` section 12) |
+| Publishable browser keys | Not now (Dharun, 2026-11-11: start without) | Not now |
+
+### Interactive site (plan Part 3, `docs/plan/04-website.md`, built 2026-11-11)
+
+| Part | What | Status |
+|---|---|---|
+| Try-it panel | Under every endpoint on every API page, generated from the catalog (`tryit.go`, `assets/try.js`): fields filled from the example, live curl/JavaScript/Python, status, time, limit headers, JSON, images, PDF, audio; buttons that make a 404 or 400 on purpose | Built |
+| Playground `/play` | Search, build, extra headers, share through `#`, history in the browser (never private endpoints), five chains, simulate from the documented samples (`/play/samples.json`) with the allowance shown, a sentence for an assistant | Built |
+| Tool pages `/tools` | The first ten: GST invoice, UPI QR, IFSC finder, pincode finder, amount in words, bank holidays (with the calendar feed), panchang, image to text, Indian language typing, PDF tools. Each with questions, JSON-LD, and the API it runs on | Built |
+| Logo pages `/logos`, `/logos/{SYMBOL}` | One per listed company (Dharun, 2026-11-11), in the sitemap; other spellings redirect to the ticker | Built |
+| Demos `/demos` | Market clock, script switcher, logo wall, under the hood | Built (4 of 10) |
+| Changelog `/changelog` | By hand in `templates/changelog.md` | Built |
+| Search items | SEO titles per page, typed schemas, sitemap dates from documentation edits, Search Console check, more guides, client packages | Open |
+
+### Cheap endpoints (plan Part 4, `docs/plan/05-new-endpoints.md` set A, built 2026-11-11)
+
+| API | Address | Data | Status |
+|---|---|---|---|
+| Batch lookups | `POST /v1/batch` | Runs the single lookups in memory; up to 1,000, ten cost one unit; Private | Built |
+| Calendar feeds | `/v1/holidays/{year}.ics` | The holiday lists | Built |
+| Today in India | `/v1/today` | Holidays, working days, market status, sun and panchang | Built |
+| Money calculators | `/v1/calc/{sip,lumpsum,emi,gst,income-tax,hra,gratuity,ppf,capital-gains,trade}` | Rules typed from the Finance Acts and circulars (`internal/calc`): income tax for 2025-26 and 2026-27 (the Finance Act 2026 kept the 2025-26 slabs), GST rates from 22 September 2025, capital gains from 23 July 2024, cost inflation index to 2025-26, NSE charges from 1 October 2024, PPF 7.1%. **Yearly review** after each budget, and when the CII for 2026-27 is notified | Built |
+| Avatars | `/v1/avatar/{name}` | Pure logic, typeset in ten scripts | Built |
+| Placeholders | `/v1/placeholder/{size}` | Pure logic | Built |
+| Chart images | `/v1/chart` (GET or JSON POST) | Pure logic | Built |
+
 ### Ideas not scheduled yet
 
 From the first brainstorm, kept so they are not lost. None has a source or a decision yet.
@@ -450,7 +492,6 @@ From the first brainstorm, kept so they are not lost. None has a source or a dec
 | Festival dates (Tamil, Hindu, Islamic calendars) | Hindu and Tamil festivals follow from the panchang, planned as its next step; Islamic dates depend on moon sighting |
 | State government holidays | Each state's own notification, typed in by hand like the central list |
 | Colleges and universities (AISHE), school boards | Check the AISHE portal's reuse terms |
-| Placeholder images | Pure logic; the drawing code for preview images would do it |
 | Symbol, ISIN, BSE code and company name cross-reference | Mostly served by `/v1/companies` already; a search across all four would finish it |
 
 ## 7. Getting it used
@@ -779,3 +820,6 @@ Live since 2026-10-14 (set up from the private homelab repository). Steps:
 | 2026-11-10 | Logos never fail: an unknown symbol answers the monogram with status 200, `X-Logo-Known: false` and a one-day cache; `fallback=none` keeps the 404. Unknown names are counted (normalised name only) in `STATE_DIR/missed-logos.json`, read with `apidata missed-logos` |
 | 2026-11-11 | Logos grow in three sets at `/v1/brand-logos`, `/v1/stock-logos`, `/v1/asset-logos`; `/v1/logos` falls through to them in a fixed order (NSE and BSE, old tickers, brands, global stocks, assets) with `X-Logo-Set`. Brand artwork from press kits, Wikimedia Commons where the licence allows, else the site's own icon; each file's origin recorded. Global stocks start with the US and the major markets (LSE, Tokyo, Hong Kong, Frankfurt and similar) |
 | 2026-11-11 | Cached logo answers (304, PNG cache hit) do not count against the rate limit. No Cloudflare cache rule for now. Logo pages move to Part 3 |
+| 2026-11-11 | Part 2: any SMTP service, set in the environment; the self-hosted ALTCHA-style proof of work, not Turnstile; keyless 600 units a minute per address, 3,000 per key, 500 model requests a day per key, 30 days' notice; no publishable browser keys yet; the key's id in the log on key routes only; every model route moves behind the key. Replaces "No API keys" (2026-10-13): light endpoints stay keyless |
+| 2026-11-11 | Part 3: the site gives tool page visitors a short-lived token with a small daily allowance for model tools; company logo pages are built now. Replaces "documentation-only website" (2026-10-13) |
+| 2026-11-11 | Part 4: all the money calculators, income tax included, with a yearly review of the rules |
