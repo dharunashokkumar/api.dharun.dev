@@ -125,8 +125,7 @@ From `seo_audit.md` (still open) and the data:
 
 - [x] **Search titles and descriptions per page**, written for the task, not truncated from the summary
       (2026-11-11: `seo.go`, the 20 most searched API pages; the rest keep the catalog title).
-- [ ] **Typed response schemas in OpenAPI**, shared with MCP `outputSchema`. Also the
-      base for generated client packages.
+- [x] **Typed response schemas in OpenAPI** (2026-11-11: `schemas.go`, inferred from each example's real answer; 145 of 194 JSON responses typed; the rest have no sample). Still open: MCP `outputSchema` from them, and the client packages.
 - [x] **Sitemap dates from documentation edits**, not dataset dates. Tool, demo and
       logo pages join the sitemap. (2026-11-11: `pagedates.json`, kept by the generated-files test.)
 - [x] **Visible byline** on guides (2026-11-11; a fuller `/about` and the link from dharun.dev still open), a fuller `/about`, and a link from dharun.dev to the

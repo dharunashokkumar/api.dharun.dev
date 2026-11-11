@@ -148,6 +148,9 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 					"description": "Success",
 					"content":     map[string]any{"application/json": map[string]any{"schema": map[string]any{"$ref": "#/components/schemas/Envelope"}}},
 				}
+				if typed := s.responseSchema(r.Host, e); typed != nil {
+					success["content"] = map[string]any{"application/json": map[string]any{"schema": typed}}
+				}
 				if e.Image {
 					success["content"] = map[string]any{"image/svg+xml": map[string]any{}, "image/png": map[string]any{}}
 				}
