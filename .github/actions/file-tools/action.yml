@@ -9,10 +9,12 @@ runs:
   using: composite
   steps:
     - name: Restore the Debian packages
+      id: apt-cache
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       with:
         path: ~/apt-archives
-        key: apt-${{ runner.os }}-${{ hashFiles('.github/actions/file-tools/action.yml') }}
+        # Raise the number when the package list below changes.
+        key: apt-${{ runner.os }}-1
 
     - name: Restore the downloaded and built tools
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -22,16 +24,27 @@ runs:
 
     - name: Install
       shell: bash
+      env:
+        CACHED: ${{ steps.apt-cache.outputs.cache-hit }}
       run: |
-        # A stalled mirror connection is dropped after 30 seconds and retried.
-        echo 'Acquire::Retries "5"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/80-ci-retries >/dev/null
+        packages=(tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-kan
+          tesseract-ocr-mal tesseract-ocr-ben tesseract-ocr-guj tesseract-ocr-pan tesseract-ocr-ori tesseract-ocr-mar
+          libvips-tools libheif-plugin-aomenc ffmpeg poppler-utils)
         mkdir -p ~/apt-archives/partial
-        # Debian packages are taken from the cache when they are there.
-        sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" update -q
-        sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" install -y -q --no-install-recommends \
-          tesseract-ocr tesseract-ocr-eng tesseract-ocr-hin tesseract-ocr-tam tesseract-ocr-tel tesseract-ocr-kan \
-          tesseract-ocr-mal tesseract-ocr-ben tesseract-ocr-guj tesseract-ocr-pan tesseract-ocr-ori tesseract-ocr-mar \
-          libvips-tools libheif-plugin-aomenc ffmpeg poppler-utils
+        # With the packages cached, they are installed from the cache without touching the
+        # mirror, which stalls often enough to matter; the mirror is the fallback.
+        if [ "$CACHED" = true ] && sudo apt-get install -y -q --no-install-recommends ~/apt-archives/*.deb; then
+          echo "Installed from the cache."
+        else
+          # A stalled mirror connection is dropped after 30 seconds and retried.
+          echo 'Acquire::Retries "5"; Acquire::http::Timeout "30"; Acquire::https::Timeout "30";' | sudo tee /etc/apt/apt.conf.d/80-ci-retries >/dev/null
+          # Ubuntu's own and Azure's mirrors stalled for hours on 2026-11-11; kernel.org's
+          # mirror carries the same archive, security updates included.
+          sudo sed -i -E 's#https?://((azure\.)?archive|security)\.ubuntu\.com/ubuntu/?#https://mirrors.edge.kernel.org/ubuntu/#g' \
+            /etc/apt/sources.list.d/*.sources /etc/apt/sources.list 2>/dev/null || true
+          sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" update -q
+          sudo apt-get -o Dir::Cache::Archives="$HOME/apt-archives" install -y -q --no-install-recommends "${packages[@]}"
+        fi
         sudo chown -R "$USER" ~/apt-archives
         # Files already in the tools directory are kept, so a cached one is not built again.
         bash tools/fetch-tools.sh ~/ci-tools
