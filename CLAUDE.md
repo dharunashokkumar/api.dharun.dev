@@ -211,7 +211,8 @@ keep the version first. It also lists every dataset with the copy in use.
   whole API, never one per API (`skill.go`, `templates/skill.md`). They are committed as
   `skills/india-api/`, `plugins/india-api/`, `.claude-plugin/marketplace.json` and
   `server.json`; `TestGeneratedFilesAreCurrent` fails when they differ from the catalog.
-  Regenerate with `go test ./internal/api -run TestGeneratedFilesAreCurrent -update`.
+  Regenerate with `go test ./internal/api -run TestGeneratedFilesAreCurrent -update`, which also
+  refreshes `internal/api/pagedates.json` (each docs, tool and demo page's last-changed date, for the sitemap).
 - Guides are Markdown files in `internal/api/guides/` with a small header; every API
   address in them is requested by `TestGuides`. Their code is MIT-0.
 

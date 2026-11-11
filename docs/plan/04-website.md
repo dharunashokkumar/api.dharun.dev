@@ -127,8 +127,8 @@ From `seo_audit.md` (still open) and the data:
       catalog), written for the task, not truncated from the summary.
 - [ ] **Typed response schemas in OpenAPI**, shared with MCP `outputSchema`. Also the
       base for generated client packages.
-- [ ] **Sitemap dates from documentation edits**, not dataset dates. Tool, demo and
-      logo pages join the sitemap.
+- [x] **Sitemap dates from documentation edits**, not dataset dates. Tool, demo and
+      logo pages join the sitemap. (2026-11-11: `pagedates.json`, kept by the generated-files test.)
 - [ ] **Visible byline** on guides, a fuller `/about`, and a link from dharun.dev to the
       API (the personal site did not mention it when audited).
 - [ ] **Check Search Console first:** with 61 Googlebot fetches in a month, find out
@@ -136,7 +136,7 @@ From `seo_audit.md` (still open) and the data:
 - [ ] **A changelog page** (`/changelog`) written from the releases: what changed for
       users, by date. Fresh content, and it tells callers about contract changes such
       as the logo fallback and the key requirement.
-- [ ] **Guides for the developers who are already here:** Flutter (Dart made 1,800
+- [x] **Guides for the developers who are already here** (2026-11-11: Flutter, Android/Kotlin; the audit's twelve still to write): Flutter (Dart made 1,800
       requests) and Android or Kotlin (Java made 5,900): pincode autofill, IFSC
       lookup, logos in a list. Then the twelve guides proposed in the audit.
 - [ ] **Client packages** once the schemas are typed: npm, PyPI, and pub.dev for Dart.

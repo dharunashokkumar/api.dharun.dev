@@ -120,8 +120,9 @@ func (s *Server) handleRobots(w http.ResponseWriter, r *http.Request) {
 
 type sitemapEntry struct{ Path, Modified string }
 
-// siteMap lists every page. An API page's date is when its data was last retrieved; a
-// page that lists others takes the newest of theirs. Pages with no data behind them have
+// siteMap lists every page. An API page's date is the newer of when its data was last
+// retrieved and when its documentation last changed (pagedates.go); tool and demo pages
+// take the day they last changed; a page that lists others takes the newest of theirs. Pages with no data behind them have
 // no date rather than an invented one.
 func (s *Server) siteMap() []sitemapEntry {
 	entries := []sitemapEntry{{Path: "/"}, {Path: "/docs"}}
@@ -134,6 +135,7 @@ func (s *Server) siteMap() []sitemapEntry {
 					modified = source.Retrieved[:10]
 				}
 			}
+			modified = max(modified, editedOn("/docs/"+group.ID))
 			entries = append(entries, sitemapEntry{"/docs/" + group.ID, modified})
 			newestAPI = max(newestAPI, modified)
 		}
@@ -152,10 +154,10 @@ func (s *Server) siteMap() []sitemapEntry {
 		sitemapEntry{Path: "/keys"}, sitemapEntry{Path: "/changelog"}, sitemapEntry{Path: "/signup"}, sitemapEntry{Path: "/play"},
 		sitemapEntry{Path: "/tools"}, sitemapEntry{Path: "/demos"}, sitemapEntry{Path: "/logos"})
 	for _, t := range tools {
-		entries = append(entries, sitemapEntry{Path: "/tools/" + t.Slug})
+		entries = append(entries, sitemapEntry{"/tools/" + t.Slug, editedOn("/tools/" + t.Slug)})
 	}
 	for _, d := range demos {
-		entries = append(entries, sitemapEntry{Path: "/demos/" + d.Slug})
+		entries = append(entries, sitemapEntry{"/demos/" + d.Slug, editedOn("/demos/" + d.Slug)})
 	}
 	logosModified := ""
 	if source := s.source("logos"); source != nil && len(source.Retrieved) >= 10 {
