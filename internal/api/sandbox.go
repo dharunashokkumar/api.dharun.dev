@@ -150,7 +150,7 @@ func (s *Server) handleRun(w http.ResponseWriter, r *http.Request) {
 	details.private = true
 	details.keyRoute = true
 	if s.sandbox == nil {
-		s.fail(w, r, http.StatusServiceUnavailable, "not_available", "Running code is not switched on on this server yet: it needs the sandbox VM.")
+		s.fail(w, r, http.StatusServiceUnavailable, "sandbox_off", "Running code is not switched on on this server yet: it needs the sandbox VM.")
 		return
 	}
 	if details.cred.kind != "key" {

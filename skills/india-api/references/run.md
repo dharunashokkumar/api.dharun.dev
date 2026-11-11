@@ -10,7 +10,7 @@ Base URL `https://api.dharun.dev`. No API key needed for most endpoints; a free 
 
 `POST /v1/run`
 
-JSON {"language": "python" or "javascript", "code": "...", "stdin": "..."}. Returns stdout, stderr, exitCode, durationMs, cpuMs and limitsHit (time, memory, output, processes). 401 without a key; 503 while the sandbox is switched off.
+JSON {"language": "python" or "javascript", "code": "...", "stdin": "..."}. Returns stdout, stderr, exitCode, durationMs, cpuMs and limitsHit (time, memory, output, processes). 401 without a key; 503 sandbox_off while the sandbox is switched off.
 
 Send: JSON {"language": "python", "code": "print(sum(range(10)))"}, up to 64 KB of code.
 
