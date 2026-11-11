@@ -52,6 +52,12 @@ func TestMain(m *testing.M) {
 	buildIPDataset(panicker{}, testLive)
 	buildSpaceWeatherDataset(panicker{}, testLive)
 	buildSatelliteDataset(panicker{}, testLive)
+	buildLiveFixture(panicker{}, testLive, "bullion", filepath.Join("testdata", "data"), dataset.Source{
+		Name: "Gold, silver and platinum rates (test)", Licence: "Test data", Attribution: "Rates as published by IBJA.",
+	})
+	buildLiveFixture(panicker{}, testLive, "nav-history", filepath.Join("testdata", "data"), dataset.Source{
+		Name: "Mutual fund NAV history (synthetic test data)", Licence: "Test data", Attribution: "Made up for tests: 15% a year.",
+	})
 	// The voices and the background removal model are hundreds of megabytes: tests use
 	// them only where a refreshed copy is offered (MODELS_DIR, a live directory).
 	copyModelDatasets(panicker{}, os.Getenv("MODELS_DIR"), testLive)

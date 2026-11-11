@@ -1,0 +1,11 @@
+[{"date":"2026-11-10","session":"AM","metal":"gold","purity":"999","rupees":139950,"unit":"10 grams"},
+{"date":"2026-11-10","session":"PM","metal":"gold","purity":"999","rupees":140120,"unit":"10 grams"},
+{"date":"2026-11-10","session":"AM","metal":"gold","purity":"916","rupees":128190,"unit":"10 grams"},
+{"date":"2026-11-10","session":"AM","metal":"silver","purity":"999","rupees":185300,"unit":"1 kg"},
+{"date":"2026-11-11","session":"AM","metal":"gold","purity":"999","rupees":140805,"unit":"10 grams"},
+{"date":"2026-11-11","session":"AM","metal":"gold","purity":"995","rupees":140241,"unit":"10 grams"},
+{"date":"2026-11-11","session":"AM","metal":"gold","purity":"916","rupees":128977,"unit":"10 grams"},
+{"date":"2026-11-11","session":"AM","metal":"gold","purity":"750","rupees":105604,"unit":"10 grams"},
+{"date":"2026-11-11","session":"AM","metal":"gold","purity":"585","rupees":82371,"unit":"10 grams"},
+{"date":"2026-11-11","session":"AM","metal":"silver","purity":"999","rupees":186495,"unit":"1 kg"},
+{"date":"2026-11-11","session":"AM","metal":"platinum","purity":"999","rupees":56300,"unit":"10 grams"}]

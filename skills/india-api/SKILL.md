@@ -96,6 +96,8 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/mutual-funds/{code}`: A scheme and its NAV. Example: `/v1/mutual-funds/122639?utm_medium=skill`
 - `GET /v1/mutual-funds`: Search schemes. Example: `/v1/mutual-funds?q=flexi%20cap&plan=direct&option=growth&utm_medium=skill`
 - `GET /v1/mutual-funds/fund-houses`: Fund houses. Example: `/v1/mutual-funds/fund-houses?utm_medium=skill`
+- `GET /v1/mutual-funds/{code}/returns`: Returns and SIP returns. Example: `/v1/mutual-funds/122639/returns?utm_medium=skill`
+- `GET /v1/mutual-funds/{code}/history`: NAV history. Example: `/v1/mutual-funds/122639/history?from=2026-01-01&utm_medium=skill`
 
 **Number to words** ([references/words.md](references/words.md)): Numbers and rupee amounts in words, the Indian way.
 
@@ -131,6 +133,11 @@ Each API's full parameters, enums and examples are in `references/<id>.md`.
 - `GET /v1/upi-handles`: Known UPI handles. Example: `/v1/upi-handles?utm_medium=skill`
 - `GET /v1/upi-handles/{handle}`: Look up a UPI handle. Example: `/v1/upi-handles/okhdfcbank?utm_medium=skill`
 - `GET /v1/qr/parse`: Read a UPI or Bharat QR code's text. Example: `/v1/qr/parse?text=upi%3A%2F%2Fpay%3Fpa%3Dshop%40okaxis%26pn%3DSri%2520Murugan%2520Stores%26am%3D250%26cu%3DINR%26mc%3D5411&utm_medium=skill`
+
+**Gold and silver rates** ([references/bullion.md](references/bullion.md)): Today's gold (24K, 22K, 18K...), silver and platinum rates from IBJA, and their history.
+
+- `GET /v1/bullion`: Today's rates. Example: `/v1/bullion?utm_medium=skill`
+- `GET /v1/bullion/history`: Rates over time. Example: `/v1/bullion/history?metal=gold&purity=916&days=30&utm_medium=skill`
 
 **Index constituents** ([references/indices.md](references/indices.md)): Which companies are in Nifty 50, Bank Nifty, Nifty 500 and 28 more NSE indices, and which indices a stock is in.
 

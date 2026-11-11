@@ -40,3 +40,29 @@ Example: https://api.dharun.dev/v1/mutual-funds?q=flexi%20cap&plan=direct&option
 `GET /v1/mutual-funds/fund-houses`
 
 Example: https://api.dharun.dev/v1/mutual-funds/fund-houses?utm_medium=skill
+
+## Returns and SIP returns
+
+`GET /v1/mutual-funds/{code}/returns`
+
+Point-to-point returns over 1, 3 and 6 months and 1, 3, 5 and 10 years (CAGR from a year), and what a monthly SIP of 1,000 would be worth now (XIRR), from AMFI's NAV history.
+
+Parameters:
+
+- `code` (path, required): AMFI scheme code or ISIN.
+
+Example: https://api.dharun.dev/v1/mutual-funds/122639/returns?utm_medium=skill
+
+## NAV history
+
+`GET /v1/mutual-funds/{code}/history`
+
+Month-end NAVs for up to ten years and every NAV of the last 45 days.
+
+Parameters:
+
+- `code` (path, required): AMFI scheme code or ISIN.
+- `from` (query): From this date, YYYY-MM-DD.
+- `to` (query): Up to this date.
+
+Example: https://api.dharun.dev/v1/mutual-funds/122639/history?from=2026-01-01&utm_medium=skill

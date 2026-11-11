@@ -96,6 +96,8 @@ JavaScript and Python.
 | [Indic text tools](https://api.dharun.dev/docs/indic) | `/v1/indic/aksharas?text=...`, `/v1/braille?text=...`, `/v1/keyboard/convert?layout=tamil99` | Letters as readers count them, dictionary order, look-alike fixes, Bharati braille, InScript and Tamil99 keys |
 | [Helplines](https://api.dharun.dev/docs/helplines) | `/v1/helplines?q=cyber` | National emergency and helpline numbers |
 | [Index constituents](https://api.dharun.dev/docs/indices) | `/v1/indices/nifty-50`, `/v1/indices?symbol=TCS` | Members of 31 NSE indices with industry, ISIN and logo; the indices a stock is in |
+| [Gold and silver rates](https://api.dharun.dev/docs/bullion) | `/v1/bullion`, `/v1/bullion/history?purity=916` | IBJA's daily gold (24K to 14K), silver and platinum rates, per gram too, and their history |
+| [Mutual fund returns](https://api.dharun.dev/docs/mutual-funds) | `/v1/mutual-funds/122639/returns`, `/history` | 1 month to 10 year returns (CAGR), SIP XIRR, month-end NAV history |
 
 ## One shape everywhere
 

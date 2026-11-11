@@ -11,6 +11,8 @@ import (
 func (s *Server) registerSetB() {
 	s.handle("indices", costLight, "GET /v1/indices", s.handleIndices)
 	s.handle("indices", costLight, "GET /v1/indices/{id}", s.handleMarketIndex)
+	s.registerNAVHistory()
+	s.registerBullion()
 }
 
 type indexView struct {
