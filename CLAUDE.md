@@ -336,16 +336,32 @@ read-only) every 15 seconds in `keys.go`. `handle` identifies a key or site toke
 charges the key's own allowance (`KEY_RATE_LIMIT_PER_MIN`), sets the `RateLimit-*`
 headers, and for routes whose catalog entry has `Key` runs `keyGate`: the daily quota
 (`MODEL_QUOTA_PER_DAY`), one request at a time per key, the site token's allowance, and
-after `KEY_REQUIRED_FROM` the 401. A handler that runs a model only for some inputs calls
+after `KEY_REQUIRED_FROM` (default 2026-12-15, Dharun 2026-11-12; `none` turns it off)
+the 401. A handler that runs a model only for some inputs calls
 `keyGate` itself (`names=true` in redaction). Usage per key goes to
 `STATE_DIR/key-usage.json`; the key's id is logged on key routes only. Mark a new model
-endpoint `Key: true`.
+endpoint `Key: true`; one that needs a key from the start (the LLM) also `KeyOnly: true`
+and refuses keyless calls in its handler. The production check sends `CHECK_API_KEY` (a
+repository secret) so it keeps passing after the date.
 
 The interactive pages (`site_app.go`, `site_play.go`, `site_tools.go`, `site_more.go`)
 use the `app` template and plain scripts in `internal/api/assets/` served at `/assets/`
 from the binary: no framework, nothing from other hosts. The try-it panel and the
 playground are generated from the catalog (`tryit.go`); a test checks every endpoint has
 a spec with example values. Check a script with `node --check` when you change it.
+
+### The small LLM (Part 8: `llm.go`)
+
+Qwen 2.5 1.5B Instruct (model dataset `llm`, pinned like the others) run by llama.cpp's
+`llama-server` (built by `tools/fetch-tools.sh` into `llama/` in the release) as a model
+helper in `textmodels.go`: one process, on a Unix socket in its own temporary directory
+(the name must end in `.sock`), started on first use, stopped when idle, 2 GB of
+`TEXT_MODEL_MEMORY_MB`, so it pushes idle ONNX helpers out. English only. Task endpoints
+force their output with a JSON schema; the text is wrapped in `<text>` as data. Tokens
+per key and day are counted (`LLM_TOKENS_PER_DAY`, default 100,000). `/v1/chat/completions`
+and `/v1/models` answer in OpenAI's own shape (catalog `Output: "openai"`), the one
+settled exception to the `{ data, meta }` envelope; errors keep ours. Tests use a fake
+llama-server (`llm_test.go`).
 
 ### MCP
 

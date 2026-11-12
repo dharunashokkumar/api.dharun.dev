@@ -5,11 +5,17 @@
 # shellcheck disable=SC2154  # base comes from the script that sources this
 # Requests from these checks name themselves, so the server counts them as its own traffic.
 check_agent="india-api-check/1 (+https://github.com/dharunashokkumar/api.dharun.dev)"
+# From KEY_REQUIRED_FROM (15 December 2026) the model routes need a key: production.yml
+# passes a low-quota key of the project's own account as CHECK_API_KEY.
+key_args=()
+if [ -n "${CHECK_API_KEY:-}" ]; then
+  key_args=(-H "X-API-Key: $CHECK_API_KEY")
+fi
 # <path> <expected content-type prefix> [text the body must contain]
 check() {
   local type body
   body="$(mktemp)"
-  type="$(curl -fsS -A "$check_agent" -m 30 --retry 2 --retry-delay 3 -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL $1: request failed" >&2; exit 1; }
+  type="$(curl -fsS -A "$check_agent" "${key_args[@]}" -m 30 --retry 2 --retry-delay 3 -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL $1: request failed" >&2; exit 1; }
   case "$type" in
     "$2"*) ;;
     *) echo "FAIL $1: got '$type', want '$2'" >&2; exit 1 ;;
@@ -28,7 +34,7 @@ post_check() {
   body="$(mktemp)"
   sample="$(mktemp)"
   curl -fsS -A "$check_agent" -m 30 --retry 2 -o "$sample" "$base/samples/$2" || { echo "FAIL $1: no sample $2" >&2; exit 1; }
-  type="$(curl -fsS -A "$check_agent" -m 60 --retry 2 --retry-delay 3 -H "Content-Type: $3" --data-binary "@$sample" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
+  type="$(curl -fsS -A "$check_agent" "${key_args[@]}" -m 60 --retry 2 --retry-delay 3 -H "Content-Type: $3" --data-binary "@$sample" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
   case "$type" in
     "$4"*) ;;
     *) echo "FAIL POST $1: got '$type', want '$4'" >&2; exit 1 ;;
@@ -45,7 +51,7 @@ post_check() {
 post_json() {
   local type body
   body="$(mktemp)"
-  type="$(curl -fsS -A "$check_agent" -m 60 --retry 2 --retry-delay 3 -H "Content-Type: application/json" --data-binary "$2" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
+  type="$(curl -fsS -A "$check_agent" "${key_args[@]}" -m 60 --retry 2 --retry-delay 3 -H "Content-Type: application/json" --data-binary "$2" -o "$body" -w '%{content_type}' "$base$1")" || { echo "FAIL POST $1: request failed" >&2; exit 1; }
   case "$type" in
     "$3"*) ;;
     *) echo "FAIL POST $1: got '$type', want '$3'" >&2; exit 1 ;;
@@ -191,3 +197,9 @@ check "/v1/braille?text=%E0%A4%95" application/json '"braille":"⠅"'
 check /v1/helplines application/json '"number":"112"'
 check /v1/indices/nifty-50 application/json '"name":"Nifty 50"'
 check "/v1/expiries?exchange=nse&year=2026&month=3" application/json '"kind":"monthly"'
+# Census 2011, STD codes, classics, and the OpenAI model list (2026-11-12). The LLM and
+# the BIN list are server copies only, which a fresh bundle does not have.
+check /v1/census/district/632 application/json '"name":"Coimbatore"'
+check "/v1/std-codes/0422" application/json '"area":"Coimbatore"'
+check /v1/classics/gita/2.47 application/json 'karma'
+check /v1/models application/json '"qwen2.5-1.5b-instruct"'

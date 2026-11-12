@@ -212,7 +212,7 @@ type programs struct {
 
 // programFolders names the folder of the release a program lives in, when that is not
 // the program's own name.
-var programFolders = map[string]string{"whisper-cli": "whisper"}
+var programFolders = map[string]string{"whisper-cli": "whisper", "llama-server": "llama"}
 
 func newPrograms(override map[string]string) *programs {
 	return &programs{override: override, found: map[string]string{}}

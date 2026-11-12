@@ -64,6 +64,11 @@ type Config struct {
 	TextModelMemory  int64
 	TextModelIdle    time.Duration
 	TextModelThreads int
+	// LLMThreads is how many threads llama-server generates with (zero: eight).
+	// LLMTokensPerDay is how many tokens (prompt and answer) a key may use a day on the
+	// LLM endpoints (zero: 100,000).
+	LLMThreads      int
+	LLMTokensPerDay int
 	// Programs overrides where an outside program is found, by name (typst, piper, ...).
 	// A program not named here is looked for next to the server binary, then on PATH.
 	Programs map[string]string
@@ -138,6 +143,12 @@ func New(cfg Config) (*Server, error) {
 	}
 	if cfg.KeyRateLimitPerMinute <= 0 {
 		cfg.KeyRateLimitPerMinute = defaultKeyRateLimit
+	}
+	if cfg.LLMThreads <= 0 {
+		cfg.LLMThreads = 8
+	}
+	if cfg.LLMTokensPerDay <= 0 {
+		cfg.LLMTokensPerDay = 100000
 	}
 	if cfg.ModelQuotaPerDay <= 0 {
 		cfg.ModelQuotaPerDay = defaultModelQuota
@@ -353,7 +364,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	header := writer.Header()
 	header.Set("Access-Control-Allow-Origin", "*")
-	header.Set("Access-Control-Expose-Headers", "ETag, X-Logo-Fallback, X-Logo-Known, X-Logo-Set, RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After, X-Key-Notice, X-Quota-Limit, X-Quota-Remaining")
+	header.Set("Access-Control-Expose-Headers", "ETag, X-Logo-Fallback, X-Logo-Known, X-Logo-Set, RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After, X-Key-Notice, X-Quota-Limit, X-Quota-Remaining, X-Token-Limit, X-Token-Remaining")
 	header.Set("Cross-Origin-Resource-Policy", "cross-origin")
 	header.Set("X-Content-Type-Options", "nosniff")
 	header.Set("Referrer-Policy", "strict-origin-when-cross-origin")

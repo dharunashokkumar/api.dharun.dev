@@ -43,10 +43,11 @@ func run() error {
 			return err
 		}
 	}
-	// KEY_REQUIRED_FROM (a date, 2026-12-15) is the day keyless calls to the model
-	// endpoints stop working, at midnight India time. Unset: no date announced yet.
+	// KEY_REQUIRED_FROM is the day keyless calls to the model endpoints stop working, at
+	// midnight India time: 15 December 2026 (Dharun, 2026-11-12), announced on /keys.
+	// "none" turns the requirement off (a private server, a test).
 	var keyDate time.Time
-	if raw := os.Getenv("KEY_REQUIRED_FROM"); raw != "" {
+	if raw := env("KEY_REQUIRED_FROM", "2026-12-15"); raw != "none" {
 		parsed, err := time.ParseInLocation("2006-01-02", raw, time.FixedZone("IST", 5*3600+1800))
 		if err != nil {
 			return fmt.Errorf("KEY_REQUIRED_FROM must be a date such as 2026-12-15: %w", err)
@@ -68,6 +69,8 @@ func run() error {
 		TextModelMemory:    int64(envInt("TEXT_MODEL_MEMORY_MB", 2048)) << 20,
 		TextModelIdle:      time.Duration(envInt("TEXT_MODEL_IDLE_MINUTES", 10)) * time.Minute,
 		TextModelThreads:   envInt("TEXT_MODEL_THREADS", 4),
+		LLMThreads:         envInt("LLM_THREADS", 8),
+		LLMTokensPerDay:    envInt("LLM_TOKENS_PER_DAY", 100000),
 		Programs:           programPaths(),
 		PublicOrigin:       strings.TrimRight(os.Getenv("PUBLIC_ORIGIN"), "/"),
 		TrustProxy:         envBool("TRUST_PROXY", false),
@@ -134,7 +137,7 @@ func run() error {
 // the binary, then on PATH.
 func programPaths() map[string]string {
 	paths := map[string]string{}
-	for _, name := range []string{"typst", "piper", "whisper-cli", "deep-filter", "onnx-run", "tesseract", "vips", "vipsheader", "ffmpeg", "pdftotext", "pdftoppm"} {
+	for _, name := range []string{"typst", "piper", "whisper-cli", "llama-server", "deep-filter", "onnx-run", "tesseract", "vips", "vipsheader", "ffmpeg", "pdftotext", "pdftoppm"} {
 		if value := os.Getenv(strings.ToUpper(strings.ReplaceAll(name, "-", "_"))); value != "" {
 			paths[name] = value
 		}

@@ -21,7 +21,10 @@ POST body: {{.Body}} Send it as `text/plain`, or as JSON `{"text": "..."}` with 
 
 Send: {{.Accepts}}{{if not .JSON}} Post the file as the request body, or as `multipart/form-data`{{if gt .Files 1}} with one field per file{{end}}.{{end}}{{if .Sample}} Sample file: {{$.Origin}}/samples/{{.Sample}}{{end}}
 {{- end}}
-{{- if .Key}}
+{{- if .KeyOnly}}
+
+Needs a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`), from the start. With a key: {{$.Quota}} model requests and {{$.LLMTokens}} tokens a day.
+{{- else if .Key}}
 
 Model endpoint: it will need a free API key (sent as `Authorization: Bearer <key>` or `X-API-Key`). Until the date on {{$.Origin}}/keys it answers without one and says so in the `X-Key-Notice` header. With a key: {{$.Quota}} model requests a day.
 {{- end}}

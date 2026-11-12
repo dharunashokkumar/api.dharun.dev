@@ -184,6 +184,10 @@ func testUploadExample(t *testing.T, e endpoint) {
 	if missingTool(got) {
 		return
 	}
+	// An endpoint that needs a key from the start is tested with one in its own test.
+	if e.KeyOnly && got.status == http.StatusUnauthorized {
+		return
+	}
 	if got.status != http.StatusOK {
 		t.Errorf("POST %s = %d: %s", e.Example, got.status, clip(string(got.body), 300))
 		return

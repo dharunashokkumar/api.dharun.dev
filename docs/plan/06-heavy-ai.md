@@ -47,6 +47,8 @@ All four did the English JSON extraction right. **Conclusion: none can be offere
 **Decision (Dharun, 2026-11-11): English only.** Hindi and Tamil generation is dropped. Build English task endpoints (extraction to JSON, classification, short summaries) on Qwen 2.5 1.5B Instruct (Apache-2.0, 25 tokens a second, 1.8 GB here), key only, 100,000 tokens a day per key. Next steps: llama-server built in the release like whisper.cpp; the model as a server-only dataset pinned by SHA-256 (like `aimodels.go`); a helper started on first use and stopped when idle within `TEXT_MODEL_MEMORY_MB` (it needs about 1.8 GB, so raise that budget or the container memory: an infrastructure request to write first); then the endpoints and, if wanted, an OpenAI-compatible English chat.
 
 
+**Built 2026-11-12** (`internal/api/llm.go`, `catalog_llm.go`, `llm_test.go`): the four task endpoints, the OpenAI-compatible chat with streaming and `/v1/models`; model dataset `llm` (Hugging Face revision `91cad51`, SHA-256 pinned); llama-server 0.9.0 built by `tools/fetch-tools.sh` with every CPU variant; a key always, 100,000 tokens a day per key (`LLM_TOKENS_PER_DAY`), threads `LLM_THREADS` (8). The 2 GB fit the existing text model budget (an idle ONNX helper is stopped to make room) and the service's `MemoryMax=6G`, so no infrastructure request was needed. Not done: an LLM tool page, MCP tools for it (an agent calling MCP is itself a language model).
+
 **What the machine can do.** CPU only, 10 cores. A model of about 1 billion parameters
 at 4-bit should give tens of tokens a second, a 3 to 4 billion one perhaps 10 to 20;
 measure on the server before promising anything. Memory 1 to 3 GB while loaded, inside

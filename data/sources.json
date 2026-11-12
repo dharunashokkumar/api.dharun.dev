@@ -28,6 +28,26 @@
     "attribution": "Brand logos and trademarks belong to their respective owners. Commons artwork by the authors named in each entry.",
     "notes": "A hand-kept list of unlisted Indian brands; tools/fetch_brand_logos.py records each file's origin in metadata.json."
   },
+  "census": {
+    "name": "Census of India 2011, Primary Census Abstract (India, states, districts, sub-districts and towns)",
+    "publisher": "Office of the Registrar General and Census Commissioner, India",
+    "url": "https://censusindia.gov.in/nada/index.php/catalog/42559",
+    "licence": "Government of India publication, published openly in the Census Digital Library; credited",
+    "version": "2011",
+    "retrieved": "2026-11-12T15:42:17Z",
+    "sha256": "da487f7a1181fd9f43ccf354a8b5864ffca5920fc82b5183d644d483445cb380",
+    "attribution": "Census of India 2011, Primary Census Abstract, Office of the Registrar General and Census Commissioner, India."
+  },
+  "classics": {
+    "name": "Aathichoodi, Bhagavad Gita (Sanskrit) and Kabir's sakhis, as transcribed on Wikisource",
+    "publisher": "Tamil, Sanskrit and Hindi Wikisource",
+    "url": "https://wikisource.org/",
+    "licence": "Public domain texts (Avvaiyar, the Mahabharata, Kabir); Wikisource credited for the transcription",
+    "version": "2026-11-12",
+    "retrieved": "2026-11-12T15:40:00Z",
+    "attribution": "Texts as transcribed on Tamil, Sanskrit and Hindi Wikisource; Kabir from the Kabir Granthavali edited by Shyamsundar Das.",
+    "notes": "tools/classics/fetch_classics.py keeps the original lines only and records each page's revision in data/classics/."
+  },
   "constituencies": {
     "name": "Maps of assembly and parliamentary constituencies",
     "publisher": "DataMeet India community (github.com/datameet/maps); parliamentary boundaries simplified by Arun Ganesh",
@@ -110,6 +130,16 @@
     "sha256": "17ed6e4a39d9dea2f4a1ff2aecdf26a4eead1efd3ffd2317c27b65405d521430",
     "attribution": "Index constituents as published by NSE Indices Limited (niftyindices.com). Nifty is a trademark of NSE Indices Limited."
   },
+  "law": {
+    "name": "Correspondence tables of the new criminal laws (BNS-IPC, BNSS-CrPC, BSA-IEA)",
+    "publisher": "Bureau of Police Research and Development (Central Academy for Police Training, Bhopal), Ministry of Home Affairs",
+    "url": "https://www.keralaprisons.gov.in/userfiles/act-and-rules/comparison_summary_BNS_to_IPC.pdf",
+    "licence": "Section correspondence and the Acts' section titles (facts and statute text); the tables' summaries are not used",
+    "version": "BNS 3ad875b6, BNSS aa3e4914, BSA 7693f293 (SHA-256 of the PDFs)",
+    "retrieved": "2026-11-11",
+    "sha256": "7836877dee75313c007e07bf2f10b8948171a8ddd49fee310e70ef1508f145cb",
+    "attribution": "Section correspondence from the comparison summaries of the Bureau of Police Research and Development (CAPT Bhopal). Check the Acts as published in the Gazette before relying on a section."
+  },
   "logos": {
     "name": "Indian listed company logos",
     "publisher": "api.dharun.dev",
@@ -184,6 +214,17 @@
     "sha256": "bd6de46936732d42217ffa64d91af5f872449ae85f401521baf492e3a21162d8",
     "attribution": "Station codes adapted from the Wikipedia article \"List of railway stations in India\", licensed CC BY-SA 4.0. This dataset is shared under the same licence."
   },
+  "std-codes": {
+    "name": "National Numbering Plan (2003), Annex II: list of SDCA codes",
+    "publisher": "Department of Telecommunications, Government of India",
+    "url": "https://dot.gov.in/sites/default/files/nnp2003_0_0.pdf",
+    "licence": "Government of India publication, published openly; credited",
+    "version": "2003",
+    "retrieved": "2026-11-12T15:40:00Z",
+    "sha256": "5037b8a360191bb7be53e2a30022c0bcd04677a57d8a00bd9b3372afbf9cad9a",
+    "attribution": "STD codes from the National Numbering Plan (2003), Department of Telecommunications.",
+    "notes": "Read from the Internet Archive's copy of 8 March 2022 (dot.gov.in refuses programs) by tools/std/parse_nnp.py."
+  },
   "stock-logos": {
     "name": "Global stock logos",
     "publisher": "TradingView (logo files and listings)",
@@ -203,15 +244,5 @@
     "retrieved": "2026-10-13",
     "sha256": "e793099d6f300787329cf22bc0a144292d4af11b9dc3ca9595f1928692f4caee",
     "attribution": "Thirukkural text with English translations by G.U. Pope (1886) and by W.H. Drew and John Lazarus (1840, 1885), from the tk120404/thirukkural compilation (Apache-2.0)."
-  },
-  "law": {
-    "name": "Correspondence tables of the new criminal laws (BNS-IPC, BNSS-CrPC, BSA-IEA)",
-    "publisher": "Bureau of Police Research and Development (Central Academy for Police Training, Bhopal), Ministry of Home Affairs",
-    "url": "https://www.keralaprisons.gov.in/userfiles/act-and-rules/comparison_summary_BNS_to_IPC.pdf",
-    "licence": "Section correspondence and the Acts' section titles (facts and statute text); the tables' summaries are not used",
-    "version": "BNS 3ad875b6, BNSS aa3e4914, BSA 7693f293 (SHA-256 of the PDFs)",
-    "retrieved": "2026-11-11",
-    "sha256": "7836877dee75313c007e07bf2f10b8948171a8ddd49fee310e70ef1508f145cb",
-    "attribution": "Section correspondence from the comparison summaries of the Bureau of Police Research and Development (CAPT Bhopal). Check the Acts as published in the Gazette before relying on a section."
   }
 }

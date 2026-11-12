@@ -268,11 +268,11 @@ log on key routes only.
       `/account/oauth`, `/keys`; privacy and security pages; FAQ.
 - [x] The accounts binary is in the release bundle and in NOTICES.
 - [x] **Infrastructure request (section 12)**: done on the homelab side (Dharun, 2026-11-11). Checked there, not from this repo; the live check comes after the push.
-- [ ] Set `KEY_REQUIRED_FROM` (at least 30 days after keys are live) and announce it
+- [x] Set `KEY_REQUIRED_FROM` (at least 30 days after keys are live) and announce it (2026-11-12: 2026-12-15, the default in `cmd/api`; in the changelog and on `/keys`)
       on `/changelog`.
 - [ ] `internal/deploytest` and the install test for the second unit (comes with the
       `deploy/` change on the homelab side).
-- [ ] A low-quota key in a repository secret for the production check once the date is set.
+- [ ] A low-quota key in a repository secret for the production check once the date is set. (2026-11-12: the scripts send `CHECK_API_KEY` when set and `production.yml` passes the secret; Dharun still has to make the key and add the secret before 2026-12-15.)
 - [x] ~~Sandbox design to be re-read with these accounts (Part 9).~~ Part 9 dropped to much later (2026-11-11).
 
 ## 12. Infrastructure request (written 2026-11-11, for the homelab side)

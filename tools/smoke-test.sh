@@ -10,7 +10,7 @@ base="http://127.0.0.1:$port"
 dir="$(mktemp -d)"
 
 tar -xzf "$bundle" -C "$dir" --strip-components=1
-(cd "$dir" && PORT="$port" METRICS_PORT=0 LOG_REQUESTS=0 SEED_DIR=seed DATA_DIR="$dir/live" exec ./api) &
+(cd "$dir" && PORT="$port" METRICS_PORT=0 LOG_REQUESTS=0 KEY_REQUIRED_FROM=none SEED_DIR=seed DATA_DIR="$dir/live" exec ./api) &
 pid=$!
 trap 'kill "$pid" 2>/dev/null || true; rm -rf "$dir"' EXIT
 

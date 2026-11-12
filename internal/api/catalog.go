@@ -64,6 +64,9 @@ type endpoint struct {
 	// Key marks an endpoint that will need a free API key (keys.go): a model endpoint.
 	// Until KEY_REQUIRED_FROM it answers without one, with a notice header.
 	Key bool
+	// KeyOnly marks an endpoint that has needed a key from the start (the LLM): it never
+	// answers without one, notice period or not. It implies Key.
+	KeyOnly bool
 }
 
 // privatePaths holds the paths of the endpoints marked Private. handle reads it when a

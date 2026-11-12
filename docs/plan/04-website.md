@@ -125,10 +125,10 @@ From `seo_audit.md` (still open) and the data:
 
 - [x] **Search titles and descriptions per page**, written for the task, not truncated from the summary
       (2026-11-11: `seo.go`, the 20 most searched API pages; the rest keep the catalog title).
-- [x] **Typed response schemas in OpenAPI** (2026-11-11: `schemas.go`, inferred from each example's real answer; 145 of 194 JSON responses typed; the rest have no sample). Still open: MCP `outputSchema` from them, and the client packages.
+- [x] **Typed response schemas in OpenAPI** (2026-11-11: `schemas.go`, inferred from each example's real answer; 145 of 194 JSON responses typed; the rest have no sample). Still open: MCP `outputSchema` from them (2026-11-12: held back on purpose: each schema is inferred from one answer, and MCP clients validate every result against the declared schema, so a sometimes-null field would break correct answers; hand-check first), and the client packages (Dharun: later).
 - [x] **Sitemap dates from documentation edits**, not dataset dates. Tool, demo and
       logo pages join the sitemap. (2026-11-11: `pagedates.json`, kept by the generated-files test.)
-- [x] **Visible byline** on guides (2026-11-11; a fuller `/about` and the link from dharun.dev still open), a fuller `/about`, and a link from dharun.dev to the
+- [x] **Visible byline** on guides (2026-11-11; a fuller `/about` written 2026-11-12; the link from dharun.dev still open), a fuller `/about`, and a link from dharun.dev to the
       API (the personal site did not mention it when audited).
 - [ ] **Check Search Console first:** with 61 Googlebot fetches in a month, find out
       whether pages are indexed at all before writing more of them.
@@ -137,7 +137,7 @@ From `seo_audit.md` (still open) and the data:
       as the logo fallback and the key requirement.
 - [x] **Guides for the developers who are already here** (2026-11-11: Flutter, Android/Kotlin; the audit's twelve still to write): Flutter (Dart made 1,800
       requests) and Android or Kotlin (Java made 5,900): pincode autofill, IFSC
-      lookup, logos in a list. Then the twelve guides proposed in the audit.
+      lookup, logos in a list. Then the twelve guides proposed in the audit (2026-11-12: GST invoice PDF, errors and limits, and a small-LLM guide written; five of the twelve were already covered by earlier guides).
 - [ ] **Client packages** once the schemas are typed: npm, PyPI, and pub.dev for Dart.
 
 ### Pages made from data (open question)

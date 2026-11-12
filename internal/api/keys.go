@@ -328,12 +328,13 @@ type keyUsage struct {
 	dirty  bool
 	Groups map[string]map[string]map[string]int `json:"groups"` // key, day, group
 	Models map[string]map[string]int            `json:"models"` // key, day
+	Tokens map[string]map[string]int            `json:"tokens"` // key, day: LLM tokens
 	site   map[string]int                       // day|address hash
 	day    string
 }
 
 func newKeyUsage(stateDir string) *keyUsage {
-	u := &keyUsage{Groups: map[string]map[string]map[string]int{}, Models: map[string]map[string]int{}, site: map[string]int{}}
+	u := &keyUsage{Groups: map[string]map[string]map[string]int{}, Models: map[string]map[string]int{}, Tokens: map[string]map[string]int{}, site: map[string]int{}}
 	if stateDir != "" {
 		u.path = filepath.Join(stateDir, "key-usage.json")
 		if raw, err := os.ReadFile(u.path); err == nil {
@@ -345,8 +346,33 @@ func newKeyUsage(stateDir string) *keyUsage {
 		if u.Models == nil {
 			u.Models = map[string]map[string]int{}
 		}
+		if u.Tokens == nil {
+			u.Tokens = map[string]map[string]int{}
+		}
 	}
 	return u
+}
+
+// tokensUsed is how many LLM tokens a key has used today.
+func (u *keyUsage) tokensUsed(id string) int {
+	u.mu.Lock()
+	defer u.mu.Unlock()
+	return u.Tokens[id][today()]
+}
+
+// addTokens counts the tokens (prompt and answer) of one LLM request.
+func (u *keyUsage) addTokens(id string, n int) {
+	if id == "" || n <= 0 {
+		return
+	}
+	day := today()
+	u.mu.Lock()
+	defer u.mu.Unlock()
+	if u.Tokens[id] == nil {
+		u.Tokens[id] = map[string]int{}
+	}
+	u.Tokens[id][day] += n
+	u.dirty = true
 }
 
 func today() string { return keyClock().In(indiaTime).Format("2006-01-02") }
@@ -409,6 +435,7 @@ type usageReport struct {
 	Month      map[string]int `json:"month"`
 	ModelsUsed int            `json:"modelRequestsToday"`
 	ModelQuota int            `json:"modelQuota"`
+	TokensUsed int            `json:"llmTokensToday"`
 }
 
 func (u *keyUsage) report(id string, quota int) usageReport {
@@ -416,7 +443,7 @@ func (u *keyUsage) report(id string, quota int) usageReport {
 	month := day[:7]
 	u.mu.Lock()
 	defer u.mu.Unlock()
-	out := usageReport{Today: map[string]int{}, Month: map[string]int{}, ModelQuota: quota, ModelsUsed: u.Models[id][day]}
+	out := usageReport{Today: map[string]int{}, Month: map[string]int{}, ModelQuota: quota, ModelsUsed: u.Models[id][day], TokensUsed: u.Tokens[id][day]}
 	for d, groups := range u.Groups[id] {
 		for group, n := range groups {
 			if d == day {
@@ -440,6 +467,7 @@ func (u *keyUsage) prune(known map[string]bool, haveTable bool) {
 		if haveTable && !known[id] {
 			delete(u.Groups, id)
 			delete(u.Models, id)
+			delete(u.Tokens, id)
 			u.dirty = true
 			continue
 		}
@@ -450,15 +478,17 @@ func (u *keyUsage) prune(known map[string]bool, haveTable bool) {
 			}
 		}
 	}
-	for id, days := range u.Models {
-		if haveTable && !known[id] {
-			delete(u.Models, id)
-			u.dirty = true
-			continue
-		}
-		for d := range days {
-			if d < oldest {
-				delete(days, d)
+	for _, table := range []map[string]map[string]int{u.Models, u.Tokens} {
+		for id, days := range table {
+			if haveTable && !known[id] {
+				delete(table, id)
+				u.dirty = true
+				continue
+			}
+			for d := range days {
+				if d < oldest {
+					delete(days, d)
+				}
 			}
 		}
 	}

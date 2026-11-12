@@ -38,6 +38,9 @@ jobs:
       - name: Wait for the release to go live, then check it
         env:
           VERSION: 1.1.${{ github.event.workflow_run.run_number }}
+          # A low-quota key of the project's own account, for the model routes after
+          # KEY_REQUIRED_FROM (empty until Dharun adds the secret).
+          CHECK_API_KEY: ${{ secrets.CHECK_API_KEY }}
         run: bash tools/prod-check.sh https://api.dharun.dev "$VERSION"
 
   # Tell IndexNow search engines (Bing and others) which pages changed with this release.

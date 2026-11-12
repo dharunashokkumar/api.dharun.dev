@@ -30,3 +30,7 @@ Parameters:
 - `offset` (query): Results to skip.
 
 Example: https://api.dharun.dev/v1/hsn?q=green%20tea&utm_medium=skill
+
+## Guides
+
+- [Make a GST tax invoice PDF from JSON](https://api.dharun.dev/guides/gst-invoice-pdf.md): Send the seller, buyer and items with HSN codes and GST rates, and get back an A4 tax invoice PDF with CGST, SGST or IGST worked out, the HSN summary and the amount in words.

@@ -5,6 +5,7 @@
 #   typst        Typst, documents to PDF (Apache-2.0)
 #   piper/       Piper text to speech with espeak-ng and its own ONNX Runtime (MIT; espeak-ng GPL-3.0)
 #   deep-filter  DeepFilterNet noise removal (MIT or Apache-2.0)
+#   llama/       llama.cpp's llama-server, which runs the small LLM (MIT)
 #   onnx-run     our helper that runs one ONNX model, with libonnxruntime.so beside it (MIT)
 #   espeak-ng-source.tar.gz
 #                the source of the espeak-ng in piper/ (GPL-3.0), which every release carries
@@ -80,6 +81,27 @@ if ! [ -x "$dir/whisper/whisper-cli" ]; then
   cp "$build/out/bin/whisper-cli" "$dir/whisper/"
   find "$build/out" -name '*.so*' -exec cp -P {} "$dir/whisper/" \;
   cp "$build/LICENSE" "$dir/whisper/LICENSE"
+  rm -rf "$build"
+fi
+
+# llama.cpp (MIT), llama-server for the small LLM of /v1/llm and /v1/chat/completions,
+# built the same way as whisper.cpp: every CPU variant of ggml, picked at start.
+llama_version=0.9.0
+fetch "https://github.com/ggml-org/llama.cpp/archive/refs/tags/v$llama_version.tar.gz" \
+  5d0f1aaf55fd8629c29a55e81b7cb63b80239f83c33a580963071204896836a8 llama-source.tar.gz
+if ! [ -x "$dir/llama/llama-server" ]; then
+  build="$(mktemp -d)"
+  tar -xzf "$dir/llama-source.tar.gz" -C "$build" --strip-components=1
+  # shellcheck disable=SC2016
+  cmake -S "$build" -B "$build/out" -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON \
+    -DGGML_NATIVE=OFF -DGGML_BACKEND_DL=ON -DGGML_CPU_ALL_VARIANTS=ON -DGGML_OPENMP=OFF \
+    -DLLAMA_CURL=OFF -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF -DLLAMA_BUILD_SERVER=ON \
+    -DCMAKE_INSTALL_RPATH='$ORIGIN' -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON >/dev/null
+  cmake --build "$build/out" --config Release -j "$(nproc)" --target llama-server >/dev/null
+  mkdir -p "$dir/llama"
+  cp "$build/out/bin/llama-server" "$dir/llama/"
+  find "$build/out" -name '*.so*' -exec cp -P {} "$dir/llama/" \;
+  cp "$build/LICENSE" "$dir/llama/LICENSE"
   rm -rf "$build"
 fi
 

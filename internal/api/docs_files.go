@@ -57,6 +57,8 @@ func (e endpoint) Returns() string {
 		return "returns a ZIP file"
 	case e.Output == "xlsx":
 		return "returns an XLSX workbook"
+	case e.Output == "openai":
+		return "is in OpenAI's own JSON shape, not this API's { data, meta } envelope"
 	case e.Image:
 		return "returns the image itself"
 	}

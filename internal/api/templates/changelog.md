@@ -4,6 +4,9 @@ What changed for the people and programs calling India API, newest first. The co
 
 ## November 2026
 
+- **Keys required for the model endpoints from 15 December 2026.** From that day, OCR, speech, translation, embeddings, reranking, moderation, Roman typing, background removal, denoise, name detection and the document readers answer 401 without a [free key]({{.Origin}}/signup). Everything else stays keyless.
+- **A small LLM, English only** (Qwen 2.5 1.5B on this server, key needed): `/v1/llm/summarise`, `/v1/llm/classify`, `/v1/llm/extract` (JSON that matches your schema), `/v1/llm/rewrite`, and an OpenAI-compatible `/v1/chat/completions` with streaming. 100,000 tokens a day per key.
+- **New data:** Census 2011 figures for India, states, districts, sub-districts and towns (`/v1/census`), landline STD codes (`/v1/std-codes`), card BIN lookup (`/v1/bin/{prefix}`), and the Bhagavad Gita, Aathichoodi and Kabir with transliteration (`/v1/classics`).
 - **Free API keys.** [Sign up]({{.Origin}}/signup) with just your email address (we mail you a code; no passwords) for a key: {{.KeyLimit}} units a minute per key instead of {{.Limit}} per address, on every endpoint. The model endpoints (OCR, speech to text, text to speech, translation, embeddings, reranking, moderation, Roman typing, background removal, denoise, and name detection in redaction) will need a key after a notice period; until then they answer with an `X-Key-Notice` header. See [API keys]({{.Origin}}/keys).
 - **Rate-limit headers** on every charged answer: `RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`.
 - **Try it on every API page**, a [playground]({{.Origin}}/play), [free tools]({{.Origin}}/tools), [demos]({{.Origin}}/demos) and [company logo pages]({{.Origin}}/logos).

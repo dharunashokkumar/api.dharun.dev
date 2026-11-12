@@ -21,5 +21,6 @@ Example: https://api.dharun.dev/v1/validate/gstin/27AAPFU0939F1ZV?utm_medium=ski
 
 ## Guides
 
+- [Make a GST tax invoice PDF from JSON](https://api.dharun.dev/guides/gst-invoice-pdf.md): Send the seller, buyer and items with HSN codes and GST rates, and get back an A4 tax invoice PDF with CGST, SGST or IGST worked out, the HSN summary and the amount in words.
 - [Check a GSTIN or PAN before you save it](https://api.dharun.dev/guides/gstin-pan-check.md): Catch typing mistakes in GSTINs and PANs with the check character, and read the state and PAN out of a GSTIN, in JavaScript.
 - [Show the bank and branch for an IFSC code](https://api.dharun.dev/guides/ifsc-bank-branch.md): Turn an IFSC into a bank name, branch and address, and check that the branch takes NEFT, RTGS, IMPS or UPI before you send money there.

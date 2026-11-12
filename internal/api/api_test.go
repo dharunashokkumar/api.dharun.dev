@@ -70,6 +70,9 @@ func TestMain(m *testing.M) {
 	buildLiveFixture(panicker{}, testLive, "hospitals", filepath.Join("testdata", "data"), dataset.Source{
 		Name: "National Hospital Directory (test, real rows)", Licence: "Government Open Data License - India", Attribution: "Hospital directory via data.gov.in.",
 	})
+	buildLiveFixture(panicker{}, testLive, "bins", filepath.Join("testdata", "data"), dataset.Source{
+		Name: "BIN List Data (test, real rows)", Licence: "CC BY 4.0", Attribution: "Card prefixes from BIN List Data by Venelin Kochev, CC BY 4.0.",
+	})
 	buildLiveFixture(panicker{}, testLive, "nav-history", filepath.Join("testdata", "data"), dataset.Source{
 		Name: "Mutual fund NAV history (synthetic test data)", Licence: "Test data", Attribution: "Made up for tests: 15% a year.",
 	})
@@ -210,7 +213,7 @@ func TestEveryDocumentedExampleWorks(t *testing.T) {
 				continue
 			}
 			if e.Output != "" {
-				if want := map[string]string{"pdf": "application/pdf", "audio": "audio/", "calendar": "text/calendar"}[e.Output]; !strings.HasPrefix(got.header.Get("Content-Type"), want) {
+				if want := map[string]string{"pdf": "application/pdf", "audio": "audio/", "calendar": "text/calendar", "openai": "application/json"}[e.Output]; !strings.HasPrefix(got.header.Get("Content-Type"), want) {
 					t.Errorf("%s: content type %q", e.Example, got.header.Get("Content-Type"))
 				}
 				continue

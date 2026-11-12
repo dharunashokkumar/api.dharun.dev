@@ -1,6 +1,6 @@
 ---
 name: india-api
-description: Indian reference data from the free India API (api.dharun.dev): pincodes, IFSC and bank branches, GSTIN and PAN checks, holidays and working days, festivals, RTO codes, NSE and BSE companies and logos, mutual fund NAVs and returns, gold, silver and RBI rates, HSN codes, UPI QR codes, numbers in lakh and crore, money calculators (SIP, EMI, GST, income tax), transliteration, panchang, GST invoices as PDF, reading invoices, receipts, cheques and bank statements, PDF to Markdown, Aadhaar masking, OCR in Indian languages, PDF and image tools, speech in and out, translation between English and 22 Indian languages, Roman typing to Indian scripts, moderation including Hinglish, embeddings and reranking, and more. Use when an app needs Indian data, Indian-language AI or document tools, or the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle code, listed company, income tax or EMI. No API key needed for most endpoints.
+description: Indian reference data from the free India API (api.dharun.dev): pincodes, IFSC and bank branches, GSTIN and PAN checks, holidays and working days, festivals, RTO codes, NSE and BSE companies and logos, mutual fund NAVs and returns, gold, silver and RBI rates, HSN codes, UPI QR codes, numbers in lakh and crore, money calculators (SIP, EMI, GST, income tax), transliteration, panchang, GST invoices as PDF, reading invoices, receipts, cheques and bank statements, PDF to Markdown, Aadhaar masking, OCR in Indian languages, PDF and image tools, speech in and out, translation for 22 Indian languages, Roman typing to Indian scripts, moderation including Hinglish, embeddings and reranking, a small English LLM (OpenAI-compatible chat), Census 2011, STD codes, card BIN lookup, and more. Use when an app needs Indian data, Indian-language AI or document tools, or the user asks about an Indian pincode, IFSC, GSTIN, PAN, holiday, vehicle code, listed company, income tax or EMI. No API key needed for most endpoints.
 license: MIT-0
 metadata:
   homepage: https://api.dharun.dev
@@ -74,6 +74,7 @@ Each API's endpoints, methods, parameters, enums and examples are in `references
 - **Gold and silver rates** ([references/bullion.md](references/bullion.md)): Today's gold (24K, 22K, 18K...), silver and platinum rates from IBJA, and their history. `/v1/bullion`, `/v1/bullion/history`. Example: `/v1/bullion?utm_medium=skill`
 - **Index constituents** ([references/indices.md](references/indices.md)): Which companies are in Nifty 50, Bank Nifty, Nifty 500 and 28 more NSE indices, and which indices a stock is in. `/v1/indices`, `/v1/indices/{id}`. Example: `/v1/indices?symbol=HDFCBANK&utm_medium=skill`
 - **Mandi prices** ([references/mandi.md](references/mandi.md)): Today's wholesale prices of vegetables, fruit, grain and pulses in India's markets, from Agmarknet. `/v1/mandi`, `/v1/mandi/commodities`. Example: `/v1/mandi?commodity=Tomato&state=Tamil%20Nadu&utm_medium=skill`
+- **Card BIN lookup** ([references/bin.md](references/bin.md)): Which network, card type and bank a card's first six digits belong to: Visa, Mastercard, RuPay, debit or credit. `/v1/bin/{prefix}`. Example: `/v1/bin/605067?utm_medium=skill`
 
 ### Places and transport
 
@@ -88,6 +89,7 @@ Each API's endpoints, methods, parameters, enums and examples are in `references
 - **Air quality** ([references/air-quality.md](references/air-quality.md)): The air quality index at CPCB's monitoring stations across India, updated hourly. `/v1/air-quality`. Example: `/v1/air-quality?city=Chennai&utm_medium=skill`
 - **Villages and LGD codes** ([references/lgd.md](references/lgd.md)): Every state, district, sub-district and village of India with its LGD and Census 2011 codes, and village PIN codes. `/v1/lgd/states`, `/v1/lgd/districts`, `/v1/lgd/subdistricts`, `/v1/lgd/villages`, `/v1/lgd/villages/{code}`. Example: `/v1/lgd/states?utm_medium=skill`
 - **Hospitals** ([references/hospitals.md](references/hospitals.md)): About 30,000 hospitals across India with their kind, system of medicine, phone and position, from the National Hospital Directory. `/v1/hospitals`. Example: `/v1/hospitals?pincode=637001&utm_medium=skill`
+- **Census 2011 figures** ([references/census.md](references/census.md)): Population, households, literacy, sex ratio and workers for India, every state, district, sub-district and town, from the 2011 census. `/v1/census/{level}/{code}`, `/v1/census`. Example: `/v1/census/district/632?utm_medium=skill`
 
 ### Dates and calendars
 
@@ -111,6 +113,8 @@ Each API's endpoints, methods, parameters, enums and examples are in `references
 - **Indic text tools** ([references/indic.md](references/indic.md)): Letters as readers count them, dictionary order, look-alike fixes, braille and keyboard layouts. `/v1/indic/aksharas`, `/v1/indic/sort`, `/v1/indic/normalise`, `/v1/braille`, `/v1/keyboard/convert`. Example: `/v1/indic/aksharas?text=%E0%A4%95%E0%A5%8D%E0%A4%B7%E0%A4%A4%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%AF&utm_medium=skill`
 - **Search your own documents** ([references/rag.md](references/rag.md)): Upload documents, ask a question, get the best passages back: retrieval for your own AI app. `/v1/rag`, `/v1/rag/{id}/documents`, `/v1/rag/{id}/query`, `/v1/rag/{id}/delete`. Example: `/v1/rag?utm_medium=skill`
 - **IPC to BNS section finder** ([references/law.md](references/law.md)): Which section of the Bharatiya Nyaya Sanhita replaced IPC 302, and the same for CrPC to BNSS and the Evidence Act to BSA. `/v1/law/{law}/{section}`, `/v1/law/{law}`. Example: `/v1/law/ipc/302?utm_medium=skill`
+- **Indian classics** ([references/classics.md](references/classics.md)): Aathichoodi, the Bhagavad Gita in Sanskrit and Kabir's couplets, a line or verse at a time, with transliteration. `/v1/classics`, `/v1/classics/{text}`, `/v1/classics/{text}/{ref}`. Example: `/v1/classics?utm_medium=skill`
+- **Small LLM (English)** ([references/llm.md](references/llm.md)): Summarise, classify, extract to JSON and rewrite English text with a small open model, and an OpenAI-compatible chat. `/v1/llm/summarise`, `/v1/llm/classify`, `/v1/llm/extract`, `/v1/llm/rewrite`, `/v1/chat/completions`, `/v1/models`. Example: `/v1/llm/summarise?utm_medium=skill`
 
 ### Network and contact checks
 
@@ -125,6 +129,7 @@ Each API's endpoints, methods, parameters, enums and examples are in `references
 - **HTTP probe from India** ([references/probe.md](references/probe.md)): How fast a URL answers from India: DNS, connect, TLS, first byte and the CDN edge. `/v1/probe`. Example: `/v1/probe?url=https://dharun.dev&utm_medium=skill`
 - **Website icons** ([references/icon.md](references/icon.md)): The icon of any website as a square PNG, for lists of links and bookmarks. `/v1/icon/{domain}`. Example: `/v1/icon/github.com?utm_medium=skill`
 - **Web pages** ([references/web.md](references/web.md)): Link previews, a page as Markdown for agents, and HTML and Markdown to each other. `/v1/unfurl`, `/v1/read`, `/v1/markdown`. Example: `/v1/unfurl?url=https://dharun.dev&utm_medium=skill`
+- **STD codes** ([references/std-codes.md](references/std-codes.md)): The landline STD code of every town and area in India, and which area a landline number belongs to. `/v1/std-codes/{code}`, `/v1/std-codes`. Example: `/v1/std-codes/0422?utm_medium=skill`
 
 ### Files, documents and media
 

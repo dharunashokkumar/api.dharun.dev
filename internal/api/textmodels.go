@@ -5,9 +5,11 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"os"
 	"os/exec"
 	"sort"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/dharunashokkumar/api.dharun.dev/internal/onnxwire"
@@ -29,18 +31,26 @@ const (
 )
 
 // modelKind is one helper: which dataset it serves and roughly how much memory its
-// models take once loaded.
+// models take once loaded. wait and callTime, when set, replace textModelWait and
+// textModelCallTime (a generation by the LLM takes far longer than an embedding).
 type modelKind struct {
-	name    string // also the dataset's name
-	memory  int64  // bytes, as measured with every model of the kind loaded
-	threads int
+	name     string // also the dataset's name
+	memory   int64  // bytes, as measured with every model of the kind loaded
+	threads  int
+	wait     time.Duration
+	callTime time.Duration
 }
 
+// modelWorker is a running helper: an `onnx-run serve` spoken to over its stdin and
+// stdout (conn), or llama-server spoken to over HTTP on a Unix socket (web).
 type modelWorker struct {
 	kind    modelKind
 	command *exec.Cmd
 	input   io.WriteCloser
 	conn    *onnxwire.Conn
+	web     *http.Client
+	dir     string        // removed when the helper stops
+	exited  chan struct{} // closed when the process has ended, if something already waits for it
 	slot    chan struct{} // held while a request is answered
 	used    time.Time
 	stderr  *limitedBuffer
@@ -54,6 +64,8 @@ type textModels struct {
 	idle    time.Duration
 	threads int
 	start   func(kind modelKind) (*modelWorker, error)
+	// startLLM starts llama-server with a model file; tests replace it with a fake.
+	startLLM func(kind modelKind, model string) (*modelWorker, error)
 }
 
 func newTextModels(cfg Config, programs *programs) *textModels {
@@ -93,16 +105,35 @@ func newTextModels(cfg Config, programs *programs) *textModels {
 		}
 		return &modelWorker{kind: kind, command: command, input: stdin, conn: onnxwire.NewConn(stdout, stdin), stderr: problems}, nil
 	}
+	m.startLLM = func(kind modelKind, model string) (*modelWorker, error) {
+		return startLlamaServer(programs, kind, model, cfg.LLMThreads)
+	}
 	return m
 }
 
 func (w *modelWorker) stop() {
-	w.input.Close()
-	done := make(chan struct{})
-	go func() {
-		w.command.Wait()
-		close(done)
-	}()
+	if w.dir != "" {
+		defer os.RemoveAll(w.dir)
+	}
+	if w.input != nil {
+		w.input.Close()
+	}
+	if w.command == nil {
+		return
+	}
+	if w.conn == nil && w.command.Process != nil {
+		// An HTTP helper does not read stdin: ask it to stop.
+		w.command.Process.Signal(syscall.SIGTERM)
+	}
+	done := w.exited
+	if done == nil {
+		waited := make(chan struct{})
+		go func() {
+			w.command.Wait()
+			close(waited)
+		}()
+		done = waited
+	}
 	select {
 	case <-done:
 	case <-time.After(5 * time.Second):
@@ -113,6 +144,10 @@ func (w *modelWorker) stop() {
 
 // worker returns the running helper of a kind, starting it if need be.
 func (m *textModels) worker(kind modelKind) (*modelWorker, error) {
+	return m.workerWith(kind, func() (*modelWorker, error) { return m.start(kind) })
+}
+
+func (m *textModels) workerWith(kind modelKind, start func() (*modelWorker, error)) (*modelWorker, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 	if w, ok := m.workers[kind.name]; ok && !w.broken {
@@ -136,7 +171,7 @@ func (m *textModels) worker(kind modelKind) (*modelWorker, error) {
 		total -= w.kind.memory
 		go w.stop()
 	}
-	w, err := m.start(kind)
+	w, err := start()
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +187,29 @@ func (m *textModels) use(ctx context.Context, kind modelKind, fn func(*onnxwire.
 	if err != nil {
 		return err
 	}
-	wait, cancel := context.WithTimeout(ctx, textModelWait)
+	return m.run(ctx, w, func() error { return fn(w.conn) })
+}
+
+// useLLM runs fn with llama-server, started with the model file if it is not running.
+func (m *textModels) useLLM(ctx context.Context, kind modelKind, model string, fn func(*http.Client) error) error {
+	w, err := m.workerWith(kind, func() (*modelWorker, error) { return m.startLLM(kind, model) })
+	if err != nil {
+		return err
+	}
+	return m.run(ctx, w, func() error { return fn(w.web) })
+}
+
+func (m *textModels) run(ctx context.Context, w *modelWorker, fn func() error) error {
+	kind := w.kind
+	waitFor, callTime := textModelWait, textModelCallTime
+	if kind.wait > 0 {
+		waitFor = kind.wait
+	}
+	if kind.callTime > 0 {
+		callTime = kind.callTime
+	}
+	var err error
+	wait, cancel := context.WithTimeout(ctx, waitFor)
 	defer cancel()
 	select {
 	case w.slot <- struct{}{}:
@@ -163,18 +220,21 @@ func (m *textModels) use(ctx context.Context, kind modelKind, fn func(*onnxwire.
 	// A request the client gave up on still finishes, as the helper cannot be stopped
 	// halfway; one that runs far too long is ended by stopping the helper.
 	done := make(chan error, 1)
-	go func() { done <- fn(w.conn) }()
+	go func() { done <- fn() }()
 	select {
 	case err = <-done:
-	case <-time.After(textModelCallTime):
-		w.command.Process.Kill()
+	case <-time.After(callTime):
+		if w.command != nil && w.command.Process != nil {
+			w.command.Process.Kill()
+		}
 		err = <-done
 		if err == nil {
 			err = errors.New("took too long")
 		}
 	}
 	var failed *onnxwire.ModelError
-	if err != nil && !errors.As(err, &failed) {
+	var refused *llmError
+	if err != nil && !errors.As(err, &failed) && !errors.As(err, &refused) {
 		// The helper died or the stream broke: start a new one next time.
 		m.mu.Lock()
 		w.broken = true

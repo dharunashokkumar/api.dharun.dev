@@ -22,8 +22,8 @@ Third-party notices for dharun-api
 The programs in this bundle built here (api, apidata, onnx-run) are free software under
 the GNU Affero General Public License v3.0 (AGPL-3.0-only, in LICENSE), built from the
 source at https://github.com/dharunashokkumar/api.dharun.dev. They include the code
-listed below, each under its own licence. resvg, typst, piper, deep-filter and ONNX
-Runtime are separate programs, shipped unchanged; their licences follow at the end.
+listed below, each under its own licence. resvg, typst, piper, whisper.cpp, llama.cpp,
+deep-filter and ONNX Runtime are separate programs, shipped unchanged; their licences follow at the end.
 
 EOF
 
@@ -92,6 +92,12 @@ DeepFilterNet 0.5.6 (https://github.com/Rikorose/DeepFilterNet), shipped as deep
 
 DeepFilterNet is licensed under the MIT licence or the Apache License 2.0, at your
 option. Source and licences: https://github.com/Rikorose/DeepFilterNet/releases/tag/v0.5.6
+
+================================================================================
+llama.cpp 0.9.0 (https://github.com/ggml-org/llama.cpp), llama-server and its libraries in llama/
+
+llama.cpp and ggml are licensed under the MIT licence (llama/LICENSE). The model it runs
+is not part of this bundle; it names its own licence in the API.
 
 ================================================================================
 ONNX Runtime 1.29.1 (https://github.com/microsoft/onnxruntime), libonnxruntime.so, loaded by onnx-run

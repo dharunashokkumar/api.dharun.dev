@@ -40,308 +40,328 @@
     "date": "2026-11-11"
   },
   "/docs/address": {
-    "hash": "a64223d751f49fa4",
-    "date": "2026-11-11"
+    "hash": "19b7ac863387ec56",
+    "date": "2026-11-12"
   },
   "/docs/air-quality": {
-    "hash": "a987ee3790a12a74",
-    "date": "2026-11-11"
+    "hash": "8eb624cf5f690ac9",
+    "date": "2026-11-12"
   },
   "/docs/airports": {
-    "hash": "bcbe88a3d063c65e",
-    "date": "2026-11-11"
+    "hash": "a18ea511042b5796",
+    "date": "2026-11-12"
   },
   "/docs/badges": {
-    "hash": "db508b2ec9c35c18",
-    "date": "2026-11-11"
+    "hash": "c078aa42fd62a34c",
+    "date": "2026-11-12"
   },
   "/docs/batch": {
-    "hash": "49965ceb9bce6229",
-    "date": "2026-11-11"
+    "hash": "6a60a2c29edd76c1",
+    "date": "2026-11-12"
+  },
+  "/docs/bin": {
+    "hash": "626882d51cdc7ccf",
+    "date": "2026-11-12"
   },
   "/docs/bullion": {
-    "hash": "616fda718ff7dadf",
-    "date": "2026-11-11"
+    "hash": "f7bdade7fd07ca6f",
+    "date": "2026-11-12"
   },
   "/docs/calculators": {
-    "hash": "3753df8445a2389d",
-    "date": "2026-11-11"
+    "hash": "4b1edc75e9d952e2",
+    "date": "2026-11-12"
+  },
+  "/docs/census": {
+    "hash": "6c9775d730102e91",
+    "date": "2026-11-12"
+  },
+  "/docs/classics": {
+    "hash": "285cda5d07d2e378",
+    "date": "2026-11-12"
   },
   "/docs/codes": {
-    "hash": "e11adf9f47e3de99",
-    "date": "2026-11-11"
+    "hash": "17c40a6f895cf4ec",
+    "date": "2026-11-12"
   },
   "/docs/colors": {
-    "hash": "99fa477b4b617cbf",
-    "date": "2026-11-11"
+    "hash": "4198827eb335b368",
+    "date": "2026-11-12"
   },
   "/docs/constituency": {
-    "hash": "68e8d7190b7e9820",
-    "date": "2026-11-11"
+    "hash": "7208ebcf9cc9dedb",
+    "date": "2026-11-12"
   },
   "/docs/data-tools": {
-    "hash": "03af0c90893c3f1d",
-    "date": "2026-11-11"
+    "hash": "8f0b5556fdda6d6d",
+    "date": "2026-11-12"
   },
   "/docs/dates": {
-    "hash": "7aff81f3e868abb3",
-    "date": "2026-11-11"
+    "hash": "11190395278d8edf",
+    "date": "2026-11-12"
   },
   "/docs/db": {
-    "hash": "358a33d5765d0402",
-    "date": "2026-11-11"
+    "hash": "2b8247a02d02981e",
+    "date": "2026-11-12"
   },
   "/docs/dev-utils": {
-    "hash": "3fc79b74e40dda21",
-    "date": "2026-11-11"
+    "hash": "251ccaad48b07c4b",
+    "date": "2026-11-12"
   },
   "/docs/dns": {
-    "hash": "f2603af8b66c4a34",
-    "date": "2026-11-11"
+    "hash": "9198fef6ea942aba",
+    "date": "2026-11-12"
   },
   "/docs/documents": {
-    "hash": "335be4a083e09d4e",
-    "date": "2026-11-11"
+    "hash": "95f05955594c52ce",
+    "date": "2026-11-12"
   },
   "/docs/email": {
-    "hash": "cc987fd5865fa4ce",
-    "date": "2026-11-11"
+    "hash": "5d85b3c58cdedfa8",
+    "date": "2026-11-12"
   },
   "/docs/embeddings": {
-    "hash": "e58603c45ee6171f",
-    "date": "2026-11-11"
+    "hash": "21aaec65413d06cd",
+    "date": "2026-11-12"
   },
   "/docs/expiries": {
-    "hash": "504155a106b4be62",
-    "date": "2026-11-11"
+    "hash": "3d9b48719a5e4c77",
+    "date": "2026-11-12"
   },
   "/docs/fake": {
-    "hash": "91ac1fa3bd04b683",
-    "date": "2026-11-11"
+    "hash": "2fde8523f77916fc",
+    "date": "2026-11-12"
   },
   "/docs/festivals": {
-    "hash": "a3720a7c995ceadc",
-    "date": "2026-11-11"
+    "hash": "948370aac4d05b3a",
+    "date": "2026-11-12"
   },
   "/docs/format": {
-    "hash": "582de6dd3b8dc411",
-    "date": "2026-11-11"
+    "hash": "dfd9631fc3e92771",
+    "date": "2026-11-12"
   },
   "/docs/helplines": {
-    "hash": "5b7f09a43757e9fa",
-    "date": "2026-11-11"
+    "hash": "d01257b877bfcb93",
+    "date": "2026-11-12"
   },
   "/docs/holidays": {
-    "hash": "6aae80890dbdb198",
-    "date": "2026-11-11"
+    "hash": "b7a2ae71d9b50034",
+    "date": "2026-11-12"
   },
   "/docs/hooks": {
-    "hash": "474493bb0062d9cc",
-    "date": "2026-11-11"
+    "hash": "4067020cf578174c",
+    "date": "2026-11-12"
   },
   "/docs/hospitals": {
-    "hash": "8b83cd346f1b5b47",
-    "date": "2026-11-11"
+    "hash": "4de59e6e9216b7ca",
+    "date": "2026-11-12"
   },
   "/docs/hsn": {
-    "hash": "cf54c767a6e34d78",
-    "date": "2026-11-11"
+    "hash": "012541b29fd78b75",
+    "date": "2026-11-12"
   },
   "/docs/icon": {
-    "hash": "3d6ba03837552622",
-    "date": "2026-11-11"
+    "hash": "2a11de4a7aba1adc",
+    "date": "2026-11-12"
   },
   "/docs/ifsc": {
-    "hash": "59ac5984feeca5d6",
-    "date": "2026-11-11"
+    "hash": "8beb18ce5713fbb1",
+    "date": "2026-11-12"
   },
   "/docs/image-tools": {
-    "hash": "84e979453de5d283",
-    "date": "2026-11-11"
+    "hash": "e26337de8e6b2765",
+    "date": "2026-11-12"
   },
   "/docs/images": {
-    "hash": "5ff381129cc2f655",
-    "date": "2026-11-11"
+    "hash": "623f6da9481b97f7",
+    "date": "2026-11-12"
   },
   "/docs/indic": {
-    "hash": "1a92f8be3f7f6dcc",
-    "date": "2026-11-11"
+    "hash": "c17eebea67f950fc",
+    "date": "2026-11-12"
   },
   "/docs/indices": {
-    "hash": "683bcbe77d7b0eab",
-    "date": "2026-11-11"
+    "hash": "4b5092d2edbf69e8",
+    "date": "2026-11-12"
   },
   "/docs/invoice": {
-    "hash": "983d4bf034fd6e94",
-    "date": "2026-11-11"
+    "hash": "46be9582ec1f3a07",
+    "date": "2026-11-12"
   },
   "/docs/ip": {
-    "hash": "c090665e244d6ff1",
-    "date": "2026-11-11"
+    "hash": "e89474caea43aca3",
+    "date": "2026-11-12"
   },
   "/docs/ipv6": {
-    "hash": "24609f2fca33bb47",
-    "date": "2026-11-11"
+    "hash": "3539c5984e1bb1ee",
+    "date": "2026-11-12"
   },
   "/docs/kv": {
-    "hash": "57740bd7a95e2442",
-    "date": "2026-11-11"
+    "hash": "d957f64561ed3591",
+    "date": "2026-11-12"
   },
   "/docs/law": {
-    "hash": "a95c9fd0e79ddbec",
-    "date": "2026-11-11"
+    "hash": "af2658406daaa113",
+    "date": "2026-11-12"
   },
   "/docs/lgd": {
-    "hash": "0b24ff6293f644d5",
-    "date": "2026-11-11"
+    "hash": "fd592eb64cbdb4f3",
+    "date": "2026-11-12"
+  },
+  "/docs/llm": {
+    "hash": "528bd4c7bc0d54d8",
+    "date": "2026-11-12"
   },
   "/docs/logos": {
-    "hash": "b1649f883f7a74b4",
-    "date": "2026-11-11"
+    "hash": "81773684a80da0f6",
+    "date": "2026-11-12"
   },
   "/docs/mandi": {
-    "hash": "4188e97a7a8bd783",
-    "date": "2026-11-11"
+    "hash": "0f85307a844bd60c",
+    "date": "2026-11-12"
   },
   "/docs/mcp-tools": {
-    "hash": "24e769a480999b22",
-    "date": "2026-11-11"
+    "hash": "d3a8fe2baa2f35b5",
+    "date": "2026-11-12"
   },
   "/docs/media": {
-    "hash": "8eada10a81bc2404",
-    "date": "2026-11-11"
+    "hash": "9b34536993e54ff0",
+    "date": "2026-11-12"
   },
   "/docs/mtr": {
-    "hash": "3e79e84eb992f023",
-    "date": "2026-11-11"
+    "hash": "fedf474e78ef39b4",
+    "date": "2026-11-12"
   },
   "/docs/mutual-funds": {
-    "hash": "3bc11f8691913470",
-    "date": "2026-11-11"
+    "hash": "cda54c94c763bc4b",
+    "date": "2026-11-12"
   },
   "/docs/ocr": {
-    "hash": "60e252c8c32bfd0a",
-    "date": "2026-11-11"
+    "hash": "a95c1f91b66d2ac7",
+    "date": "2026-11-12"
   },
   "/docs/panchang": {
-    "hash": "6dc027e6d31706b2",
-    "date": "2026-11-11"
+    "hash": "6939e8aac6c146b5",
+    "date": "2026-11-12"
   },
   "/docs/pdf": {
-    "hash": "4f5d3ab57431f1e0",
-    "date": "2026-11-11"
+    "hash": "59c339508e3d58b9",
+    "date": "2026-11-12"
   },
   "/docs/phone": {
-    "hash": "58cc82893cf71535",
-    "date": "2026-11-11"
+    "hash": "6f8ca0e280936cd7",
+    "date": "2026-11-12"
   },
   "/docs/pincode": {
-    "hash": "baa061ef5377500b",
-    "date": "2026-11-11"
+    "hash": "a305e874805ae8c0",
+    "date": "2026-11-12"
   },
   "/docs/probe": {
-    "hash": "a017bd6399420f17",
-    "date": "2026-11-11"
+    "hash": "a93de3ef33b01f3d",
+    "date": "2026-11-12"
   },
   "/docs/propagation": {
-    "hash": "3bca3fb0ff64a09b",
-    "date": "2026-11-11"
+    "hash": "8f651d4802749724",
+    "date": "2026-11-12"
   },
   "/docs/rag": {
-    "hash": "fccabb001a1d5f59",
-    "date": "2026-11-11"
+    "hash": "bc551947997019af",
+    "date": "2026-11-12"
   },
   "/docs/rates": {
-    "hash": "cafa24cbb90da605",
-    "date": "2026-11-11"
+    "hash": "e4c6bb8fc16954ff",
+    "date": "2026-11-12"
   },
   "/docs/regex": {
-    "hash": "46bdb3124c0856a8",
-    "date": "2026-11-11"
+    "hash": "1684a255149ec9a0",
+    "date": "2026-11-12"
   },
   "/docs/rto": {
-    "hash": "b84891337e43f36f",
-    "date": "2026-11-11"
+    "hash": "1fc3902b854a6347",
+    "date": "2026-11-12"
   },
   "/docs/satellites": {
-    "hash": "de6b752acde5b443",
-    "date": "2026-11-11"
+    "hash": "7350b65d143224cf",
+    "date": "2026-11-12"
   },
   "/docs/speech": {
-    "hash": "755326971719eb74",
-    "date": "2026-11-11"
+    "hash": "6ef89279e8df0ab1",
+    "date": "2026-11-12"
   },
   "/docs/states": {
-    "hash": "5728d36f764baa80",
-    "date": "2026-11-11"
+    "hash": "bbef5eba095dea85",
+    "date": "2026-11-12"
   },
   "/docs/stations": {
-    "hash": "4cd4cfba8ef1d165",
-    "date": "2026-11-11"
+    "hash": "51eeeae47195bc16",
+    "date": "2026-11-12"
+  },
+  "/docs/std-codes": {
+    "hash": "4fc0c38e45f30f24",
+    "date": "2026-11-12"
   },
   "/docs/sun-moon": {
-    "hash": "387c2b8f513e9ac0",
-    "date": "2026-11-11"
+    "hash": "4019daa3709d026c",
+    "date": "2026-11-12"
   },
   "/docs/tamil-font": {
-    "hash": "2af74d47bf8cf8db",
-    "date": "2026-11-11"
+    "hash": "24a07980fa889354",
+    "date": "2026-11-12"
   },
   "/docs/text": {
-    "hash": "971db804d493c63f",
-    "date": "2026-11-11"
+    "hash": "7b56041a8fabe218",
+    "date": "2026-11-12"
   },
   "/docs/thirukkural": {
-    "hash": "c7daa0e58c39afec",
-    "date": "2026-11-11"
+    "hash": "68d98a926cef2722",
+    "date": "2026-11-12"
   },
   "/docs/tls": {
-    "hash": "3e46aacba4f0a2bf",
-    "date": "2026-11-11"
+    "hash": "47446f5a008a91cf",
+    "date": "2026-11-12"
   },
   "/docs/today": {
-    "hash": "745e0bf410917d8c",
-    "date": "2026-11-11"
+    "hash": "fe2c6163c81823eb",
+    "date": "2026-11-12"
   },
   "/docs/translate": {
-    "hash": "efb9e2b6c4643a14",
-    "date": "2026-11-11"
+    "hash": "4ee3683c63aaefe2",
+    "date": "2026-11-12"
   },
   "/docs/transliterate": {
-    "hash": "0a212c5c842d2ea5",
-    "date": "2026-11-11"
+    "hash": "3c114032ab44ebdd",
+    "date": "2026-11-12"
   },
   "/docs/typst": {
-    "hash": "5cbc354355cf4dd3",
-    "date": "2026-11-11"
+    "hash": "96b2c696291ee5e3",
+    "date": "2026-11-12"
   },
   "/docs/upi": {
-    "hash": "4f451fcefac74268",
-    "date": "2026-11-11"
+    "hash": "8a0b9d18ebe20d7b",
+    "date": "2026-11-12"
   },
   "/docs/validate": {
-    "hash": "20f6f055f432b936",
-    "date": "2026-11-11"
+    "hash": "94e42856f723b712",
+    "date": "2026-11-12"
   },
   "/docs/web": {
-    "hash": "25e573e11bc3f157",
-    "date": "2026-11-11"
+    "hash": "a4d7f1ab25774d45",
+    "date": "2026-11-12"
   },
   "/docs/whois": {
-    "hash": "522a17ea908350ad",
-    "date": "2026-11-11"
+    "hash": "7812b132e8593410",
+    "date": "2026-11-12"
   },
   "/docs/words": {
-    "hash": "d98edae846de30c1",
-    "date": "2026-11-11"
+    "hash": "ed7bc2508a9bb80a",
+    "date": "2026-11-12"
   },
   "/docs/working-days": {
-    "hash": "980c3e0202e71f49",
-    "date": "2026-11-11"
+    "hash": "851fb17dad9e54dc",
+    "date": "2026-11-12"
   },
   "/docs/world-logos": {
-    "hash": "d0e4ebf5a32592e2",
-    "date": "2026-11-11"
+    "hash": "a74a18e00b2f1b11",
+    "date": "2026-11-12"
   },
   "/tools/air-quality": {
     "hash": "58a96cd149fac57f",

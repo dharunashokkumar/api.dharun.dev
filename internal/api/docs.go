@@ -52,6 +52,11 @@ func (s *Server) registerRoutes() {
 	s.registerLaw()
 	s.registerLGD()
 	s.registerHospitals()
+	s.registerCensus()
+	s.registerClassics()
+	s.registerSTDCodes()
+	s.registerBins()
+	s.registerLLM()
 	s.mux.HandleFunc("/", s.handleUnmatched)
 }
 
@@ -169,7 +174,11 @@ func (s *Server) handleOpenAPI(w http.ResponseWriter, r *http.Request) {
 						// A key is optional everywhere: it raises the limits.
 						"security": []any{map[string]any{}, map[string]any{"bearerKey": []string{}}, map[string]any{"headerKey": []string{}}},
 					}
-					if e.Key {
+					if e.KeyOnly {
+						op["x-key-required"] = true
+						op["security"] = []any{map[string]any{"bearerKey": []string{}}, map[string]any{"headerKey": []string{}}}
+						op["description"] = e.Doc + " Needs a free API key from the start: " + origin + "/signup"
+					} else if e.Key {
 						// Until the notice date a key-less call still works, so the empty
 						// requirement stays; x-key-required says where this is heading.
 						op["x-key-required"] = true

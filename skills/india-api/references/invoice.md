@@ -39,3 +39,7 @@ Example body (invoice.json):
   "terms": "Goods once sold will not be taken back."
 }
 ```
+
+## Guides
+
+- [Make a GST tax invoice PDF from JSON](https://api.dharun.dev/guides/gst-invoice-pdf.md): Send the seller, buyer and items with HSN codes and GST rates, and get back an A4 tax invoice PDF with CGST, SGST or IGST worked out, the HSN summary and the amount in words.

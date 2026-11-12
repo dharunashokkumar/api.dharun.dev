@@ -105,6 +105,11 @@ JavaScript and Python.
 | [Villages and LGD codes](https://api.dharun.dev/docs/lgd) | `/v1/lgd/states`, `/v1/lgd/villages?pincode=637001` | Every state, district, sub-district and village with its LGD and Census 2011 codes, and village PIN codes, from the Local Government Directory |
 | [Hospitals](https://api.dharun.dev/docs/hospitals) | `/v1/hospitals?pincode=637001`, `?near=lat,lon` | About 30,000 hospitals with phone, specialties and position, from the National Hospital Directory (May 2016) |
 | [IPC to BNS](https://api.dharun.dev/docs/law) | `/v1/law/ipc/302`, `/v1/law/bns?q=murder` | Section correspondence between the new criminal laws and the old ones: BNS and IPC, BNSS and CrPC, BSA and the Evidence Act |
+| [Census 2011](https://api.dharun.dev/docs/census) | `/v1/census/district/632`, `/v1/census?q=madurai` | Population, households, literacy rate, sex ratio, SC/ST and workers for India, every state, district, sub-district and town, total, rural and urban (Census of India 2011) |
+| [STD codes](https://api.dharun.dev/docs/std-codes) | `/v1/std-codes/0422`, `/v1/std-codes?q=pollachi` | The area of a landline STD code or number, and the code of a town: 2,645 areas from DoT's National Numbering Plan |
+| [Card BIN lookup](https://api.dharun.dev/docs/bin) | `/v1/bin/605067` | Network (Visa, Mastercard, RuPay), debit or credit, product and bank of a card's first 6 to 8 digits (open BIN list, CC BY 4.0) |
+| [Indian classics](https://api.dharun.dev/docs/classics) | `/v1/classics/gita/2.47`, `/v1/classics/aathichoodi/1` | The Bhagavad Gita in Sanskrit, Aathichoodi and Kabir's couplets, with transliteration |
+| [Small LLM (English)](https://api.dharun.dev/docs/llm) | `POST /v1/llm/extract`, `POST /v1/chat/completions` | Summarise, classify, extract to JSON (schema enforced) and rewrite English text with Qwen 2.5 1.5B on the server, and an OpenAI-compatible chat; key needed, 100,000 tokens a day |
 | [Derivative expiries](https://api.dharun.dev/docs/expiries) | `/v1/expiries?exchange=nse&year=2026` | NSE and BSE weekly and monthly expiry dates, moved for holidays |
 | [MICR and SWIFT](https://api.dharun.dev/docs/ifsc) | `/v1/micr/400240003`, `/v1/swift/HDFCINBB` | The branch behind a cheque's MICR code or a SWIFT code |
 | [Sectors](https://api.dharun.dev/docs/logos) | `/v1/sectors?sector=...` | Sectors and industries of listed companies, with counts and the largest companies |
@@ -227,6 +232,11 @@ accepted; see [CONTRIBUTING.md](CONTRIBUTING.md).
 | Transliteration model | [IndicXlit](https://github.com/AI4Bharat/IndicXlit) (AI4Bharat), converted to ONNX here | MIT | fetched by each server |
 | Name detection | [IndicNER](https://huggingface.co/ai4bharat/IndicNER) (AI4Bharat); [bert-base-NER](https://huggingface.co/dslim/bert-base-NER) | MIT | fetched by each server |
 | Moderation | [Detoxify multilingual](https://huggingface.co/unitary/multilingual-toxic-xlm-roberta) (Unitary); [Hinglish toxicity](https://huggingface.co/darelphilip/hinglish-toxicity-classifier) (Darel Philip, on L3Cube HingRoBERTa, CC BY 4.0); [Tanglish offensive language](https://huggingface.co/seanbenhur/tanglish-offensive-language-identification) (Sean Benhur) | Apache-2.0; MIT; Apache-2.0 | fetched by each server |
+| Census 2011 | [Census Digital Library](https://censusindia.gov.in/nada/index.php/catalog/42559), Office of the Registrar General and Census Commissioner | Government of India publication; credited | 14,532 places |
+| STD codes | National Numbering Plan (2003), Annex II, Department of Telecommunications | Government of India publication; credited | 2,645 areas |
+| Card BIN prefixes | [bin-list-data](https://github.com/venelinkochev/bin-list-data) (Venelin Kochev) | CC BY 4.0 | fetched by each server, 374,000 prefixes |
+| Classics | Tamil, Sanskrit and Hindi [Wikisource](https://wikisource.org/) | Public domain texts | 1,095 lines and verses |
+| Small LLM | [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) (Qwen team), run with llama.cpp | Apache-2.0; MIT | fetched by each server |
 | Disposable email domains | [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) | CC0 | 9,881 domains |
 | Logos and company details | Collected from TradingView | Logos are trademarks of the companies they identify | 5,599 companies, 5,354 with a logo |
 | Indian brand logos | [Wikimedia Commons](https://commons.wikimedia.org/) files under a free licence, else the brand site's own icon (`tools/fetch_brand_logos.py`) | Trademarks of the brands; Commons files keep their licence, named per brand | 294 brands, 234 with a logo |
