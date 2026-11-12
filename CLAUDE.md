@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `api.dharun.dev`, named **India API**: free, open source APIs for Indian developers (company
 logos, pincodes, IFSC, RTO codes, holidays, number to words, format checks, GST invoices,
-OCR, PDF, image and speech tools, money calculators, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
+OCR, PDF, image and speech tools, money calculators, Census 2011, STD codes, a small English LLM with an OpenAI-compatible chat, and more being added). One Go service owns the whole hostname; every API is a path under `/v1`, and the
 same service serves the website (with try-it panels, a playground, tool pages and demos),
 the guides and the files for AI agents. Light endpoints need no key and are limited per IP;
 a free API key (accounts on PocketBase, `cmd/accounts`) raises the limits, and the model

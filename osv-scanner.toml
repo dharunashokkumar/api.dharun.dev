@@ -8,3 +8,12 @@
 [[IgnoredVulns]]
 id = "GO-2026-5932"
 reason = "Only golang.org/x/crypto/ocsp is used; the openpgp package is never imported."
+
+# github.com/disintegration/imaging panics on a crafted TIFF (no fixed version). It is
+# linked only through PocketBase's tools/filesystem (`go mod why -m
+# github.com/disintegration/imaging`), which makes thumbnails of uploaded record files.
+# The accounts collections have no file fields and the record API is not passed through
+# (accountPassThrough), so no caller can send it a file.
+[[IgnoredVulns]]
+id = "GHSA-q7pp-wcgr-pffx"
+reason = "Only reached through PocketBase file thumbnails; the accounts collections have no file fields and the record API is not exposed."
