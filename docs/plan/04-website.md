@@ -132,7 +132,7 @@ From `seo_audit.md` (still open) and the data:
       API (the personal site did not mention it when audited).
 - [ ] **Check Search Console first:** with 61 Googlebot fetches in a month, find out
       whether pages are indexed at all before writing more of them.
-- [ ] **A changelog page** (`/changelog`) written from the releases: what changed for
+- [x] **A changelog page** (`/changelog`, built 2026-11-11 by hand in `templates/changelog.md`; kept up to date with each release) written from the releases: what changed for
       users, by date. Fresh content, and it tells callers about contract changes such
       as the logo fallback and the key requirement.
 - [x] **Guides for the developers who are already here** (2026-11-11: Flutter, Android/Kotlin; the audit's twelve still to write): Flutter (Dart made 1,800
@@ -208,7 +208,8 @@ pages, yes, now.
       radio weather, invoice live).
 - [x] The next twenty tool pages (2026-11-11, `site_tools_more.go`, a generic form handler in `tools.js`): GST, EMI, SIP, income tax, HRA, gratuity and PPF calculators, GSTIN and PAN checkers, HSN, RTO, mutual fund NAV, gold rate, IPC to BNS, mandi prices, air quality, festivals, Thirukkural, villages, hospitals, QR codes.
 - [x] CSV enrich on `/v1/batch` (2026-11-11): a CSV body with kind and column comes back with each answer's fields added as columns.
-- [ ] Section 5 search items: per-page SEO titles, typed schemas, sitemap dates from
-      documentation edits, Search Console first, Flutter and Android guides, client packages.
+- [x] Section 5 search items: per-page SEO titles, typed schemas, sitemap dates from
+      documentation edits, Flutter and Android guides, the audit's guides (all done by 2026-11-12).
+      Still open from it: Search Console (Dharun) and client packages (Dharun: later), ticked separately above.
 - [ ] A headless browser check, only if regressions appear. The scripts were checked with
       `node --check` and against a local server's answers, not in a browser.

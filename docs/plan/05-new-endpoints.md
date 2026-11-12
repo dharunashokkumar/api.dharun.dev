@@ -170,4 +170,4 @@ chose all the calculators, income tax included.
 - [x] Number formatting, Indian date tools, UPI handle lookup, QR parse, badges, address
       reader; company cross-search was already `/v1/companies` (2026-11-11, branch `growth-catalogue`).
 - [x] Set D, every item (2026-11-11, branch `growth-catalogue`); screenshot and HTML to PDF dropped (no Chromium).
-- [ ] Sets B, C, D, E: each data source to be agreed with Dharun first (Parts 5 and 6).
+- [x] Sets B, C, D, E: each data source to be agreed with Dharun first (Parts 5 and 6). Built 2026-11-11 and 2026-11-12, except what was dropped (NSE-only data, fuel, CPI) or is on hold (further data.gov.in sources, colleges); see ROADMAP.md.
