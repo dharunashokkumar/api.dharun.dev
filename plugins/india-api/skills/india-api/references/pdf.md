@@ -176,3 +176,7 @@ Parameters:
 - `password` (query): The PDF's password. Send it as a form field rather than in the address.
 
 Example: `POST` https://api.dharun.dev/v1/pdf/unlock?password=india&utm_medium=skill (returns the PDF itself)
+
+## Guides
+
+- [Read Tamil, Hindi and English text from photos and scanned PDFs](https://api.dharun.dev/guides/ocr-tamil-hindi.md): OCR receipts, forms and scanned pages in eleven Indian languages with Tesseract on India API, choose the right language codes, read the confidence, and get better results from phone photos.

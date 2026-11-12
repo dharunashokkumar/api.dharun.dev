@@ -52,6 +52,7 @@ Example: https://api.dharun.dev/v1/pincode/near?lat=11.2189&lng=78.1674&radius=5
 ## Guides
 
 - [Handle India API errors, rate limits and retries](https://api.dharun.dev/guides/errors-and-limits.md): Every error has the same JSON shape; rate limits are weighted per endpoint and told in RateLimit headers. A reusable client in Python and JavaScript with timeouts, retries and backoff.
+- [Pincode autofill in React, with post office choice and cancellation](https://api.dharun.dev/guides/react-pincode-autofill.md): A React hook that looks up a six-digit pincode as it is typed, cancels stale requests, fills district and state but leaves them editable, and lets the user pick the post office.
 - [Pincode autofill and IFSC lookup in a Flutter app](https://api.dharun.dev/guides/flutter-pincode-ifsc.md): Fill in district and state from a pincode, check an IFSC code and show a company logo in Flutter, with the http package and no API key.
 - [Pincode autofill and IFSC lookup in an Android app (Kotlin)](https://api.dharun.dev/guides/android-kotlin-pincode-ifsc.md): Fill in district and state from a pincode and check an IFSC code in an Android app with Kotlin coroutines and HttpURLConnection, no library and no key.
 - [Fill city and state from a pincode in a web form](https://api.dharun.dev/guides/pincode-autofill.md): Look up the district and state as soon as someone types a six-digit pincode, with plain JavaScript and no API key.

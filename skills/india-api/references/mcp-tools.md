@@ -16,3 +16,7 @@ Parameters:
 - `set` (query): Only one set. One of: files, money, network, text, dates, places.
 
 Example: https://api.dharun.dev/v1/mcp-tools?q=gold%20rate&utm_medium=skill
+
+## Guides
+
+- [Use India API from an MCP client (Claude, Cursor, VS Code)](https://api.dharun.dev/guides/mcp-client.md): Connect an AI assistant to India API's MCP server, load only the tool sets you need, add your key, check the connection, and fix the usual problems.

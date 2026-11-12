@@ -137,7 +137,7 @@ From `seo_audit.md` (still open) and the data:
       as the logo fallback and the key requirement.
 - [x] **Guides for the developers who are already here** (2026-11-11: Flutter, Android/Kotlin; the audit's twelve still to write): Flutter (Dart made 1,800
       requests) and Android or Kotlin (Java made 5,900): pincode autofill, IFSC
-      lookup, logos in a list. Then the twelve guides proposed in the audit (2026-11-12: GST invoice PDF, errors and limits, and a small-LLM guide written; five of the twelve were already covered by earlier guides).
+      lookup, logos in a list. Then the twelve guides proposed in the audit (2026-11-12: all twelve covered: GST invoice PDF, errors and limits, React pincode autofill, Node.js IFSC, Tamil and Hindi OCR, translating app content and MCP clients written, plus a small-LLM guide; the rest were covered by earlier guides).
 - [ ] **Client packages** once the schemas are typed: npm, PyPI, and pub.dev for Dart.
 
 ### Pages made from data (open question)

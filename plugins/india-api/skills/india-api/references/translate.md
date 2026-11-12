@@ -33,3 +33,7 @@ Example: https://api.dharun.dev/v1/translate?from=en&to=ta&text=The+train+to+Che
 Every language with its short code and FLORES-200 code; either can be used as from and to.
 
 Example: https://api.dharun.dev/v1/translate/languages?utm_medium=skill
+
+## Guides
+
+- [Translate app content into Indian languages](https://api.dharun.dev/guides/translate-app-content.md): Translate app strings between English and 22 Indian languages with IndicTrans2, keep placeholders safe, translate at build time, and know when a person should review.

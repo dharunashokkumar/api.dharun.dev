@@ -26,3 +26,7 @@ Parameters:
 - `last` (query): PDF: last page to read; at most 10 pages per request.
 
 Example: `POST` https://api.dharun.dev/v1/ocr?lang=eng+tam&utm_medium=skill
+
+## Guides
+
+- [Read Tamil, Hindi and English text from photos and scanned PDFs](https://api.dharun.dev/guides/ocr-tamil-hindi.md): OCR receipts, forms and scanned pages in eleven Indian languages with Tesseract on India API, choose the right language codes, read the confidence, and get better results from phone photos.
