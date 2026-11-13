@@ -108,6 +108,11 @@
       $("account-body").hidden = false;
       say("account-status", me.verified ? "" : "Confirm your email address to make a key: open the link we mailed you.", me.verified ? "" : "error");
       $("account-email").textContent = "Logged in as " + me.email + (me.verified ? "" : " (not confirmed yet)") + ".";
+      // Forget a saved key that is no longer one of this account's live keys.
+      try {
+        var saved = localStorage.getItem("india-api-key") || "";
+        if (saved && !me.keys.some(function (k) { return !k.revoked && saved.slice(-4) === k.hint.slice(-4) && saved.indexOf(k.hint.split("…")[0]) === 0; })) localStorage.removeItem("india-api-key");
+      } catch (e) {}
       var list = $("keys"); list.textContent = "";
       me.keys.forEach(function (k) { list.appendChild(li(k)); });
       if (!me.keys.length) { var none = document.createElement("li"); none.textContent = "No keys yet."; list.appendChild(none); }

@@ -141,9 +141,22 @@
     var status = el("p", { class: "status" }, "Sending…");
     out.appendChild(status);
     await credentials(spec, req.init, options);
-    var started = performance.now(), response;
+    var started = performance.now(), response, dropped = false;
     try {
       response = await fetch(req.url, req.init);
+      // A key saved in this browser that the server refuses (revoked, rotated, or its
+      // account deleted) would break every request on the site: forget it and ask again.
+      if (response.status === 401 && req.init.headers["X-API-Key"] && window.indiaKey && req.init.headers["X-API-Key"] === window.indiaKey()) {
+        var refused = await response.clone().json().catch(function () { return null; });
+        if (refused && refused.error && refused.error.code === "invalid_key") {
+          try { localStorage.removeItem("india-api-key"); } catch (e) {}
+          delete req.init.headers["X-API-Key"];
+          dropped = true;
+          await credentials(spec, req.init, options);
+          started = performance.now();
+          response = await fetch(req.url, req.init);
+        }
+      }
     } catch (e) {
       status.textContent = "The request did not reach the server: " + e.message;
       status.className = "status error";
@@ -159,6 +172,7 @@
     fact("quota", response.headers.get("X-Quota-Remaining") && response.headers.get("X-Quota-Remaining") + " model requests left today");
     fact("retry after", response.headers.get("Retry-After") && response.headers.get("Retry-After") + " s");
     out.appendChild(meta);
+    if (dropped) out.appendChild(el("p", { class: "note" }, "The API key saved in this browser was refused (revoked, rotated or unknown), so it was forgotten and this request was sent without it. Make a new one at /account."));
     var notice = response.headers.get("X-Key-Notice");
     if (notice) out.appendChild(el("p", { class: "note" }, notice));
     var type = response.headers.get("Content-Type") || "", result = { status: response.status, type: type };
