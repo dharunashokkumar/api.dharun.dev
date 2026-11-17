@@ -201,8 +201,9 @@ keep the version first. It also lists every dataset with the copy in use.
   the router in memory; endpoints marked `Live` are never run), `/ai`, `/guides`, and
   `/privacy`, `/security`, `/about`, which are written once as Markdown in `templates/`
   and rendered. Cool paper, code on graphite, one cobalt accent; the three fonts are
-  served from the binary (`webfonts.go`, `internal/api/webfonts/` with `SHA256SUMS`), so
-  nothing is loaded from other hosts.
+  served from the binary (`webfonts.go`, `internal/api/webfonts/` with `SHA256SUMS`).
+  The one thing loaded from another host is the self-hosted Umami page counter
+  (`analyticsTag` in `site_layout.go`, HTML pages only; Dharun, 2026-11-17).
 - A Markdown form of every page (`.md` address or `Accept: text/markdown`), `/llms.txt`,
   `/llms-full.txt`, `/openapi.json`, `/sitemap.xml`, `/robots.txt` (content signals) and
   the discovery files: `/.well-known/security.txt`, `api-catalog`, `ai-catalog.json`,
@@ -464,8 +465,8 @@ refresh (`MemoryMax=512M`, separate unit).
 - **Settled product decisions** (do not reverse as "improvements"): flat `/v1/<resource>`
   URLs, Go, the `{ data, meta }` envelope with `meta.source` on every response, light
   endpoints keyless (free keys raise limits; model endpoints need a key after the notice
-  date; 2026-11-11), an interactive site with nothing loaded from other hosts, private
-  monitoring, one container (the accounts program runs beside the API in it), servers refresh
+  date; 2026-11-11), an interactive site with nothing loaded from other hosts except the
+  Umami page counter (2026-11-17), private monitoring, one container (the accounts program runs beside the API in it), servers refresh
   their own data, every push to `main` deploys. Ask before changing any of them.
 - **Ask Dharun before deciding product questions.** He wants clarifying questions and to
   make the calls himself.

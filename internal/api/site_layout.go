@@ -3,7 +3,7 @@ package api
 // The layout every HTML page shares: head, header, footer, styles and the small script
 // for code tabs, copy buttons and JSON colouring. Cool near-white paper, hairlines, code
 // on graphite, one cobalt signal. The fonts are served from this binary (webfonts.go);
-// nothing is loaded from elsewhere: no third-party fonts, no analytics, no cookies.
+// the one thing loaded from elsewhere is the cookieless page counter (analyticsTag).
 
 // cssStamp records the design decisions (the Hallmark design skill reads it back).
 const cssStamp = `
@@ -387,6 +387,11 @@ const siteJS = `
 
 const brandMark = `<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14"/><path d="M27 18c-5 0-7 2-7 7v3c0 3-1 4-4 4 3 0 4 1 4 4v3c0 5 2 7 7 7M37 18c5 0 7 2 7 7v3c0 3 1 4 4 4-3 0-4 1-4 4v3c0 5-2 7-7 7" fill="none" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`
 
+// analyticsTag is the one script the site loads from another host: page view counts
+// (self-hosted Umami, no cookies). Query strings are left out of the stats, since they
+// can carry keys. It goes only into HTML pages, never into an API answer.
+const analyticsTag = `<script defer src="https://stats.dharun.dev/script.js" data-website-id="c6f2910c-f2de-49fe-8872-4b50fb7928ff" data-domains="api.dharun.dev" data-exclude-search="true"></script>`
+
 const htmlLayout = `
 {{define "top"}}<!doctype html>
 <html lang="en">
@@ -417,6 +422,7 @@ const htmlLayout = `
 {{end}}<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
 <link rel="service-desc" type="application/openapi+json" href="/openapi.json">
 <script>document.documentElement.className = "js";</script>
+` + analyticsTag + `
 <style>` + siteCSS + `</style>
 {{if .JSONLD}}<script type="application/ld+json">{{.JSONLD}}</script>
 {{end}}</head>

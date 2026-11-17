@@ -27,9 +27,9 @@ There are no passwords: you log in with a six-digit code mailed to you, which wo
 
 Delete your account on the account page: the account, its keys and their usage counts go at once.
 
-## Cookies and tracking
+## Cookies and page counts
 
-None. The site sets no cookies and loads no analytics, advertising or third-party scripts. Your own browser's storage keeps what you choose there, and none of it is sent anywhere unless you send a request with it: which code language you picked in the documentation, the login token and the key you made (on the account page, so the playground and try-it panels can use it), your last playground requests (never those to private endpoints), and for an hour the token the free tool pages use.
+The site sets no cookies and loads no advertising. The HTML pages of the site (not the API, not the Markdown forms or the files for agents) load one script from our own analytics server, a copy of [Umami](https://umami.is) we run ourselves, which counts page views without cookies: the page address without its query string, the referring site, and the browser, system, screen size, language and country. They are not sold or shared. Your own browser's storage keeps what you choose there, and none of it is sent anywhere unless you send a request with it: which code language you picked in the documentation, the login token and the key you made (on the account page, so the playground and try-it panels can use it), your last playground requests (never those to private endpoints), and for an hour the token the free tool pages use.
 
 ## Others who see requests
 

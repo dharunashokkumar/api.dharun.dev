@@ -626,7 +626,7 @@ func (s *Server) staticPageData(origin string) map[string]any {
 }
 
 var staticPages = map[string]struct{ Title, Heading, Description string }{
-	"privacy":   {"Privacy: what " + productName + " logs and keeps", "Privacy", "What India API logs, what it never logs, and what happens to the values you send. No cookies, no tracking, no IP addresses in logs."},
+	"privacy":   {"Privacy: what " + productName + " logs and keeps", "Privacy", "What India API logs, what it never logs, and what happens to the values you send. No cookies, cookieless page counts only, no IP addresses in logs."},
 	"security":  {"Security: reporting issues and verifying releases | " + productName, "Security", "How to report a vulnerability in India API, how the service limits what it does, and how to verify that a release came from the public source."},
 	"about":     {"About " + productName + ": who builds it, licences and data sources", "About", "Who builds India API, why, the licences of the code and the examples, and every data source with its licence."},
 	"keys":      {"Free API keys: limits, quotas and how to send a key | " + productName, "API keys", "India API keys are free. A key raises the limit on every endpoint and will be needed for the model endpoints. How to get one, send it and what changes when."},

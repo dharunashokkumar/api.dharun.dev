@@ -41,9 +41,13 @@ func TestSitePages(t *testing.T) {
 		if strings.Contains(body, "template error") || strings.Contains(body, "markdown error") {
 			t.Errorf("%s: %s", entry.Path, clip(body[strings.Index(body, "error"):], 300))
 		}
-		// Nothing is loaded from elsewhere: no scripts, styles or fonts from other hosts.
-		// The interactive pages load their own scripts from /assets/ on this server.
-		if regexp.MustCompile(`<script[^>]+src="(?:https?:)?//|<script[^>]+src="[^/]|<link[^>]+rel="stylesheet"|@import|fonts\.googleapis`).MatchString(body) {
+		// Every page carries the analytics tag, once.
+		if strings.Count(body, analyticsTag) != 1 {
+			t.Errorf("%s has the analytics tag %d times", entry.Path, strings.Count(body, analyticsTag))
+		}
+		// Apart from that tag nothing is loaded from elsewhere: no scripts, styles or fonts
+		// from other hosts. The interactive pages load their own scripts from /assets/.
+		if regexp.MustCompile(`<script[^>]+src="(?:https?:)?//|<script[^>]+src="[^/]|<link[^>]+rel="stylesheet"|@import|fonts\.googleapis`).MatchString(strings.Replace(body, analyticsTag, "", 1)) {
 			t.Errorf("%s loads something from elsewhere", entry.Path)
 		}
 		match := jsonLD.FindStringSubmatch(body)
@@ -140,6 +144,25 @@ func varyTokens(header http.Header) map[string]bool {
 }
 
 // API pages show what the examples really return.
+// The analytics tag is for people reading the site: API answers, the Markdown forms,
+// the files for agents and an HTML-preferring browser hitting an API address never carry it.
+func TestAnalyticsOnlyOnHTMLPages(t *testing.T) {
+	for _, path := range []string{"/v1/pincode/110001", "/v1", "/healthz", "/openapi.json", "/llms.txt", "/llms-full.txt", "/docs.md", "/index.md", "/sitemap.xml"} {
+		for _, accept := range []string{"", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"} {
+			got := request(t, http.MethodGet, path, "", "Accept", accept)
+			if got.status != http.StatusOK {
+				t.Errorf("%s (Accept %q) = %d", path, accept, got.status)
+			}
+			if bytes.Contains(got.body, []byte("stats.dharun.dev")) {
+				t.Errorf("%s (Accept %q) carries the analytics tag", path, accept)
+			}
+		}
+	}
+	if page := request(t, http.MethodGet, "/", "", "Accept", "text/html"); !strings.Contains(string(page.body), analyticsTag) {
+		t.Error("the home page lacks the analytics tag")
+	}
+}
+
 func TestAPIPagesShowSamples(t *testing.T) {
 	page := string(get(t, "/docs/pincode").body)
 	if !strings.Contains(page, "&#34;district&#34;: &#34;Namakkal&#34;") || !strings.Contains(page, "Department of Posts") {

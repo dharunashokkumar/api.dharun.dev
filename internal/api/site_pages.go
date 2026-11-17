@@ -19,7 +19,7 @@ const htmlPages = `
 <section class="container facts">
 <div><h2 class="t">No key to start</h2><p>Call it from your server or straight from a browser. CORS is open, and every answer has the same <code>{ data, meta }</code> shape. A <a href="/keys">free key</a> raises the limits.</p></div>
 <div><h2 class="t">Open source</h2><p>The code is on GitHub under AGPL-3.0. Every response names its data source, its version and its licence.</p></div>
-<div><h2 class="t">Private by default</h2><p>No cookies, no tracking, no IP addresses in the logs. Personal values you send are never logged. <a href="/privacy">Details</a></p></div>
+<div><h2 class="t">Private by default</h2><p>No cookies, no ads, no IP addresses in the logs. Personal values you send are never logged. <a href="/privacy">Details</a></p></div>
 </section>
 
 <section class="sec" id="apis"><div class="container">
